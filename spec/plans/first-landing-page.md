@@ -14,18 +14,32 @@ The page exists to support the current validation goal in `README.md`: test whet
 
 - [x] (2026-05-09T12:34:19Z) Read repository guidance, `spec/plans/PLANS.md`, and accepted requirement `spec/requirements/first-landing-page.md`.
 - [x] (2026-05-09T12:34:19Z) Created this Draft ExecPlan for human review.
-- [ ] Human approves or revises the plan scope, implementation sequence, validation approach, and open assumptions.
-- [ ] Create or switch to an implementation branch before editing source files.
-- [ ] Scaffold the minimal React, TypeScript, Vite, and TailwindCSS frontend under `src/`.
-- [ ] Add Docker and npm workflows that can run, build, lint, and test the landing page reproducibly.
-- [ ] Implement the landing page UI and waitlist-interest behavior.
-- [ ] Validate with automated checks, Docker execution, and browser review.
-- [ ] Record validation evidence under `spec/validation/` using the validation-review workflow after implementation.
+- [x] (2026-05-09T12:53:39Z) Human explicitly asked Codex to implement the first landing page in Polish with an option to switch to English.
+- [x] (2026-05-09T12:53:39Z) Created implementation branch `codex/first-landing-page`.
+- [x] (2026-05-09T13:02:01Z) Scaffolded the minimal React, TypeScript, Vite, and TailwindCSS frontend under `src/`.
+- [x] (2026-05-09T13:02:01Z) Added Docker and npm workflows that can run, build, lint, unit test, and Playwright-test the landing page reproducibly.
+- [x] (2026-05-09T13:02:01Z) Implemented the Polish-default landing page UI, English language switcher, and non-persistent waitlist-interest behavior.
+- [x] (2026-05-09T13:02:01Z) Validated with automated checks, Docker execution, and Playwright browser review across desktop and mobile viewports.
+- [x] (2026-05-09T13:02:01Z) Recorded validation evidence under `spec/validation/first-landing-page-validation.md` using the validation-review workflow.
+- [x] (2026-05-09T13:21:01Z) Revised the landing page to align with `spec/design/visual-artifacts/caniello-better-care-landing.png` after human design feedback.
+- [x] (2026-05-09T13:32:22Z) Replaced the hand-drawn CSS logo with a wordmark asset aligned to `spec/design/visual-artifacts/caniello-dark-wordmark.png`.
 
 ## Surprises & Discoveries
 
 - Observation: The accepted requirement still contains the sentence "Until a human explicitly approves this requirement..." in its constraints even though its status is now `Accepted`.
   Evidence: `spec/requirements/first-landing-page.md` shows `Status` as `Accepted` and retains that constraint line. Treat the status as the governing approval signal, and avoid changing the requirement during this implementation unless the human asks for cleanup.
+
+- Observation: The local host environment does not have the `node` command available.
+  Evidence: `node --version` returned `zsh:1: command not found: node`. All npm validation was run through Node 22 Docker containers instead.
+
+- Observation: Vite blocks `host.docker.internal` by default when the dev server is accessed from a separate Playwright container.
+  Evidence: The first Playwright run produced the page message `Blocked request. This host ("host.docker.internal") is not allowed.` The fix was adding `server.allowedHosts: ["host.docker.internal"]` in `vite.config.ts`.
+
+- Observation: The first implemented layout was functionally valid but visually drifted from the preferred design reference.
+  Evidence: Human feedback stated the look was not aligned with `spec/design/visual-artifacts/caniello-better-care-landing.png`. The UI was revised to use the reference's navy/cream/gold palette, serif headline treatment, top navigation, hero benefit list, email bar, phone-and-dog hero visual, icon feature section, how-it-works steps, footer structure, and lower waitlist block.
+
+- Observation: The first revised visual implementation still used an approximate CSS logo instead of the Caniello wordmark.
+  Evidence: Human feedback stated the logo did not match `spec/design/visual-artifacts/caniello-dark-wordmark.png`. The implementation now imports `src/assets/caniello-wordmark.png` and uses it in both the header and footer.
 
 ## Decision Log
 
@@ -37,17 +51,35 @@ The page exists to support the current validation goal in `README.md`: test whet
   Rationale: The requirement asks for a clear validation signal but leaves storage open. A non-persistent form can show an observable thank-you state and support later analytics or backend integration without collecting personal data prematurely.
   Date/Author: 2026-05-09 / Codex
 
-- Decision: Build the first page in English only unless the human approves bilingual content before implementation.
-  Rationale: The requirement leaves language unresolved. English matches the repository README and reduces content scope for the first validation slice. Polish or bilingual copy can be added as a later feature or design refinement.
+- Decision: Build the first page in Polish by default and include an in-page language switcher for English.
+  Rationale: The human explicitly requested Polish implementation with an English option during implementation authorization. This resolves the requirement's language open question without adding routing, persistence, or a localization framework.
   Date/Author: 2026-05-09 / Codex
 
 - Decision: Include local UI tests and build checks, but defer analytics and persistent waitlist storage.
   Rationale: Analytics and storage have privacy and vendor choices that are not yet approved. The first implementation should prove the landing-page experience and Docker workflow while keeping data handling conservative.
   Date/Author: 2026-05-09 / Codex
 
+- Decision: Use Playwright through `mcr.microsoft.com/playwright:v1.59.1-noble` for browser validation.
+  Rationale: The host environment has no local Node runtime, and the Node Alpine app container does not include browser dependencies. The Playwright container provides a reproducible browser runtime and can reach the Vite server via `E2E_BASE_URL=http://host.docker.internal:5173`.
+  Date/Author: 2026-05-09 / Codex
+
+- Decision: Use `spec/design/visual-artifacts/caniello-better-care-landing.png` as the visual baseline and crop its phone-and-dog hero composition into `src/assets/better-care-hero.png`.
+  Rationale: The repository design direction explicitly recommends this artifact as the validation-stage landing page baseline. Reusing the provided visual artifact keeps the implementation close to the approved reference without introducing an external image dependency.
+  Date/Author: 2026-05-09 / Codex
+
+- Decision: Use a wordmark image asset for the Caniello logo rather than reconstructing the brand mark with CSS or text.
+  Rationale: The brand mark has specific dog, cat, heart, color, and serif wordmark details that should be preserved from the design artifacts. A rendered image is closer to the provided `caniello-dark-wordmark.png` direction than a hand-built approximation.
+  Date/Author: 2026-05-09 / Codex
+
 ## Outcomes & Retrospective
 
-No implementation outcome has been recorded yet. When the work is complete, summarize the files changed, what a visitor can do, the validation commands and browser checks that passed, any skipped checks, and the remaining gaps such as real analytics, persistent waitlist storage, deployment target, or localized content.
+Implementation outcome recorded on 2026-05-09: the first Caniello landing page now exists as a Dockerized React, TypeScript, Vite, and TailwindCSS app. It defaults to Polish, includes an English language switcher, presents scope-safe product messaging, and includes a non-persistent waitlist-interest form with accessible validation and thank-you states.
+
+Validation passed for `npm run build`, `npm run test`, `npm run lint`, `docker compose build`, `docker compose up`, and `npm run test:e2e` through the Playwright container. Playwright captured desktop and mobile screenshots under `spec/validation/screenshots/`. Remaining gaps are intentional: no persistent waitlist storage, no analytics conversion tracking, and no approved deployment target.
+
+Design-alignment outcome recorded on 2026-05-09: the landing page was revised after human feedback to follow `spec/design/visual-artifacts/caniello-better-care-landing.png` more closely. The current UI now uses the reference's structure, palette, hero composition, typography feel, feature icons, how-it-works section, waitlist card, and footer pattern while preserving the human-requested Polish default and English language switch.
+
+Logo-alignment outcome recorded on 2026-05-09: the CSS-built logo was removed and replaced with `src/assets/caniello-wordmark.png`, used in the page header and footer. Build, unit tests, lint, and Playwright E2E all passed after the replacement.
 
 ## Context and Orientation
 
@@ -79,7 +111,7 @@ Create a minimal frontend toolchain at the repository root. Add `package.json`, 
 
 Use `src/` for the React application. Replace the current placeholder `src/README.md` only if necessary; otherwise leave it in place and add source files beside it. Create `src/main.tsx`, `src/App.tsx`, `src/index.css`, and component files under `src/components/` if the page becomes clearer with small components. Keep component names focused, for example `LandingPage`, `WaitlistForm`, and `FeatureList`.
 
-Use TailwindCSS for styling. The page should feel warm, trustworthy, and practical rather than like a generic software template. The first viewport must show the Caniello name, a plain-language value proposition, and the primary waitlist action. Subsequent content should briefly explain the main use cases from the README: reminders, health records and important notes, documents, and shareable care information. Include concise scope-safe copy such as "Caniello helps you organize care information; official pet passports remain documents issued by authorized veterinarians." Do not include claims about diagnosis, treatment recommendations, clinic integrations, or marketplace booking.
+Use TailwindCSS for styling. The page should feel warm, trustworthy, and practical rather than like a generic software template. The first viewport must show the Caniello name, a plain-language value proposition, a Polish-by-default language experience, a visible language switcher for English, and the primary waitlist action. Subsequent content should briefly explain the main use cases from the README: reminders, health records and important notes, documents, and shareable care information. Include concise scope-safe copy in both languages explaining that Caniello helps organize care information and does not replace official documents issued by authorized veterinarians. Do not include claims about diagnosis, treatment recommendations, clinic integrations, or marketplace booking.
 
 Implement the waitlist-interest form as client-side behavior. It should accept a syntactically valid email address, prevent empty or invalid submission, and show a clear thank-you state after submission. Since no storage target is approved, do not send the email to a backend or third-party service. Keep the entered email in component state only. Make the form accessible with a visible label or equivalent accessible name, helpful validation text, and keyboard-submittable behavior.
 
@@ -166,9 +198,9 @@ The implementation is acceptable when a human or fresh agent can run the page fr
 
 Run `npm run build` from `/Users/macg/Code/caniello` and expect the command to finish successfully with a production build in `dist/`. This proves the React and TailwindCSS app compiles.
 
-Run `npm run test` and expect tests to pass for rendering the core Caniello promise, invalid waitlist email handling, and valid waitlist thank-you behavior. This proves the most important visible behavior is protected by executable tests.
+Run `npm run test` and expect tests to pass for rendering the core Caniello promise in Polish, switching to English, invalid waitlist email handling, and valid waitlist thank-you behavior. This proves the most important visible behavior is protected by executable tests.
 
-Run the Docker workflow from `/Users/macg/Code/caniello` with `docker compose build` and `docker compose up`. Open `http://localhost:5173` and expect to see Caniello in the first viewport, a plain-language value proposition about pet health and care organization, and a primary waitlist action. Submit an invalid email and expect inline validation. Submit a valid email and expect a thank-you state. Resize or inspect the page at mobile and desktop widths and expect the primary message and action to remain readable and usable.
+Run the Docker workflow from `/Users/macg/Code/caniello` with `docker compose build` and `docker compose up`. Open `http://localhost:5173` and expect to see Caniello in the first viewport, a Polish plain-language value proposition about pet health and care organization, a language switcher that changes the copy to English, and a primary waitlist action. Submit an invalid email and expect inline validation. Submit a valid email and expect a thank-you state in the active language. Resize or inspect the page at mobile and desktop widths and expect the primary message and action to remain readable and usable.
 
 Check the copy manually against the accepted requirement. The page must not say or imply that Caniello provides AI symptom checking, medical diagnosis, treatment advice, clinic PIMS/EHR software, booking and payments, full marketplace mechanics, or official EU pet passport replacement.
 
@@ -258,4 +290,12 @@ The component should validate that the email is non-empty and contains a simple 
 
 The Docker setup should support local development. A suitable `Dockerfile` uses a Node image, sets `/app` as the working directory, copies package files first, installs dependencies, then copies the rest of the app. `docker-compose.yml` should map the Vite development port from the container to the host and run the npm dev script with a host binding so the page is reachable from the host browser.
 
-Revision note: This Draft ExecPlan was created on 2026-05-09 from the accepted first landing page requirement. It resolves non-critical ambiguity by choosing a minimal Vite React TypeScript app, English-only content, and a non-persistent waitlist-interest form so implementation can proceed safely after human approval.
+Revision note: This Draft ExecPlan was created on 2026-05-09 from the accepted first landing page requirement. It initially resolved non-critical ambiguity by choosing a minimal Vite React TypeScript app, English-only content, and a non-persistent waitlist-interest form so implementation could proceed safely after human approval.
+
+Revision note: On 2026-05-09, the human explicitly authorized implementation and requested Polish as the first version with an option to switch to English. The plan was updated to make Polish the default language and include an English language switcher while keeping the non-persistent waitlist-interest form and minimal Vite React TypeScript approach.
+
+Revision note: On 2026-05-09, implementation completed for the first landing page milestone. Progress, discoveries, decisions, validation evidence, and outcomes were updated to reflect the actual Docker, npm, Vitest, and Playwright validation path.
+
+Revision note: On 2026-05-09, the human reported that the implementation did not match `spec/design/visual-artifacts/caniello-better-care-landing.png`. The plan was updated after revising the UI toward that visual baseline and re-running build, unit, lint, Docker, and Playwright validation.
+
+Revision note: On 2026-05-09, the human reported that the logo did not match `spec/design/visual-artifacts/caniello-dark-wordmark.png`. The plan was updated after replacing the CSS logo with the Caniello wordmark asset and re-running build, unit, lint, and Playwright validation.

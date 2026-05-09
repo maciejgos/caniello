@@ -23,13 +23,17 @@ Keep generated output, caches, and dependency folders out of version control. Ad
 
 ## Build, Test, and Development Commands
 
-No package manager or build system is committed yet because this is currently a workflow template. When implementation tooling is added, document exact commands here. Expected examples:
+This repository now includes a Dockerized React, TypeScript, Vite, and TailwindCSS landing page. Use npm as the package manager because `package-lock.json` is committed.
 
-- `npm install` or equivalent: install dependencies.
-- `npm run dev`: start a local development process.
-- `npm run build`: produce a production build or packaged plugin artifact.
-- `npm test`: run the default test suite.
-- `npm run lint`: check formatting and static-analysis rules.
+- `npm install`: install dependencies from committed package files.
+- `npm run dev`: start the Vite development server on `http://localhost:5173`.
+- `npm run build`: type-check and build production static files into `dist/`.
+- `npm run test`: run the Vitest and React Testing Library test suite.
+- `npm run test:e2e`: run Playwright browser checks against the landing page.
+- `npm run lint`: run the TypeScript validation gate.
+- `docker compose build`: build the local development container.
+- `docker compose up`: run the landing page in Docker on `http://localhost:5173`.
+- `docker compose down`: stop the Docker development container.
 
 Do not add setup steps that cannot be reproduced from committed files.
 

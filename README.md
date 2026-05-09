@@ -89,6 +89,20 @@ src/     Application source code once implementation begins
 tests/   Executable tests once implementation tooling exists
 ```
 
+## Development Commands
+
+The first landing page is a Dockerized React, TypeScript, Vite, and TailwindCSS app.
+
+- `npm install`: install dependencies from `package-lock.json`.
+- `npm run dev`: start the Vite development server on `http://localhost:5173`.
+- `npm run build`: type-check and build the production static files in `dist/`.
+- `npm run test`: run Vitest and React Testing Library tests.
+- `npm run test:e2e`: run Playwright browser checks against the landing page.
+- `npm run lint`: run the TypeScript validation gate.
+- `docker compose build`: build the local development container.
+- `docker compose up`: run the landing page in Docker on `http://localhost:5173`.
+- `docker compose down`: stop the Docker development container.
+
 ## Development Model
 
 Caniello follows an AI-assisted, human-governed PDLC model:
