@@ -1,0 +1,4 @@
+interface:
+  display_name: "Solution Design"
+  short_description: "Design solutions and ADRs."
+  default_prompt: "Design the solution for these approved features or stories, including architecture decisions, validation strategy, risks, tradeoffs, and lifecycle checks."

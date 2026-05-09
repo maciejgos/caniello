@@ -1,0 +1,4 @@
+interface:
+  display_name: "Story Breakdown"
+  short_description: "Turn scoped features into implementation-ready stories."
+  default_prompt: "Break this feature into implementation-ready stories with user value, scope, acceptance criteria, implementation notes, validation, and sequencing."

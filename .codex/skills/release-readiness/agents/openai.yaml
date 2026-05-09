@@ -1,0 +1,4 @@
+interface:
+  display_name: "Release Readiness"
+  short_description: "Prepare human release approval."
+  default_prompt: "Assess release readiness from validation evidence, implementation changes, approvals, risks, rollback notes, CI/CD status, and unresolved follow-ups before human release approval."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Feature Shaping"
+  short_description: "Turn requirements into scoped, reviewable feature definitions."
+  default_prompt: "Shape these requirements into feature artifacts with outcomes, users, scope, behavior, acceptance criteria, and open questions."

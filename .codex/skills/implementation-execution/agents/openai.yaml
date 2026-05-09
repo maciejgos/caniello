@@ -1,0 +1,4 @@
+interface:
+  display_name: "Implementation Execution"
+  short_description: "Execute approved ExecPlans safely."
+  default_prompt: "Execute this approved ExecPlan, update progress as you work, make scoped changes, run validation, record discoveries, and stop for human approval on scope or risk changes."

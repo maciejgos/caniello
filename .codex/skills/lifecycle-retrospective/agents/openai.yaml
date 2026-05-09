@@ -1,0 +1,4 @@
+interface:
+  display_name: "Lifecycle Retrospective"
+  short_description: "Close the post-release loop."
+  default_prompt: "Review post-release outcomes, incidents, feedback, metrics, missed assumptions, and follow-up work; capture lessons and recommend new requirements, ADR updates, or validation improvements."

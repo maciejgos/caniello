@@ -1,0 +1,4 @@
+interface:
+  display_name: "Requirements Refinement"
+  short_description: "Turn raw product intent into clear, reviewable requirements."
+  default_prompt: "Refine this product idea into requirements with goals, non-goals, constraints, risks, acceptance criteria, and open questions."

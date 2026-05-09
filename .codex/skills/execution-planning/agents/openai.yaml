@@ -1,0 +1,4 @@
+interface:
+  display_name: "Execution Planning"
+  short_description: "Create self-contained ExecPlans."
+  default_prompt: "Create an ExecPlan for this approved design or story, including milestones, concrete steps, validation, risks, decisions, and recovery guidance."

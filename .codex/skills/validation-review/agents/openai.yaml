@@ -1,0 +1,4 @@
+interface:
+  display_name: "Validation Review"
+  short_description: "Review implementation evidence."
+  default_prompt: "Review this implementation against its requirements, feature, stories, design, ExecPlan, tests, Playwright evidence, and validation gates; record validation evidence and open follow-ups."
