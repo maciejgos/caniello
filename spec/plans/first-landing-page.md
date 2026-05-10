@@ -23,6 +23,7 @@ The page exists to support the current validation goal in `README.md`: test whet
 - [x] (2026-05-09T13:02:01Z) Recorded validation evidence under `spec/validation/first-landing-page-validation.md` using the validation-review workflow.
 - [x] (2026-05-09T13:21:01Z) Revised the landing page to align with `spec/design/visual-artifacts/caniello-better-care-landing.png` after human design feedback.
 - [x] (2026-05-09T13:32:22Z) Replaced the hand-drawn CSS logo with a wordmark asset aligned to `spec/design/visual-artifacts/caniello-dark-wordmark.png`.
+- [x] (2026-05-10T09:12:16+02:00) Revised the UI to follow `spec/design/visual-artifacts/caniello-better-care-landing.png` as a 1:1 English mockup, including updated tests and Playwright screenshots.
 
 ## Surprises & Discoveries
 
@@ -39,7 +40,10 @@ The page exists to support the current validation goal in `README.md`: test whet
   Evidence: Human feedback stated the look was not aligned with `spec/design/visual-artifacts/caniello-better-care-landing.png`. The UI was revised to use the reference's navy/cream/gold palette, serif headline treatment, top navigation, hero benefit list, email bar, phone-and-dog hero visual, icon feature section, how-it-works steps, footer structure, and lower waitlist block.
 
 - Observation: The first revised visual implementation still used an approximate CSS logo instead of the Caniello wordmark.
-  Evidence: Human feedback stated the logo did not match `spec/design/visual-artifacts/caniello-dark-wordmark.png`. The implementation now imports `src/assets/caniello-wordmark.png` and uses it in both the header and footer.
+  Evidence: Human feedback stated the logo did not match `spec/design/visual-artifacts/caniello-dark-wordmark.png`. The implementation now imports `src/assets/caniello-dark-wordmark.png` and uses it in both the header and footer.
+
+- Observation: The latest human direction prioritizes exact visual alignment with the English `caniello-better-care-landing.png` mockup over the earlier Polish-default language behavior.
+  Evidence: Human feedback on 2026-05-10 stated that the UI should look 1:1 like `spec/design/visual-artifacts/caniello-better-care-landing.png`, which is an English mockup without a language switcher.
 
 ## Decision Log
 
@@ -55,6 +59,10 @@ The page exists to support the current validation goal in `README.md`: test whet
   Rationale: The human explicitly requested Polish implementation with an English option during implementation authorization. This resolves the requirement's language open question without adding routing, persistence, or a localization framework.
   Date/Author: 2026-05-09 / Codex
 
+- Decision: Supersede the Polish-default page for this mockup-matching revision and render the English `caniello-better-care-landing.png` layout directly.
+  Rationale: The latest human instruction asked for 1:1 visual alignment with the English reference. Removing the language switcher and extra Polish/default behavior reduces visual drift from the mockup.
+  Date/Author: 2026-05-10 / Codex
+
 - Decision: Include local UI tests and build checks, but defer analytics and persistent waitlist storage.
   Rationale: Analytics and storage have privacy and vendor choices that are not yet approved. The first implementation should prove the landing-page experience and Docker workflow while keeping data handling conservative.
   Date/Author: 2026-05-09 / Codex
@@ -63,9 +71,9 @@ The page exists to support the current validation goal in `README.md`: test whet
   Rationale: The host environment has no local Node runtime, and the Node Alpine app container does not include browser dependencies. The Playwright container provides a reproducible browser runtime and can reach the Vite server via `E2E_BASE_URL=http://host.docker.internal:5173`.
   Date/Author: 2026-05-09 / Codex
 
-- Decision: Use `spec/design/visual-artifacts/caniello-better-care-landing.png` as the visual baseline and crop its phone-and-dog hero composition into `src/assets/better-care-hero.png`.
-  Rationale: The repository design direction explicitly recommends this artifact as the validation-stage landing page baseline. Reusing the provided visual artifact keeps the implementation close to the approved reference without introducing an external image dependency.
-  Date/Author: 2026-05-09 / Codex
+- Decision: Use `spec/design/visual-artifacts/caniello-bruno-app-hero.png` as the implementation hero asset and copy it into `src/assets/caniello-bruno-app-hero.png`.
+  Rationale: The human provided this composed app-and-dog visual for the landing page. Using the single named asset keeps the hero close to the approved direction and removes redundant derived implementation images.
+  Date/Author: 2026-05-10 / Codex
 
 - Decision: Use a wordmark image asset for the Caniello logo rather than reconstructing the brand mark with CSS or text.
   Rationale: The brand mark has specific dog, cat, heart, color, and serif wordmark details that should be preserved from the design artifacts. A rendered image is closer to the provided `caniello-dark-wordmark.png` direction than a hand-built approximation.
@@ -77,9 +85,11 @@ Implementation outcome recorded on 2026-05-09: the first Caniello landing page n
 
 Validation passed for `npm run build`, `npm run test`, `npm run lint`, `docker compose build`, `docker compose up`, and `npm run test:e2e` through the Playwright container. Playwright captured desktop and mobile screenshots under `spec/validation/screenshots/`. Remaining gaps are intentional: no persistent waitlist storage, no analytics conversion tracking, and no approved deployment target.
 
-Design-alignment outcome recorded on 2026-05-09: the landing page was revised after human feedback to follow `spec/design/visual-artifacts/caniello-better-care-landing.png` more closely. The current UI now uses the reference's structure, palette, hero composition, typography feel, feature icons, how-it-works section, waitlist card, and footer pattern while preserving the human-requested Polish default and English language switch.
+Design-alignment outcome recorded on 2026-05-09: the landing page was revised after human feedback to follow `spec/design/visual-artifacts/caniello-better-care-landing.png` more closely. That revision used the reference's structure, palette, hero composition, typography feel, feature icons, how-it-works section, waitlist card, and footer pattern while preserving the then-requested Polish default and English language switch.
 
-Logo-alignment outcome recorded on 2026-05-09: the CSS-built logo was removed and replaced with `src/assets/caniello-wordmark.png`, used in the page header and footer. Build, unit tests, lint, and Playwright E2E all passed after the replacement.
+Logo-alignment outcome recorded on 2026-05-09: the CSS-built logo was removed and replaced with `src/assets/caniello-dark-wordmark.png`, used in the page header and footer. Build, unit tests, lint, and Playwright E2E all passed after the replacement.
+
+Mockup-alignment outcome recorded on 2026-05-10: the landing page was revised to follow `spec/design/visual-artifacts/caniello-better-care-landing.png` directly. The visible page now uses the English mockup structure, removes the language switcher from the UI, uses a cropped waitlist-card pet image derived from the mockup, and keeps the non-persistent waitlist validation behavior. `npm run lint`, `npm run test`, `npm run build`, and Playwright E2E passed after the revision.
 
 ## Context and Orientation
 
@@ -111,7 +121,7 @@ Create a minimal frontend toolchain at the repository root. Add `package.json`, 
 
 Use `src/` for the React application. Replace the current placeholder `src/README.md` only if necessary; otherwise leave it in place and add source files beside it. Create `src/main.tsx`, `src/App.tsx`, `src/index.css`, and component files under `src/components/` if the page becomes clearer with small components. Keep component names focused, for example `LandingPage`, `WaitlistForm`, and `FeatureList`.
 
-Use TailwindCSS for styling. The page should feel warm, trustworthy, and practical rather than like a generic software template. The first viewport must show the Caniello name, a plain-language value proposition, a Polish-by-default language experience, a visible language switcher for English, and the primary waitlist action. Subsequent content should briefly explain the main use cases from the README: reminders, health records and important notes, documents, and shareable care information. Include concise scope-safe copy in both languages explaining that Caniello helps organize care information and does not replace official documents issued by authorized veterinarians. Do not include claims about diagnosis, treatment recommendations, clinic integrations, or marketplace booking.
+Use TailwindCSS for styling. The page should feel warm, trustworthy, and practical rather than like a generic software template. For the current mockup-matching revision, the first viewport must follow `spec/design/visual-artifacts/caniello-better-care-landing.png`: Caniello wordmark, English navigation, English hero value proposition, phone-and-dog hero visual, and the primary waitlist action. Subsequent content should match the mockup sections for features, how-it-works, the lower waitlist card, and footer. Do not include claims about diagnosis, treatment recommendations, clinic integrations, marketplace booking, payments, or official EU pet passport replacement.
 
 Implement the waitlist-interest form as client-side behavior. It should accept a syntactically valid email address, prevent empty or invalid submission, and show a clear thank-you state after submission. Since no storage target is approved, do not send the email to a backend or third-party service. Keep the entered email in component state only. Make the form accessible with a visible label or equivalent accessible name, helpful validation text, and keyboard-submittable behavior.
 
@@ -198,9 +208,9 @@ The implementation is acceptable when a human or fresh agent can run the page fr
 
 Run `npm run build` from `/Users/macg/Code/caniello` and expect the command to finish successfully with a production build in `dist/`. This proves the React and TailwindCSS app compiles.
 
-Run `npm run test` and expect tests to pass for rendering the core Caniello promise in Polish, switching to English, invalid waitlist email handling, and valid waitlist thank-you behavior. This proves the most important visible behavior is protected by executable tests.
+Run `npm run test` and expect tests to pass for rendering the English mockup promise, invalid waitlist email handling, and valid waitlist thank-you behavior. This proves the most important visible behavior is protected by executable tests.
 
-Run the Docker workflow from `/Users/macg/Code/caniello` with `docker compose build` and `docker compose up`. Open `http://localhost:5173` and expect to see Caniello in the first viewport, a Polish plain-language value proposition about pet health and care organization, a language switcher that changes the copy to English, and a primary waitlist action. Submit an invalid email and expect inline validation. Submit a valid email and expect a thank-you state in the active language. Resize or inspect the page at mobile and desktop widths and expect the primary message and action to remain readable and usable.
+Run the Docker workflow from `/Users/macg/Code/caniello` with `docker compose build` and `docker compose up`. Open `http://localhost:5173` and expect to see the English `caniello-better-care-landing.png` layout: Caniello wordmark, top navigation, hero promise, phone-and-dog visual, feature row, how-it-works section, waitlist card, and footer. Submit an invalid email and expect inline validation. Submit a valid email and expect a thank-you state. Resize or inspect the page at mobile and desktop widths and expect the primary message and action to remain readable and usable.
 
 Check the copy manually against the accepted requirement. The page must not say or imply that Caniello provides AI symptom checking, medical diagnosis, treatment advice, clinic PIMS/EHR software, booking and payments, full marketplace mechanics, or official EU pet passport replacement.
 

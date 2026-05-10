@@ -6,7 +6,7 @@ Draft
 
 ## Scope
 
-This validation reviews the first Caniello landing page implementation against the accepted first landing page requirement and the landing page ExecPlan. The implemented outcome is a Dockerized React, TypeScript, Vite, and TailwindCSS single-page landing page that defaults to Polish, can switch to English, and includes a non-persistent waitlist-interest form.
+This validation reviews the first Caniello landing page implementation against the accepted first landing page requirement, the landing page ExecPlan, and the latest human instruction to match `spec/design/visual-artifacts/caniello-better-care-landing.png` visually. The implemented outcome is a Dockerized React, TypeScript, Vite, and TailwindCSS single-page landing page that follows the English mockup layout and includes a non-persistent waitlist-interest form.
 
 ## Source Artifacts
 
@@ -19,11 +19,10 @@ This validation reviews the first Caniello landing page implementation against t
 - Implementation paths:
   - `src/App.tsx`
   - `src/content.ts`
-  - `src/components/LanguageToggle.tsx`
   - `src/components/WaitlistForm.tsx`
-  - `src/components/FeatureList.tsx`
-  - `src/assets/better-care-hero.png`
-  - `src/assets/caniello-wordmark.png`
+  - `src/assets/caniello-bruno-app-hero.png`
+  - `src/assets/caniello-waitlist-pets.png`
+  - `src/assets/caniello-dark-wordmark.png`
   - `src/App.test.tsx`
   - `tests/e2e/landing.spec.ts`
   - `Dockerfile`
@@ -40,11 +39,11 @@ This validation reviews the first Caniello landing page implementation against t
 
 - Criterion: Given a first-time pet owner visitor, when they open the landing page, then they can identify Caniello as a pet health and care organization utility within the first viewport.
   Evidence status: Supported
-  Evidence: Playwright desktop and mobile screenshots show the first viewport with Caniello branding, Polish hero copy, waitlist action, and a phone-and-dog hero visual aligned with `spec/design/visual-artifacts/caniello-better-care-landing.png`.
+  Evidence: Playwright desktop and mobile screenshots show the first viewport with Caniello branding, English hero copy, waitlist action, and a phone-and-dog hero visual aligned with `spec/design/visual-artifacts/caniello-better-care-landing.png`.
 
 - Criterion: Given a visitor who fits the early audience, when they read the page, then they can understand the core promise of records, reminders, documents, and shareable care information.
   Evidence status: Supported
-  Evidence: `src/content.ts` includes Polish and English sections for reminders, key details, documents, and shareable care. `npm run build` confirms the content compiles into the page.
+  Evidence: `src/App.tsx` renders the English mockup sections for reminders, health records, sharing, and privacy. `npm run build` confirms the content compiles into the page.
 
 - Criterion: Given a visitor who is interested in Caniello, when they decide to act, then they have a clear primary action for joining a waitlist or signaling interest.
   Evidence status: Supported
@@ -56,7 +55,7 @@ This validation reviews the first Caniello landing page implementation against t
 
 - Criterion: Given Caniello's scope constraints, when the page describes the product, then it does not claim to replace an official EU pet passport, provide AI diagnosis, or offer clinic/marketplace functionality.
   Evidence status: Supported
-  Evidence: `src/content.ts` includes scope-safe Polish and English disclaimers. Manual copy review found no AI diagnosis, treatment, booking, payment, clinic software, marketplace, or official passport replacement claims.
+  Evidence: Manual copy review found no AI diagnosis, treatment, booking, payment, clinic software, marketplace, or official passport replacement claims.
 
 - Criterion: Given a developer starts the project from committed files, when they use the documented Docker workflow, then the React and TailwindCSS landing page can run locally in a reproducible container.
   Evidence status: Supported
@@ -72,19 +71,19 @@ This validation reviews the first Caniello landing page implementation against t
 
 ## Checks
 
-- Check: `docker run --rm -v /Users/macg/Code/caniello:/app -w /app node:22-alpine npm run build`
+- Check: `docker compose run --rm web npm run build`
   Type: Automated
   Status: Passed
   Expected result: TypeScript and Vite production build complete without errors.
   Actual result: Passed. Vite built `dist/index.html`, CSS, and JS assets.
 
-- Check: `docker run --rm -v /Users/macg/Code/caniello:/app -w /app node:22-alpine npm run test`
+- Check: `docker compose run --rm web npm run test`
   Type: Automated
   Status: Passed
   Expected result: Vitest component tests pass.
-  Actual result: Passed. 1 test file and 3 tests passed.
+  Actual result: Passed. 1 test file and 2 tests passed.
 
-- Check: `docker run --rm -v /Users/macg/Code/caniello:/app -w /app node:22-alpine npm run lint`
+- Check: `docker compose run --rm web npm run lint`
   Type: Automated
   Status: Passed
   Expected result: TypeScript validation passes.
@@ -102,10 +101,10 @@ This validation reviews the first Caniello landing page implementation against t
   Expected result: Vite development server is reachable on `http://localhost:5173`.
   Actual result: Passed. Vite reported `Local: http://localhost:5173/`.
 
-- Check: `docker run --rm -e E2E_BASE_URL=http://host.docker.internal:5173 -v /Users/macg/Code/caniello:/app -w /app mcr.microsoft.com/playwright:v1.59.1-noble npm run test:e2e`
+- Check: `docker run --rm -v /Users/macg/Code/caniello:/app -v /private/tmp/caniello-node-modules:/app/node_modules -w /app -e E2E_BASE_URL=http://127.0.0.1:5173 mcr.microsoft.com/playwright:v1.59.1-noble sh -lc 'npm ci && npm run test:e2e'`
   Type: UI
   Status: Passed
-  Expected result: Playwright verifies Polish default copy, English language switch, valid waitlist submission, and screenshots on desktop and mobile.
+  Expected result: Playwright verifies the English mockup flow, valid waitlist submission, and screenshots on desktop and mobile.
   Actual result: Passed. 2 tests passed across Desktop Chrome and Pixel 7 profiles.
 
 - Check: Manual scope-safety copy review
@@ -118,25 +117,25 @@ This validation reviews the first Caniello landing page implementation against t
   Type: UI
   Status: Passed
   Expected result: The implementation follows the preferred validation-stage landing page direction from `spec/design/caniello-visual-direction.md`.
-  Actual result: Passed after revision. The page now uses a matching navy/cream/gold palette, serif headline treatment, top navigation, hero benefit list, email bar, phone-and-dog hero visual, icon feature section, how-it-works section, lower waitlist block, and footer structure.
+  Actual result: Passed after mockup-alignment revision. The page now follows the mockup's English header, hero, feature row, how-it-works section, waitlist card, and footer structure, using `src/assets/caniello-bruno-app-hero.png` and a cropped `src/assets/caniello-waitlist-pets.png` derived from the visual reference.
 
 - Check: Manual logo review against `spec/design/visual-artifacts/caniello-dark-wordmark.png`
   Type: UI
   Status: Passed
   Expected result: The page uses a Caniello wordmark consistent with the provided brand artifact rather than an approximate CSS logo.
-  Actual result: Passed after revision. `src/App.tsx` now imports `src/assets/caniello-wordmark.png` and renders it in the header and footer.
+  Actual result: Passed after revision. `src/App.tsx` imports `src/assets/caniello-dark-wordmark.png` and renders it in the header and footer.
 
 ## Evidence
 
-- Playwright desktop Polish screenshot: `spec/validation/screenshots/landing-Polish-landing-pag-382da-d-accepts-waitlist-interest-desktop-chromium/landing-polish-desktop-chromium.png`
-- Playwright desktop English success screenshot: `spec/validation/screenshots/landing-Polish-landing-pag-382da-d-accepts-waitlist-interest-desktop-chromium/landing-english-success-desktop-chromium.png`
-- Playwright mobile Polish screenshot: `spec/validation/screenshots/landing-Polish-landing-pag-382da-d-accepts-waitlist-interest-mobile-chromium/landing-polish-mobile-chromium.png`
-- Playwright mobile English success screenshot: `spec/validation/screenshots/landing-Polish-landing-pag-382da-d-accepts-waitlist-interest-mobile-chromium/landing-english-success-mobile-chromium.png`
-- Build evidence: `npm run build` passed in the Node 22 Alpine container.
-- Unit test evidence: `npm run test` passed with 1 file and 3 tests.
-- E2E evidence: `npm run test:e2e` passed with 2 Playwright project runs.
+- Playwright desktop English screenshot: `spec/validation/screenshots/landing-landing-page-match-97a90-d-accepts-waitlist-interest-desktop-chromium/landing-english-desktop-chromium.png`
+- Playwright desktop English success screenshot: `spec/validation/screenshots/landing-landing-page-match-97a90-d-accepts-waitlist-interest-desktop-chromium/landing-english-success-desktop-chromium.png`
+- Playwright mobile English screenshot: `spec/validation/screenshots/landing-landing-page-match-97a90-d-accepts-waitlist-interest-mobile-chromium/landing-english-mobile-chromium.png`
+- Playwright mobile English success screenshot: `spec/validation/screenshots/landing-landing-page-match-97a90-d-accepts-waitlist-interest-mobile-chromium/landing-english-success-mobile-chromium.png`
+- Build evidence: `npm run build` passed in the Docker Compose web container.
+- Unit test evidence: `npm run test` passed with 1 file and 2 tests.
+- E2E evidence: `npm run test:e2e` passed with 2 Playwright project runs in the official Playwright container.
 - Docker evidence: `docker compose build` and `docker compose up` both passed.
-- Design evidence: desktop and mobile Playwright screenshots were visually checked against `spec/design/visual-artifacts/caniello-better-care-landing.png` after the design-alignment revision.
+- Design evidence: desktop and mobile Playwright screenshots were visually checked against `spec/design/visual-artifacts/caniello-better-care-landing.png` after the mockup-alignment revision.
 - Logo evidence: desktop Playwright screenshot shows the wordmark image in the header and footer after replacing the approximate CSS logo.
 
 ## Missing, Skipped, or Unavailable Checks
@@ -148,6 +147,10 @@ This validation reviews the first Caniello landing page implementation against t
 - Check: Deployment target validation
   Reason: No deployment target is approved yet.
   Risk: Local and Docker behavior is validated, but hosted production behavior remains untested.
+
+- Check: `docker compose run --rm web npm run test:e2e`
+  Reason: The app's Alpine-based container does not include compatible Playwright browser binaries by default.
+  Risk: E2E validation should continue to use the official Playwright container, or the app image should explicitly install compatible browser dependencies before this command becomes a CI gate.
 
 ## Future CI/CD or Lifecycle Gates
 
@@ -179,7 +182,7 @@ Ready for human review
 
 - Decide whether the first public validation should use analytics, persistent waitlist email capture, a survey link, or another conversion signal.
 - Decide the deployment target for `https://caniello.com`.
-- Consider a future bilingual content review if Polish and English copy need brand or legal refinement before launch.
+- Revisit bilingual support later if Polish launch copy is still required after the mockup-matching pass.
 
 ## Human Decision
 

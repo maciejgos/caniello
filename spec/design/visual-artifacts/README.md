@@ -23,6 +23,7 @@ The current PNG files are also copied in The Future Thinker World control plane 
 |---|---|---|---|
 | `caniello-ai-assistant-landing.png` | Landing page mockup | AI-powered pet care concept with document scanning, extraction, reminders, timeline, ask-Caniello cards, comparison section, and privacy/security positioning. | Available |
 | `caniello-better-care-landing.png` | Landing page mockup | Softer waitlist landing page centered on health records, smart reminders, care sharing, secure/private messaging, and early access CTA. | Available |
+| `caniello-bruno-app-hero.png` | Implementation hero asset | Composed landing page hero with Bruno's app preview beside a golden retriever. | Available |
 | `caniello-product-os-landing.png` | Landing page mockup | More mature pet care operating system concept with product navigation, trust logos, dashboard preview, feature row, and pricing-oriented CTA. | Available |
 | `caniello-dark-wordmark.png` | Brand reference | Dark atmospheric Caniello logo/wordmark treatment. Useful as mood reference, not the primary light-background app logo. | Available |
 
