@@ -44,6 +44,7 @@ The raw backlog describes a broad web and mobile product. The first product requ
 ## Constraints
 
 - The MVP should be web and mobile aware, with mobile supporting camera-first document capture.
+- Polish is the default language for the first MVP, with an option for users to switch the interface to English.
 - The primary workflow should be AI-first: scan or upload, extract, review, create timeline/reminder, ask, and share.
 - AI output must remain reviewable and user-confirmed before becoming a trusted record.
 - Ask Caniello answers must cite source documents or timeline events and must avoid diagnosis or unsafe medical advice.
@@ -73,6 +74,8 @@ The raw backlog describes a broad web and mobile product. The first product requ
 - Given a user wants to share pet-care information, when they generate a care summary, then Caniello provides a controlled PDF export or share link containing relevant records and notes.
 - Given a user no longer wants a shared summary available, when they revoke access, then the shared link no longer exposes the pet-care information.
 - Given an EU visitor or user, when non-essential cookies or analytics would be used, then Caniello requests consent and allows consent to be changed later.
+- Given a first-MVP user opens Caniello, when the interface loads, then Polish is used by default and an English language option is available.
+- Given a user changes the language to English, when they continue using MVP flows, then navigation, core actions, validation messages, and safety disclaimers are shown in English where translation coverage exists.
 - Given a user wants control of their data, when they request export or deletion, then Caniello provides a data export path and an account deletion path.
 - Given a sensitive action such as document upload, confirmation, sharing, export, or deletion, when the action occurs, then Caniello records enough audit information to support beta operations and safety review.
 - Given a beta operator, when uploads, extraction jobs, or reminders fail, then they can see enough operational status to identify the affected user or document and support the beta safely.
@@ -87,9 +90,8 @@ The raw backlog describes a broad web and mobile product. The first product requ
 - Should Caniello create reminders automatically after confirmation, or only suggest reminders that the user accepts?
 - What is the minimum acceptable care summary content for a petsitter, family member, groomer, or veterinarian?
 - Should share links expire in the MVP, or is manual revocation sufficient for the first beta?
-- Which languages are required for the first MVP: English, Polish, or both?
+- What exact Polish and English copy should be approved for medical disclaimers, privacy notices, core navigation, and AI safety responses?
 - What analytics events are allowed under the initial consent and privacy model?
-- What exact medical disclaimer language is approved?
 - What operational visibility belongs in this owner-facing MVP versus a separate back-office MVP?
 
 ## Related Artifacts

@@ -43,6 +43,7 @@ The repository currently defines Caniello as a pet health and care organization 
 - The first page should support validation of landing page conversion, with the repository README naming conversion above 8% from relevant traffic as a target signal.
 - Messaging must avoid medical, diagnostic, legal, or official passport replacement claims.
 - The page should reflect the Caniello name and primary domain, `https://caniello.com`.
+- Polish should be the default language for the first MVP public experience, with an option to switch the landing page to English.
 - Implementation details must be reproducible from committed files once tooling is introduced.
 - Until a human explicitly approves this requirement, downstream feature, story, design, plan, and implementation artifacts should treat it as Draft.
 
@@ -56,12 +57,14 @@ The repository currently defines Caniello as a pet health and care organization 
 - Given a developer starts the project from committed files, when they use the documented Docker workflow, then the React and TailwindCSS landing page can run locally in a reproducible container.
 - Given implementation tooling is added, when a future contributor reads the repository instructions, then they can find the exact install, dev, build, and test commands needed for the landing page.
 - Given the landing page is viewed on common mobile and desktop screen sizes, when a user scans the page, then the primary message and action remain visible, readable, and usable.
+- Given a visitor opens the first MVP landing page, when the page loads, then Polish is shown by default and the visitor can switch to English.
+- Given a visitor switches language, when the page content updates, then the core product promise, waitlist action, privacy cues, and medical-scope language remain equivalent across Polish and English.
 
 ## Open Questions
 
 - What should the primary conversion action be for version one: waitlist email capture, contact form, survey link, or a non-persistent interest click?
 - Where should waitlist or lead data be stored, if the first version captures personal data?
-- Which language should the first landing page use: English, Polish, or both?
+- What final Polish and English marketing copy is approved for the landing page?
 - What brand assets, tone, logo, color direction, or imagery are already approved for Caniello?
 - Should analytics be included in the first version, and if so, which privacy and consent requirements apply?
 - What deployment target should be assumed after local Docker validation?

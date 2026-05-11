@@ -26,6 +26,7 @@ Provide the secure account, consent, and data-control foundation that lets beta 
 - Sign up, login, email verification, password reset, session management, and logout.
 - Account settings for basic profile, email, and preference management.
 - Cookie consent banner and preferences center for non-essential cookies.
+- Polish-first interface language with an English switch for the first MVP's core owner-facing and public flows.
 - Privacy policy, terms page, and medical disclaimer visibility.
 - Data export and account deletion paths.
 - Authorization baseline that keeps pet records private to the owner or authorized household access.
@@ -38,6 +39,7 @@ Provide the secure account, consent, and data-control foundation that lets beta 
 - Complex household roles beyond the minimum needed for private owner access and controlled sharing.
 - Legal request workflows and advanced data-retention tooling.
 - Final legal text approval.
+- Full multilingual content management, language-specific SEO strategy, and additional languages beyond Polish and English.
 
 ## Behavior
 
@@ -52,6 +54,8 @@ Visitors can understand Caniello's privacy and medical boundaries before creatin
 - Given an EU visitor has not consented to non-essential cookies, when the landing or app experience loads, then analytics and marketing cookies remain inactive.
 - Given a visitor or user changes cookie choices, when they save preferences, then Caniello applies the new consent state.
 - Given a user wants to understand Caniello's boundaries, when they open privacy, terms, or medical disclaimer content, then the relevant information is available.
+- Given a visitor or user opens a first-MVP Caniello surface, when no language preference exists, then Polish is shown by default.
+- Given a visitor or user switches to English, when they continue through supported first-MVP flows, then core interface labels, validation messages, policy links, and medical-safety notices are shown in English.
 - Given a user requests account deletion, when they complete the deletion flow, then Caniello records the request or deletion outcome and makes the next state clear.
 - Given a user requests their data, when they complete the export flow, then Caniello provides or initiates a data export path.
 - Given a sensitive account, consent, export, deletion, or sharing action occurs, when operational evidence is reviewed, then the action is present in the audit trail.

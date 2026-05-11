@@ -45,6 +45,9 @@ The page exists to support the current validation goal in `README.md`: test whet
 - Observation: The latest human direction prioritizes exact visual alignment with the English `caniello-better-care-landing.png` mockup over the earlier Polish-default language behavior.
   Evidence: Human feedback on 2026-05-10 stated that the UI should look 1:1 like `spec/design/visual-artifacts/caniello-better-care-landing.png`, which is an English mockup without a language switcher.
 
+- Observation: The human later clarified that Polish-first behavior with an English option is still required for the first MVP.
+  Evidence: Human feedback on 2026-05-11 stated that Polish should be the first MVP version with an option to change language to English. Treat English mockup matching as a layout reference, not final language scope.
+
 ## Decision Log
 
 - Decision: Use a minimal Vite React TypeScript application rather than a framework with routing, server rendering, or backend conventions.
@@ -62,6 +65,10 @@ The page exists to support the current validation goal in `README.md`: test whet
 - Decision: Supersede the Polish-default page for this mockup-matching revision and render the English `caniello-better-care-landing.png` layout directly.
   Rationale: The latest human instruction asked for 1:1 visual alignment with the English reference. Removing the language switcher and extra Polish/default behavior reduces visual drift from the mockup.
   Date/Author: 2026-05-10 / Codex
+
+- Decision: Restore Polish as the default first-MVP landing language with an English switch in the next landing-page revision.
+  Rationale: The human clarified that Polish-first language support remains part of the MVP. English mockups should guide layout and visual structure, while content must support Polish default plus English switching.
+  Date/Author: 2026-05-11 / Codex
 
 - Decision: Include local UI tests and build checks, but defer analytics and persistent waitlist storage.
   Rationale: Analytics and storage have privacy and vendor choices that are not yet approved. The first implementation should prove the landing-page experience and Docker workflow while keeping data handling conservative.
@@ -90,6 +97,8 @@ Design-alignment outcome recorded on 2026-05-09: the landing page was revised af
 Logo-alignment outcome recorded on 2026-05-09: the CSS-built logo was removed and replaced with `src/assets/caniello-dark-wordmark.png`, used in the page header and footer. Build, unit tests, lint, and Playwright E2E all passed after the replacement.
 
 Mockup-alignment outcome recorded on 2026-05-10: the landing page was revised to follow `spec/design/visual-artifacts/caniello-better-care-landing.png` directly. The visible page now uses the English mockup structure, removes the language switcher from the UI, uses a cropped waitlist-card pet image derived from the mockup, and keeps the non-persistent waitlist validation behavior. `npm run lint`, `npm run test`, `npm run build`, and Playwright E2E passed after the revision.
+
+Language-scope update recorded on 2026-05-11: the current visible landing page may still be English-only from the mockup-alignment revision, but the intended first-MVP behavior is Polish by default with an English switch. A follow-up implementation should restore bilingual behavior while preserving the approved visual layout.
 
 ## Context and Orientation
 
@@ -121,7 +130,7 @@ Create a minimal frontend toolchain at the repository root. Add `package.json`, 
 
 Use `src/` for the React application. Replace the current placeholder `src/README.md` only if necessary; otherwise leave it in place and add source files beside it. Create `src/main.tsx`, `src/App.tsx`, `src/index.css`, and component files under `src/components/` if the page becomes clearer with small components. Keep component names focused, for example `LandingPage`, `WaitlistForm`, and `FeatureList`.
 
-Use TailwindCSS for styling. The page should feel warm, trustworthy, and practical rather than like a generic software template. For the current mockup-matching revision, the first viewport must follow `spec/design/visual-artifacts/caniello-better-care-landing.png`: Caniello wordmark, English navigation, English hero value proposition, phone-and-dog hero visual, and the primary waitlist action. Subsequent content should match the mockup sections for features, how-it-works, the lower waitlist card, and footer. Do not include claims about diagnosis, treatment recommendations, clinic integrations, marketplace booking, payments, or official EU pet passport replacement.
+Use TailwindCSS for styling. The page should feel warm, trustworthy, and practical rather than like a generic software template. For the next MVP-ready revision, the first viewport must follow `spec/design/visual-artifacts/caniello-better-care-landing.png` for layout and visual composition: Caniello wordmark, navigation, hero value proposition, phone-and-dog hero visual, and the primary waitlist action. Polish must be the default language, and English must be available through a language switch. Subsequent content should match the mockup sections for features, how-it-works, the lower waitlist card, and footer. Do not include claims about diagnosis, treatment recommendations, clinic integrations, marketplace booking, payments, or official EU pet passport replacement.
 
 Implement the waitlist-interest form as client-side behavior. It should accept a syntactically valid email address, prevent empty or invalid submission, and show a clear thank-you state after submission. Since no storage target is approved, do not send the email to a backend or third-party service. Keep the entered email in component state only. Make the form accessible with a visible label or equivalent accessible name, helpful validation text, and keyboard-submittable behavior.
 
@@ -208,9 +217,9 @@ The implementation is acceptable when a human or fresh agent can run the page fr
 
 Run `npm run build` from `/Users/macg/Code/caniello` and expect the command to finish successfully with a production build in `dist/`. This proves the React and TailwindCSS app compiles.
 
-Run `npm run test` and expect tests to pass for rendering the English mockup promise, invalid waitlist email handling, and valid waitlist thank-you behavior. This proves the most important visible behavior is protected by executable tests.
+Run `npm run test` and expect tests to pass for rendering the Polish default promise, switching to English, invalid waitlist email handling, and valid waitlist thank-you behavior. This proves the most important visible behavior is protected by executable tests.
 
-Run the Docker workflow from `/Users/macg/Code/caniello` with `docker compose build` and `docker compose up`. Open `http://localhost:5173` and expect to see the English `caniello-better-care-landing.png` layout: Caniello wordmark, top navigation, hero promise, phone-and-dog visual, feature row, how-it-works section, waitlist card, and footer. Submit an invalid email and expect inline validation. Submit a valid email and expect a thank-you state. Resize or inspect the page at mobile and desktop widths and expect the primary message and action to remain readable and usable.
+Run the Docker workflow from `/Users/macg/Code/caniello` with `docker compose build` and `docker compose up`. Open `http://localhost:5173` and expect to see the `caniello-better-care-landing.png` layout with Polish text by default: Caniello wordmark, top navigation, hero promise, phone-and-dog visual, feature row, how-it-works section, waitlist card, and footer. Switch to English and expect equivalent English content. Submit an invalid email and expect inline validation. Submit a valid email and expect a thank-you state. Resize or inspect the page at mobile and desktop widths and expect the primary message and action to remain readable and usable.
 
 Check the copy manually against the accepted requirement. The page must not say or imply that Caniello provides AI symptom checking, medical diagnosis, treatment advice, clinic PIMS/EHR software, booking and payments, full marketplace mechanics, or official EU pet passport replacement.
 
@@ -307,5 +316,7 @@ Revision note: On 2026-05-09, the human explicitly authorized implementation and
 Revision note: On 2026-05-09, implementation completed for the first landing page milestone. Progress, discoveries, decisions, validation evidence, and outcomes were updated to reflect the actual Docker, npm, Vitest, and Playwright validation path.
 
 Revision note: On 2026-05-09, the human reported that the implementation did not match `spec/design/visual-artifacts/caniello-better-care-landing.png`. The plan was updated after revising the UI toward that visual baseline and re-running build, unit, lint, Docker, and Playwright validation.
+
+Revision note: On 2026-05-11, the human clarified that Polish should be the first MVP language with an English switch. The plan was updated to restore Polish-first language scope while preserving the English mockup as visual layout guidance.
 
 Revision note: On 2026-05-09, the human reported that the logo did not match `spec/design/visual-artifacts/caniello-dark-wordmark.png`. The plan was updated after replacing the CSS logo with the Caniello wordmark asset and re-running build, unit, lint, and Playwright validation.
