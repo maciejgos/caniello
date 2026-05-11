@@ -45,6 +45,7 @@ This ADR accepts the stack direction, not the full implementation architecture. 
 Follow-up ADRs should capture:
 
 - Platform topology and deployment boundaries for React, React Native, FastAPI, Vercel, environments, preview deployments, rollback, and backend hosting.
+- Localization structure for Polish-first MVP behavior with English switching across web and mobile. This is captured in [Polish-First MVP Localization](polish-first-mvp-localization.md).
 - Identity and access model for owner auth, admin auth, MFA, RBAC, privileged sessions, and audit behavior.
 - AI document intake pipeline for signed uploads, queue/worker execution, OCR/AI provider boundary, retry behavior, status tracking, and human review handoff.
 - Data ownership and GDPR lifecycle for raw uploads, extracted fields, confirmed records, audit logs, share artifacts, exports, deletion, retention, and backups.
@@ -56,6 +57,7 @@ Follow-up ADRs should capture:
 ## Related Artifacts
 
 - [Owner-Facing MVP Requirement](../requirements/owner-facing-mvp.md)
+- [Polish-First MVP Localization](polish-first-mvp-localization.md)
 - [Back Office MVP Requirement](../requirements/back-office-mvp.md)
 - [Owner Account and Privacy Foundation](../features/owner-account-privacy-foundation.md)
 - [Pet Onboarding and Owner Workspace](../features/pet-onboarding-and-workspace.md)
