@@ -8,13 +8,14 @@ This plan follows `spec/plans/PLANS.md`. Keep this file self-contained so a fres
 
 After this roadmap is approved and executed, Caniello will move from a validated landing page into a working MVP delivered in safe increments: Landing Page, Web MVP, Mobile MVP, and Back Office MVP. A pet owner should eventually be able to sign in, add a pet, upload or scan a document, review extracted information, see timeline and reminders, ask sourced questions, and share a care summary. A beta operator should eventually be able to monitor health, support users, and review AI extraction risks.
 
-This roadmap is story-by-story and feature-by-feature. It also includes platform work that the stories depend on: a FastAPI backend, local API and database containers, Supabase integration boundaries, database migrations, background document-processing jobs, and automated unit, integration, and Playwright end-to-end tests.
+This roadmap is story-by-story and feature-by-feature. It now treats the landing page as an active validation product slice, not merely a completed static page. The landing slice must explain Wave 1 owner value, capture segmented leads, integrate with MailerLite, and measure validation events behind explicit consent. The later product slices include platform work that the stories depend on: a FastAPI backend, local API and database containers, Supabase integration boundaries, database migrations, background document-processing jobs, and automated unit, integration, and Playwright end-to-end tests.
 
 ## Progress
 
 - [x] (2026-05-11) Read `spec/plans/PLANS.md`, the landing page plan, stack ADR, current Docker setup, package scripts, requirements, features, and stories.
 - [x] (2026-05-11) Created this Draft implementation roadmap for human review.
 - [x] (2026-05-11) Updated roadmap to include the human decision that Polish is the first MVP language with an English switch.
+- [x] (2026-05-12) Reviewed newly accepted landing-page segmented validation requirement, features, and stories; updated this roadmap so Milestone 0 includes consent, segmented lead capture, MailerLite upsert, and validation instrumentation.
 - [ ] Human review of roadmap scope, sequencing, and release slices.
 - [ ] Follow-up ADRs or solution designs for platform topology, auth/RBAC, AI document pipeline, data lifecycle, sharing/export, messaging, payments deferral, and observability.
 - [ ] Implementation authorization for the first roadmap slice.
@@ -29,6 +30,12 @@ This roadmap is story-by-story and feature-by-feature. It also includes platform
 
 - Observation: The current Docker Compose setup only runs the web app.
   Evidence: `docker-compose.yml` currently defines a single `web` service and no `api`, `db`, worker, or Supabase-local service.
+
+- Observation: Landing-page scope has expanded from a basic waitlist page into a segmented validation slice.
+  Evidence: `spec/requirements/landing-page-segmented-validation.md`, `spec/features/landing-page-mvp-value-experience.md`, `spec/features/landing-page-segmented-lead-capture.md`, `spec/features/landing-page-validation-instrumentation.md`, and eight accepted `spec/stories/landing-page-*.md` files now exist.
+
+- Observation: The landing stories deliberately resolve the consent ambiguity with a conservative first-public baseline.
+  Evidence: `spec/stories/landing-page-consent-and-analytics-policy-baseline.md` requires explicit lead-capture consent before sending lead data to MailerLite and blocks non-essential analytics until analytics consent is granted.
 
 ## Decision Log
 
@@ -48,9 +55,17 @@ This roadmap is story-by-story and feature-by-feature. It also includes platform
   Rationale: The human explicitly clarified that Polish-first language support with an English option is part of the MVP. This affects landing page, Web MVP, Mobile MVP, validation tests, and safety/legal copy.
   Date/Author: 2026-05-11 / Codex
 
+- Decision: Implement the accepted landing-page segmented validation stories before starting the product-app platform foundation.
+  Rationale: The public landing page is the current acquisition and validation surface. Its accepted stories now include consent, owner waitlist capture, provider and clinic research-interest capture, MailerLite upsert behavior, and validation event capture. Completing this slice produces immediate validation evidence while preserving the later Web MVP platform sequence.
+  Date/Author: 2026-05-12 / Codex
+
+- Decision: Use explicit landing-page source values across MailerLite and analytics.
+  Rationale: The accepted feature and story set standardizes `landing_page_hero`, `landing_page_mid_cta`, `landing_page_footer`, `landing_page_wave2`, and `landing_page_wave3`. Reusing these values prevents lead capture and validation reporting from drifting apart.
+  Date/Author: 2026-05-12 / Codex
+
 ## Outcomes & Retrospective
 
-No implementation outcome is recorded yet. This roadmap is Draft and awaits human review before implementation begins.
+No implementation outcome is recorded yet. This roadmap is Draft and awaits human review before implementation begins. The 2026-05-12 update aligned the roadmap with the newly accepted landing-page validation artifact chain but did not start source-code implementation.
 
 ## Context and Orientation
 
@@ -58,7 +73,7 @@ Caniello is a pet health and care organization utility. Its first MVP promise is
 
 The accepted stack decision is `spec/architecture-records/caniello-mvp-stack.md`: React for web, React Native for mobile, Python with FastAPI for backend, Vercel for deployment, Supabase for Postgres/Auth/Storage, Stripe for payments, and MailerLite for marketing and waitlist email.
 
-The main owner-facing requirement is `spec/requirements/owner-facing-mvp.md`. The back-office requirement is `spec/requirements/back-office-mvp.md`. The first landing page requirement is `spec/requirements/first-landing-page.md`.
+The main owner-facing requirement is `spec/requirements/owner-facing-mvp.md`. The back-office requirement is `spec/requirements/back-office-mvp.md`. The first landing page requirement is `spec/requirements/first-landing-page.md`. The refined landing-page validation requirement is `spec/requirements/landing-page-segmented-validation.md`; it adds owner waitlist capture, future-wave research-interest capture, MailerLite lead handling, privacy/consent behavior, and validation instrumentation.
 
 The roadmap uses these terms:
 
@@ -74,9 +89,15 @@ Database container means a local development Postgres-compatible service that le
 
 E2E tests are end-to-end browser or mobile-flow tests. For web, use Playwright because the project already has `npm run test:e2e`. For mobile, add a React Native E2E strategy only after the mobile scaffold exists and the team chooses the tool.
 
+MailerLite upsert means the landing page sends a lead to MailerLite in a way that creates the subscriber if the email is new and updates the existing subscriber if the email already exists. The update must add relevant groups and fields without removing previous groups for the same email.
+
+Lead-capture consent means the visitor explicitly agrees to submit their email and related metadata for waitlist or research-interest follow-up. For the first public landing-page baseline, Caniello must not send lead data to MailerLite unless this consent is present.
+
+Analytics consent means the visitor explicitly allows non-essential validation events. For the first public landing-page baseline, page views and form interaction events are not sent to an analytics system until this consent is granted.
+
 ## Roadmap Overview
 
-Milestone 0 is Landing Page and acquisition validation. This is mostly complete, but it must be revised back to Polish-first behavior with an English switch before being treated as first-MVP-ready. The remaining landing work should connect the waitlist to MailerLite only after privacy and consent behavior are explicit.
+Milestone 0 is Landing Page and acquisition validation. The original page implementation exists, but the accepted landing-page story set makes this milestone active again. The landing page must become a segmented validation surface: Polish-first with an English switch, clear Wave 1 owner value, research-safe Wave 2 and Wave 3 framing, explicit lead-capture and analytics consent, owner waitlist capture, provider and clinic/vet research-interest capture, MailerLite upsert behavior, and validation event or count capture.
 
 Milestone 1 is Architecture and platform design. Before coding the product app, create or approve follow-up ADRs for deployment topology, owner/admin identity, data lifecycle, AI document pipeline, sharing/export, messaging, observability, and payments deferral. This milestone prevents the API, database, auth, storage, and worker choices from being improvised during feature work.
 
@@ -98,25 +119,51 @@ Milestone 8 is hardening, validation, and release readiness. Add full E2E covera
 
 ### Milestone 0: Landing Page
 
-The landing page is the public acquisition surface and should remain narrow. It should continue to validate positioning, trust, and waitlist interest before the product app expands.
+The landing page is the public acquisition surface and should remain narrow, but it is no longer only a static positioning page. It must validate owner demand for Wave 1 while separately measuring research-stage interest from pet service providers and clinics or veterinarians. Wave 2 and Wave 3 must remain visibly framed as research so the page does not imply that marketplace or clinic collaboration products are available.
 
 Source artifacts:
 
 - `spec/requirements/first-landing-page.md`
+- `spec/requirements/landing-page-segmented-validation.md`
 - `spec/plans/first-landing-page.md`
+- `spec/features/landing-page-mvp-value-experience.md`
+- `spec/features/landing-page-segmented-lead-capture.md`
+- `spec/features/landing-page-validation-instrumentation.md`
 
 Implementation order:
 
-1. Keep the current landing page stable and covered by `npm run build`, `npm run test`, `npm run lint`, and `npm run test:e2e`.
-2. Restore or implement Polish as the default landing language with an English switch.
-3. Add E2E coverage proving Polish default and English switching.
-4. Add MailerLite waitlist integration only after privacy and cookie consent behavior is designed.
-5. Add landing conversion tracking only after non-essential analytics consent is implemented.
+1. Implement `spec/stories/landing-page-consent-and-analytics-policy-baseline.md` first. This story defines the public baseline: lead data is not sent to MailerLite without explicit lead-capture consent, and non-essential analytics events are not sent until analytics consent is granted.
+2. Implement `spec/stories/landing-page-hero-and-mvp-value.md` and preserve Polish-first behavior with an English switch from `spec/stories/polish-first-language-switching.md`. The hero and value sections must communicate health records, reminders, documents, and trusted sharing without official passport replacement or medical advice claims.
+3. Implement `spec/stories/landing-page-future-waves-research-framing.md`. This story owns Wave 2 and Wave 3 labels and copy, not form routing. It must keep future pet services and clinic collaboration framed as research or exploration.
+4. Implement `spec/stories/landing-page-footer-legal-and-responsive-trust.md`. The footer must include trust, legal, navigation, and final signup access, and the page must remain readable and usable on common mobile and desktop viewport sizes.
+5. Implement `spec/stories/landing-page-owner-waitlist-capture.md` for hero, mid-page, and footer owner waitlist submissions. The accepted source values are `landing_page_hero`, `landing_page_mid_cta`, and `landing_page_footer`.
+6. Implement `spec/stories/landing-page-provider-and-clinic-interest-capture.md` for Wave 2 and Wave 3 research-interest submissions. The accepted source values are `landing_page_wave2` and `landing_page_wave3`.
+7. Implement `spec/stories/landing-page-mailerlite-subscriber-upsert.md`. The server-side path must create or update MailerLite subscribers, add relevant groups or equivalent segmentation, preserve supported custom fields, and avoid exposing MailerLite secrets to client-side code.
+8. Implement `spec/stories/landing-page-validation-events-and-utm-capture.md`. Validation events or equivalent counts must be captured only after analytics consent, and UTM values must be preserved in lead metadata after lead consent and event metadata after analytics consent.
+
+Story order:
+
+1. `spec/stories/landing-page-consent-and-analytics-policy-baseline.md`
+2. `spec/stories/landing-page-hero-and-mvp-value.md`
+3. `spec/stories/landing-page-future-waves-research-framing.md`
+4. `spec/stories/landing-page-footer-legal-and-responsive-trust.md`
+5. `spec/stories/landing-page-owner-waitlist-capture.md`
+6. `spec/stories/landing-page-provider-and-clinic-interest-capture.md`
+7. `spec/stories/landing-page-mailerlite-subscriber-upsert.md`
+8. `spec/stories/landing-page-validation-events-and-utm-capture.md`
 
 Validation:
 
 - Run `npm run build`, `npm run test`, `npm run lint`, and `npm run test:e2e`.
 - Verify the landing page opens in Polish by default and can switch to English.
+- Verify owner waitlist submissions use `role=pet_owner`, `interest_wave=wave_1`, and the correct source value for hero, mid-page, or footer.
+- Verify Wave 2 provider interest submissions use `role=pet_service_provider`, `interest_wave=wave_2`, and `source=landing_page_wave2`.
+- Verify Wave 3 clinic/vet interest submissions use `role=clinic_vet`, `interest_wave=wave_3`, and `source=landing_page_wave3`.
+- Verify missing lead-capture consent blocks MailerLite submission and shows a clear consent message.
+- Verify repeated email submission updates the existing MailerLite subscriber and does not remove previous groups.
+- Verify non-essential analytics events are blocked before analytics consent and recorded after analytics consent.
+- Verify UTM values are preserved in lead metadata after lead consent and event metadata after analytics consent.
+- Verify Wave 2 and Wave 3 copy does not say `coming soon`, `launching next`, `available now`, or equivalent launch-commitment language.
 - Capture Playwright screenshots for desktop and mobile under `spec/validation/screenshots/`.
 
 ### Milestone 1: Architecture and Platform Readiness
@@ -391,7 +438,7 @@ Validation:
 
 Do not start product implementation until the human approves this roadmap or explicitly asks Codex to begin.
 
-The recommended next slice is Milestone 1 and Milestone 2 together, but without building owner features yet. That slice should create the missing design/ADR foundation and local platform skeleton.
+The recommended next slice is Milestone 0: Landing Page segmented validation. This slice should update the existing React/Vite landing page without starting authenticated product-app work. It should produce a public validation surface that can collect owner waitlist leads, provider research interest, clinic/vet research interest, and consent-gated validation evidence.
 
 From `/Users/macg/Code/caniello`, begin by checking the working tree:
 
@@ -399,7 +446,47 @@ From `/Users/macg/Code/caniello`, begin by checking the working tree:
 
 Create a feature branch before edits:
 
-    git checkout -b codex/mvp-platform-foundation
+    git checkout -b codex/landing-segmented-validation
+
+Inspect the accepted landing-page artifacts before editing source code:
+
+    sed -n '1,220p' spec/requirements/landing-page-segmented-validation.md
+    sed -n '1,220p' spec/features/landing-page-mvp-value-experience.md
+    sed -n '1,220p' spec/features/landing-page-segmented-lead-capture.md
+    sed -n '1,220p' spec/features/landing-page-validation-instrumentation.md
+    sed -n '1,220p' spec/stories/landing-page-consent-and-analytics-policy-baseline.md
+    sed -n '1,220p' spec/stories/landing-page-owner-waitlist-capture.md
+    sed -n '1,220p' spec/stories/landing-page-mailerlite-subscriber-upsert.md
+
+Implement the landing-page stories in this order:
+
+1. Consent and analytics policy baseline.
+2. Hero and MVP value experience.
+3. Future-wave research framing.
+4. Footer, legal, and responsive trust.
+5. Owner waitlist capture.
+6. Provider and clinic/vet interest capture.
+7. MailerLite subscriber upsert.
+8. Validation events and UTM capture.
+
+Use these shared source values exactly:
+
+    landing_page_hero
+    landing_page_mid_cta
+    landing_page_footer
+    landing_page_wave2
+    landing_page_wave3
+
+Add or update environment examples only for variables that the implementation really uses. For MailerLite, real secrets must stay out of Git. If the landing implementation needs a server-side endpoint, keep the MailerLite API key server-side and expose only safe public configuration to the browser.
+
+Run validation for the landing slice:
+
+    npm run build
+    npm run test
+    npm run lint
+    npm run test:e2e
+
+After Milestone 0 is validated, the next product-app slice is Milestone 1 and Milestone 2 together, but without building owner features yet. That slice should create the missing design/ADR foundation and local platform skeleton.
 
 Create or update ADRs under `spec/architecture-records/` for topology, auth, data lifecycle, AI pipeline, sharing/export, messaging, payments, and observability.
 
@@ -433,6 +520,17 @@ Add expected commands to README only after they work:
 ## Validation and Acceptance
 
 This roadmap is ready for implementation only when the human approves or revises the sequence and explicitly authorizes implementation.
+
+For Milestone 0, acceptance should prove the landing page is a consent-safe validation instrument:
+
+- A first-time visitor sees Caniello's Wave 1 owner-side promise, MVP value cards, simple process, research-safe future-wave framing, and a footer with legal/trust access.
+- Polish is the default landing language, and English switching works without changing the medical, privacy, or scope boundaries.
+- A pet owner can submit a valid waitlist email from hero, mid-page, and footer contexts only after required lead-capture consent, and each submission carries the correct role, wave, and source metadata.
+- A pet service provider can submit Wave 2 research interest with `role=pet_service_provider`, `interest_wave=wave_2`, and `source=landing_page_wave2`.
+- A clinic or veterinarian can submit Wave 3 research interest with `role=clinic_vet`, `interest_wave=wave_3`, and `source=landing_page_wave3`.
+- MailerLite creates new subscribers, updates repeated emails without duplicates, and does not remove existing groups when adding new landing-page interest.
+- Non-essential analytics events are not sent before analytics consent, and after analytics consent the team can count page views, waitlist successes, waitlist errors, Wave 2 interest, Wave 3 interest, and UTM context.
+- `npm run build`, `npm run test`, `npm run lint`, and `npm run test:e2e` pass.
 
 For Milestone 2, acceptance should be observable:
 
@@ -480,9 +578,13 @@ The E2E test suite should start with Playwright for web because it already exist
 Primary source artifacts:
 
 - `spec/requirements/first-landing-page.md`
+- `spec/requirements/landing-page-segmented-validation.md`
 - `spec/requirements/owner-facing-mvp.md`
 - `spec/requirements/back-office-mvp.md`
 - `spec/architecture-records/caniello-mvp-stack.md`
+- `spec/features/landing-page-mvp-value-experience.md`
+- `spec/features/landing-page-segmented-lead-capture.md`
+- `spec/features/landing-page-validation-instrumentation.md`
 - `spec/features/owner-account-privacy-foundation.md`
 - `spec/features/pet-onboarding-and-workspace.md`
 - `spec/features/ai-document-intake-and-review.md`
@@ -493,10 +595,21 @@ Primary source artifacts:
 - `spec/features/back-office-support-console.md`
 - `spec/features/back-office-ai-review-queue.md`
 - `spec/features/back-office-health-audit-and-ai-safety.md`
+- `spec/stories/landing-page-consent-and-analytics-policy-baseline.md`
+- `spec/stories/landing-page-hero-and-mvp-value.md`
+- `spec/stories/landing-page-future-waves-research-framing.md`
+- `spec/stories/landing-page-footer-legal-and-responsive-trust.md`
+- `spec/stories/landing-page-owner-waitlist-capture.md`
+- `spec/stories/landing-page-provider-and-clinic-interest-capture.md`
+- `spec/stories/landing-page-mailerlite-subscriber-upsert.md`
+- `spec/stories/landing-page-validation-events-and-utm-capture.md`
 - `spec/stories/`
+- `spec/notes/landing/`
 - `spec/notes/web/`
 - `spec/notes/back-office/`
 
 Change note: Created on 2026-05-11 to give Caniello a clear feature-by-feature and story-by-story implementation roadmap that includes the landing page, Web MVP, Mobile MVP, API/database containers, and E2E testing.
 
 Change note: Updated on 2026-05-11 to include Polish-first MVP language behavior with an English switch across landing page, Web MVP, and Mobile MVP.
+
+Change note: Updated on 2026-05-12 to align Milestone 0 and the next implementation slice with the accepted landing-page segmented validation requirement, accepted landing-page features, and accepted landing-page stories. The update adds the conservative consent baseline, MailerLite upsert expectations, shared landing source values, future-wave research framing, validation event and UTM capture, and a landing-first implementation sequence before platform foundation work.
