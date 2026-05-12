@@ -43,8 +43,8 @@ export function LargePawIcon() {
 export function FutureWaveIcon({ index }: { index: number }) {
   if (index === 0) {
     return (
-      <span className="flex h-14 w-14 items-center justify-center rounded-full bg-sage text-navy">
-        <svg className="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
+      <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[#f1f3ff] text-navy">
+        <svg className="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
           <path d="M4 10h16l-1.2-4H5.2L4 10Z" />
           <path d="M5 10v9h14v-9" />
           <path d="M9 19v-5h6v5" />
@@ -57,8 +57,8 @@ export function FutureWaveIcon({ index }: { index: number }) {
   }
 
   return (
-    <span className="flex h-14 w-14 items-center justify-center rounded-full bg-sage text-navy">
-      <svg className="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
+    <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[#f1f3ff] text-navy">
+      <svg className="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
         <path d="M4 20V9l8-5 8 5v11" />
         <path d="M9 20v-6h6v6" />
         <path d="M12 8v4" />

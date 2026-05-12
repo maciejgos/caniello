@@ -1,4 +1,4 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "./App";
 
@@ -62,41 +62,11 @@ describe("Caniello landing page", () => {
     expect(screen.getByText(/zapisaliśmy Twoje zainteresowanie/i)).toBeInTheDocument();
   });
 
-  it("submits Wave 2 and Wave 3 as research-stage interest with optional context", async () => {
-    const user = userEvent.setup();
+  it("links Wave 2 and Wave 3 to their research pages", () => {
     render(<App />);
 
-    await user.click(screen.getByRole("button", { name: /jestem usługodawcą/i }));
-    let dialog = within(screen.getByRole("dialog"));
-    await user.type(dialog.getByLabelText(/adres email/i), "provider@example.com");
-    await user.type(dialog.getByPlaceholderText(/nazwa firmy lub usługi/i), "Good Walks");
-    await user.click(dialog.getByRole("checkbox"));
-    await user.click(dialog.getByRole("button", { name: /jestem usługodawcą/i }));
-    await user.click(dialog.getByRole("button", { name: /close/i }));
-
-    await user.click(screen.getByRole("button", { name: /jestem kliniką lub wet/i }));
-    dialog = within(screen.getByRole("dialog"));
-    await user.type(dialog.getByLabelText(/adres email/i), "clinic@example.com");
-    await user.type(dialog.getByPlaceholderText(/nazwa kliniki/i), "Vet Clinic");
-    await user.click(dialog.getByRole("checkbox"));
-    await user.click(dialog.getByRole("button", { name: /jestem kliniką lub wet/i }));
-
-    await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
-    const leadCalls = (fetch as unknown as { mock: { calls: Array<[string, RequestInit]> } }).mock.calls;
-    expect(JSON.parse(String(leadCalls[0][1].body))).toMatchObject({
-      email: "provider@example.com",
-      role: "pet_service_provider",
-      interestWave: "wave_2",
-      source: "landing_page_wave2",
-      organization: "Good Walks"
-    });
-    expect(JSON.parse(String(leadCalls[1][1].body))).toMatchObject({
-      email: "clinic@example.com",
-      role: "clinic_vet",
-      interestWave: "wave_3",
-      source: "landing_page_wave3",
-      organization: "Vet Clinic"
-    });
+    expect(screen.getByRole("link", { name: /jestem usługodawcą/i })).toHaveAttribute("href", "/wave-2-exploration");
+    expect(screen.getByRole("link", { name: /jestem kliniką lub wet/i })).toHaveAttribute("href", "/wave-3-research");
   });
 
   it("records validation events only after analytics consent", async () => {
@@ -132,5 +102,51 @@ describe("Caniello landing page", () => {
 
     expect(screen.getByRole("heading", { name: "Granice medyczne" })).toBeInTheDocument();
     expect(screen.getByText(/Caniello nie diagnozuje/i)).toBeInTheDocument();
+  });
+
+  it("renders Wave 2 exploration page and submits provider interest", async () => {
+    const user = userEvent.setup();
+    window.history.pushState({}, "", "/wave-2-exploration");
+    render(<App />);
+
+    expect(screen.getByRole("heading", { name: /zaufane usługi dla pupili/i })).toBeInTheDocument();
+    expect(screen.getByText(/badanie w toku/i)).toBeInTheDocument();
+
+    await user.type(screen.getByLabelText(/adres email/i), "provider@example.com");
+    await user.click(screen.getByRole("checkbox"));
+    await user.click(screen.getByRole("button", { name: /dołącz do listy/i }));
+
+    await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
+    const calls = (fetch as unknown as { mock: { calls: Array<[string, RequestInit]> } }).mock.calls;
+    expect(JSON.parse(String(calls[0][1].body))).toMatchObject({
+      email: "provider@example.com",
+      role: "pet_service_provider",
+      interestWave: "wave_2",
+      source: "landing_page_wave2",
+      language: "pl"
+    });
+  });
+
+  it("renders Wave 3 research page and submits clinic interest", async () => {
+    const user = userEvent.setup();
+    window.history.pushState({}, "", "/wave-3-research");
+    render(<App />);
+
+    expect(screen.getByRole("heading", { name: /współpraca klinik/i })).toBeInTheDocument();
+    expect(screen.getByText(/Wave 3 to koncepcja badawcza/i)).toBeInTheDocument();
+
+    await user.type(screen.getByLabelText(/adres email/i), "clinic@example.com");
+    await user.click(screen.getByRole("checkbox"));
+    await user.click(screen.getByRole("button", { name: /dołącz jako klinika/i }));
+
+    await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
+    const calls = (fetch as unknown as { mock: { calls: Array<[string, RequestInit]> } }).mock.calls;
+    expect(JSON.parse(String(calls[0][1].body))).toMatchObject({
+      email: "clinic@example.com",
+      role: "clinic_vet",
+      interestWave: "wave_3",
+      source: "landing_page_wave3",
+      language: "pl"
+    });
   });
 });
