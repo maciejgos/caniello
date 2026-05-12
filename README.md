@@ -103,6 +103,22 @@ The first landing page is a Dockerized React, TypeScript, Vite, and TailwindCSS 
 - `docker compose up`: run the landing page in Docker on `http://localhost:5173`.
 - `docker compose down`: stop the Docker development container.
 
+## Landing Lead Capture Configuration
+
+Landing-page forms submit to the server-side `/api/landing-leads` boundary so MailerLite secrets are not exposed in browser code. Configure these environment variables in the deployment environment before live lead capture:
+
+- `MAILERLITE_API_KEY`
+- `MAILERLITE_GROUP_WAITLIST`
+- `MAILERLITE_GROUP_PET_OWNERS`
+- `MAILERLITE_GROUP_SERVICE_PROVIDERS`
+- `MAILERLITE_GROUP_CLINICS_VETS`
+- `MAILERLITE_GROUP_WAVE2`
+- `MAILERLITE_GROUP_WAVE3`
+
+Without `MAILERLITE_API_KEY`, the API returns a sanitized configuration error and does not send lead data.
+
+Landing-page analytics consent and validation events are posted to `/api/validation-events`. The endpoint is a deployment-safe boundary for a future analytics sink; browser storage only remembers whether the visitor has already granted or declined analytics consent.
+
 ## Development Model
 
 Caniello follows an AI-assisted, human-governed PDLC model:

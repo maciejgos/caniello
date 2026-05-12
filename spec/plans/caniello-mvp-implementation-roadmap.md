@@ -17,9 +17,19 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
 - [x] (2026-05-11) Updated roadmap to include the human decision that Polish is the first MVP language with an English switch.
 - [x] (2026-05-12) Reviewed newly accepted landing-page segmented validation requirement, features, and stories; updated this roadmap so Milestone 0 includes consent, segmented lead capture, MailerLite upsert, and validation instrumentation.
 - [x] (2026-05-12) Replanned Milestone 0 against the current React landing page, existing tests, saved validation screenshots, and landing concept mockups.
-- [ ] Human review of roadmap scope, sequencing, and release slices.
+- [x] (2026-05-12) Human approved beginning Milestone 0 implementation.
+- [x] (2026-05-12) Created branch `codex/caniello-mvp-milestone-0` for Milestone 0 implementation.
+- [x] (2026-05-12) Implemented the Milestone 0 landing page slice: Polish-first language switching, consent-gated segmented forms, future-wave research framing, footer/legal placeholders, server-side MailerLite upsert boundary, UTM capture, and consent-gated validation events.
+- [x] (2026-05-12) Updated unit and Playwright E2E coverage for Polish default, English switching, consent blocking, owner/provider/clinic payloads, source attribution, UTM preservation, validation events, and responsive screenshots.
+- [x] (2026-05-12) Ran validation gates for Milestone 0 implementation: `npm run test`, `npm run lint`, `npm run build`, and `npm run test:e2e` using Dockerized Node/Playwright runtimes.
+- [x] (2026-05-12) Added validation evidence in `spec/validation/landing-page-milestone-0-validation.md`.
+- [x] (2026-05-12) Revised the mid-page layout after human feedback that the implemented UI did not match the mockup: the process card, owner CTA, compact "What's next" cards, and final waitlist strip now follow the `image 1.png` composition more closely, with Wave 2/Wave 3 full forms opened from compact research CTAs.
+- [x] (2026-05-12) Adjusted the three mid-page cards to equal desktop height after human visual feedback, then reran lint, build, and Playwright E2E screenshot validation.
+- [x] (2026-05-12) Replaced the full-width analytics consent section with a small dismissing bottom popup and routed analytics consent and validation events through `/api/validation-events`.
+- [ ] Human review of Milestone 0 implementation scope, validation evidence, and whether to revise or proceed.
+- [ ] Human review of roadmap scope, sequencing, and release slices beyond Milestone 0.
 - [ ] Follow-up ADRs or solution designs for platform topology, auth/RBAC, AI document pipeline, data lifecycle, sharing/export, messaging, payments deferral, and observability.
-- [ ] Implementation authorization for the first roadmap slice.
+- [ ] Implementation authorization for Milestone 1 or further roadmap slices.
 
 ## Surprises & Discoveries
 
@@ -49,6 +59,15 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
 
 - Observation: The landing mockups provide three distinct visual references for Milestone 0.
   Evidence: `spec/notes/landing/image 1.png` shows the compact Wave 1 landing page with "What's next" cards, final waitlist strip, and footer signup; `spec/notes/landing/image 2.png` shows a Wave 2 exploration concept for provider research interest; `spec/notes/landing/image 3.png` shows a Wave 3 research concept for clinic/vet interest. `spec/design/caniello-visual-direction.md` recommends the "Better care. Stronger bond." direction as the baseline validation landing page.
+
+- Observation: The shell environment for Codex did not expose `npm` or `node` on the default `PATH`, but the Codex runtime node binary and Dockerized project runtimes were available.
+  Evidence: direct `npm run test` and `npm run lint` returned `command not found`; validation was completed through `docker compose run --rm web ...` and `docker run --rm ... mcr.microsoft.com/playwright:v1.59.1-noble ...`.
+
+- Observation: The project Docker image is based on Alpine, and Playwright browser installation inside that container downloaded an unsupported fallback build that did not expose the expected headless-shell path.
+  Evidence: `docker compose run --rm web npm run test:e2e` failed before app execution with `spawn /root/.cache/ms-playwright/chromium_headless_shell-1217/chrome-linux/headless_shell ENOENT`; the same E2E test passed in the official Playwright Noble image.
+
+- Observation: The first Milestone 0 implementation over-expanded the future-wave research section compared with the accepted mockup direction.
+  Evidence: Human feedback compared `spec/notes/landing/image 1.png` against the implemented UI and noted that the left reference and right implementation were not aligned. The revised UI moves Wave 2/Wave 3 capture behind compact card CTAs and restores the process, CTA, "What's next," and final waitlist strip as a cohesive mid-page composition.
 
 ## Decision Log
 
@@ -84,9 +103,19 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
   Rationale: The requirement says the images are references rather than final production assets. The current app already implements the `caniello-better-care-landing.png` baseline; the missing work is to add compact future-wave cards and research-interest capture without implying active Wave 2 or Wave 3 products.
   Date/Author: 2026-05-12 / Codex
 
+- Decision: Add a deployment-safe `api/landing-leads.ts` server boundary for MailerLite upserts rather than sending MailerLite requests from browser code.
+  Rationale: The accepted story requires that MailerLite secrets are never exposed to browser code. MailerLite's documented create/upsert subscriber endpoint supports non-destructive subscriber updates and group additions, so the boundary can preserve existing groups while adding Caniello segmentation.
+  Date/Author: 2026-05-12 / Codex
+
+- Decision: Implement validation events through a small server-side API boundary while keeping the final analytics sink undecided.
+  Rationale: The analytics provider remains undecided, but the landing page should not treat analytics consent as only local UI behavior. `/api/validation-events` accepts consent and validation event payloads without exposing vendor credentials; browser localStorage is used only to remember whether the visitor has already made an analytics choice.
+  Date/Author: 2026-05-12 / Codex
+
 ## Outcomes & Retrospective
 
-No implementation outcome is recorded yet. This roadmap is Draft and awaits human review before implementation begins. The 2026-05-12 update aligned the roadmap with the newly accepted landing-page validation artifact chain and then replanned Milestone 0 against the current UI and mockups, but did not start source-code implementation.
+Milestone 0 implementation is ready for human review but is not accepted or released. The landing page now defaults to Polish, preserves an English switch, renders Wave 1 value, captures owner/provider/clinic interest through consent-gated forms, preserves source and UTM metadata, routes lead submissions through a server-side MailerLite boundary, records validation events through `/api/validation-events` only after analytics consent, and includes updated responsive Playwright screenshots under `spec/validation/screenshots/`. After human visual feedback, the mid-page process, CTA, future-wave cards, and final signup strip were revised to align more closely with the compact `image 1.png` mockup.
+
+Validation passed for `npm run test`, `npm run lint`, `npm run build`, and `npm run test:e2e`. The E2E check required the official Playwright container image because the Alpine app container could not launch the downloaded Playwright fallback browser. Live MailerLite verification remains blocked until `MAILERLITE_API_KEY` and MailerLite group environment variables are configured in the deployment environment.
 
 ## Context and Orientation
 

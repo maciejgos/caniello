@@ -10,5 +10,5 @@
     "strict": true,
     "noEmit": true
   },
-  "include": ["vite.config.ts", "tailwind.config.ts", "postcss.config.js", "playwright.config.ts"]
+  "include": ["vite.config.ts", "tailwind.config.ts", "postcss.config.js", "playwright.config.ts", "api/**/*.ts"]
 }
