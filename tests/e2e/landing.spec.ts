@@ -25,6 +25,14 @@ test("landing page is Polish-first, switchable, and captures segmented leads wit
 
   await expect(page.getByRole("heading", { name: /Lepsza opieka\. Silniejsza więź/i })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Co dalej" })).toBeVisible();
+  await page.getByRole("link", { name: "Jestem usługodawcą" }).click();
+  await expect(page.getByRole("heading", { name: /Zaufane usługi dla pupili/i })).toBeVisible();
+  await page.goBack();
+  await expect(page.getByRole("heading", { name: "Co dalej" })).toBeVisible();
+  await page.getByRole("link", { name: "Jestem kliniką lub wet." }).click();
+  await expect(page.getByRole("heading", { name: /Współpraca klinik/i })).toBeVisible();
+  await page.goBack();
+  await expect(page.getByRole("heading", { name: "Co dalej" })).toBeVisible();
 
   await page.screenshot({
     path: testInfo.outputPath(`landing-polish-${testInfo.project.name}.png`),
@@ -43,24 +51,6 @@ test("landing page is Polish-first, switchable, and captures segmented leads wit
   await page.getByRole("button", { name: /^Join$/i }).first().click();
   await expect(page.getByText(/first Caniello version has been noted/i)).toBeVisible();
 
-  await page.getByRole("button", { name: "I'm a pet service provider" }).click();
-  let dialog = page.getByRole("dialog");
-  await dialog.getByLabel(/Email address/i).fill("provider@example.com");
-  await dialog.getByPlaceholder(/Business or service name/i).fill("Good Walks");
-  await dialog.getByRole("checkbox").check();
-  await dialog.getByRole("button", { name: "I'm a pet service provider" }).click();
-  await expect(page.getByText(/Wave 2 research interest has been noted/i)).toBeVisible();
-  await dialog.getByRole("button", { name: "Close" }).click();
-
-  await page.getByRole("button", { name: "I'm a clinic or vet" }).click();
-  dialog = page.getByRole("dialog");
-  await dialog.getByLabel(/Email address/i).fill("clinic@example.com");
-  await dialog.getByPlaceholder(/Clinic or organization name/i).fill("Vet Clinic");
-  await dialog.getByRole("checkbox").check();
-  await dialog.getByRole("button", { name: "I'm a clinic or vet" }).click();
-  await expect(page.getByText(/Wave 3 research interest has been noted/i)).toBeVisible();
-  await dialog.getByRole("button", { name: "Close" }).click();
-
   expect(submissions).toEqual(
     expect.arrayContaining([
       expect.objectContaining({
@@ -69,18 +59,6 @@ test("landing page is Polish-first, switchable, and captures segmented leads wit
         interestWave: "wave_1",
         source: "landing_page_hero",
         utm: expect.objectContaining({ utm_source: "e2e", utm_campaign: "milestone0" })
-      }),
-      expect.objectContaining({
-        email: "provider@example.com",
-        role: "pet_service_provider",
-        interestWave: "wave_2",
-        source: "landing_page_wave2"
-      }),
-      expect.objectContaining({
-        email: "clinic@example.com",
-        role: "clinic_vet",
-        interestWave: "wave_3",
-        source: "landing_page_wave3"
       })
     ])
   );
@@ -98,4 +76,94 @@ test("landing page is Polish-first, switchable, and captures segmented leads wit
     path: testInfo.outputPath(`landing-segmented-success-${testInfo.project.name}.png`),
     fullPage: true
   });
+});
+
+test("Wave 2 exploration page presents provider research and captures interest", async ({ page }, testInfo) => {
+  const submissions: unknown[] = [];
+
+  await page.route("**/api/landing-leads", async (route) => {
+    submissions.push(route.request().postDataJSON());
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ ok: true })
+    });
+  });
+  await page.route("**/api/validation-events", async (route) => {
+    await route.fulfill({
+      status: 202,
+      contentType: "application/json",
+      body: JSON.stringify({ ok: true })
+    });
+  });
+
+  await page.goto("/wave-2-exploration?utm_source=e2e&utm_campaign=wave2");
+
+  await expect(page.getByRole("heading", { name: /Zaufane usługi dla pupili/i })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Badanie w toku" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Pomóż ukształtować przyszłość opieki/i })).toBeVisible();
+
+  await page.screenshot({
+    path: testInfo.outputPath(`wave2-exploration-${testInfo.project.name}.png`),
+    fullPage: true
+  });
+
+  await page.getByLabel(/Adres email/i).fill("provider@example.com");
+  await page.getByRole("checkbox").check();
+  await page.getByRole("button", { name: /Dołącz do listy/i }).click();
+
+  await expect(page.getByText(/Zapisaliśmy zainteresowanie badaniem Wave 2/i)).toBeVisible();
+  expect(submissions).toEqual([
+    expect.objectContaining({
+      email: "provider@example.com",
+      role: "pet_service_provider",
+      interestWave: "wave_2",
+      source: "landing_page_wave2"
+    })
+  ]);
+});
+
+test("Wave 3 research page presents clinic collaboration and captures interest", async ({ page }, testInfo) => {
+  const submissions: unknown[] = [];
+
+  await page.route("**/api/landing-leads", async (route) => {
+    submissions.push(route.request().postDataJSON());
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ ok: true })
+    });
+  });
+  await page.route("**/api/validation-events", async (route) => {
+    await route.fulfill({
+      status: 202,
+      contentType: "application/json",
+      body: JSON.stringify({ ok: true })
+    });
+  });
+
+  await page.goto("/wave-3-research?utm_source=e2e&utm_campaign=wave3");
+
+  await expect(page.getByRole("heading", { name: /Współpraca klinik/i })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Wave 3 to koncepcja badawcza/i })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Bądź na bieżąco z Wave 3/i })).toBeVisible();
+
+  await page.screenshot({
+    path: testInfo.outputPath(`wave3-research-${testInfo.project.name}.png`),
+    fullPage: true
+  });
+
+  await page.getByLabel(/Adres email/i).fill("clinic@example.com");
+  await page.getByRole("checkbox").check();
+  await page.getByRole("button", { name: /Dołącz jako klinika/i }).click();
+
+  await expect(page.getByText(/Zapisaliśmy zainteresowanie badaniem Wave 3/i)).toBeVisible();
+  expect(submissions).toEqual([
+    expect.objectContaining({
+      email: "clinic@example.com",
+      role: "clinic_vet",
+      interestWave: "wave_3",
+      source: "landing_page_wave3"
+    })
+  ]);
 });

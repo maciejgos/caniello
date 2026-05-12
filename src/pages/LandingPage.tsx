@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import heroArt from "../assets/caniello-bruno-app-hero.png";
 import waitlistPets from "../assets/puppys_transparent.png";
 import { AnalyticsConsentPopup } from "../components/AnalyticsConsentPopup";
-import { ResearchDialog } from "../components/ResearchDialog";
 import { WaitlistForm } from "../components/WaitlistForm";
 import type { Language } from "../content";
 import { copy } from "../content";
@@ -18,7 +17,6 @@ export function LandingPage({ language }: LandingPageProps) {
   const [analyticsChoice, setAnalyticsChoice] = useState<"granted" | "declined" | null>(() =>
     typeof window !== "undefined" ? readAnalyticsPreference() : null
   );
-  const [activeResearchWave, setActiveResearchWave] = useState<0 | 1 | null>(null);
   const text = copy[language];
 
   useEffect(() => {
@@ -107,7 +105,7 @@ export function LandingPage({ language }: LandingPageProps) {
 
       <section className="bg-white px-5 pb-0 pt-10 sm:px-8 lg:px-12 xl:px-16" id="how-it-works">
         <div className="mx-auto w-full max-w-[1664px]">
-          <div className="grid items-stretch gap-4 xl:grid-cols-[0.9fr_1.95fr_1.75fr]">
+          <div className="grid items-stretch gap-4 xl:grid-cols-[0.9fr_2.15fr]">
             <section className="flex h-full flex-col rounded-lg border border-navy/10 bg-white p-5 shadow-sm sm:p-6" aria-labelledby="how-title">
               <h2 className="font-serif text-3xl font-bold leading-tight text-navy" id="how-title">
                 {text.howTitle}
@@ -145,7 +143,7 @@ export function LandingPage({ language }: LandingPageProps) {
                     />
                   </div>
                 </div>
-                <div className="pointer-events-none absolute bottom-5 right-0 h-[150px] w-[230px] overflow-hidden sm:bottom-6 sm:h-[205px] sm:w-[320px] lg:h-[235px] lg:w-[385px]">
+                <div className="pointer-events-none absolute bottom-4 right-0 h-[210px] w-[330px] overflow-hidden sm:bottom-5 sm:h-[275px] sm:w-[430px] lg:h-[330px] lg:w-[520px] xl:h-[360px] xl:w-[570px]">
                   <img className="h-full w-full object-contain object-bottom" src={waitlistPets} alt="" aria-hidden="true" />
                 </div>
               </div>
@@ -163,39 +161,48 @@ export function LandingPage({ language }: LandingPageProps) {
               </div>
             </aside>
 
-            <section className="flex h-full flex-col rounded-lg border border-navy/10 bg-white p-5 shadow-sm sm:p-6" id="future-waves" aria-labelledby="future-waves-title">
-              <h2 className="font-serif text-3xl font-bold leading-tight text-navy" id="future-waves-title">
-                {text.futureTitle}
-              </h2>
-              <p className="mt-3 text-sm font-semibold leading-6 text-navy">{text.futureBody}</p>
+          </div>
 
-              <div className="mt-5 grid flex-1 gap-4 sm:grid-cols-2 xl:grid-cols-2">
-                {text.futureWaves.map((wave, index) => (
-                  <article className="flex h-full flex-col rounded-lg border border-navy/10 bg-white p-4 shadow-sm" key={wave.wave}>
-                    <span className="inline-flex rounded-md bg-cream px-2.5 py-1 text-xs font-bold text-gold">{wave.wave}</span>
-                    <div className="mt-4 grid grid-cols-[1fr_54px] gap-3">
-                      <div>
-                        <h3 className="text-base font-bold leading-tight text-navy">{wave.title}</h3>
-                        <p className="mt-2 text-xs leading-[1.55] text-navy">{wave.body}</p>
-                      </div>
-                      <FutureWaveIcon index={index} />
+          <section className="mt-4 rounded-[24px] border border-navy/10 bg-white p-6 shadow-sm sm:p-8 lg:p-10" id="future-waves" aria-labelledby="future-waves-title">
+            <h2 className="font-serif text-4xl font-bold leading-tight text-navy sm:text-5xl lg:text-6xl" id="future-waves-title">
+              {text.futureTitle}
+            </h2>
+            <p className="mt-4 max-w-[900px] text-lg font-semibold leading-8 text-navy sm:text-xl">{text.futureBody}</p>
+
+            <div className="mt-8 grid gap-6 lg:grid-cols-2 lg:px-8 xl:px-12">
+              {text.futureWaves.map((wave, index) => (
+                <article className="flex min-h-[310px] flex-col rounded-[24px] border border-navy/10 bg-white p-6 shadow-sm sm:p-7 lg:min-h-[340px]" key={wave.wave}>
+                  <span className="inline-flex w-max rounded-lg bg-cream px-4 py-2 text-xl font-bold text-gold">{wave.wave}</span>
+                  <div className="mt-7 grid flex-1 grid-cols-[minmax(0,1fr)_82px] gap-6">
+                    <div className="min-w-0">
+                      <h3 className="text-2xl font-bold leading-tight text-navy sm:text-3xl">{wave.title}</h3>
+                      <p className="mt-5 max-w-[420px] text-lg font-semibold leading-8 text-navy">{wave.body}</p>
                     </div>
-                    <button
-                      className="mt-auto h-9 w-full rounded-md border border-navy/10 bg-white px-3 text-xs font-bold text-navy shadow-sm transition hover:border-gold hover:text-gold focus:outline-none focus:ring-4 focus:ring-gold/20"
-                      type="button"
-                      onClick={() => setActiveResearchWave(index as 0 | 1)}
+                    <FutureWaveIcon index={index} />
+                  </div>
+                  {index === 0 ? (
+                    <a
+                      className="mt-8 inline-flex h-12 w-full items-center justify-center rounded-lg border border-navy/10 bg-white px-5 text-lg font-bold text-navy shadow-sm transition hover:border-gold hover:text-gold focus:outline-none focus:ring-4 focus:ring-gold/20"
+                      href="/wave-2-exploration"
                     >
                       {wave.cta}
-                    </button>
-                  </article>
-                ))}
-              </div>
-              <p className="mt-4 flex shrink-0 items-center gap-2 text-xs font-semibold leading-5 text-navy/68">
-                <LockIcon />
-                {text.futureResearchNote}
-              </p>
-            </section>
-          </div>
+                    </a>
+                  ) : (
+                    <a
+                      className="mt-8 inline-flex h-12 w-full items-center justify-center rounded-lg border border-navy/10 bg-white px-5 text-lg font-bold text-navy shadow-sm transition hover:border-gold hover:text-gold focus:outline-none focus:ring-4 focus:ring-gold/20"
+                      href="/wave-3-research"
+                    >
+                      {wave.cta}
+                    </a>
+                  )}
+                </article>
+              ))}
+            </div>
+            <p className="mt-8 flex shrink-0 items-center justify-center gap-4 text-lg font-semibold leading-7 text-navy">
+              <LockIcon />
+              {text.futureResearchNote}
+            </p>
+          </section>
 
           <section className="mt-4 overflow-hidden rounded-lg bg-cream px-5 py-5 sm:px-8" aria-labelledby="footer-signup-title">
             <div className="grid gap-5 md:grid-cols-[0.16fr_0.52fr_0.32fr] md:items-center">
@@ -225,10 +232,6 @@ export function LandingPage({ language }: LandingPageProps) {
           </div>
         </div>
       </section>
-
-      {activeResearchWave !== null ? (
-        <ResearchDialog language={language} waveIndex={activeResearchWave} onClose={() => setActiveResearchWave(null)} />
-      ) : null}
 
       {analyticsChoice === null ? <AnalyticsConsentPopup text={text} onSelect={(granted) => void handleAnalyticsConsent(granted)} /> : null}
     </>
