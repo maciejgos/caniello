@@ -16,6 +16,7 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
 - [x] (2026-05-11) Created this Draft implementation roadmap for human review.
 - [x] (2026-05-11) Updated roadmap to include the human decision that Polish is the first MVP language with an English switch.
 - [x] (2026-05-12) Reviewed newly accepted landing-page segmented validation requirement, features, and stories; updated this roadmap so Milestone 0 includes consent, segmented lead capture, MailerLite upsert, and validation instrumentation.
+- [x] (2026-05-12) Replanned Milestone 0 against the current React landing page, existing tests, saved validation screenshots, and landing concept mockups.
 - [ ] Human review of roadmap scope, sequencing, and release slices.
 - [ ] Follow-up ADRs or solution designs for platform topology, auth/RBAC, AI document pipeline, data lifecycle, sharing/export, messaging, payments deferral, and observability.
 - [ ] Implementation authorization for the first roadmap slice.
@@ -36,6 +37,18 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
 
 - Observation: The landing stories deliberately resolve the consent ambiguity with a conservative first-public baseline.
   Evidence: `spec/stories/landing-page-consent-and-analytics-policy-baseline.md` requires explicit lead-capture consent before sending lead data to MailerLite and blocks non-essential analytics until analytics consent is granted.
+
+- Observation: The current landing UI is visually close to the Wave 1 "Better care. Stronger bond." mockup, but it is not yet the segmented validation surface described by the accepted stories.
+  Evidence: `src/App.tsx` hard-codes `copy.en`, renders hero, feature cards, process, mid-page CTA, and footer, but does not render the imported `LanguageToggle`, Wave 2/Wave 3 research cards, footer waitlist form, explicit lead-capture consent controls, analytics consent controls, or legal placeholder pages.
+
+- Observation: The current waitlist form is a local-only prototype.
+  Evidence: `src/components/WaitlistForm.tsx` validates email and shows local success text; `src/content.ts` says "the form confirms locally and does not send data to a server." No server-side MailerLite submission path exists in the current file list.
+
+- Observation: Current tests protect the old English-only local confirmation behavior.
+  Evidence: `src/App.test.tsx` expects the page to render English by default and `tests/e2e/landing.spec.ts` captures `landing-english-*` screenshots and expects a local thank-you message after email entry.
+
+- Observation: The landing mockups provide three distinct visual references for Milestone 0.
+  Evidence: `spec/notes/landing/image 1.png` shows the compact Wave 1 landing page with "What's next" cards, final waitlist strip, and footer signup; `spec/notes/landing/image 2.png` shows a Wave 2 exploration concept for provider research interest; `spec/notes/landing/image 3.png` shows a Wave 3 research concept for clinic/vet interest. `spec/design/caniello-visual-direction.md` recommends the "Better care. Stronger bond." direction as the baseline validation landing page.
 
 ## Decision Log
 
@@ -63,9 +76,17 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
   Rationale: The accepted feature and story set standardizes `landing_page_hero`, `landing_page_mid_cta`, `landing_page_footer`, `landing_page_wave2`, and `landing_page_wave3`. Reusing these values prevents lead capture and validation reporting from drifting apart.
   Date/Author: 2026-05-12 / Codex
 
+- Decision: Keep Milestone 0 as an iteration on the existing React/Vite landing page rather than a new page or product-app scaffold.
+  Rationale: The current UI already uses the approved Caniello brand assets and matches the Wave 1 visual direction closely enough to evolve. The accepted stories require consent, segmentation, MailerLite, analytics, Polish-first behavior, and Wave 2/Wave 3 framing; rebuilding the page would add risk without improving validation.
+  Date/Author: 2026-05-12 / Codex
+
+- Decision: Treat the three landing mockups as design direction with `image 1.png` as the primary composition target and `image 2.png`/`image 3.png` as research-stage content references.
+  Rationale: The requirement says the images are references rather than final production assets. The current app already implements the `caniello-better-care-landing.png` baseline; the missing work is to add compact future-wave cards and research-interest capture without implying active Wave 2 or Wave 3 products.
+  Date/Author: 2026-05-12 / Codex
+
 ## Outcomes & Retrospective
 
-No implementation outcome is recorded yet. This roadmap is Draft and awaits human review before implementation begins. The 2026-05-12 update aligned the roadmap with the newly accepted landing-page validation artifact chain but did not start source-code implementation.
+No implementation outcome is recorded yet. This roadmap is Draft and awaits human review before implementation begins. The 2026-05-12 update aligned the roadmap with the newly accepted landing-page validation artifact chain and then replanned Milestone 0 against the current UI and mockups, but did not start source-code implementation.
 
 ## Context and Orientation
 
@@ -97,7 +118,7 @@ Analytics consent means the visitor explicitly allows non-essential validation e
 
 ## Roadmap Overview
 
-Milestone 0 is Landing Page and acquisition validation. The original page implementation exists, but the accepted landing-page story set makes this milestone active again. The landing page must become a segmented validation surface: Polish-first with an English switch, clear Wave 1 owner value, research-safe Wave 2 and Wave 3 framing, explicit lead-capture and analytics consent, owner waitlist capture, provider and clinic/vet research-interest capture, MailerLite upsert behavior, and validation event or count capture.
+Milestone 0 is Landing Page and acquisition validation. The original page implementation exists in `src/App.tsx`, `src/content.ts`, `src/components/WaitlistForm.tsx`, `src/components/LanguageToggle.tsx`, `src/index.css`, and the landing tests. The accepted landing-page story set makes this milestone active again. The landing page must become a segmented validation surface: Polish-first with an English switch, clear Wave 1 owner value, research-safe Wave 2 and Wave 3 framing, explicit lead-capture and analytics consent, owner waitlist capture, provider and clinic/vet research-interest capture, MailerLite upsert behavior, and validation event or count capture.
 
 Milestone 1 is Architecture and platform design. Before coding the product app, create or approve follow-up ADRs for deployment topology, owner/admin identity, data lifecycle, AI document pipeline, sharing/export, messaging, observability, and payments deferral. This milestone prevents the API, database, auth, storage, and worker choices from being improvised during feature work.
 
@@ -129,33 +150,59 @@ Source artifacts:
 - `spec/features/landing-page-mvp-value-experience.md`
 - `spec/features/landing-page-segmented-lead-capture.md`
 - `spec/features/landing-page-validation-instrumentation.md`
+- `spec/design/caniello-visual-direction.md`
+- `spec/notes/landing/backlog.md`
+- `spec/notes/landing/image 1.png`
+- `spec/notes/landing/image 2.png`
+- `spec/notes/landing/image 3.png`
+
+Current implementation context:
+
+The current app is a single-page React/Vite landing page. `src/App.tsx` imports `caniello-bruno-app-hero.png`, `caniello-dark-wordmark.png`, and `puppys_transparent.png`; renders a header, hero, four feature blocks, "How Caniello works," a mid-page waitlist CTA, and footer; and hard-codes `const text = copy.en`. `src/content.ts` already contains both Polish and English copy, but the page does not currently use the Polish copy or `src/components/LanguageToggle.tsx`. `src/components/WaitlistForm.tsx` validates email locally and never sends data to a server. `src/App.test.tsx` and `tests/e2e/landing.spec.ts` currently validate the English-only local-confirmation page, so they must be updated as Milestone 0 behavior changes.
+
+The visual target for this milestone is not a complete redesign. Preserve the current brand, wordmark, pet/app hero image, serif headline style, navy/gold/cream palette, and compact layout direction from `spec/design/visual-artifacts/caniello-better-care-landing.png`. Use `spec/notes/landing/image 1.png` as the primary composition reference for adding a compact "What's next" section, a final waitlist strip, and footer signup access. Use `spec/notes/landing/image 2.png` and `spec/notes/landing/image 3.png` only as references for research-stage Wave 2 and Wave 3 language and optional context fields; do not add separate marketplace or clinic product pages unless a later human decision approves them.
 
 Implementation order:
 
-1. Implement `spec/stories/landing-page-consent-and-analytics-policy-baseline.md` first. This story defines the public baseline: lead data is not sent to MailerLite without explicit lead-capture consent, and non-essential analytics events are not sent until analytics consent is granted.
-2. Implement `spec/stories/landing-page-hero-and-mvp-value.md` and preserve Polish-first behavior with an English switch from `spec/stories/polish-first-language-switching.md`. The hero and value sections must communicate health records, reminders, documents, and trusted sharing without official passport replacement or medical advice claims.
-3. Implement `spec/stories/landing-page-future-waves-research-framing.md`. This story owns Wave 2 and Wave 3 labels and copy, not form routing. It must keep future pet services and clinic collaboration framed as research or exploration.
-4. Implement `spec/stories/landing-page-footer-legal-and-responsive-trust.md`. The footer must include trust, legal, navigation, and final signup access, and the page must remain readable and usable on common mobile and desktop viewport sizes.
-5. Implement `spec/stories/landing-page-owner-waitlist-capture.md` for hero, mid-page, and footer owner waitlist submissions. The accepted source values are `landing_page_hero`, `landing_page_mid_cta`, and `landing_page_footer`.
-6. Implement `spec/stories/landing-page-provider-and-clinic-interest-capture.md` for Wave 2 and Wave 3 research-interest submissions. The accepted source values are `landing_page_wave2` and `landing_page_wave3`.
-7. Implement `spec/stories/landing-page-mailerlite-subscriber-upsert.md`. The server-side path must create or update MailerLite subscribers, add relevant groups or equivalent segmentation, preserve supported custom fields, and avoid exposing MailerLite secrets to client-side code.
-8. Implement `spec/stories/landing-page-validation-events-and-utm-capture.md`. Validation events or equivalent counts must be captured only after analytics consent, and UTM values must be preserved in lead metadata after lead consent and event metadata after analytics consent.
+1. First make the current page language-ready without changing the visual direction. Replace the hard-coded `copy.en` use in `src/App.tsx` with state-backed language selection, render the existing `LanguageToggle`, default to Polish, and allow English switching. Keep the hero and feature layout close to the current page and `image 1.png`. Update unit and E2E tests so they no longer expect English by default.
+2. Implement `spec/stories/landing-page-consent-and-analytics-policy-baseline.md`. Add reusable lead-capture consent controls near every landing lead form, visible Privacy Policy links, and analytics consent state before any non-essential event collection. Placeholder legal pages or clearly marked placeholder routes may be used only if the human approves them for launch context; otherwise the implementation must keep legal links visible and identify them as placeholders in validation notes.
+3. Implement `spec/stories/landing-page-hero-and-mvp-value.md`. Keep the current hero image and product mockup, then tighten copy so the first viewport communicates records, reminders, documents, and owner-controlled sharing in Polish by default and English by switch. Preserve scope-safe language: no official passport replacement, no AI diagnosis, no treatment advice, no active marketplace, no active clinic SaaS.
+4. Implement `spec/stories/landing-page-future-waves-research-framing.md`. Add a compact "What's next" section modeled primarily on `spec/notes/landing/image 1.png`. The section must include Wave 2 "Trusted pet services" and Wave 3 "Clinic collaboration" cards or equivalent blocks, both labeled research or exploration, both saying future waves depend on validated demand, and both avoiding `coming soon`, `launching next`, `available now`, or equivalent language.
+5. Implement `spec/stories/landing-page-footer-legal-and-responsive-trust.md`. Add the final waitlist strip and footer signup access shown in `image 1.png` or an equivalent responsive treatment. Footer links should include product, company, resources, Privacy Policy, and Terms of Service access or approved placeholders. Verify the current mid-page pet image does not cover form text on mobile or desktop after layout changes.
+6. Implement `spec/stories/landing-page-owner-waitlist-capture.md`. Generalize `WaitlistForm` so hero, mid-page, and footer owner forms submit typed payloads with `role=pet_owner`, `interest_wave=wave_1`, and one of `source=landing_page_hero`, `source=landing_page_mid_cta`, or `source=landing_page_footer`. Invalid email, missing consent, pending, success, and error states must be visible and keyboard-accessible.
+7. Implement `spec/stories/landing-page-provider-and-clinic-interest-capture.md`. Add Wave 2 and Wave 3 research-interest capture paths from the "What's next" cards. A modal, inline expanded form, or compact embedded form is acceptable if it stays responsive and research-labeled. Wave 2 submissions must use `role=pet_service_provider`, `interest_wave=wave_2`, and `source=landing_page_wave2`; Wave 3 submissions must use `role=clinic_vet`, `interest_wave=wave_3`, and `source=landing_page_wave3`. Preserve optional business or clinic fields only where the UI actually collects them.
+8. Implement `spec/stories/landing-page-mailerlite-subscriber-upsert.md`. Add a server-side or deployment-safe API boundary so MailerLite secrets are never exposed to browser code. The boundary must create or update subscribers, add relevant groups or equivalent segmentation without removing previous groups, store supported custom fields and UTM fields, and return sanitized success or error responses. If Vite-only static hosting cannot support this safely by itself, add a small serverless function or document the required hosting boundary before implementation.
+9. Implement `spec/stories/landing-page-validation-events-and-utm-capture.md`. Add a lightweight validation event path only after analytics consent. The accepted reporting path may be a selected analytics provider, a backend endpoint, MailerLite exports, or equivalent count storage, but it must support page views, waitlist submissions, waitlist successes, waitlist errors, Wave 2 interest, Wave 3 interest, source attribution, UTM preservation, and conversion calculation as `waitlist_success / page_view`.
 
 Story order:
 
-1. `spec/stories/landing-page-consent-and-analytics-policy-baseline.md`
-2. `spec/stories/landing-page-hero-and-mvp-value.md`
-3. `spec/stories/landing-page-future-waves-research-framing.md`
-4. `spec/stories/landing-page-footer-legal-and-responsive-trust.md`
-5. `spec/stories/landing-page-owner-waitlist-capture.md`
-6. `spec/stories/landing-page-provider-and-clinic-interest-capture.md`
-7. `spec/stories/landing-page-mailerlite-subscriber-upsert.md`
-8. `spec/stories/landing-page-validation-events-and-utm-capture.md`
+1. `spec/stories/polish-first-language-switching.md`
+2. `spec/stories/landing-page-consent-and-analytics-policy-baseline.md`
+3. `spec/stories/landing-page-hero-and-mvp-value.md`
+4. `spec/stories/landing-page-future-waves-research-framing.md`
+5. `spec/stories/landing-page-footer-legal-and-responsive-trust.md`
+6. `spec/stories/landing-page-owner-waitlist-capture.md`
+7. `spec/stories/landing-page-provider-and-clinic-interest-capture.md`
+8. `spec/stories/landing-page-mailerlite-subscriber-upsert.md`
+9. `spec/stories/landing-page-validation-events-and-utm-capture.md`
+
+Likely source files to change:
+
+- `src/App.tsx` for page composition, language state, Wave 2/Wave 3 sections, footer signup, and consent/analytics UI placement.
+- `src/content.ts` for Polish-first and English copy covering hero, features, process, future waves, consent, legal links, validation states, and research-stage thank-you messages.
+- `src/components/LanguageToggle.tsx` to ensure it is rendered and accessible if it is not already complete.
+- `src/components/WaitlistForm.tsx` to support source-specific payloads, lead consent, async submission states, role and wave fields, UTM metadata, and reusable owner/provider/clinic variants.
+- A new landing lead client helper under `src/lib/` or `src/utils/` if implementation needs shared payload construction, email validation, UTM parsing, analytics consent checks, or API calls.
+- A new server-side MailerLite boundary appropriate to the selected hosting model, for example an API route or function file, with secrets read from environment variables.
+- `src/App.test.tsx` and new focused tests for language switching, consent gating, payload construction, source attribution, and form states.
+- `tests/e2e/landing.spec.ts` for Polish default, English switch, responsive screenshots, owner waitlist sources, future-wave research capture, and consent behavior.
+- `README.md` and `AGENTS.md` only after new commands or environment variables are real and reproducible from committed files.
 
 Validation:
 
 - Run `npm run build`, `npm run test`, `npm run lint`, and `npm run test:e2e`.
-- Verify the landing page opens in Polish by default and can switch to English.
+- Verify the landing page opens in Polish by default and can switch to English without losing entered form state unexpectedly.
+- Verify the rendered page still follows the current Caniello brand direction: wordmark, navy/gold/cream palette, pet/app hero image, compact feature/process blocks, and mockup-informed future-wave cards.
 - Verify owner waitlist submissions use `role=pet_owner`, `interest_wave=wave_1`, and the correct source value for hero, mid-page, or footer.
 - Verify Wave 2 provider interest submissions use `role=pet_service_provider`, `interest_wave=wave_2`, and `source=landing_page_wave2`.
 - Verify Wave 3 clinic/vet interest submissions use `role=clinic_vet`, `interest_wave=wave_3`, and `source=landing_page_wave3`.
@@ -165,6 +212,10 @@ Validation:
 - Verify UTM values are preserved in lead metadata after lead consent and event metadata after analytics consent.
 - Verify Wave 2 and Wave 3 copy does not say `coming soon`, `launching next`, `available now`, or equivalent launch-commitment language.
 - Capture Playwright screenshots for desktop and mobile under `spec/validation/screenshots/`.
+
+Milestone 0 recovery guidance:
+
+If the language switch introduces layout breakage, keep the current English content as a temporary comparison fixture in tests while fixing Polish copy overflow. If MailerLite credentials or group IDs are unavailable, implement the server-side boundary with configuration validation and mocked tests, then mark live MailerLite verification as blocked in `spec/validation/` until the human provides the required environment values. If the analytics provider remains undecided, implement consent state, UTM parsing, and an internal event adapter interface first, then wire the approved sink later without changing form behavior.
 
 ### Milestone 1: Architecture and Platform Readiness
 
@@ -613,3 +664,5 @@ Change note: Created on 2026-05-11 to give Caniello a clear feature-by-feature a
 Change note: Updated on 2026-05-11 to include Polish-first MVP language behavior with an English switch across landing page, Web MVP, and Mobile MVP.
 
 Change note: Updated on 2026-05-12 to align Milestone 0 and the next implementation slice with the accepted landing-page segmented validation requirement, accepted landing-page features, and accepted landing-page stories. The update adds the conservative consent baseline, MailerLite upsert expectations, shared landing source values, future-wave research framing, validation event and UTM capture, and a landing-first implementation sequence before platform foundation work.
+
+Change note: Updated on 2026-05-12 to replan Milestone 0 against the current React/Vite landing page, existing English-only tests, saved validation screenshots, and landing concept mockups. The update keeps the current Wave 1 visual direction, uses `spec/notes/landing/image 1.png` as the main composition reference, uses `image 2.png` and `image 3.png` only for research-stage Wave 2/Wave 3 context, and makes the missing Polish-first, consent, segmented capture, MailerLite, analytics, responsive footer, and recovery steps explicit before implementation.
