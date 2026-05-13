@@ -183,12 +183,12 @@ export function CareFlowCtaSection({ benefits, body, form, imageAlt = "", imageS
 
           <aside className="flex h-full flex-col overflow-hidden rounded-lg border border-navy/10 bg-cream shadow-sm">
             <div className="relative flex-1 px-5 pb-6 pt-7 sm:px-8 xl:min-h-0">
-              <div className="relative z-10 max-w-[430px]">
+              <div className="relative z-10 max-w-[560px]">
                 <h2 className="font-serif text-3xl font-bold leading-[1.08] text-navy sm:text-4xl">{title}</h2>
-                <p className="mt-4 max-w-[390px] text-base leading-7 text-navy">{body}</p>
+                <p className="mt-4 max-w-[520px] text-base leading-7 text-navy">{body}</p>
                 <div className="mt-6">{form}</div>
               </div>
-              <div className="pointer-events-none absolute bottom-4 right-0 h-[210px] w-[330px] overflow-hidden sm:bottom-5 sm:h-[275px] sm:w-[430px] lg:h-[330px] lg:w-[520px] xl:h-[360px] xl:w-[570px]">
+              <div className="pointer-events-none absolute bottom-4 right-0 h-[210px] w-[330px] overflow-hidden sm:bottom-5 sm:h-[275px] sm:w-[430px] lg:h-[330px] lg:w-[520px] xl:right-10 xl:h-[360px] xl:w-[570px] 2xl:right-20">
                 <img className="h-full w-full object-contain object-bottom" src={imageSrc} alt={imageAlt} aria-hidden={imageAlt === "" ? "true" : undefined} />
               </div>
             </div>

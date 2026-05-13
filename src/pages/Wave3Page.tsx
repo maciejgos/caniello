@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import wave3HeroArt from "../../spec/notes/landing/image 6.png";
-import petsArt from "../assets/caniello-waitlist-pets.png";
+import waitlistPets from "../assets/puppys_transparent.png";
 import { AnalyticsConsentPopup } from "../components/AnalyticsConsentPopup";
 import { CareFlowCtaSection, FeatureOverviewSection, ResearchHeroSection } from "../components/CareStorySections";
 import { WaitlistForm } from "../components/WaitlistForm";
@@ -60,14 +60,15 @@ const pageCopy = {
         body: "Wave 3 zakłada przejrzystość, kontrolę opiekuna i ograniczony dostęp badawczy."
       }
     ],
-    stepsTitle: "Wave 3 to koncepcja badawcza",
+    stepsTitle: "Badanie w toku",
     steps: [
       { title: "Mapujemy potrzeby klinik", body: "Sprawdzamy, jaki kontekst realnie pomaga przed wizytą i w trakcie opieki." },
       { title: "Projektujemy zgodę opiekuna", body: "Badamy prosty, czytelny sposób wyboru danych udostępnianych klinice." },
       { title: "Walidujemy bezpieczeństwo", body: "Nie budujemy portalu klinicznego bez potwierdzenia potrzeby, zaufania i ryzyk." }
     ],
-    closingTitle: "Bądź na bieżąco z Wave 3",
-    closingBody: "Dołącz jako klinika lub lekarz weterynarii i pomóż nam sprawdzić, gdzie kontekst opieki naprawdę wspiera współpracę.",
+    closingTitle: "Pomóż ukształtować przyszłość opieki nad pupilami",
+    closingBody:
+      "Dołącz jako klinika lub lekarz weterynarii i powiedz nam, jak powinien wyglądać bezpieczny sposób pracy z kontekstem opieki udostępnionym przez opiekuna.",
     closingBenefits: [
       { title: "Wczesny kontakt", body: "Odezwiemy się, gdy będziemy prowadzić rozmowy i testy badawcze." },
       { title: "Wpływ na zakres", body: "Twoja perspektywa pomoże oddzielić użyteczny kontekst od nadmiaru danych." },
@@ -103,14 +104,14 @@ const pageCopy = {
         body: "Wave 3 assumes transparency, owner control, and limited research-stage access."
       }
     ],
-    stepsTitle: "Wave 3 is a research-stage concept",
+    stepsTitle: "Research in progress",
     steps: [
       { title: "Mapping clinic needs", body: "We're learning what context actually helps before visits and during care." },
       { title: "Designing owner consent", body: "We're researching a clear way to choose which data is shared with a clinic." },
       { title: "Validating safety", body: "We won't build a clinic portal without validating need, trust, and risks." }
     ],
-    closingTitle: "Stay informed about Wave 3",
-    closingBody: "Join as a clinic or veterinarian and help us learn where care context truly supports collaboration.",
+    closingTitle: "Help shape the future of pet care",
+    closingBody: "Join as a clinic or veterinarian and tell us what secure collaboration with owner-approved care context should look like.",
     closingBenefits: [
       { title: "Early contact", body: "We'll reach out when we run research conversations and tests." },
       { title: "Shape the scope", body: "Your perspective helps separate useful context from data overload." },
@@ -181,7 +182,7 @@ export function Wave3Page({ language }: Wave3PageProps) {
             />
           </div>
         }
-        imageSrc={petsArt}
+        imageSrc={waitlistPets}
         steps={text.steps}
         stepsTitle={text.stepsTitle}
         title={text.closingTitle}

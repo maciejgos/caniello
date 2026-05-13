@@ -145,8 +145,8 @@ test("Wave 3 research page presents clinic collaboration and captures interest",
   await page.goto("/wave-3-research?utm_source=e2e&utm_campaign=wave3");
 
   await expect(page.getByRole("heading", { name: /Współpraca klinik/i })).toBeVisible();
-  await expect(page.getByRole("heading", { name: /Wave 3 to koncepcja badawcza/i })).toBeVisible();
-  await expect(page.getByRole("heading", { name: /Bądź na bieżąco z Wave 3/i })).toBeVisible();
+  await expect(page.getByText(/Badanie w toku/i).first()).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Pomóż ukształtować przyszłość opieki/i })).toBeVisible();
 
   await page.screenshot({
     path: testInfo.outputPath(`wave3-research-${testInfo.project.name}.png`),

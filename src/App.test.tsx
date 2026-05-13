@@ -133,7 +133,7 @@ describe("Caniello landing page", () => {
     render(<App />);
 
     expect(screen.getAllByRole("heading", { name: /współpraca klinik/i }).length).toBeGreaterThan(0);
-    expect(screen.getByText(/Wave 3 to koncepcja badawcza/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Badanie w toku/i).length).toBeGreaterThan(0);
 
     await user.type(screen.getByLabelText(/adres email/i), "clinic@example.com");
     await user.click(screen.getByRole("checkbox"));
