@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import heroArt from "../assets/caniello-bruno-app-hero.png";
 import waitlistPets from "../assets/puppys_transparent.png";
 import { AnalyticsConsentPopup } from "../components/AnalyticsConsentPopup";
+import { CareFlowCtaSection, FeatureOverviewSection } from "../components/CareStorySections";
 import { WaitlistForm } from "../components/WaitlistForm";
+import { WaveStorySection } from "../components/WaveStorySection";
 import type { Language } from "../content";
 import { copy } from "../content";
 import { readUtmParams } from "../lib/landing-leads";
 import { readAnalyticsConsent, readAnalyticsPreference, saveAnalyticsConsent, trackValidationEvent } from "../lib/validation-events";
-import { BenefitIcon, CheckIcon, FeatureIcon, FutureWaveIcon, LargePawIcon, LockIcon, PawIcon } from "../components/icons/LandingIcons";
+import { CheckIcon, LargePawIcon, LockIcon, PawIcon } from "../components/icons/LandingIcons";
 
 type LandingPageProps = {
   language: Language;
@@ -84,125 +86,38 @@ export function LandingPage({ language }: LandingPageProps) {
         </div>
       </section>
 
-      <section className="bg-white px-5 pb-12 pt-8 sm:px-8 lg:px-12 lg:pt-10 xl:px-16" id="features" aria-labelledby="features-title">
+      <FeatureOverviewSection features={text.features} title={text.featuresTitle} />
+
+      <CareFlowCtaSection
+        benefits={text.closingBenefits}
+        body={text.closingBody}
+        form={
+          <WaitlistForm
+            language={language}
+            role="pet_owner"
+            interestWave="wave_1"
+            source="landing_page_mid_cta"
+            className="max-w-[470px]"
+            buttonClassName="sm:min-w-[128px]"
+            compactConsent
+          />
+        }
+        imageSrc={waitlistPets}
+        steps={text.steps}
+        stepsTitle={text.howTitle}
+        title={text.closingTitle}
+      />
+
+      <section className="bg-white px-5 pb-0 pt-4 sm:px-8 lg:px-12 xl:px-16">
         <div className="mx-auto w-full max-w-[1664px]">
-          <h2 className="mx-auto max-w-3xl text-center font-serif text-3xl font-bold leading-tight text-navy sm:text-4xl" id="features-title">
-            {text.featuresTitle}
-          </h2>
-          <div className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10 xl:gap-14">
-            {text.features.map((feature, index) => (
-              <article className="text-center" key={feature.title}>
-                <div className="mx-auto flex h-[92px] w-[92px] items-center justify-center rounded-full bg-cream text-navy">
-                  <FeatureIcon index={index} />
-                </div>
-                <h3 className="mt-4 text-sm font-bold text-navy">{feature.title}</h3>
-                <p className="mx-auto mt-3 max-w-[220px] text-xs leading-5 text-navy">{feature.body}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-white px-5 pb-0 pt-10 sm:px-8 lg:px-12 xl:px-16" id="how-it-works">
-        <div className="mx-auto w-full max-w-[1664px]">
-          <div className="grid items-stretch gap-4 xl:grid-cols-[0.9fr_2.15fr]">
-            <section className="flex h-full flex-col rounded-lg border border-navy/10 bg-white p-5 shadow-sm sm:p-6" aria-labelledby="how-title">
-              <h2 className="font-serif text-3xl font-bold leading-tight text-navy" id="how-title">
-                {text.howTitle}
-              </h2>
-              <ol className="mt-5 grid gap-0">
-                {text.steps.map((step, index) => (
-                  <li className="grid grid-cols-[42px_1fr] gap-4" key={step.title}>
-                    <div className="flex flex-col items-center">
-                      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-cream text-sm font-bold text-navy">{index + 1}</span>
-                      {index < text.steps.length - 1 ? <span className="h-16 w-px bg-navy/12" /> : null}
-                    </div>
-                    <div className="pb-5 pt-1">
-                      <strong className="block text-sm font-bold text-navy">{step.title}</strong>
-                      <span className="mt-1 block text-sm leading-6 text-navy">{step.body}</span>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            </section>
-
-            <aside className="flex h-full flex-col overflow-hidden rounded-lg border border-navy/10 bg-cream shadow-sm">
-              <div className="relative flex-1 px-5 pb-6 pt-7 sm:px-8 xl:min-h-0">
-                <div className="relative z-10 max-w-[430px]">
-                  <h2 className="font-serif text-3xl font-bold leading-[1.08] text-navy sm:text-4xl">{text.closingTitle}</h2>
-                  <p className="mt-4 max-w-[390px] text-base leading-7 text-navy">{text.closingBody}</p>
-                  <div className="mt-6">
-                    <WaitlistForm
-                      language={language}
-                      role="pet_owner"
-                      interestWave="wave_1"
-                      source="landing_page_mid_cta"
-                      className="max-w-[470px]"
-                      buttonClassName="sm:min-w-[128px]"
-                      compactConsent
-                    />
-                  </div>
-                </div>
-                <div className="pointer-events-none absolute bottom-4 right-0 h-[210px] w-[330px] overflow-hidden sm:bottom-5 sm:h-[275px] sm:w-[430px] lg:h-[330px] lg:w-[520px] xl:h-[360px] xl:w-[570px]">
-                  <img className="h-full w-full object-contain object-bottom" src={waitlistPets} alt="" aria-hidden="true" />
-                </div>
-              </div>
-
-              <div className="grid shrink-0 gap-5 border-t border-navy/10 bg-white/55 px-5 py-5 sm:px-8 md:grid-cols-3">
-                {text.closingBenefits.map((benefit, index) => (
-                  <div className="grid grid-cols-[34px_1fr] gap-3" key={benefit.title}>
-                    <BenefitIcon index={index} />
-                    <div>
-                      <h3 className="text-sm font-bold text-navy">{benefit.title}</h3>
-                      <p className="mt-1 text-xs leading-5 text-navy">{benefit.body}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </aside>
-
-          </div>
-
-          <section className="mt-4 rounded-[24px] border border-navy/10 bg-white p-6 shadow-sm sm:p-8 lg:p-10" id="future-waves" aria-labelledby="future-waves-title">
-            <h2 className="font-serif text-4xl font-bold leading-tight text-navy sm:text-5xl lg:text-6xl" id="future-waves-title">
-              {text.futureTitle}
-            </h2>
-            <p className="mt-4 max-w-[900px] text-lg font-semibold leading-8 text-navy sm:text-xl">{text.futureBody}</p>
-
-            <div className="mt-8 grid gap-6 lg:grid-cols-2 lg:px-8 xl:px-12">
-              {text.futureWaves.map((wave, index) => (
-                <article className="flex min-h-[310px] flex-col rounded-[24px] border border-navy/10 bg-white p-6 shadow-sm sm:p-7 lg:min-h-[340px]" key={wave.wave}>
-                  <span className="inline-flex w-max rounded-lg bg-cream px-4 py-2 text-xl font-bold text-gold">{wave.wave}</span>
-                  <div className="mt-7 grid flex-1 grid-cols-[minmax(0,1fr)_82px] gap-6">
-                    <div className="min-w-0">
-                      <h3 className="text-2xl font-bold leading-tight text-navy sm:text-3xl">{wave.title}</h3>
-                      <p className="mt-5 max-w-[420px] text-lg font-semibold leading-8 text-navy">{wave.body}</p>
-                    </div>
-                    <FutureWaveIcon index={index} />
-                  </div>
-                  {index === 0 ? (
-                    <a
-                      className="mt-8 inline-flex h-12 w-full items-center justify-center rounded-lg border border-navy/10 bg-white px-5 text-lg font-bold text-navy shadow-sm transition hover:border-gold hover:text-gold focus:outline-none focus:ring-4 focus:ring-gold/20"
-                      href="/wave-2-exploration"
-                    >
-                      {wave.cta}
-                    </a>
-                  ) : (
-                    <a
-                      className="mt-8 inline-flex h-12 w-full items-center justify-center rounded-lg border border-navy/10 bg-white px-5 text-lg font-bold text-navy shadow-sm transition hover:border-gold hover:text-gold focus:outline-none focus:ring-4 focus:ring-gold/20"
-                      href="/wave-3-research"
-                    >
-                      {wave.cta}
-                    </a>
-                  )}
-                </article>
-              ))}
-            </div>
-            <p className="mt-8 flex shrink-0 items-center justify-center gap-4 text-lg font-semibold leading-7 text-navy">
-              <LockIcon />
-              {text.futureResearchNote}
-            </p>
-          </section>
+          <WaveStorySection
+            activeWave="wave_1"
+            body={text.futureBody}
+            foundation={text.futureFoundation}
+            researchNote={text.futureResearchNote}
+            title={text.futureTitle}
+            waves={text.futureWaves}
+          />
 
           <section className="mt-4 overflow-hidden rounded-lg bg-cream px-5 py-5 sm:px-8" aria-labelledby="footer-signup-title">
             <div className="grid gap-5 md:grid-cols-[0.16fr_0.52fr_0.32fr] md:items-center">

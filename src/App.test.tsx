@@ -109,8 +109,8 @@ describe("Caniello landing page", () => {
     window.history.pushState({}, "", "/wave-2-exploration");
     render(<App />);
 
-    expect(screen.getByRole("heading", { name: /zaufane usługi dla pupili/i })).toBeInTheDocument();
-    expect(screen.getByText(/badanie w toku/i)).toBeInTheDocument();
+    expect(screen.getAllByRole("heading", { name: /zaufane usługi dla pupili/i }).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/badanie w toku/i).length).toBeGreaterThan(0);
 
     await user.type(screen.getByLabelText(/adres email/i), "provider@example.com");
     await user.click(screen.getByRole("checkbox"));
@@ -132,7 +132,7 @@ describe("Caniello landing page", () => {
     window.history.pushState({}, "", "/wave-3-research");
     render(<App />);
 
-    expect(screen.getByRole("heading", { name: /współpraca klinik/i })).toBeInTheDocument();
+    expect(screen.getAllByRole("heading", { name: /współpraca klinik/i }).length).toBeGreaterThan(0);
     expect(screen.getByText(/Wave 3 to koncepcja badawcza/i)).toBeInTheDocument();
 
     await user.type(screen.getByLabelText(/adres email/i), "clinic@example.com");

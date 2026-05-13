@@ -9,7 +9,7 @@ export type LeadSource =
   | "landing_page_wave2"
   | "landing_page_wave3";
 
-type Feature = {
+export type Feature = {
   title: string;
   body: string;
 };
@@ -41,12 +41,20 @@ export type FutureWave = {
   body: string;
   note: string;
   cta: string;
+  highlights: Feature[];
   fields: {
     organization: string;
     context: string;
     website: string;
   };
   success: string;
+};
+
+export type WaveStoryStep = {
+  wave: string;
+  status: string;
+  title: string;
+  body: string;
 };
 
 type Copy = {
@@ -85,6 +93,7 @@ type Copy = {
   futureTitle: string;
   futureBody: string;
   futureResearchNote: string;
+  futureFoundation: WaveStoryStep;
   futureWaves: [FutureWave, FutureWave];
   closingTitle: string;
   closingBody: string;
@@ -176,6 +185,12 @@ export const copy: Record<Language, Copy> = {
     futureBody:
       "Zaczynamy od podstaw: historia zdrowia, przypomnienia, dokumenty i zaufane udostępnianie.",
     futureResearchNote: "Badanie w toku - przyszłe fale zależą od potwierdzonego popytu.",
+    futureFoundation: {
+      wave: "Wave 1",
+      status: "Badanie rynku",
+      title: "Podstawy opieki nad pupilem",
+      body: "Walidujemy pierwszą wersję z opiekunami."
+    },
     futureWaves: [
       {
         wave: "Wave 2",
@@ -184,6 +199,11 @@ export const copy: Record<Language, Copy> = {
         body: "Badamy kuratorski sposób odkrywania sprawdzonych usług i opiekunów.",
         note: "To nie jest aktywny marketplace, rezerwacje ani płatności.",
         cta: "Jestem usługodawcą",
+        highlights: [
+          { title: "Zweryfikowani dostawcy", body: "Tylko sprawdzone usługi i opiekunowie." },
+          { title: "Dopasowanie do potrzeb", body: "Rekomendacje dopasowane do Twojego pupila." },
+          { title: "Wygoda i transparentność", body: "Łatwe porównanie, rezerwacje i jasne informacje." }
+        ],
         fields: {
           organization: "Nazwa firmy lub usługi",
           context: "Kategoria usługi lub lokalizacja",
@@ -198,6 +218,11 @@ export const copy: Record<Language, Copy> = {
         body: "Eksplorujemy narzędzia do pracy z kontekstem zdrowia udostępnionym przez opiekuna.",
         note: "To nie jest aktywny portal kliniczny, integracja medyczna ani system leczenia.",
         cta: "Jestem kliniką lub wet.",
+        highlights: [
+          { title: "Bezpieczne udostępnianie", body: "Udostępniaj tylko to, co potrzebne - zawsze za Twoją zgodą." },
+          { title: "Pełny kontekst zdrowia", body: "Historia, szczepienia, wyniki i dokumenty w jednym miejscu." },
+          { title: "Współpraca z kliniką", body: "Lepsza opieka dzięki pełniejszemu obrazowi zdrowia pupila." }
+        ],
         fields: {
           organization: "Nazwa kliniki lub organizacji",
           context: "Rola lub kraj",
@@ -436,6 +461,12 @@ export const copy: Record<Language, Copy> = {
     futureBody:
       "We're starting with the essentials: health records, reminders, documents, and trusted sharing.",
     futureResearchNote: "Research in progress - future waves depend on validated demand.",
+    futureFoundation: {
+      wave: "Wave 1",
+      status: "Market research",
+      title: "Pet care foundations",
+      body: "We're validating the first version with pet owners."
+    },
     futureWaves: [
       {
         wave: "Wave 2",
@@ -444,6 +475,11 @@ export const copy: Record<Language, Copy> = {
         body: "We're researching a curated way to discover trusted pet-related services and providers.",
         note: "This is not an active marketplace, booking flow, or payment product.",
         cta: "I'm a pet service provider",
+        highlights: [
+          { title: "Verified providers", body: "Only trusted services and pet care professionals." },
+          { title: "Needs-based matching", body: "Recommendations shaped around your pet." },
+          { title: "Convenience and clarity", body: "Easier comparison, booking, and transparent information." }
+        ],
         fields: {
           organization: "Business or service name",
           context: "Service category or location",
@@ -458,6 +494,11 @@ export const copy: Record<Language, Copy> = {
         body: "We're exploring tools that help clinics work with owner-approved pet health context.",
         note: "This is not an active clinic portal, medical integration, or treatment system.",
         cta: "I'm a clinic or vet",
+        highlights: [
+          { title: "Secure sharing", body: "Share only what is needed - always with your approval." },
+          { title: "Full health context", body: "History, vaccines, results, and documents in one place." },
+          { title: "Clinic collaboration", body: "Better care through a fuller picture of your pet's health." }
+        ],
         fields: {
           organization: "Clinic or organization name",
           context: "Role or country",

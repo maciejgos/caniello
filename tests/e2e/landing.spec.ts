@@ -30,7 +30,7 @@ test("landing page is Polish-first, switchable, and captures segmented leads wit
   await page.goBack();
   await expect(page.getByRole("heading", { name: "Co dalej" })).toBeVisible();
   await page.getByRole("link", { name: "Jestem kliniką lub wet." }).click();
-  await expect(page.getByRole("heading", { name: /Współpraca klinik/i })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Współpraca klinik/i }).first()).toBeVisible();
   await page.goBack();
   await expect(page.getByRole("heading", { name: "Co dalej" })).toBeVisible();
 
@@ -99,8 +99,8 @@ test("Wave 2 exploration page presents provider research and captures interest",
 
   await page.goto("/wave-2-exploration?utm_source=e2e&utm_campaign=wave2");
 
-  await expect(page.getByRole("heading", { name: /Zaufane usługi dla pupili/i })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Badanie w toku" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Zaufane usługi dla pupili/i }).first()).toBeVisible();
+  await expect(page.getByText(/Badanie w toku/i).first()).toBeVisible();
   await expect(page.getByRole("heading", { name: /Pomóż ukształtować przyszłość opieki/i })).toBeVisible();
 
   await page.screenshot({
