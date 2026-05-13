@@ -108,14 +108,9 @@ The first landing page is a Dockerized React, TypeScript, Vite, and TailwindCSS 
 Landing-page forms submit to the server-side `/api/landing-leads` boundary so MailerLite secrets are not exposed in browser code. Configure these environment variables in the deployment environment before live lead capture:
 
 - `MAILERLITE_API_KEY`
-- `MAILERLITE_GROUP_WAITLIST`
-- `MAILERLITE_GROUP_PET_OWNERS`
-- `MAILERLITE_GROUP_SERVICE_PROVIDERS`
-- `MAILERLITE_GROUP_CLINICS_VETS`
-- `MAILERLITE_GROUP_WAVE2`
-- `MAILERLITE_GROUP_WAVE3`
+- `MAILERLITE_GROUP_NAME` (defaults to `Caniello Waitlist`)
 
-Without `MAILERLITE_API_KEY`, the API returns a sanitized configuration error and does not send lead data.
+The API looks up the configured MailerLite group by name and upserts the subscriber into that group using the submitted email address. Additional landing-page metadata is validated by the Caniello server but is not sent to MailerLite in this simple first integration. Without `MAILERLITE_API_KEY`, the API returns a sanitized configuration error and does not send lead data.
 
 Landing-page analytics consent and validation events are posted to `/api/validation-events`. The endpoint is a deployment-safe boundary for a future analytics sink; browser storage only remembers whether the visitor has already granted or declined analytics consent.
 

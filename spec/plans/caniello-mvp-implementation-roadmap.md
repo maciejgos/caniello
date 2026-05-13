@@ -26,6 +26,7 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
 - [x] (2026-05-12) Revised the mid-page layout after human feedback that the implemented UI did not match the mockup: the process card, owner CTA, compact "What's next" cards, and final waitlist strip now follow the `image 1.png` composition more closely, with Wave 2/Wave 3 full forms opened from compact research CTAs.
 - [x] (2026-05-12) Adjusted the three mid-page cards to equal desktop height after human visual feedback, then reran lint, build, and Playwright E2E screenshot validation.
 - [x] (2026-05-12) Replaced the full-width analytics consent section with a small dismissing bottom popup and routed analytics consent and validation events through `/api/validation-events`.
+- [x] (2026-05-13) Implemented the simple MailerLite integration refinement on branch `codex/mailerlite-integration`: local secret hygiene, `Caniello Waitlist` group lookup by name, subscriber upsert into that group using email only, API unit tests, and README configuration updates.
 - [ ] Human review of Milestone 0 implementation scope, validation evidence, and whether to revise or proceed.
 - [ ] Human review of roadmap scope, sequencing, and release slices beyond Milestone 0.
 - [ ] Follow-up ADRs or solution designs for platform topology, auth/RBAC, AI document pipeline, data lifecycle, sharing/export, messaging, payments deferral, and observability.
@@ -65,6 +66,9 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
 
 - Observation: The project Docker image is based on Alpine, and Playwright browser installation inside that container downloaded an unsupported fallback build that did not expose the expected headless-shell path.
   Evidence: `docker compose run --rm web npm run test:e2e` failed before app execution with `spawn /root/.cache/ms-playwright/chromium_headless_shell-1217/chrome-linux/headless_shell ENOENT`; the same E2E test passed in the official Playwright Noble image.
+
+- Observation: The MailerLite `Caniello Waitlist` group exists in the connected account.
+  Evidence: A read-only `GET https://connect.mailerlite.com/api/groups?limit=100&filter[name]=Caniello%20Waitlist` call on 2026-05-13 returned group id `187371486947837507`, name `Caniello Waitlist`, and zero active subscribers. No subscriber was created during this verification.
 
 - Observation: The first Milestone 0 implementation over-expanded the future-wave research section compared with the accepted mockup direction.
   Evidence: Human feedback compared `spec/notes/landing/image 1.png` against the implemented UI and noted that the left reference and right implementation were not aligned. The revised UI moves Wave 2/Wave 3 capture behind compact card CTAs and restores the process, CTA, "What's next," and final waitlist strip as a cohesive mid-page composition.
@@ -107,6 +111,10 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
   Rationale: The accepted story requires that MailerLite secrets are never exposed to browser code. MailerLite's documented create/upsert subscriber endpoint supports non-destructive subscriber updates and group additions, so the boundary can preserve existing groups while adding Caniello segmentation.
   Date/Author: 2026-05-12 / Codex
 
+- Decision: Use one configured MailerLite group, `Caniello Waitlist`, and send only the subscriber email plus group membership to MailerLite.
+  Rationale: The human explicitly chose the simplest possible MailerLite integration. Caniello still validates role, wave, source, and consent server-side, but MailerLite is only the waitlist sink for now and does not receive extra segmentation fields.
+  Date/Author: 2026-05-13 / Codex
+
 - Decision: Implement validation events through a small server-side API boundary while keeping the final analytics sink undecided.
   Rationale: The analytics provider remains undecided, but the landing page should not treat analytics consent as only local UI behavior. `/api/validation-events` accepts consent and validation event payloads without exposing vendor credentials; browser localStorage is used only to remember whether the visitor has already made an analytics choice.
   Date/Author: 2026-05-12 / Codex
@@ -115,7 +123,7 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
 
 Milestone 0 implementation is ready for human review but is not accepted or released. The landing page now defaults to Polish, preserves an English switch, renders Wave 1 value, captures owner/provider/clinic interest through consent-gated forms, preserves source and UTM metadata, routes lead submissions through a server-side MailerLite boundary, records validation events through `/api/validation-events` only after analytics consent, and includes updated responsive Playwright screenshots under `spec/validation/screenshots/`. After human visual feedback, the mid-page process, CTA, future-wave cards, and final signup strip were revised to align more closely with the compact `image 1.png` mockup.
 
-Validation passed for `npm run test`, `npm run lint`, `npm run build`, and `npm run test:e2e`. The E2E check required the official Playwright container image because the Alpine app container could not launch the downloaded Playwright fallback browser. Live MailerLite verification remains blocked until `MAILERLITE_API_KEY` and MailerLite group environment variables are configured in the deployment environment.
+Validation passed for `npm run test`, `npm run lint`, `npm run build`, and `npm run test:e2e`. The E2E check required the official Playwright container image because the Alpine app container could not launch the downloaded Playwright fallback browser. The MailerLite API token is configured locally in ignored `.env.local`, and a read-only lookup verified the `Caniello Waitlist` group; live subscriber mutation remains blocked until a human approves a real or disposable test email submission.
 
 ## Context and Orientation
 

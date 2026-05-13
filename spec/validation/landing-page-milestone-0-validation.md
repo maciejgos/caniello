@@ -32,6 +32,7 @@ Validate the Milestone 0 landing-page implementation from `spec/plans/caniello-m
 - `src/lib/landing-leads.ts`
 - `src/lib/validation-events.ts`
 - `api/landing-leads.ts`
+- `api/landing-leads.test.ts`
 - `api/validation-events.ts`
 - `src/App.test.tsx`
 - `tests/e2e/landing.spec.ts`
@@ -40,7 +41,7 @@ Validate the Milestone 0 landing-page implementation from `spec/plans/caniello-m
 
 - Human approved beginning Milestone 0 implementation on 2026-05-12.
 - Work occurred on branch `codex/caniello-mvp-milestone-0`.
-- MailerLite live secrets were not available during local validation, so live MailerLite API verification is deferred until deployment configuration exists.
+- MailerLite API token was provided locally in `/Users/macg/Downloads/api_token.txt` and copied into ignored `.env.local` as `MAILERLITE_API_KEY`; the configured group name is `Caniello Waitlist`.
 
 ## Acceptance Criteria Mapping
 
@@ -57,8 +58,8 @@ Validate the Milestone 0 landing-page implementation from `spec/plans/caniello-m
   Evidence: Unit and E2E tests verify provider and clinic/vet payloads with `landing_page_wave2` and `landing_page_wave3`; screenshots show compact research cards, scope-safe notes, and full research forms opened from card CTAs.
 
 - Criterion: MailerLite lead capture uses a server-side boundary, rejects missing consent, maps groups/fields, and avoids exposing secrets to browser code.
-  Evidence status: Partially Supported
-  Evidence: `api/landing-leads.ts` reads `MAILERLITE_API_KEY` server-side, rejects absent consent, maps role/wave/source/UTM/custom fields, and returns sanitized errors. Live MailerLite create/update behavior is not verified without environment secrets and group IDs.
+  Evidence status: Supported with live-mutation gap
+  Evidence: `api/landing-leads.ts` reads `MAILERLITE_API_KEY` server-side, resolves `MAILERLITE_GROUP_NAME` or the default `Caniello Waitlist`, rejects absent consent, validates the landing role/wave/source payload server-side, upserts the subscriber email into the waitlist group only, and returns sanitized errors. `api/landing-leads.test.ts` verifies consent rejection, group-name lookup, email-and-group-only subscriber upsert request shape, and missing-group failure. A read-only live MailerLite lookup verified that `Caniello Waitlist` exists as group id `187371486947837507`; no live subscriber was created without explicit human approval.
 
 - Criterion: Non-essential validation events are blocked before analytics consent and available after consent with UTM/source attribution.
   Evidence status: Supported
@@ -74,7 +75,7 @@ Validate the Milestone 0 landing-page implementation from `spec/plans/caniello-m
   Type: Automated
   Status: Passed
   Expected result: Vitest suite passes.
-  Actual result: 1 test file passed, 5 tests passed.
+  Actual result: 2 test files passed, 11 tests passed, including 3 API tests for simple MailerLite payload behavior.
 
 - Check: `docker compose run --rm web npm run lint`
   Type: Automated
@@ -87,6 +88,18 @@ Validate the Milestone 0 landing-page implementation from `spec/plans/caniello-m
   Status: Passed
   Expected result: TypeScript and Vite production build succeed.
   Actual result: Build completed and emitted `dist/` assets.
+
+- Check: `curl -L -sS -H "Authorization: Bearer <redacted>" -H "Accept: application/json" "https://connect.mailerlite.com/api/groups?limit=100&filter%5Bname%5D=Caniello%20Waitlist"`
+  Type: External read-only integration
+  Status: Passed
+  Expected result: MailerLite returns an existing group named `Caniello Waitlist`.
+  Actual result: MailerLite returned group id `187371486947837507`, name `Caniello Waitlist`, and zero active subscribers. The token was not printed or committed.
+
+- Check: `curl -L -sS -i -X POST http://localhost:5173/api/landing-leads ... leadConsent=false`
+  Type: Local manual
+  Status: Passed
+  Expected result: Vite local dev server routes `/api/landing-leads` to the API handler and returns sanitized JSON without contacting MailerLite.
+  Actual result: Local Vite middleware returned `400` with `{"ok":false,"message":"Lead consent is required."}`.
 
 - Check: `docker run --rm -v /Users/macg/Code/caniello:/work -v /private/tmp/caniello-node-modules:/work/node_modules -w /work mcr.microsoft.com/playwright:v1.59.1-noble sh -lc 'npm ci && npm run test:e2e'`
   Type: UI
@@ -114,9 +127,9 @@ Validate the Milestone 0 landing-page implementation from `spec/plans/caniello-m
 
 ## Missing, Skipped, or Unavailable Checks
 
-- Check: Live MailerLite create/update against real Caniello groups.
-  Reason: `MAILERLITE_API_KEY` and MailerLite group IDs were not available in this implementation environment.
-  Risk: Field names, custom field setup, and group IDs still need deployment-environment verification.
+- Check: Live MailerLite create/update against a real subscriber.
+  Reason: Creating or updating a live subscriber mutates the external MailerLite account and was not performed without explicit human approval.
+  Risk: The final public-launch smoke test still needs to prove that a real or disposable email is added to `Caniello Waitlist`.
 
 - Check: Direct Playwright execution inside the app's Alpine Docker service.
   Reason: Browser installation in that container downloaded an unsupported fallback build that did not expose the expected headless-shell executable path.
@@ -146,7 +159,7 @@ Ready for human review
 
 ## Follow-Up
 
-- Verify live MailerLite subscriber upsert once API key, group IDs, and custom fields are configured.
+- Verify live MailerLite subscriber upsert into `Caniello Waitlist` once a human approves a real or disposable test email submission.
 - Decide whether to change the app Docker image or document official Playwright-image usage for E2E checks.
 - Expand automated owner-source tests to cover mid-page and footer payloads directly.
 - Replace legal placeholders with approved Privacy Policy and Terms of Service before public launch.

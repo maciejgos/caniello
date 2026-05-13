@@ -81,8 +81,8 @@ This review does not approve merge, deployment, public launch traffic, productio
   Evidence: The Alpine app container could not launch the downloaded Playwright fallback browser. Official Playwright container validation was used instead.
 
 - Check: Live MailerLite subscriber create/update against Caniello groups
-  Status: Unavailable
-  Evidence: `MAILERLITE_API_KEY` and MailerLite group IDs were not available in the implementation environment.
+  Status: Partially Verified
+  Evidence: On 2026-05-13, a read-only MailerLite API lookup verified that `Caniello Waitlist` exists as group id `187371486947837507`. Live subscriber create/update was not performed because it mutates the external MailerLite account and needs explicit human approval.
 
 - Check: Durable analytics or validation-event storage
   Status: Future Gate
@@ -138,13 +138,13 @@ Before any production deployment, define the hosting target and rollback path. F
 
 Blocked for public release.
 
-The candidate is ready for human review of the Milestone 0 implementation and validation evidence, but public release is blocked by pending human acceptance, unverified MailerLite production configuration, placeholder legal copy, missing durable analytics/storage decision for validation events, absent CI/CD evidence, and an undefined production rollback path.
+The candidate is ready for human review of the Milestone 0 implementation and validation evidence, but public release is blocked by pending human acceptance, unverified live MailerLite subscriber mutation, placeholder legal copy, missing durable analytics/storage decision for validation events, absent CI/CD evidence, and an undefined production rollback path.
 
 For a local branch review or private demo with no public lead capture, the candidate could move to human approval with these risks explicitly scoped and accepted.
 
 ## Follow-Up
 
-- Release-blocking for public launch: configure and smoke-test `MAILERLITE_API_KEY` plus all MailerLite group IDs and custom fields.
+- Release-blocking for public launch: smoke-test a live MailerLite subscriber upsert into `Caniello Waitlist` after human approval.
 - Release-blocking for public launch: replace privacy and terms placeholders with approved legal copy.
 - Release-blocking for validation traffic: decide and verify durable analytics or validation-event storage, or explicitly approve a non-durable validation phase.
 - Release-blocking for deployment: define hosting target, environment variable handling, and rollback/recovery path.
