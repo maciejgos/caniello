@@ -77,9 +77,9 @@ const pageCopy = {
   en: {
     backToWave1: "Back to Today",
     eyebrow: "Next · Exploration",
-    heroTitle: "Trusted pet services, carefully curated.",
+    heroTitle: "Trusted support for pet care.",
     heroBody:
-      "After our MVP, Caniello is exploring a trusted pet services marketplace: curated, reviewed, and connected to pet care context.",
+      "We're exploring how Caniello could help caregivers find reliable support for their pet's care, from everyday services to help in specific situations.",
     heroNote: "This is a future concept. We're researching demand.",
     heroCta: "Join as provider",
     featuresTitle: "Trusted pet services",
@@ -98,7 +98,7 @@ const pageCopy = {
       },
       {
         title: "Connected to care",
-        body: "A marketplace only makes sense beside health history, documents, and reminders."
+        body: "Trusted services make more sense when they connect to health history, documents, and reminders."
       }
     ],
     stepsTitle: "Research in progress",
@@ -112,7 +112,7 @@ const pageCopy = {
     closingBenefits: [
       { title: "Early research", body: "We'll invite you when we're testing next-stage assumptions." },
       { title: "Shape trust signals", body: "Your perspective helps define what verified should mean." },
-      { title: "No marketplace promise", body: "At this stage, we're researching demand, scope, and risks." }
+      { title: "No service launch promise", body: "At this stage, we're researching demand, scope, and risks." }
     ],
     success: "Thank you. Your interest in the next research stage has been noted."
   }
@@ -149,7 +149,7 @@ export function Wave2Page({ language }: Wave2PageProps) {
         ctaHref="#provider-interest"
         ctaLabel={text.heroCta}
         eyebrow={text.eyebrow}
-        imageAlt="Next-stage trusted pet services marketplace concept with provider cards and pets"
+        imageAlt="Next-stage trusted pet services concept with provider cards and pets"
         imageSrc={wave2HeroArt}
         note={text.heroNote}
         title={text.heroTitle}

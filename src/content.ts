@@ -472,8 +472,8 @@ export const copy: Record<Language, Copy> = {
         wave: "Next",
         eyebrow: "Provider research",
         title: "Trusted pet services",
-        body: "We're researching a curated way to discover trusted pet-related services and providers.",
-        note: "This is not an active marketplace, booking flow, or payment product.",
+        body: "We're researching how caregivers could find reliable support for pet care, from everyday services to help in specific situations.",
+        note: "This is not an active service directory, booking flow, or payment product.",
         cta: "I'm a pet service provider",
         highlights: [
           { title: "Verified providers", body: "Only trusted services and pet care professionals." },
@@ -610,7 +610,7 @@ export const copy: Record<Language, Copy> = {
             title: "Unavailable scope",
             body: [
               "The landing page does not provide diagnosis, treatment advice, booking, payments, user accounts, official documents, or replacement for an official pet passport.",
-              "Next and Future are presented as research, not as active marketplace, clinic, or medical products."
+              "Next and Future are presented as research, not as active service, clinic, or medical products."
             ]
           },
           {
