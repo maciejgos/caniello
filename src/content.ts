@@ -196,7 +196,7 @@ export const copy: Record<Language, Copy> = {
         wave: "Następnie",
         eyebrow: "Badanie potrzeb usługodawców",
         title: "Zaufane usługi dla pupili",
-        body: "Badamy kuratorski sposób odkrywania sprawdzonych usług i opiekunów.",
+        body: "Sprawdzamy, jak Caniello może pomagać znaleźć zaufaną pomoc przy opiece nad zwierzęciem.",
         note: "To nie jest aktywny rynek usług, rezerwacje ani płatności.",
         cta: "Jestem usługodawcą",
         highlights: [
