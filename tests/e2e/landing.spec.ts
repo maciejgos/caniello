@@ -29,7 +29,7 @@ test("landing page is Polish-first, switchable, and captures segmented leads wit
   await expect(page.getByRole("heading", { name: /Zaufane usługi dla pupili/i })).toBeVisible();
   await page.goBack();
   await expect(page.getByRole("heading", { name: "Co dalej" })).toBeVisible();
-  await page.getByRole("link", { name: "Jestem kliniką lub wet." }).click();
+  await page.getByRole("link", { name: "Jestem kliniką" }).click();
   await expect(page.getByRole("heading", { name: /Współpraca klinik/i }).first()).toBeVisible();
   await page.goBack();
   await expect(page.getByRole("heading", { name: "Co dalej" })).toBeVisible();
@@ -78,7 +78,7 @@ test("landing page is Polish-first, switchable, and captures segmented leads wit
   });
 });
 
-test("Wave 2 exploration page presents provider research and captures interest", async ({ page }, testInfo) => {
+test("Next exploration page presents provider research and captures interest", async ({ page }, testInfo) => {
   const submissions: unknown[] = [];
 
   await page.route("**/api/landing-leads", async (route) => {
@@ -108,11 +108,11 @@ test("Wave 2 exploration page presents provider research and captures interest",
     fullPage: true
   });
 
-  await page.getByLabel(/Adres email/i).fill("provider@example.com");
+  await page.getByLabel(/Adres e-mail/i).fill("provider@example.com");
   await page.getByRole("checkbox").check();
   await page.getByRole("button", { name: /Dołącz do listy/i }).click();
 
-  await expect(page.getByText(/Zapisaliśmy zainteresowanie badaniem Wave 2/i)).toBeVisible();
+  await expect(page.getByText(/Zapisaliśmy zainteresowanie badaniem kolejnego etapu/i)).toBeVisible();
   expect(submissions).toEqual([
     expect.objectContaining({
       email: "provider@example.com",
@@ -123,7 +123,7 @@ test("Wave 2 exploration page presents provider research and captures interest",
   ]);
 });
 
-test("Wave 3 research page presents clinic collaboration and captures interest", async ({ page }, testInfo) => {
+test("Future research page presents clinic collaboration and captures interest", async ({ page }, testInfo) => {
   const submissions: unknown[] = [];
 
   await page.route("**/api/landing-leads", async (route) => {
@@ -153,11 +153,11 @@ test("Wave 3 research page presents clinic collaboration and captures interest",
     fullPage: true
   });
 
-  await page.getByLabel(/Adres email/i).fill("clinic@example.com");
+  await page.getByLabel(/Adres e-mail/i).fill("clinic@example.com");
   await page.getByRole("checkbox").check();
   await page.getByRole("button", { name: /Dołącz jako klinika/i }).click();
 
-  await expect(page.getByText(/Zapisaliśmy zainteresowanie badaniem Wave 3/i)).toBeVisible();
+  await expect(page.getByText(/Zapisaliśmy zainteresowanie badaniem przyszłego etapu/i)).toBeVisible();
   expect(submissions).toEqual([
     expect.objectContaining({
       email: "clinic@example.com",

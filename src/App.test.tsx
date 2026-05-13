@@ -33,19 +33,19 @@ describe("Caniello landing page", () => {
     render(<App />);
 
     await user.click(screen.getAllByRole("button", { name: /^Dołącz$/i })[0]);
-    expect(screen.getByText(/wpisz poprawny adres email/i)).toBeInTheDocument();
+    expect(screen.getByText(/wpisz poprawny adres e-mail/i)).toBeInTheDocument();
 
-    await user.type(screen.getAllByLabelText(/adres email/i)[0], "owner@example.com");
+    await user.type(screen.getAllByLabelText(/adres e-mail/i)[0], "owner@example.com");
     await user.click(screen.getAllByRole("button", { name: /^Dołącz$/i })[0]);
     expect(screen.getByText(/zaznacz zgodę/i)).toBeInTheDocument();
     expect(fetch).not.toHaveBeenCalled();
   });
 
-  it("submits the hero owner payload with Wave 1 source attribution after consent", async () => {
+  it("submits the hero caregiver payload with Today source attribution after consent", async () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.type(screen.getAllByLabelText(/adres email/i)[0], "owner@example.com");
+    await user.type(screen.getAllByLabelText(/adres e-mail/i)[0], "owner@example.com");
     await user.click(screen.getAllByRole("checkbox")[0]);
     await user.click(screen.getAllByRole("button", { name: /^Dołącz$/i })[0]);
 
@@ -62,11 +62,11 @@ describe("Caniello landing page", () => {
     expect(screen.getByText(/zapisaliśmy Twoje zainteresowanie/i)).toBeInTheDocument();
   });
 
-  it("links Wave 2 and Wave 3 to their research pages", () => {
+  it("links Next and Future to their research pages", () => {
     render(<App />);
 
     expect(screen.getByRole("link", { name: /jestem usługodawcą/i })).toHaveAttribute("href", "/wave-2-exploration");
-    expect(screen.getByRole("link", { name: /jestem kliniką lub wet/i })).toHaveAttribute("href", "/wave-3-research");
+    expect(screen.getByRole("link", { name: /jestem kliniką/i })).toHaveAttribute("href", "/wave-3-research");
   });
 
   it("records validation events only after analytics consent", async () => {
@@ -104,7 +104,7 @@ describe("Caniello landing page", () => {
     expect(screen.getByText(/Caniello nie diagnozuje/i)).toBeInTheDocument();
   });
 
-  it("renders Wave 2 exploration page and submits provider interest", async () => {
+  it("renders Next exploration page and submits provider interest", async () => {
     const user = userEvent.setup();
     window.history.pushState({}, "", "/wave-2-exploration");
     render(<App />);
@@ -112,7 +112,7 @@ describe("Caniello landing page", () => {
     expect(screen.getAllByRole("heading", { name: /zaufane usługi dla pupili/i }).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/badanie w toku/i).length).toBeGreaterThan(0);
 
-    await user.type(screen.getByLabelText(/adres email/i), "provider@example.com");
+    await user.type(screen.getByLabelText(/adres e-mail/i), "provider@example.com");
     await user.click(screen.getByRole("checkbox"));
     await user.click(screen.getByRole("button", { name: /dołącz do listy/i }));
 
@@ -127,7 +127,7 @@ describe("Caniello landing page", () => {
     });
   });
 
-  it("renders Wave 3 research page and submits clinic interest", async () => {
+  it("renders Future research page and submits clinic interest", async () => {
     const user = userEvent.setup();
     window.history.pushState({}, "", "/wave-3-research");
     render(<App />);
@@ -135,7 +135,7 @@ describe("Caniello landing page", () => {
     expect(screen.getAllByRole("heading", { name: /współpraca klinik/i }).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Badanie w toku/i).length).toBeGreaterThan(0);
 
-    await user.type(screen.getByLabelText(/adres email/i), "clinic@example.com");
+    await user.type(screen.getByLabelText(/adres e-mail/i), "clinic@example.com");
     await user.click(screen.getByRole("checkbox"));
     await user.click(screen.getByRole("button", { name: /dołącz jako klinika/i }));
 

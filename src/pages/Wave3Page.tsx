@@ -20,7 +20,6 @@ type WavePageCopy = {
   heroTitle: string;
   heroBody: string;
   heroNote: string;
-  heroSecondaryCta: string;
   featuresTitle: string;
   features: Feature[];
   stepsTitle: string;
@@ -34,91 +33,89 @@ type WavePageCopy = {
 
 const pageCopy = {
   pl: {
-    backToWave1: "Wróć do Wave 1",
-    eyebrow: "Wave 3 · Badanie",
-    heroTitle: "Współpraca klinik z kontekstem zaakceptowanym przez opiekuna.",
+    backToWave1: "Wróć do etapu Dzisiaj",
+    eyebrow: "Przyszłość · Badanie",
+    heroTitle: "Współpraca klinik z pełniejszą historią pacjenta.",
     heroBody:
-      "Caniello bada narzędzia, które pomagają klinikom i lekarzom widzieć udostępnione przez opiekuna rekordy zdrowia, dokumenty, oś czasu i przypomnienia.",
-    heroNote: "Etap badawczy. To nie jest produkt. Walidujemy zainteresowanie.",
-    heroSecondaryCta: "Zobacz koncepcję",
-    featuresTitle: "Współpraca klinik z kontekstem opieki",
+      "Badamy rozwiązanie, w którym lekarz może łatwo wprowadzić dane pacjenta, zobaczyć historię zwierzęcia albo otrzymać ją od klienta za zgodą opiekuna.",
+    heroNote: "Etap badawczy. To nie jest jeszcze aktywny produkt. Walidujemy zainteresowanie klinik.",
+    featuresTitle: "Rozwiązanie kliniczne wokół historii pacjenta",
     features: [
       {
-        title: "Dostęp za zgodą opiekuna",
-        body: "Badamy udostępnianie tylko tych informacji, które opiekun świadomie wybierze."
+        title: "Szybkie dodawanie danych",
+        body: "Lekarz może po wizycie dopisać ważne informacje do historii pacjenta bez zbędnej pracy administracyjnej."
       },
       {
-        title: "Pełniejszy obraz zdrowia",
-        body: "Historia, szczepienia, wyniki, dokumenty i przypomnienia mogą tworzyć jeden kontekst wizyty."
+        title: "Historia zwierzęcia",
+        body: "Szczepienia, wyniki, dokumenty, zalecenia i wcześniejsze wizyty mogą tworzyć jeden kontekst opieki."
       },
       {
-        title: "Mniej rozproszonych danych",
-        body: "Klinika nie musi zaczynać od szukania fragmentów w mailach, zdjęciach i notatkach."
+        title: "Dane od klienta",
+        body: "Opiekun może udostępnić klinice historię zwierzęcia przed wizytą lub w trakcie leczenia."
       },
       {
         title: "Prywatność od początku",
-        body: "Wave 3 zakłada przejrzystość, kontrolę opiekuna i ograniczony dostęp badawczy."
+        body: "Przyszłość zakłada przejrzystość, kontrolę opiekuna i jasne zasady dostępu dla kliniki."
       }
     ],
     stepsTitle: "Badanie w toku",
     steps: [
-      { title: "Mapujemy potrzeby klinik", body: "Sprawdzamy, jaki kontekst realnie pomaga przed wizytą i w trakcie opieki." },
-      { title: "Projektujemy zgodę opiekuna", body: "Badamy prosty, czytelny sposób wyboru danych udostępnianych klinice." },
+      { title: "Mapujemy pracę lekarza", body: "Sprawdzamy, które dane warto dodać po wizycie i co realnie skraca pracę kliniki." },
+      { title: "Projektujemy udostępnianie", body: "Badamy prosty sposób przekazania historii zwierzęcia klinice przez klienta." },
       { title: "Walidujemy bezpieczeństwo", body: "Nie budujemy portalu klinicznego bez potwierdzenia potrzeby, zaufania i ryzyk." }
     ],
     closingTitle: "Pomóż ukształtować przyszłość opieki nad pupilami",
     closingBody:
-      "Dołącz jako klinika lub lekarz weterynarii i powiedz nam, jak powinien wyglądać bezpieczny sposób pracy z kontekstem opieki udostępnionym przez opiekuna.",
+      "Dołącz jako klinika i powiedz nam, jak powinno wyglądać proste wprowadzanie danych pacjenta oraz bezpieczna praca z historią udostępnioną przez klienta.",
     closingBenefits: [
       { title: "Wczesny kontakt", body: "Odezwiemy się, gdy będziemy prowadzić rozmowy i testy badawcze." },
-      { title: "Wpływ na zakres", body: "Twoja perspektywa pomoże oddzielić użyteczny kontekst od nadmiaru danych." },
-      { title: "Kontrola i zaufanie", body: "Wave 3 rozwijamy wokół zgód, prywatności i przejrzystości." }
+      { title: "Wpływ na zakres", body: "Twoja perspektywa pomoże oddzielić użyteczną historię pacjenta od nadmiaru danych." },
+      { title: "Kontrola i zaufanie", body: "Przyszłość rozwijamy wokół zgód, prywatności i przejrzystości." }
     ],
-    clinicCta: "Dołącz jako klinika lub wet.",
-    success: "Dziękujemy. Zapisaliśmy zainteresowanie badaniem Wave 3."
+    clinicCta: "Dołącz jako klinika",
+    success: "Dziękujemy. Zapisaliśmy zainteresowanie badaniem przyszłego etapu."
   },
   en: {
-    backToWave1: "Back to Wave 1",
-    eyebrow: "Wave 3 · Research",
-    heroTitle: "Clinic collaboration with owner-approved context.",
+    backToWave1: "Back to Today",
+    eyebrow: "Future · Research",
+    heroTitle: "Clinic collaboration with a clearer patient history.",
     heroBody:
-      "Caniello is exploring tools that could help clinics and vets view owner-approved pet health records, documents, timelines, and reminders.",
-    heroNote: "Research stage. Not a product. Interest is being validated now.",
-    heroSecondaryCta: "Explore the concept",
-    featuresTitle: "Clinic collaboration with care context",
+      "We're researching a solution where veterinarians can easily enter patient data, review a pet's history, or receive that history from the client with caregiver consent.",
+    heroNote: "Research stage. Not yet an active product. Clinic interest is being validated now.",
+    featuresTitle: "A clinic solution around patient history",
     features: [
       {
-        title: "Owner-approved access",
-        body: "We're researching sharing only the information an owner deliberately chooses."
+        title: "Fast data entry",
+        body: "A veterinarian can add important visit information to the patient history without unnecessary admin work."
       },
       {
-        title: "Fuller health picture",
-        body: "History, vaccines, results, documents, and reminders could form one visit context."
+        title: "Pet history",
+        body: "Vaccines, results, documents, recommendations, and earlier visits can create one care context."
       },
       {
-        title: "Less fragmented data",
-        body: "Clinics should not have to start by searching across emails, photos, and notes."
+        title: "Client-shared data",
+        body: "The caregiver can share the pet's history with the clinic before a visit or during treatment."
       },
       {
         title: "Privacy from the start",
-        body: "Wave 3 assumes transparency, owner control, and limited research-stage access."
+        body: "Future assumes transparency, caregiver control, and clear clinic access rules."
       }
     ],
     stepsTitle: "Research in progress",
     steps: [
-      { title: "Mapping clinic needs", body: "We're learning what context actually helps before visits and during care." },
-      { title: "Designing owner consent", body: "We're researching a clear way to choose which data is shared with a clinic." },
+      { title: "Mapping vet workflows", body: "We're learning which data should be added after a visit and what actually saves clinic time." },
+      { title: "Designing sharing", body: "We're researching a simple way for the client to share a pet's history with the clinic." },
       { title: "Validating safety", body: "We won't build a clinic portal without validating need, trust, and risks." }
     ],
     closingTitle: "Help shape the future of pet care",
-    closingBody: "Join as a clinic or veterinarian and tell us what secure collaboration with owner-approved care context should look like.",
+    closingBody: "Join as a clinic and tell us what simple patient data entry and secure work with client-shared history should look like.",
     closingBenefits: [
       { title: "Early contact", body: "We'll reach out when we run research conversations and tests." },
-      { title: "Shape the scope", body: "Your perspective helps separate useful context from data overload." },
-      { title: "Control and trust", body: "Wave 3 is shaped around consent, privacy, and transparency." }
+      { title: "Shape the scope", body: "Your perspective helps separate useful patient history from data overload." },
+      { title: "Control and trust", body: "Future is shaped around consent, privacy, and transparency." }
     ],
-    clinicCta: "Join as clinic or vet",
-    success: "Thank you. Your Wave 3 research interest has been noted."
+    clinicCta: "Join as clinic",
+    success: "Thank you. Your interest in the future research stage has been noted."
   }
 } satisfies Record<Language, WavePageCopy>;
 
@@ -153,11 +150,9 @@ export function Wave3Page({ language }: Wave3PageProps) {
         ctaHref="#clinic-interest"
         ctaLabel={text.clinicCta}
         eyebrow={text.eyebrow}
-        imageAlt="Wave 3 clinic collaboration concept for owner-approved pet health context"
+        imageAlt="Future clinic collaboration concept for caregiver-approved pet health context"
         imageSrc={wave3HeroArt}
         note={text.heroNote}
-        secondaryHref="#future-waves"
-        secondaryLabel={text.heroSecondaryCta}
         title={text.heroTitle}
         tone="violet"
       />

@@ -21,7 +21,6 @@ type WavePageCopy = {
   heroBody: string;
   heroNote: string;
   heroCta: string;
-  heroSecondaryCta: string;
   featuresTitle: string;
   features: Feature[];
   stepsTitle: string;
@@ -34,14 +33,13 @@ type WavePageCopy = {
 
 const pageCopy = {
   pl: {
-    backToWave1: "Wróć do Wave 1",
-    eyebrow: "Wave 2 · Eksploracja",
+    backToWave1: "Wróć do etapu Dzisiaj",
+    eyebrow: "Następnie · Eksploracja",
     heroTitle: "Zaufane usługi dla pupili, starannie wybrane.",
     heroBody:
-      "Po MVP Caniello bada zaufany marketplace usług dla zwierząt: kuratorowany, sprawdzany i połączony z kontekstem opieki nad pupilem.",
+      "Sprawdzamy, jak Caniello może pomagać opiekunom znaleźć sprawdzoną pomoc przy opiece nad zwierzęciem - od codziennych usług po wsparcie w szczególnych sytuacjach.",
     heroNote: "To przyszła koncepcja. Badamy popyt.",
     heroCta: "Dołącz jako usługodawca",
-    heroSecondaryCta: "Zobacz koncepcję",
     featuresTitle: "Zaufane usługi dla pupili",
     features: [
       {
@@ -58,33 +56,32 @@ const pageCopy = {
       },
       {
         title: "Połączone z opieką",
-        body: "Marketplace ma mieć sens dopiero obok historii zdrowia, dokumentów i przypomnień."
+        body: "Rynek usług ma mieć sens dopiero obok historii zdrowia, dokumentów i przypomnień."
       }
     ],
     stepsTitle: "Badanie w toku",
     steps: [
       { title: "Słuchamy opiekunów", body: "Sprawdzamy, kiedy szukanie usług jest stresujące i co buduje zaufanie." },
       { title: "Rozmawiamy z usługodawcami", body: "Badamy potrzeby firm, opiekunów i specjalistów pracujących ze zwierzętami." },
-      { title: "Walidujemy właściwy zakres", body: "Wave 2 uruchomimy tylko wtedy, gdy popyt i model zaufania będą potwierdzone." }
+      { title: "Walidujemy właściwy zakres", body: "Kolejny etap uruchomimy tylko wtedy, gdy popyt i model zaufania będą potwierdzone." }
     ],
     closingTitle: "Pomóż ukształtować przyszłość opieki nad pupilami",
     closingBody: "Dołącz jako usługodawca i powiedz nam, jak powinien wyglądać zaufany sposób odkrywania usług dla zwierząt.",
     closingBenefits: [
-      { title: "Wczesne rozmowy", body: "Zaprosimy Cię do badań, gdy będziemy testować założenia Wave 2." },
+      { title: "Wczesne rozmowy", body: "Zaprosimy Cię do badań, gdy będziemy testować założenia kolejnego etapu." },
       { title: "Wpływ na model zaufania", body: "Twoja perspektywa pomoże określić, co znaczy sprawdzony dostawca." },
-      { title: "Bez obietnic marketplace'u", body: "Na tym etapie badamy popyt, zakres i ryzyka." }
+      { title: "Bez obietnic rynku usług", body: "Na tym etapie badamy popyt, zakres i ryzyka." }
     ],
-    success: "Dziękujemy. Zapisaliśmy zainteresowanie badaniem Wave 2."
+    success: "Dziękujemy. Zapisaliśmy zainteresowanie badaniem kolejnego etapu."
   },
   en: {
-    backToWave1: "Back to Wave 1",
-    eyebrow: "Wave 2 · Exploration",
+    backToWave1: "Back to Today",
+    eyebrow: "Next · Exploration",
     heroTitle: "Trusted pet services, carefully curated.",
     heroBody:
       "After our MVP, Caniello is exploring a trusted pet services marketplace: curated, reviewed, and connected to pet care context.",
     heroNote: "This is a future concept. We're researching demand.",
     heroCta: "Join as provider",
-    heroSecondaryCta: "See the concept",
     featuresTitle: "Trusted pet services",
     features: [
       {
@@ -93,7 +90,7 @@ const pageCopy = {
       },
       {
         title: "Needs-based matching",
-        body: "We want to connect pet needs, location, and owner preferences into a simpler choice."
+        body: "We want to connect pet needs, location, and caregiver preferences into a simpler choice."
       },
       {
         title: "Convenience and clarity",
@@ -106,18 +103,18 @@ const pageCopy = {
     ],
     stepsTitle: "Research in progress",
     steps: [
-      { title: "Listening to owners", body: "We're learning when service discovery is stressful and what creates trust." },
+      { title: "Listening to caregivers", body: "We're learning when service discovery is stressful and what creates trust." },
       { title: "Talking with providers", body: "We're researching the needs of businesses, caregivers, and pet specialists." },
-      { title: "Validating the right scope", body: "Wave 2 launches only if demand and a trust model are validated." }
+      { title: "Validating the right scope", body: "Next launches only if demand and a trust model are validated." }
     ],
     closingTitle: "Help shape the future of pet care",
     closingBody: "Join as a provider and tell us what a trusted way to discover pet services should look like.",
     closingBenefits: [
-      { title: "Early research", body: "We'll invite you when we're testing Wave 2 assumptions." },
+      { title: "Early research", body: "We'll invite you when we're testing next-stage assumptions." },
       { title: "Shape trust signals", body: "Your perspective helps define what verified should mean." },
       { title: "No marketplace promise", body: "At this stage, we're researching demand, scope, and risks." }
     ],
-    success: "Thank you. Your Wave 2 research interest has been noted."
+    success: "Thank you. Your interest in the next research stage has been noted."
   }
 } satisfies Record<Language, WavePageCopy>;
 
@@ -152,11 +149,9 @@ export function Wave2Page({ language }: Wave2PageProps) {
         ctaHref="#provider-interest"
         ctaLabel={text.heroCta}
         eyebrow={text.eyebrow}
-        imageAlt="Wave 2 trusted pet services marketplace concept with provider cards and a dog"
+        imageAlt="Next-stage trusted pet services marketplace concept with provider cards and pets"
         imageSrc={wave2HeroArt}
         note={text.heroNote}
-        secondaryHref="#future-waves"
-        secondaryLabel={text.heroSecondaryCta}
         title={text.heroTitle}
         tone="gold"
       />
