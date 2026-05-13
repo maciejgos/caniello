@@ -25,11 +25,11 @@ test("landing page is Polish-first, switchable, and captures segmented leads wit
 
   await expect(page.getByRole("heading", { name: /Lepsza opieka\. Silniejsza więź/i })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Co dalej" })).toBeVisible();
-  await page.getByRole("link", { name: "Jestem usługodawcą" }).click();
+  await page.getByRole("link", { name: "Zobacz usługę" }).click();
   await expect(page.getByRole("heading", { name: /Zaufane usługi dla pupili/i })).toBeVisible();
   await page.goBack();
   await expect(page.getByRole("heading", { name: "Co dalej" })).toBeVisible();
-  await page.getByRole("link", { name: "Jestem kliniką" }).click();
+  await page.getByRole("link", { name: "Podejrzyj koncepcję" }).click();
   await expect(page.getByRole("heading", { name: /Współpraca klinik/i }).first()).toBeVisible();
   await page.goBack();
   await expect(page.getByRole("heading", { name: "Co dalej" })).toBeVisible();

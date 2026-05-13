@@ -65,8 +65,8 @@ describe("Caniello landing page", () => {
   it("links Next and Future to their research pages", () => {
     render(<App />);
 
-    expect(screen.getByRole("link", { name: /jestem usługodawcą/i })).toHaveAttribute("href", "/wave-2-exploration");
-    expect(screen.getByRole("link", { name: /jestem kliniką/i })).toHaveAttribute("href", "/wave-3-research");
+    expect(screen.getByRole("link", { name: /zobacz usługę/i })).toHaveAttribute("href", "/wave-2-exploration");
+    expect(screen.getByRole("link", { name: /podejrzyj koncepcję/i })).toHaveAttribute("href", "/wave-3-research");
   });
 
   it("records validation events only after analytics consent", async () => {

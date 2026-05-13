@@ -41,6 +41,7 @@ export type FutureWave = {
   body: string;
   note: string;
   cta: string;
+  timelineCta: string;
   highlights: Feature[];
   fields: {
     organization: string;
@@ -55,6 +56,7 @@ export type WaveStoryStep = {
   status: string;
   title: string;
   body: string;
+  cta: string;
 };
 
 type Copy = {
@@ -183,13 +185,14 @@ export const copy: Record<Language, Copy> = {
     ],
     futureTitle: "Co dalej",
     futureBody:
-      "Zaczynamy od podstaw: historia zdrowia, przypomnienia, dokumenty i zaufane udostępnianie.",
+      "Zaczynamy od podstaw i rozwijamy Caniello etapami. Każdy obszar prowadzi do własnego widoku, w którym pokazujemy założenia, status prac i planowany zakres.",
     futureResearchNote: "Badanie w toku - kolejne etapy zależą od potwierdzonego popytu.",
     futureFoundation: {
       wave: "Dzisiaj",
       status: "Badanie rynku",
       title: "Podstawy opieki nad pupilem",
-      body: "Walidujemy pierwszą wersję z opiekunami."
+      body: "Walidujemy pierwszą wersję z opiekunami: historię zdrowia, przypomnienia, dokumenty i podstawowe dane pupila w jednym miejscu.",
+      cta: "Otwórz moduł opieki"
     },
     futureWaves: [
       {
@@ -199,6 +202,7 @@ export const copy: Record<Language, Copy> = {
         body: "Sprawdzamy, jak Caniello może pomagać znaleźć zaufaną pomoc przy opiece nad zwierzęciem.",
         note: "To nie jest aktywny rynek usług, rezerwacje ani płatności.",
         cta: "Jestem usługodawcą",
+        timelineCta: "Zobacz usługę",
         highlights: [
           { title: "Zweryfikowani dostawcy", body: "Tylko sprawdzone usługi i opiekunowie." },
           { title: "Dopasowanie do potrzeb", body: "Rekomendacje dopasowane do Twojego pupila." },
@@ -218,6 +222,7 @@ export const copy: Record<Language, Copy> = {
         body: "Badamy rozwiązanie dla klinik, w którym lekarz może szybko dodać dane pacjenta, zobaczyć historię zwierzęcia i pracować na informacjach udostępnionych przez klienta.",
         note: "To nie jest jeszcze aktywny portal kliniczny, integracja medyczna ani system leczenia.",
         cta: "Jestem kliniką",
+        timelineCta: "Podejrzyj koncepcję",
         highlights: [
           { title: "Dane od lekarza", body: "Szybkie dodawanie informacji z wizyty do historii pacjenta." },
           { title: "Historia zwierzęcia", body: "Szczepienia, wyniki, dokumenty i zalecenia widoczne w jednym miejscu." },
@@ -459,13 +464,14 @@ export const copy: Record<Language, Copy> = {
     ],
     futureTitle: "What's next",
     futureBody:
-      "We're starting with the essentials: health records, reminders, documents, and trusted sharing.",
+      "We're building Caniello in stages. Each area opens into its own view with the product assumptions, current status, and planned scope.",
     futureResearchNote: "Research in progress - future stages depend on validated demand.",
     futureFoundation: {
       wave: "Today",
       status: "Market research",
       title: "Pet care foundations",
-      body: "We're validating the first version with pet caregivers."
+      body: "We're validating the first version with pet caregivers: health history, reminders, documents, and essential pet details in one place.",
+      cta: "Open care module"
     },
     futureWaves: [
       {
@@ -475,6 +481,7 @@ export const copy: Record<Language, Copy> = {
         body: "We're researching how caregivers could find reliable support for pet care, from everyday services to help in specific situations.",
         note: "This is not an active service directory, booking flow, or payment product.",
         cta: "I'm a pet service provider",
+        timelineCta: "View service",
         highlights: [
           { title: "Verified providers", body: "Only trusted services and pet care professionals." },
           { title: "Needs-based matching", body: "Recommendations shaped around your pet." },
@@ -494,6 +501,7 @@ export const copy: Record<Language, Copy> = {
         body: "We're researching a clinic solution where veterinarians can quickly add patient data, review a pet's history, and work with information shared by the client.",
         note: "This is not yet an active clinic portal, medical integration, or treatment system.",
         cta: "I'm a clinic",
+        timelineCta: "Preview concept",
         highlights: [
           { title: "Vet-entered data", body: "Quickly add visit information to the patient's history." },
           { title: "Pet history", body: "Vaccines, results, documents, and recommendations visible in one place." },
