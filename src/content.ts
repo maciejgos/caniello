@@ -41,6 +41,7 @@ export type FutureWave = {
   body: string;
   note: string;
   cta: string;
+  timelineCta: string;
   highlights: Feature[];
   fields: {
     organization: string;
@@ -55,6 +56,7 @@ export type WaveStoryStep = {
   status: string;
   title: string;
   body: string;
+  cta: string;
 };
 
 type Copy = {
@@ -123,10 +125,10 @@ export const copy: Record<Language, Copy> = {
       { label: "Co dalej", href: "#future-waves" },
       { label: "Zaufanie", href: "#trust" }
     ],
-    eyebrow: "Pet health i opieka w jednym miejscu",
+    eyebrow: "Zdrowie i opieka w jednym miejscu",
     heroTitle: "Lepsza opieka. Silniejsza więź.",
     heroBody:
-      "Caniello pomaga opiekunom psów i kotów uporządkować historię zdrowia, dokumenty, przypomnienia i najważniejsze informacje do bezpiecznego udostępniania bliskim, opiekunom oraz weterynarzom.",
+      "Caniello pomaga opiekunom zwierząt małych i dużych uporządkować historię zdrowia, dokumenty, przypomnienia i najważniejsze informacje do bezpiecznego udostępniania bliskim, opiekunom oraz klinikom weterynaryjnym.",
     heroProof: "Mniej chaosu przed wizytą, wyjazdem i codzienną opieką.",
     benefits: [
       "Dokumenty i historia zdrowia",
@@ -137,15 +139,15 @@ export const copy: Record<Language, Copy> = {
     primaryCta: "Dołącz",
     researchCta: "Zgłoś zainteresowanie badaniem",
     secondaryNote: "Szanujemy prywatność. Zero spamu.",
-    emailLabel: "Adres email",
-    emailPlaceholder: "Twój adres email",
+    emailLabel: "Adres e-mail",
+    emailPlaceholder: "Twój adres e-mail",
     optionalLabel: "Opcjonalny kontekst",
-    emailError: "Wpisz poprawny adres email.",
+    emailError: "Wpisz poprawny adres e-mail.",
     consentError: "Zaznacz zgodę, aby wysłać formularz.",
     submitError: "Nie udało się wysłać formularza. Spróbuj ponownie.",
     pending: "Wysyłamy...",
     emailSuccess: "Dziękujemy. Zapisaliśmy Twoje zainteresowanie pierwszą wersją Caniello.",
-    researchSuccess: "Dziękujemy. Zapisaliśmy zainteresowanie badaniem przyszłej fali Caniello.",
+    researchSuccess: "Dziękujemy. Zapisaliśmy zainteresowanie badaniem przyszłego etapu Caniello.",
     formHint: "Wysyłka wymaga zgody. Dane trafiają do bezpiecznego procesu listy zainteresowanych.",
     leadConsentLabel:
       "Wyrażam zgodę na kontakt mailowy w sprawie Caniello oraz zapis moich danych z tego formularza w celu obsługi listy zainteresowanych.",
@@ -163,12 +165,12 @@ export const copy: Record<Language, Copy> = {
         body: "Zbierz szczepienia, wizyty, alergie, leki, wyniki badań i notatki w jednym uporządkowanym miejscu."
       },
       {
-        title: "Smart reminders",
+        title: "Inteligentne przypomnienia",
         body: "Pilnuj leków, szczepień, odrobaczania i kontroli bez zgadywania, co było zapisane ostatnio."
       },
       {
         title: "Dzielenie opieki",
-        body: "Udostępniaj najważniejsze informacje rodzinie, petsitterowi lub weterynarzowi tylko wtedy, gdy tego chcesz."
+        body: "Udostępniaj najważniejsze informacje rodzinie, opiekunowi tymczasowemu lub klinice weterynaryjnej tylko wtedy, gdy tego chcesz."
       },
       {
         title: "Bezpiecznie i prywatnie",
@@ -183,22 +185,24 @@ export const copy: Record<Language, Copy> = {
     ],
     futureTitle: "Co dalej",
     futureBody:
-      "Zaczynamy od podstaw: historia zdrowia, przypomnienia, dokumenty i zaufane udostępnianie.",
-    futureResearchNote: "Badanie w toku - przyszłe fale zależą od potwierdzonego popytu.",
+      "Zaczynamy od podstaw i rozwijamy Caniello etapami. Każdy obszar prowadzi do własnego widoku, w którym pokazujemy założenia, status prac i planowany zakres.",
+    futureResearchNote: "Badanie w toku - kolejne etapy zależą od potwierdzonego popytu.",
     futureFoundation: {
-      wave: "Wave 1",
+      wave: "Dzisiaj",
       status: "Badanie rynku",
       title: "Podstawy opieki nad pupilem",
-      body: "Walidujemy pierwszą wersję z opiekunami."
+      body: "Walidujemy pierwszą wersję z opiekunami: historię zdrowia, przypomnienia, dokumenty i podstawowe dane pupila w jednym miejscu.",
+      cta: "Otwórz moduł opieki"
     },
     futureWaves: [
       {
-        wave: "Wave 2",
+        wave: "Następnie",
         eyebrow: "Badanie potrzeb usługodawców",
         title: "Zaufane usługi dla pupili",
-        body: "Badamy kuratorski sposób odkrywania sprawdzonych usług i opiekunów.",
-        note: "To nie jest aktywny marketplace, rezerwacje ani płatności.",
+        body: "Sprawdzamy, jak Caniello może pomagać znaleźć zaufaną pomoc przy opiece nad zwierzęciem.",
+        note: "To nie jest aktywny rynek usług, rezerwacje ani płatności.",
         cta: "Jestem usługodawcą",
+        timelineCta: "Zobacz usługę",
         highlights: [
           { title: "Zweryfikowani dostawcy", body: "Tylko sprawdzone usługi i opiekunowie." },
           { title: "Dopasowanie do potrzeb", body: "Rekomendacje dopasowane do Twojego pupila." },
@@ -209,26 +213,27 @@ export const copy: Record<Language, Copy> = {
           context: "Kategoria usługi lub lokalizacja",
           website: "Strona internetowa"
         },
-        success: "Dziękujemy. Zapisaliśmy zainteresowanie badaniem Wave 2."
+        success: "Dziękujemy. Zapisaliśmy zainteresowanie badaniem kolejnego etapu."
       },
       {
-        wave: "Wave 3",
+        wave: "Przyszłość",
         eyebrow: "Eksploracja współpracy z klinikami",
-        title: "Kontekst opieki za zgodą opiekuna",
-        body: "Eksplorujemy narzędzia do pracy z kontekstem zdrowia udostępnionym przez opiekuna.",
-        note: "To nie jest aktywny portal kliniczny, integracja medyczna ani system leczenia.",
-        cta: "Jestem kliniką lub wet.",
+        title: "Historia pacjenta pod ręką",
+        body: "Badamy rozwiązanie dla klinik, w którym lekarz może szybko dodać dane pacjenta, zobaczyć historię zwierzęcia i pracować na informacjach udostępnionych przez klienta.",
+        note: "To nie jest jeszcze aktywny portal kliniczny, integracja medyczna ani system leczenia.",
+        cta: "Jestem kliniką",
+        timelineCta: "Podejrzyj koncepcję",
         highlights: [
-          { title: "Bezpieczne udostępnianie", body: "Udostępniaj tylko to, co potrzebne - zawsze za Twoją zgodą." },
-          { title: "Pełny kontekst zdrowia", body: "Historia, szczepienia, wyniki i dokumenty w jednym miejscu." },
-          { title: "Współpraca z kliniką", body: "Lepsza opieka dzięki pełniejszemu obrazowi zdrowia pupila." }
+          { title: "Dane od lekarza", body: "Szybkie dodawanie informacji z wizyty do historii pacjenta." },
+          { title: "Historia zwierzęcia", body: "Szczepienia, wyniki, dokumenty i zalecenia widoczne w jednym miejscu." },
+          { title: "Zgoda klienta", body: "Klinika widzi informacje udostępnione przez opiekuna zwierzęcia." }
         ],
         fields: {
           organization: "Nazwa kliniki lub organizacji",
           context: "Rola lub kraj",
           website: "Strona internetowa"
         },
-        success: "Dziękujemy. Zapisaliśmy zainteresowanie badaniem Wave 3."
+        success: "Dziękujemy. Zapisaliśmy zainteresowanie badaniem przyszłego etapu."
       }
     ],
     closingTitle: "Budujemy Caniello z opiekunami.",
@@ -263,7 +268,7 @@ export const copy: Record<Language, Copy> = {
         title: "Polityka prywatności",
         eyebrow: "Prywatność i zgody",
         intro:
-          "Ta polityka wyjaśnia, jakie dane zbieramy na stronie landing page Caniello, w jakim celu i jakie prawa przysługują osobom, które zostawiają swoje dane.",
+          "Ta polityka wyjaśnia, jakie dane zbieramy na stronie Caniello, w jakim celu i jakie prawa przysługują osobom, które zostawiają swoje dane.",
         updated: "Ostatnia aktualizacja: 12 maja 2026",
         sections: [
           {
@@ -276,14 +281,14 @@ export const copy: Record<Language, Copy> = {
           {
             title: "Jakie dane zbieramy",
             body: [
-              "Gdy użytkownik dołącza do listy zainteresowanych lub zgłasza udział w badaniu, przetwarzamy adres email, wybraną rolę, falę zainteresowania, źródło formularza, język strony, zgodę, parametry UTM oraz opcjonalnie nazwę organizacji, kontekst i stronę internetową.",
+              "Gdy użytkownik dołącza do listy zainteresowanych lub zgłasza udział w badaniu, przetwarzamy adres e-mail, wybraną rolę, etap zainteresowania, źródło formularza, język strony, zgodę, parametry UTM oraz opcjonalnie nazwę organizacji, kontekst i stronę internetową.",
               "Po zgodzie analitycznej możemy zapisywać anonimowe zdarzenia walidacyjne, takie jak odsłona strony, wysłanie formularza i wynik formularza. Bez tej zgody nie wysyłamy niekoniecznych zdarzeń analitycznych."
             ]
           },
           {
             title: "Cele i podstawy przetwarzania",
             body: [
-              "Dane z formularzy przetwarzamy, aby obsłużyć listę zainteresowanych, kontaktować się w sprawie Caniello i prowadzić badania potrzeb dla kolejnych fal produktu. Podstawą jest zgoda osoby wysyłającej formularz.",
+              "Dane z formularzy przetwarzamy, aby obsłużyć listę zainteresowanych, kontaktować się w sprawie Caniello i prowadzić badania potrzeb dla kolejnych etapów produktu. Podstawą jest zgoda osoby wysyłającej formularz.",
               "Dane techniczne i zdarzenia walidacyjne przetwarzamy wyłącznie w zakresie potrzebnym do sprawdzenia zainteresowania stroną i poprawy doświadczenia użytkownika, gdy użytkownik wyrazi zgodę analityczną."
             ]
           },
@@ -297,7 +302,7 @@ export const copy: Record<Language, Copy> = {
           {
             title: "Okres przechowywania",
             body: [
-              "Dane z listy zainteresowanych przechowujemy do czasu wycofania zgody, zakończenia walidacji danej fali produktu albo usunięcia listy zainteresowanych.",
+              "Dane z listy zainteresowanych przechowujemy do czasu wycofania zgody, zakończenia walidacji danego etapu produktu albo usunięcia listy zainteresowanych.",
               "Preferencja analityczna jest zapisywana lokalnie w przeglądarce, aby nie pytać ponownie przy każdej wizycie."
             ]
           },
@@ -314,7 +319,7 @@ export const copy: Record<Language, Copy> = {
         title: "Regulamin",
         eyebrow: "Zasady korzystania",
         intro:
-          "Ten regulamin opisuje zasady korzystania ze strony landing page Caniello i formularzy zainteresowania. Nie jest regulaminem pełnej aplikacji produkcyjnej.",
+          "Ten regulamin opisuje zasady korzystania ze strony Caniello i formularzy zainteresowania. Nie jest regulaminem pełnej aplikacji produkcyjnej.",
         updated: "Ostatnia aktualizacja: 12 maja 2026",
         sections: [
           {
@@ -327,15 +332,15 @@ export const copy: Record<Language, Copy> = {
           {
             title: "Formularze i kontakt",
             body: [
-              "Użytkownik powinien podawać prawdziwy adres email i dane, do których ma prawo.",
+              "Użytkownik powinien podawać prawdziwy adres e-mail i dane, do których ma prawo.",
               "Caniello może kontaktować się z użytkownikiem w sprawie listy zainteresowanych, badań produktu, zaproszeń do testów i informacji o rozwoju usługi, zgodnie z udzieloną zgodą."
             ]
           },
           {
             title: "Zakres niedostępny na tym etapie",
             body: [
-              "Landing page nie oferuje diagnozy, porad leczenia, rezerwacji usług, płatności, kont użytkowników, oficjalnych dokumentów ani zastępstwa dla paszportu zwierzęcia.",
-              "Wave 2 i Wave 3 są opisane jako badanie potrzeb, nie jako dostępne produkty marketplace, kliniczne ani medyczne."
+              "Strona nie oferuje diagnozy, porad leczenia, rezerwacji usług, płatności, kont użytkowników, oficjalnych dokumentów ani zastępstwa dla paszportu zwierzęcia.",
+              "Następnie i Przyszłość są opisane jako badanie potrzeb, nie jako dostępne produkty usługowe, kliniczne ani medyczne."
             ]
           },
           {
@@ -402,12 +407,12 @@ export const copy: Record<Language, Copy> = {
     eyebrow: "Pet health and care in one place",
     heroTitle: "Better care. Stronger bond.",
     heroBody:
-      "Caniello helps dog and cat owners organize health history, documents, reminders, and the care details they choose to share with family, caregivers, and veterinarians.",
+      "Caniello helps pet caregivers organize health history, documents, reminders, and the care details they choose to share with family, caregivers, and veterinary clinics.",
     heroProof: "Less chaos before visits, travel, and everyday care.",
     benefits: [
       "Health records and documents",
       "Medication, vaccine, and visit reminders",
-      "Owner-controlled sharing",
+      "Caregiver-controlled sharing",
       "A private place for pet care information"
     ],
     primaryCta: "Join",
@@ -421,7 +426,7 @@ export const copy: Record<Language, Copy> = {
     submitError: "We could not send the form. Please try again.",
     pending: "Sending...",
     emailSuccess: "Thank you. Your interest in the first Caniello version has been noted.",
-    researchSuccess: "Thank you. Your future-wave research interest has been noted.",
+    researchSuccess: "Thank you. Your future-stage research interest has been noted.",
     formHint: "Submission requires consent. Data is sent to the waitlist process.",
     leadConsentLabel:
       "I agree that Caniello may contact me by email and store the data from this form to manage waitlist or research-interest follow-up.",
@@ -444,11 +449,11 @@ export const copy: Record<Language, Copy> = {
       },
       {
         title: "Care sharing",
-        body: "Share key details with family, sitters, or vets only when you choose to."
+        body: "Share key details with family, sitters, or veterinary clinics only when you choose to."
       },
       {
         title: "Secure & private",
-        body: "Caniello organizes owner-held data. It does not replace vets, diagnoses, or official passports."
+        body: "Caniello organizes caregiver-held data. It does not replace veterinary clinics, diagnoses, or official passports."
       }
     ],
     howTitle: "How Caniello works",
@@ -459,22 +464,24 @@ export const copy: Record<Language, Copy> = {
     ],
     futureTitle: "What's next",
     futureBody:
-      "We're starting with the essentials: health records, reminders, documents, and trusted sharing.",
-    futureResearchNote: "Research in progress - future waves depend on validated demand.",
+      "We're building Caniello in stages. Each area opens into its own view with the product assumptions, current status, and planned scope.",
+    futureResearchNote: "Research in progress - future stages depend on validated demand.",
     futureFoundation: {
-      wave: "Wave 1",
+      wave: "Today",
       status: "Market research",
       title: "Pet care foundations",
-      body: "We're validating the first version with pet owners."
+      body: "We're validating the first version with pet caregivers: health history, reminders, documents, and essential pet details in one place.",
+      cta: "Open care module"
     },
     futureWaves: [
       {
-        wave: "Wave 2",
+        wave: "Next",
         eyebrow: "Provider research",
         title: "Trusted pet services",
-        body: "We're researching a curated way to discover trusted pet-related services and providers.",
-        note: "This is not an active marketplace, booking flow, or payment product.",
+        body: "We're researching how caregivers could find reliable support for pet care, from everyday services to help in specific situations.",
+        note: "This is not an active service directory, booking flow, or payment product.",
         cta: "I'm a pet service provider",
+        timelineCta: "View service",
         highlights: [
           { title: "Verified providers", body: "Only trusted services and pet care professionals." },
           { title: "Needs-based matching", body: "Recommendations shaped around your pet." },
@@ -485,34 +492,35 @@ export const copy: Record<Language, Copy> = {
           context: "Service category or location",
           website: "Website"
         },
-        success: "Thank you. Your Wave 2 research interest has been noted."
+        success: "Thank you. Your interest in the next research stage has been noted."
       },
       {
-        wave: "Wave 3",
+        wave: "Future",
         eyebrow: "Clinic collaboration exploration",
-        title: "Owner-approved care context",
-        body: "We're exploring tools that help clinics work with owner-approved pet health context.",
-        note: "This is not an active clinic portal, medical integration, or treatment system.",
-        cta: "I'm a clinic or vet",
+        title: "Patient history at hand",
+        body: "We're researching a clinic solution where veterinarians can quickly add patient data, review a pet's history, and work with information shared by the client.",
+        note: "This is not yet an active clinic portal, medical integration, or treatment system.",
+        cta: "I'm a clinic",
+        timelineCta: "Preview concept",
         highlights: [
-          { title: "Secure sharing", body: "Share only what is needed - always with your approval." },
-          { title: "Full health context", body: "History, vaccines, results, and documents in one place." },
-          { title: "Clinic collaboration", body: "Better care through a fuller picture of your pet's health." }
+          { title: "Vet-entered data", body: "Quickly add visit information to the patient's history." },
+          { title: "Pet history", body: "Vaccines, results, documents, and recommendations visible in one place." },
+          { title: "Client consent", body: "The clinic sees information shared by the pet caregiver." }
         ],
         fields: {
           organization: "Clinic or organization name",
           context: "Role or country",
           website: "Website"
         },
-        success: "Thank you. Your Wave 3 research interest has been noted."
+        success: "Thank you. Your interest in the future research stage has been noted."
       }
     ],
-    closingTitle: "We're building Caniello with pet owners.",
+    closingTitle: "We're building Caniello with pet caregivers.",
     closingBody: "Join the waitlist to get early access and help shape the first version of calmer pet care.",
     closingBenefits: [
       { title: "Early access", body: "Be one of the first people to try Caniello." },
       { title: "Shape the product", body: "Your feedback helps set the priorities for version one." },
-      { title: "Built with care", body: "For pets. For owners. Without the fluff." }
+      { title: "Built with care", body: "For pets. For caregivers. Without the fluff." }
     ],
     trustTitle: "Caniello does not replace a veterinarian or passport.",
     trustBody:
@@ -551,14 +559,14 @@ export const copy: Record<Language, Copy> = {
           {
             title: "Data we collect",
             body: [
-              "When someone joins the waitlist or shares research interest, we process email address, selected role, interest wave, form source, page language, consent state, UTM parameters, and optionally organization name, context, and website.",
+              "When someone joins the waitlist or shares research interest, we process email address, selected role, interest stage, form source, page language, consent state, UTM parameters, and optionally organization name, context, and website.",
               "After analytics consent, we may store anonymous validation events such as page views, form submissions, and form outcomes. Without that consent, non-essential analytics events stay off."
             ]
           },
           {
             title: "Purposes and legal basis",
             body: [
-              "We process form data to manage the waitlist, contact people about Caniello, and research demand for future product waves. The legal basis is the consent given when submitting the form.",
+              "We process form data to manage the waitlist, contact people about Caniello, and research demand for future product stages. The legal basis is the consent given when submitting the form.",
               "We process technical and validation-event data only as needed to measure interest and improve the landing experience, when analytics consent is granted."
             ]
           },
@@ -572,7 +580,7 @@ export const copy: Record<Language, Copy> = {
           {
             title: "Retention",
             body: [
-              "Waitlist and research-interest data is kept until consent is withdrawn, the relevant validation wave ends, or the waitlist is deleted.",
+              "Waitlist and research-interest data is kept until consent is withdrawn, the relevant validation stage ends, or the waitlist is deleted.",
               "The analytics preference is stored locally in the browser so the page does not ask again on every visit."
             ]
           },
@@ -610,7 +618,7 @@ export const copy: Record<Language, Copy> = {
             title: "Unavailable scope",
             body: [
               "The landing page does not provide diagnosis, treatment advice, booking, payments, user accounts, official documents, or replacement for an official pet passport.",
-              "Wave 2 and Wave 3 are presented as research, not as active marketplace, clinic, or medical products."
+              "Next and Future are presented as research, not as active service, clinic, or medical products."
             ]
           },
           {
