@@ -1,5 +1,88 @@
 import { expect, test } from "@playwright/test";
 
+test("main landing page email capture validates input, requires consent, and submits every signup form", async ({ page }) => {
+  const submissions: unknown[] = [];
+
+  await page.route("**/api/landing-leads", async (route) => {
+    submissions.push(route.request().postDataJSON());
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ ok: true })
+    });
+  });
+  await page.route("**/api/validation-events", async (route) => {
+    await route.fulfill({
+      status: 202,
+      contentType: "application/json",
+      body: JSON.stringify({ ok: true })
+    });
+  });
+
+  await page.goto("/?utm_source=e2e&utm_medium=playwright&utm_campaign=email-capture&utm_term=owners&utm_content=landing");
+
+  const heroForm = page.locator('form[data-source="landing_page_hero"]');
+  await heroForm.getByRole("button", { name: /Dołącz/i }).click();
+  await expect(heroForm.getByText("Wpisz poprawny adres e-mail.")).toBeVisible();
+  expect(submissions).toHaveLength(0);
+
+  await heroForm.getByLabel(/Adres e-mail/i).fill("not-an-email");
+  await heroForm.getByRole("button", { name: /Dołącz/i }).click();
+  await expect(heroForm.getByText("Wpisz poprawny adres e-mail.")).toBeVisible();
+  expect(submissions).toHaveLength(0);
+
+  await heroForm.getByLabel(/Adres e-mail/i).fill("owner@example.com");
+  await heroForm.getByRole("button", { name: /Dołącz/i }).click();
+  await expect(heroForm.getByText("Zaznacz zgodę, aby wysłać formularz.")).toBeVisible();
+  expect(submissions).toHaveLength(0);
+
+  await heroForm.getByRole("checkbox").check();
+  await heroForm.getByRole("button", { name: /Dołącz/i }).click();
+  await expect(heroForm.getByText("Dziękujemy. Zapisaliśmy Cię na listę Caniello.")).toBeVisible();
+
+  const midForm = page.locator('form[data-source="landing_page_mid_cta"]');
+  await midForm.getByLabel(/Adres e-mail/i).fill("mid@example.com");
+  await midForm.getByRole("checkbox").check();
+  await midForm.getByRole("button", { name: /Dołącz/i }).click();
+  await expect(midForm.getByText("Dziękujemy. Zapisaliśmy Cię na listę Caniello.")).toBeVisible();
+
+  const footerForm = page.locator('form[data-source="landing_page_footer"]');
+  await footerForm.getByLabel(/Adres e-mail/i).fill("footer@example.com");
+  await footerForm.getByRole("checkbox").check();
+  await footerForm.getByRole("button", { name: /Dołącz/i }).click();
+  await expect(footerForm.getByText("Dziękujemy. Zapisaliśmy Cię na listę Caniello.")).toBeVisible();
+
+  expect(submissions).toEqual([
+    expect.objectContaining({
+      email: "owner@example.com",
+      source: "landing_page_hero",
+      leadConsent: true,
+      language: "pl",
+      utm: {
+        utm_source: "e2e",
+        utm_medium: "playwright",
+        utm_campaign: "email-capture",
+        utm_term: "owners",
+        utm_content: "landing"
+      }
+    }),
+    expect.objectContaining({
+      email: "mid@example.com",
+      source: "landing_page_mid_cta",
+      leadConsent: true,
+      language: "pl",
+      utm: expect.objectContaining({ utm_campaign: "email-capture" })
+    }),
+    expect.objectContaining({
+      email: "footer@example.com",
+      source: "landing_page_footer",
+      leadConsent: true,
+      language: "pl",
+      utm: expect.objectContaining({ utm_campaign: "email-capture" })
+    })
+  ]);
+});
+
 test("landing page is Polish-first, switchable, and captures waitlist leads with consent", async ({ page }, testInfo) => {
   const submissions: unknown[] = [];
   const validationEvents: unknown[] = [];
