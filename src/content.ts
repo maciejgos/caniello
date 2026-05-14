@@ -198,11 +198,11 @@ export const copy: Record<Language, Copy> = {
       {
         wave: "Następnie",
         eyebrow: "Badanie potrzeb usługodawców",
-        title: "Zaufane usługi dla pupili",
-        body: "Sprawdzamy, jak Caniello może pomagać znaleźć zaufaną pomoc przy opiece nad zwierzęciem.",
+        title: "Caniello Care Network",
+        body: "Sprawdzamy, jak Caniello może łączyć opiekunów z zaufaną pomocą wokół codziennej opieki nad zwierzęciem.",
         note: "To nie jest aktywny rynek usług, rezerwacje ani płatności.",
         cta: "Jestem usługodawcą",
-        timelineCta: "Zobacz usługę",
+        timelineCta: "Poznaj Care Network",
         highlights: [
           { title: "Zweryfikowani dostawcy", body: "Tylko sprawdzone usługi i opiekunowie." },
           { title: "Dopasowanie do potrzeb", body: "Rekomendacje dopasowane do Twojego pupila." },
@@ -218,11 +218,11 @@ export const copy: Record<Language, Copy> = {
       {
         wave: "Przyszłość",
         eyebrow: "Eksploracja współpracy z klinikami",
-        title: "Historia pacjenta pod ręką",
-        body: "Badamy rozwiązanie dla klinik, w którym lekarz może szybko dodać dane pacjenta, zobaczyć historię zwierzęcia i pracować na informacjach udostępnionych przez klienta.",
+        title: "Caniello Clinic Connect",
+        body: "Badamy rozwiązanie dla klinik, w którym lekarz może szybko dodać dane pacjenta, zobaczyć historię opieki i pracować na informacjach udostępnionych przez klienta.",
         note: "To nie jest jeszcze aktywny portal kliniczny, integracja medyczna ani system leczenia.",
         cta: "Jestem kliniką",
-        timelineCta: "Podejrzyj koncepcję",
+        timelineCta: "Poznaj Clinic Connect",
         highlights: [
           { title: "Dane od lekarza", body: "Szybkie dodawanie informacji z wizyty do historii pacjenta." },
           { title: "Historia zwierzęcia", body: "Szczepienia, wyniki, dokumenty i zalecenia widoczne w jednym miejscu." },
@@ -340,7 +340,7 @@ export const copy: Record<Language, Copy> = {
             title: "Zakres niedostępny na tym etapie",
             body: [
               "Strona nie oferuje diagnozy, porad leczenia, rezerwacji usług, płatności, kont użytkowników, oficjalnych dokumentów ani zastępstwa dla paszportu zwierzęcia.",
-              "Następnie i Przyszłość są opisane jako badanie potrzeb, nie jako dostępne produkty usługowe, kliniczne ani medyczne."
+              "Caniello Care Network i Caniello Clinic Connect są opisane jako badanie potrzeb, nie jako dostępne produkty usługowe, kliniczne ani medyczne."
             ]
           },
           {
@@ -477,11 +477,11 @@ export const copy: Record<Language, Copy> = {
       {
         wave: "Next",
         eyebrow: "Provider research",
-        title: "Trusted pet services",
-        body: "We're researching how caregivers could find reliable support for pet care, from everyday services to help in specific situations.",
+        title: "Caniello Care Network",
+        body: "We're researching how Caniello could connect caregivers with trusted support around everyday pet care.",
         note: "This is not an active service directory, booking flow, or payment product.",
         cta: "I'm a pet service provider",
-        timelineCta: "View service",
+        timelineCta: "Explore Care Network",
         highlights: [
           { title: "Verified providers", body: "Only trusted services and pet care professionals." },
           { title: "Needs-based matching", body: "Recommendations shaped around your pet." },
@@ -497,11 +497,11 @@ export const copy: Record<Language, Copy> = {
       {
         wave: "Future",
         eyebrow: "Clinic collaboration exploration",
-        title: "Patient history at hand",
-        body: "We're researching a clinic solution where veterinarians can quickly add patient data, review a pet's history, and work with information shared by the client.",
+        title: "Caniello Clinic Connect",
+        body: "We're researching a clinic solution where veterinarians can quickly add patient data, review the care history, and work with information shared by the client.",
         note: "This is not yet an active clinic portal, medical integration, or treatment system.",
         cta: "I'm a clinic",
-        timelineCta: "Preview concept",
+        timelineCta: "Explore Clinic Connect",
         highlights: [
           { title: "Vet-entered data", body: "Quickly add visit information to the patient's history." },
           { title: "Pet history", body: "Vaccines, results, documents, and recommendations visible in one place." },

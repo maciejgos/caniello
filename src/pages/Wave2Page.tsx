@@ -35,12 +35,12 @@ const pageCopy = {
   pl: {
     backToWave1: "Wróć do etapu Dzisiaj",
     eyebrow: "Następnie · Eksploracja",
-    heroTitle: "Zaufane usługi dla pupili, starannie wybrane.",
+    heroTitle: "Caniello Care Network: zaufana pomoc wokół pupila.",
     heroBody:
       "Sprawdzamy, jak Caniello może pomagać opiekunom znaleźć sprawdzoną pomoc przy opiece nad zwierzęciem - od codziennych usług po wsparcie w szczególnych sytuacjach.",
     heroNote: "To przyszła koncepcja. Badamy popyt.",
     heroCta: "Dołącz jako usługodawca",
-    featuresTitle: "Zaufane usługi dla pupili",
+    featuresTitle: "Caniello Care Network",
     features: [
       {
         title: "Zweryfikowani dostawcy",
@@ -77,12 +77,12 @@ const pageCopy = {
   en: {
     backToWave1: "Back to Today",
     eyebrow: "Next · Exploration",
-    heroTitle: "Trusted support for pet care.",
+    heroTitle: "Caniello Care Network: trusted support around pet care.",
     heroBody:
       "We're exploring how Caniello could help caregivers find reliable support for their pet's care, from everyday services to help in specific situations.",
     heroNote: "This is a future concept. We're researching demand.",
     heroCta: "Join as provider",
-    featuresTitle: "Trusted pet services",
+    featuresTitle: "Caniello Care Network",
     features: [
       {
         title: "Verified providers",

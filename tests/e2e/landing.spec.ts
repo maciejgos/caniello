@@ -25,12 +25,12 @@ test("landing page is Polish-first, switchable, and captures segmented leads wit
 
   await expect(page.getByRole("heading", { name: /Lepsza opieka\. Silniejsza więź/i })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Co dalej" })).toBeVisible();
-  await page.getByRole("link", { name: "Zobacz usługę" }).click();
-  await expect(page.getByRole("heading", { name: /Zaufane usługi dla pupili/i })).toBeVisible();
+  await page.getByRole("link", { name: "Poznaj Care Network" }).click();
+  await expect(page.getByRole("heading", { name: /Caniello Care Network/i })).toBeVisible();
   await page.goBack();
   await expect(page.getByRole("heading", { name: "Co dalej" })).toBeVisible();
-  await page.getByRole("link", { name: "Podejrzyj koncepcję" }).click();
-  await expect(page.getByRole("heading", { name: /Współpraca klinik/i }).first()).toBeVisible();
+  await page.getByRole("link", { name: "Poznaj Clinic Connect" }).click();
+  await expect(page.getByRole("heading", { name: /Caniello Clinic Connect/i }).first()).toBeVisible();
   await page.goBack();
   await expect(page.getByRole("heading", { name: "Co dalej" })).toBeVisible();
 
@@ -99,7 +99,7 @@ test("Next exploration page presents provider research and captures interest", a
 
   await page.goto("/wave-2-exploration?utm_source=e2e&utm_campaign=wave2");
 
-  await expect(page.getByRole("heading", { name: /Zaufane usługi dla pupili/i }).first()).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Caniello Care Network/i }).first()).toBeVisible();
   await expect(page.getByText(/Badanie w toku/i).first()).toBeVisible();
   await expect(page.getByRole("heading", { name: /Pomóż ukształtować przyszłość opieki/i })).toBeVisible();
 
@@ -144,7 +144,7 @@ test("Future research page presents clinic collaboration and captures interest",
 
   await page.goto("/wave-3-research?utm_source=e2e&utm_campaign=wave3");
 
-  await expect(page.getByRole("heading", { name: /Współpraca klinik/i })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Caniello Clinic Connect/i })).toBeVisible();
   await expect(page.getByText(/Badanie w toku/i).first()).toBeVisible();
   await expect(page.getByRole("heading", { name: /Pomóż ukształtować przyszłość opieki/i })).toBeVisible();
 

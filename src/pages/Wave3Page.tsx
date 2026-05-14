@@ -35,11 +35,11 @@ const pageCopy = {
   pl: {
     backToWave1: "Wróć do etapu Dzisiaj",
     eyebrow: "Przyszłość · Badanie",
-    heroTitle: "Współpraca klinik z pełniejszą historią pacjenta.",
+    heroTitle: "Caniello Clinic Connect: historia opieki przy wizycie.",
     heroBody:
       "Badamy rozwiązanie, w którym lekarz może łatwo wprowadzić dane pacjenta, zobaczyć historię zwierzęcia albo otrzymać ją od klienta za zgodą opiekuna.",
     heroNote: "Etap badawczy. To nie jest jeszcze aktywny produkt. Walidujemy zainteresowanie klinik.",
-    featuresTitle: "Rozwiązanie kliniczne wokół historii pacjenta",
+    featuresTitle: "Caniello Clinic Connect",
     features: [
       {
         title: "Szybkie dodawanie danych",
@@ -78,11 +78,11 @@ const pageCopy = {
   en: {
     backToWave1: "Back to Today",
     eyebrow: "Future · Research",
-    heroTitle: "Clinic collaboration with a clearer patient history.",
+    heroTitle: "Caniello Clinic Connect: care history ready for the visit.",
     heroBody:
       "We're researching a solution where veterinarians can easily enter patient data, review a pet's history, or receive that history from the client with caregiver consent.",
     heroNote: "Research stage. Not yet an active product. Clinic interest is being validated now.",
-    featuresTitle: "A clinic solution around patient history",
+    featuresTitle: "Caniello Clinic Connect",
     features: [
       {
         title: "Fast data entry",

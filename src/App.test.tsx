@@ -65,8 +65,8 @@ describe("Caniello landing page", () => {
   it("links Next and Future to their research pages", () => {
     render(<App />);
 
-    expect(screen.getByRole("link", { name: /zobacz usługę/i })).toHaveAttribute("href", "/wave-2-exploration");
-    expect(screen.getByRole("link", { name: /podejrzyj koncepcję/i })).toHaveAttribute("href", "/wave-3-research");
+    expect(screen.getByRole("link", { name: /poznaj care network/i })).toHaveAttribute("href", "/wave-2-exploration");
+    expect(screen.getByRole("link", { name: /poznaj clinic connect/i })).toHaveAttribute("href", "/wave-3-research");
   });
 
   it("records validation events only after analytics consent", async () => {
@@ -109,7 +109,7 @@ describe("Caniello landing page", () => {
     window.history.pushState({}, "", "/wave-2-exploration");
     render(<App />);
 
-    expect(screen.getAllByRole("heading", { name: /zaufane usługi dla pupili/i }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("heading", { name: /caniello care network/i }).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/badanie w toku/i).length).toBeGreaterThan(0);
 
     await user.type(screen.getByLabelText(/adres e-mail/i), "provider@example.com");
@@ -132,7 +132,7 @@ describe("Caniello landing page", () => {
     window.history.pushState({}, "", "/wave-3-research");
     render(<App />);
 
-    expect(screen.getAllByRole("heading", { name: /współpraca klinik/i }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("heading", { name: /caniello clinic connect/i }).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Badanie w toku/i).length).toBeGreaterThan(0);
 
     await user.type(screen.getByLabelText(/adres e-mail/i), "clinic@example.com");
