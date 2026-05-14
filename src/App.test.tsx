@@ -110,10 +110,11 @@ describe("Caniello landing page", () => {
 
     expect(screen.getAllByRole("heading", { name: /zaufana pomoc/i }).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/badanie w toku/i).length).toBeGreaterThan(0);
+    expect(screen.queryByText(/wróć do etapu dzisiaj/i)).not.toBeInTheDocument();
 
-    await user.type(screen.getByLabelText(/adres e-mail/i), "marketplace@example.com");
-    await user.click(screen.getByRole("checkbox"));
-    await user.click(screen.getByRole("button", { name: /dołącz do listy/i }));
+    await user.type(screen.getAllByLabelText(/adres e-mail/i)[0], "marketplace@example.com");
+    await user.click(screen.getAllByRole("checkbox")[0]);
+    await user.click(screen.getAllByRole("button", { name: /dołącz do listy/i })[0]);
 
     await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
     const calls = (fetch as unknown as { mock: { calls: Array<[string, RequestInit]> } }).mock.calls;
@@ -133,10 +134,11 @@ describe("Caniello landing page", () => {
 
     expect(screen.getAllByRole("heading", { name: /pełniejszy kontekst pacjenta/i }).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Badanie w toku/i).length).toBeGreaterThan(0);
+    expect(screen.queryByText(/wróć do etapu dzisiaj/i)).not.toBeInTheDocument();
 
-    await user.type(screen.getByLabelText(/adres e-mail/i), "clinic@example.com");
-    await user.click(screen.getByRole("checkbox"));
-    await user.click(screen.getByRole("button", { name: /dołącz do listy/i }));
+    await user.type(screen.getAllByLabelText(/adres e-mail/i)[0], "clinic@example.com");
+    await user.click(screen.getAllByRole("checkbox")[0]);
+    await user.click(screen.getAllByRole("button", { name: /dołącz do listy/i })[0]);
 
     await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
     const calls = (fetch as unknown as { mock: { calls: Array<[string, RequestInit]> } }).mock.calls;

@@ -184,15 +184,17 @@ test("Next exploration page presents marketplace research and captures a generic
   await expect(page.getByRole("heading", { name: /Zaufana pomoc/i }).first()).toBeVisible();
   await expect(page.getByText(/Badanie w toku/i).first()).toBeVisible();
   await expect(page.getByRole("heading", { name: /zaufany rynek usług razem z opiekunami/i })).toBeVisible();
+  await expect(page.getByText("Wróć do etapu Dzisiaj")).toHaveCount(0);
 
   await page.screenshot({
     path: testInfo.outputPath(`wave2-exploration-${testInfo.project.name}.png`),
     fullPage: true
   });
 
-  await page.getByLabel(/Adres e-mail/i).fill("marketplace@example.com");
-  await page.getByRole("checkbox").check();
-  await page.getByRole("button", { name: /Dołącz do listy/i }).click();
+  const wave2Form = page.locator('form[data-source="landing_page_wave2"]').first();
+  await wave2Form.getByLabel(/Adres e-mail/i).fill("marketplace@example.com");
+  await wave2Form.getByRole("checkbox").check();
+  await wave2Form.getByRole("button", { name: /Dołącz do listy/i }).click();
 
   await expect(page.getByText(/Zapisaliśmy Cię na listę Caniello/i)).toBeVisible();
   expect(submissions).toEqual([
@@ -229,15 +231,17 @@ test("Future research page presents clinic collaboration and captures a generic 
   await expect(page.getByRole("heading", { name: /Pełniejszy kontekst pacjenta/i })).toBeVisible();
   await expect(page.getByText(/Badanie w toku/i).first()).toBeVisible();
   await expect(page.getByRole("heading", { name: /współpracę z klinikami/i })).toBeVisible();
+  await expect(page.getByText("Wróć do etapu Dzisiaj")).toHaveCount(0);
 
   await page.screenshot({
     path: testInfo.outputPath(`wave3-research-${testInfo.project.name}.png`),
     fullPage: true
   });
 
-  await page.getByLabel(/Adres e-mail/i).fill("clinic@example.com");
-  await page.getByRole("checkbox").check();
-  await page.getByRole("button", { name: /Dołącz do listy/i }).click();
+  const wave3Form = page.locator('form[data-source="landing_page_wave3"]').first();
+  await wave3Form.getByLabel(/Adres e-mail/i).fill("clinic@example.com");
+  await wave3Form.getByRole("checkbox").check();
+  await wave3Form.getByRole("button", { name: /Dołącz do listy/i }).click();
 
   await expect(page.getByText(/Zapisaliśmy Cię na listę Caniello/i)).toBeVisible();
   expect(submissions).toEqual([

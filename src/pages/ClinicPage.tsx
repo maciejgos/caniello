@@ -1,39 +1,14 @@
-import { useEffect, useState } from "react";
 import wave3HeroArt from "../../spec/notes/landing/image 6.png";
 import waitlistPets from "../assets/puppys_transparent.png";
-import { AnalyticsConsentPopup } from "../components/AnalyticsConsentPopup";
-import { CareFlowCtaSection, FeatureOverviewSection, ResearchHeroSection } from "../components/CareStorySections";
-import { WaitlistForm } from "../components/WaitlistForm";
-import { WaveStorySection } from "../components/WaveStorySection";
-import type { Feature, Language } from "../content";
-import { copy } from "../content";
-import { readUtmParams } from "../lib/landing-leads";
-import { readAnalyticsConsent, readAnalyticsPreference, saveAnalyticsConsent, trackValidationEvent } from "../lib/validation-events";
+import { ResearchWavePage, type ResearchWaveCopy } from "../components/ResearchWavePage";
+import type { Language } from "../content";
 
 type ClinicPageProps = {
   language: Language;
 };
 
-type WavePageCopy = {
-  backToWave1: string;
-  eyebrow: string;
-  heroTitle: string;
-  heroBody: string;
-  heroNote: string;
-  featuresTitle: string;
-  features: Feature[];
-  stepsTitle: string;
-  steps: Feature[];
-  closingTitle: string;
-  closingBody: string;
-  closingBenefits: Feature[];
-  heroCta: string;
-  success: string;
-};
-
 const pageCopy = {
   pl: {
-    backToWave1: "Wróć do etapu Dzisiaj",
     eyebrow: "Przyszłość · Badanie",
     heroTitle: "Pełniejszy kontekst pacjenta przed wizytą.",
     heroBody:
@@ -76,7 +51,6 @@ const pageCopy = {
     success: "Dziękujemy. Zapisaliśmy Cię na listę Caniello. Szczegóły zbierzemy później w ankiecie."
   },
   en: {
-    backToWave1: "Back to Today",
     eyebrow: "Future · Research",
     heroTitle: "A clearer patient story before the visit.",
     heroBody:
@@ -117,84 +91,20 @@ const pageCopy = {
     heroCta: "Join Waitlist",
     success: "Thank you. You're on the Caniello waitlist. We'll collect details later in a survey."
   }
-} satisfies Record<Language, WavePageCopy>;
+} satisfies Record<Language, ResearchWaveCopy>;
 
 export function ClinicPage({ language }: ClinicPageProps) {
-  const [analyticsChoice, setAnalyticsChoice] = useState<"granted" | "declined" | null>(() =>
-    typeof window !== "undefined" ? readAnalyticsPreference() : null
-  );
-  const text = pageCopy[language];
-  const sharedText = copy[language];
-
-  useEffect(() => {
-    if (readAnalyticsConsent()) {
-      trackValidationEvent({ name: "page_view", source: "landing_page_wave3", utm: readUtmParams() });
-    }
-  }, []);
-
-  async function handleAnalyticsConsent(granted: boolean) {
-    await saveAnalyticsConsent(granted, readUtmParams());
-    setAnalyticsChoice(granted ? "granted" : "declined");
-
-    if (granted) {
-      trackValidationEvent({ name: "page_view", source: "landing_page_wave3", utm: readUtmParams() });
-    }
-  }
-
   return (
-    <>
-      <ResearchHeroSection
-        backHref="/"
-        backLabel={text.backToWave1}
-        body={text.heroBody}
-        ctaHref="#clinic-interest"
-        ctaLabel={text.heroCta}
-        eyebrow={text.eyebrow}
-        imageAlt="Future clinic collaboration concept for caregiver-approved pet health context"
-        imageSrc={wave3HeroArt}
-        note={text.heroNote}
-        title={text.heroTitle}
-        tone="violet"
-      />
-
-      <FeatureOverviewSection features={text.features} title={text.featuresTitle} />
-
-      <CareFlowCtaSection
-        benefits={text.closingBenefits}
-        body={text.closingBody}
-        form={
-          <div id="clinic-interest">
-            <WaitlistForm
-              buttonClassName="sm:min-w-[190px]"
-              className="max-w-[620px]"
-              compactConsent
-              language={language}
-              source="landing_page_wave3"
-              submitLabel={text.heroCta}
-              successMessage={text.success}
-            />
-          </div>
-        }
-        imageSrc={waitlistPets}
-        steps={text.steps}
-        stepsTitle={text.stepsTitle}
-        title={text.closingTitle}
-      />
-
-      <section className="bg-white px-5 pb-0 pt-4 sm:px-8 lg:px-12 xl:px-16">
-        <div className="mx-auto w-full max-w-[1664px]">
-          <WaveStorySection
-            activeWave="wave_3"
-            body={sharedText.futureBody}
-            foundation={sharedText.futureFoundation}
-            researchNote={sharedText.futureResearchNote}
-            title={sharedText.futureTitle}
-            waves={sharedText.futureWaves}
-          />
-        </div>
-      </section>
-
-      {analyticsChoice === null ? <AnalyticsConsentPopup text={sharedText} onSelect={(granted) => void handleAnalyticsConsent(granted)} /> : null}
-    </>
+    <ResearchWavePage
+      activeWave="wave_3"
+      buttonClassName="sm:min-w-[190px]"
+      heroImageAlt="Future clinic collaboration concept for caregiver-approved pet health context"
+      heroImageSrc={wave3HeroArt}
+      language={language}
+      pageCopy={pageCopy[language]}
+      source="landing_page_wave3"
+      tone="violet"
+      waitlistImageSrc={waitlistPets}
+    />
   );
 }

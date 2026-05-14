@@ -1,19 +1,17 @@
 import type { ReactNode } from "react";
 import type { Feature } from "../content";
-import { BenefitIcon, FeatureIcon } from "./icons/LandingIcons";
+import { BenefitIcon, FeatureIcon, LargePawIcon, LockIcon } from "./icons/LandingIcons";
 
-type ResearchHeroSectionProps = {
-  backHref?: string;
-  backLabel?: string;
+type MarketingHeroSectionProps = {
+  benefits: string[];
   body: string;
-  ctaHref: string;
-  ctaLabel: string;
   eyebrow: string;
+  form: ReactNode;
   imageAlt: string;
   imageSrc: string;
-  note: string;
-  secondaryHref?: string;
-  secondaryLabel?: string;
+  layout?: "spacious" | "compact";
+  proof: string;
+  privacyNote?: string;
   title: string;
   tone?: "gold" | "violet";
 };
@@ -21,6 +19,7 @@ type ResearchHeroSectionProps = {
 type FeatureOverviewSectionProps = {
   features: Feature[];
   id?: string;
+  spacing?: "normal" | "compact";
   title: string;
 };
 
@@ -35,64 +34,101 @@ type CareFlowCtaSectionProps = {
   title: string;
 };
 
-export function ResearchHeroSection({
-  backHref,
-  backLabel,
+type FooterSignupSectionProps = {
+  body: string;
+  form: ReactNode;
+  title: string;
+};
+
+type TrustSectionProps = {
+  body: string;
+  disclaimer: string;
+  title: string;
+};
+
+export function MarketingHeroSection({
+  benefits,
   body,
-  ctaHref,
-  ctaLabel,
   eyebrow,
+  form,
   imageAlt,
   imageSrc,
-  note,
-  secondaryHref = "#future-waves",
-  secondaryLabel,
+  layout = "spacious",
+  proof,
+  privacyNote,
   title,
   tone = "gold"
-}: ResearchHeroSectionProps) {
+}: MarketingHeroSectionProps) {
+  const isCompact = layout === "compact";
+
   return (
-    <section className="bg-white px-5 pb-8 pt-2 sm:px-8 lg:px-12 xl:px-16">
-      <div className="mx-auto grid w-full max-w-[1664px] items-center gap-8 pt-4 lg:grid-cols-[0.86fr_1.4fr] lg:gap-10 lg:pt-8">
-        <div className="relative z-10">
+    <section className="overflow-hidden bg-white" id="top">
+      <div
+        className={`mx-auto grid w-full max-w-[1664px] items-start px-5 sm:px-8 lg:grid-cols-[minmax(520px,0.78fr)_minmax(0,1fr)] lg:px-12 xl:px-16 ${
+          isCompact ? "gap-7 pb-0 pt-6 sm:pt-8 lg:gap-8 lg:pb-0 lg:pt-10" : "gap-10 pb-8 pt-8 sm:pt-10 lg:pb-10 lg:pt-14"
+        }`}
+      >
+        <div className="relative z-10 max-w-[640px]">
           <div className={`inline-flex items-center gap-3 rounded-2xl px-4 py-2 text-sm font-bold ${tone === "gold" ? "bg-cream text-gold" : "bg-[#efecff] text-[#5448a8]"}`}>
             <HeroBadgeIcon tone={tone} />
             <span>{eyebrow}</span>
           </div>
-          <h1 className="mt-6 max-w-[660px] font-serif text-5xl font-bold leading-[1.02] text-navy sm:text-6xl lg:text-7xl">{title}</h1>
-          <p className="mt-5 max-w-[590px] text-base leading-7 text-navy sm:text-[17px]">{body}</p>
-          <p className="mt-5 flex items-center gap-3 text-sm font-semibold text-navy/72">
-            <LockMiniIcon />
-            {note}
-          </p>
-          <div className="mt-7 flex flex-wrap gap-4">
-            <a className="inline-flex h-12 items-center rounded-lg bg-navy px-8 text-sm font-bold text-white shadow-sm transition hover:bg-navySoft" href={ctaHref}>
-              {ctaLabel}
-            </a>
-            {secondaryLabel ? (
-              <a className="inline-flex h-12 items-center gap-3 rounded-lg px-2 text-sm font-bold text-navy transition hover:text-gold" href={secondaryHref}>
-                {secondaryLabel}
-                <ArrowMiniIcon />
-              </a>
-            ) : null}
-          </div>
-          {backHref && backLabel ? (
-            <a className="mt-5 inline-flex text-sm font-bold text-navy/70 transition hover:text-gold" href={backHref}>
-              {backLabel}
-            </a>
+
+          <h1 className={`${isCompact ? "mt-6" : "mt-7"} font-serif text-5xl font-bold leading-[1.02] tracking-normal text-navy sm:text-6xl lg:text-7xl`} aria-label={title}>
+            {splitHeroTitle(title).map((line) => (
+              <span className="block" key={line}>
+                {line}
+              </span>
+            ))}
+          </h1>
+          <p className={`${isCompact ? "mt-5" : "mt-7"} max-w-[560px] text-base leading-[1.7] text-navy sm:text-[17px]`}>{body}</p>
+          <p className="mt-3 max-w-[560px] text-sm font-semibold leading-6 text-navy/75">{proof}</p>
+
+          <ul className={`${isCompact ? "mt-6" : "mt-7"} grid gap-4 text-[15px] font-medium text-navy`}>
+            {benefits.map((benefit) => (
+              <li className="flex items-center gap-4" key={benefit}>
+                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gold text-white">
+                  <MiniCheckIcon />
+                </span>
+                <span>{benefit}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div className={isCompact ? "mt-7" : "mt-9"}>{form}</div>
+          {privacyNote ? (
+            <p className={`${isCompact ? "mt-3" : "mt-4"} flex items-center gap-3 text-xs text-navy/62`}>
+              <LockIcon />
+              {privacyNote}
+            </p>
           ) : null}
         </div>
 
-        <div className={`relative overflow-hidden rounded-lg ${tone === "gold" ? "bg-cream/45" : "bg-[#f5f3ff]"}`}>
-          <img className="h-auto min-h-[320px] w-full object-contain object-bottom lg:min-h-[430px]" src={imageSrc} alt={imageAlt} />
+        <div className={`relative ${isCompact ? "min-h-[220px] sm:min-h-[300px] lg:min-h-[390px]" : "min-h-[340px] sm:min-h-[480px] lg:min-h-[610px]"}`} aria-label={imageAlt}>
+          <img
+            className={`absolute inset-x-1/2 top-0 h-auto max-w-none -translate-x-1/2 object-contain object-bottom lg:left-auto lg:right-0 lg:translate-x-0 ${
+              isCompact ? "w-[min(760px,112vw)] lg:w-[min(780px,50vw)]" : "w-[min(760px,118vw)] lg:w-[min(870px,52vw)]"
+            }`}
+            src={imageSrc}
+            alt={imageAlt}
+          />
         </div>
       </div>
     </section>
   );
 }
 
-export function FeatureOverviewSection({ features, id = "features", title }: FeatureOverviewSectionProps) {
+function splitHeroTitle(title: string) {
+  return title.split(". ").map((line) => (line.endsWith(".") ? line : `${line}.`));
+}
+
+export function FeatureOverviewSection({ features, id = "features", spacing = "normal", title }: FeatureOverviewSectionProps) {
   return (
-    <section className="bg-white px-5 pb-12 pt-8 sm:px-8 lg:px-12 lg:pt-10 xl:px-16" id={id} aria-labelledby={`${id}-title`}>
+    <section
+      className={`bg-white px-5 pb-12 sm:px-8 lg:px-12 xl:px-16 ${spacing === "compact" ? "pt-2 lg:pt-4" : "pt-8 lg:pt-10"}`}
+      id={id}
+      aria-labelledby={`${id}-title`}
+    >
       <div className="mx-auto w-full max-w-[1664px]">
         <h2 className="mx-auto max-w-3xl text-center font-serif text-3xl font-bold leading-tight text-navy sm:text-4xl" id={`${id}-title`}>
           {title}
@@ -138,20 +174,10 @@ function HeroBadgeIcon({ tone }: { tone: "gold" | "violet" }) {
   );
 }
 
-function LockMiniIcon() {
+function MiniCheckIcon() {
   return (
-    <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-      <path d="M7 11V8a5 5 0 0 1 10 0v3" />
-      <path d="M6 11h12v9H6z" />
-    </svg>
-  );
-}
-
-function ArrowMiniIcon() {
-  return (
-    <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M4 10h12" />
-      <path d="m11 5 5 5-5 5" />
+    <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.4">
+      <path d="m5 10 3 3 7-7" />
     </svg>
   );
 }
@@ -205,6 +231,41 @@ export function CareFlowCtaSection({ benefits, body, form, imageAlt = "", imageS
               ))}
             </div>
           </aside>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function FooterSignupSection({ body, form, title }: FooterSignupSectionProps) {
+  return (
+    <section className="mt-4 overflow-hidden rounded-lg bg-cream px-5 py-5 sm:px-8" aria-labelledby="footer-signup-title">
+      <div className="grid gap-5 md:grid-cols-[0.16fr_0.52fr_0.32fr] md:items-center">
+        <div className="hidden justify-center text-gold md:flex">
+          <LargePawIcon />
+        </div>
+        <div>
+          <h2 className="font-serif text-3xl font-bold leading-tight text-navy" id="footer-signup-title">
+            {title}
+          </h2>
+          <p className="mt-2 text-base leading-6 text-navy">{body}</p>
+        </div>
+        {form}
+      </div>
+    </section>
+  );
+}
+
+export function TrustSection({ body, disclaimer, title }: TrustSectionProps) {
+  return (
+    <section className="bg-white px-5 pb-10 pt-4 sm:px-8 lg:px-12 xl:px-16" id="trust" aria-labelledby="trust-title">
+      <div className="mx-auto grid w-full max-w-[1664px] gap-6 rounded-lg border border-navy/10 bg-white p-6 shadow-sm md:grid-cols-[0.45fr_1fr] md:p-8">
+        <h2 className="font-serif text-3xl font-bold leading-tight text-navy" id="trust-title">
+          {title}
+        </h2>
+        <div className="grid gap-3 text-sm leading-6 text-navy">
+          <p>{body}</p>
+          <p>{disclaimer}</p>
         </div>
       </div>
     </section>
