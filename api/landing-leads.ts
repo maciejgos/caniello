@@ -2,19 +2,13 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 
 type LandingLeadPayload = {
   email?: string;
-  role?: "pet_owner" | "pet_service_provider" | "clinic_vet";
-  interestWave?: "wave_1" | "wave_2" | "wave_3";
   source?: string;
   leadConsent?: boolean;
   language?: string;
-  organization?: string;
-  context?: string;
-  website?: string;
   utm?: Record<string, string>;
 };
 
-type ValidLandingLeadPayload = Required<Pick<LandingLeadPayload, "email" | "role" | "interestWave" | "source" | "leadConsent">> &
-  Omit<LandingLeadPayload, "email" | "role" | "interestWave" | "source" | "leadConsent">;
+type ValidLandingLeadPayload = Required<Pick<LandingLeadPayload, "email" | "leadConsent">> & Omit<LandingLeadPayload, "email" | "leadConsent">;
 
 type MailerLiteGroup = {
   id: string;
@@ -32,8 +26,6 @@ type MailerLiteClientOptions = {
 };
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const roles = ["pet_owner", "pet_service_provider", "clinic_vet"];
-const waves = ["wave_1", "wave_2", "wave_3"];
 const sources = ["landing_page_hero", "landing_page_mid_cta", "landing_page_footer", "landing_page_wave2", "landing_page_wave3"];
 const defaultMailerLiteGroupName = "Caniello Waitlist";
 const mailerLiteApiBaseUrl = "https://connect.mailerlite.com/api";
@@ -86,8 +78,12 @@ export function validateLandingLeadPayload(payload: LandingLeadPayload) {
     return { ok: false as const, status: 400, message: "Valid email is required." };
   }
 
-  if (!isAllowed(payload.role, roles) || !isAllowed(payload.interestWave, waves) || !isAllowed(payload.source, sources)) {
-    return { ok: false as const, status: 400, message: "Lead role, wave, and source are required." };
+  if ("role" in payload || "interestWave" in payload) {
+    return { ok: false as const, status: 400, message: "Lead segmentation is handled by the MailerLite survey." };
+  }
+
+  if (payload.source && !isAllowed(payload.source, sources)) {
+    return { ok: false as const, status: 400, message: "Lead source is invalid." };
   }
 
   return { ok: true as const, payload: payload as ValidLandingLeadPayload };

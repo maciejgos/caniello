@@ -20,11 +20,11 @@ describe("Caniello landing page", () => {
     const user = userEvent.setup();
     render(<App />);
 
-    expect(screen.getByRole("heading", { name: /lepsza opieka\. silniejsza więź/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /cała opieka nad pupilem\. zawsze pod ręką/i })).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "EN" }));
 
-    expect(screen.getByRole("heading", { name: /better care\. stronger bond/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /your pet's care\. always within reach/i })).toBeInTheDocument();
     expect(window.localStorage.getItem("caniello.language")).toBe("en");
   });
 
@@ -53,20 +53,19 @@ describe("Caniello landing page", () => {
     const calls = (fetch as unknown as { mock: { calls: Array<[string, RequestInit]> } }).mock.calls;
     expect(JSON.parse(String(calls[0][1].body))).toMatchObject({
       email: "owner@example.com",
-      role: "pet_owner",
-      interestWave: "wave_1",
       source: "landing_page_hero",
       leadConsent: true,
       language: "pl"
     });
-    expect(screen.getByText(/zapisaliśmy Twoje zainteresowanie/i)).toBeInTheDocument();
+    expect(screen.getByText(/zapisaliśmy Cię na listę Caniello/i)).toBeInTheDocument();
   });
 
   it("links Next and Future to their research pages", () => {
     render(<App />);
 
-    expect(screen.getByRole("link", { name: /poznaj care network/i })).toHaveAttribute("href", "/wave-2-exploration");
-    expect(screen.getByRole("link", { name: /poznaj clinic connect/i })).toHaveAttribute("href", "/wave-3-research");
+    expect(screen.getByRole("link", { name: /poznaj opiekę/i })).toHaveAttribute("href", "/");
+    expect(screen.getByRole("link", { name: /poznaj rynek usług/i })).toHaveAttribute("href", "/wave-2-exploration");
+    expect(screen.getByRole("link", { name: /poznaj kliniki/i })).toHaveAttribute("href", "/wave-3-research");
   });
 
   it("records validation events only after analytics consent", async () => {
@@ -104,49 +103,49 @@ describe("Caniello landing page", () => {
     expect(screen.getByText(/Caniello nie diagnozuje/i)).toBeInTheDocument();
   });
 
-  it("renders Next exploration page and submits provider interest", async () => {
+  it("renders Next exploration page and submits a generic waitlist lead", async () => {
     const user = userEvent.setup();
     window.history.pushState({}, "", "/wave-2-exploration");
     render(<App />);
 
-    expect(screen.getAllByRole("heading", { name: /caniello care network/i }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("heading", { name: /zaufana pomoc/i }).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/badanie w toku/i).length).toBeGreaterThan(0);
 
-    await user.type(screen.getByLabelText(/adres e-mail/i), "provider@example.com");
+    await user.type(screen.getByLabelText(/adres e-mail/i), "marketplace@example.com");
     await user.click(screen.getByRole("checkbox"));
     await user.click(screen.getByRole("button", { name: /dołącz do listy/i }));
 
     await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
     const calls = (fetch as unknown as { mock: { calls: Array<[string, RequestInit]> } }).mock.calls;
     expect(JSON.parse(String(calls[0][1].body))).toMatchObject({
-      email: "provider@example.com",
-      role: "pet_service_provider",
-      interestWave: "wave_2",
+      email: "marketplace@example.com",
       source: "landing_page_wave2",
       language: "pl"
     });
+    expect(JSON.parse(String(calls[0][1].body))).not.toHaveProperty("role");
+    expect(JSON.parse(String(calls[0][1].body))).not.toHaveProperty("interestWave");
   });
 
-  it("renders Future research page and submits clinic interest", async () => {
+  it("renders Future research page and submits a generic waitlist lead", async () => {
     const user = userEvent.setup();
     window.history.pushState({}, "", "/wave-3-research");
     render(<App />);
 
-    expect(screen.getAllByRole("heading", { name: /caniello clinic connect/i }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("heading", { name: /pełniejszy kontekst pacjenta/i }).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/Badanie w toku/i).length).toBeGreaterThan(0);
 
     await user.type(screen.getByLabelText(/adres e-mail/i), "clinic@example.com");
     await user.click(screen.getByRole("checkbox"));
-    await user.click(screen.getByRole("button", { name: /dołącz jako klinika/i }));
+    await user.click(screen.getByRole("button", { name: /dołącz do listy/i }));
 
     await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
     const calls = (fetch as unknown as { mock: { calls: Array<[string, RequestInit]> } }).mock.calls;
     expect(JSON.parse(String(calls[0][1].body))).toMatchObject({
       email: "clinic@example.com",
-      role: "clinic_vet",
-      interestWave: "wave_3",
       source: "landing_page_wave3",
       language: "pl"
     });
+    expect(JSON.parse(String(calls[0][1].body))).not.toHaveProperty("role");
+    expect(JSON.parse(String(calls[0][1].body))).not.toHaveProperty("interestWave");
   });
 });

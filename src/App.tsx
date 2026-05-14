@@ -2,26 +2,26 @@ import type { LegalPageKey } from "./content";
 import { SiteFooter } from "./components/SiteFooter";
 import { SiteHeader } from "./components/SiteHeader";
 import { useLanguage } from "./hooks/useLanguage";
+import { ClinicPage } from "./pages/ClinicPage";
 import { LandingPage } from "./pages/LandingPage";
 import { LegalPage } from "./pages/LegalPage";
-import { Wave2Page } from "./pages/Wave2Page";
-import { Wave3Page } from "./pages/Wave3Page";
+import { MarketplacePage } from "./pages/MarketplacePage";
 
 export default function App() {
   const { language, setLanguage } = useLanguage();
   const activeLegalPage = getActiveLegalPage();
-  const isWave2Page = getIsWave2Page();
-  const isWave3Page = getIsWave3Page();
+  const isMarketplacePage = getIsMarketplacePage();
+  const isClinicPage = getIsClinicPage();
 
   return (
     <main className={`min-h-screen bg-white text-navy ${activeLegalPage ? "" : "overflow-hidden"}`}>
       <SiteHeader language={language} onLanguageChange={setLanguage} />
       {activeLegalPage ? (
         <LegalPage language={language} pageKey={activeLegalPage} />
-      ) : isWave2Page ? (
-        <Wave2Page language={language} />
-      ) : isWave3Page ? (
-        <Wave3Page language={language} />
+      ) : isMarketplacePage ? (
+        <MarketplacePage language={language} />
+      ) : isClinicPage ? (
+        <ClinicPage language={language} />
       ) : (
         <LandingPage language={language} />
       )}
@@ -52,7 +52,7 @@ function getActiveLegalPage(): LegalPageKey | null {
   return null;
 }
 
-function getIsWave2Page(): boolean {
+function getIsMarketplacePage(): boolean {
   if (typeof window === "undefined") {
     return false;
   }
@@ -60,7 +60,7 @@ function getIsWave2Page(): boolean {
   return window.location.pathname.replace(/\/$/, "") === "/wave-2-exploration";
 }
 
-function getIsWave3Page(): boolean {
+function getIsClinicPage(): boolean {
   if (typeof window === "undefined") {
     return false;
   }

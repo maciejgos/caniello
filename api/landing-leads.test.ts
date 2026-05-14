@@ -2,14 +2,9 @@ import { upsertMailerLiteSubscriber, validateLandingLeadPayload } from "./landin
 
 const validPayload = {
   email: "owner@example.com",
-  role: "pet_owner" as const,
-  interestWave: "wave_1" as const,
   source: "landing_page_hero" as const,
   leadConsent: true,
   language: "pl",
-  organization: "Caniello",
-  context: "Beta interest",
-  website: "https://example.com",
   utm: {
     utm_source: "newsletter",
     utm_medium: "email",
@@ -23,6 +18,20 @@ describe("landing lead MailerLite integration", () => {
       ok: false,
       status: 400,
       message: "Lead consent is required."
+    });
+  });
+
+  it("rejects landing-page role or wave segmentation fields", () => {
+    const segmentedPayload = {
+      ...validPayload,
+      role: "pet_service_provider",
+      interestWave: "wave_2"
+    } as unknown as Parameters<typeof validateLandingLeadPayload>[0];
+
+    expect(validateLandingLeadPayload(segmentedPayload)).toEqual({
+      ok: false,
+      status: 400,
+      message: "Lead segmentation is handled by the MailerLite survey."
     });
   });
 

@@ -68,7 +68,7 @@ export function LandingPage({ language }: LandingPageProps) {
             </ul>
 
             <div className="mt-9" id="waitlist">
-              <WaitlistForm language={language} role="pet_owner" interestWave="wave_1" source="landing_page_hero" />
+              <WaitlistForm language={language} source="landing_page_hero" />
               <p className="mt-4 flex items-center gap-3 text-xs text-navy/62">
                 <LockIcon />
                 {text.privacyNote}
@@ -94,8 +94,6 @@ export function LandingPage({ language }: LandingPageProps) {
         form={
           <WaitlistForm
             language={language}
-            role="pet_owner"
-            interestWave="wave_1"
             source="landing_page_mid_cta"
             className="max-w-[470px]"
             buttonClassName="sm:min-w-[128px]"
@@ -130,7 +128,7 @@ export function LandingPage({ language }: LandingPageProps) {
                 </h2>
                 <p className="mt-2 text-base leading-6 text-navy">{text.footerSignupBody}</p>
               </div>
-              <WaitlistForm language={language} role="pet_owner" interestWave="wave_1" source="landing_page_footer" className="md:justify-self-end" compactConsent />
+              <WaitlistForm language={language} source="landing_page_footer" className="md:justify-self-end" compactConsent />
             </div>
           </section>
         </div>

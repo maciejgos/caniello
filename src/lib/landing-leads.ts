@@ -1,15 +1,10 @@
-import type { InterestWave, LeadRole, LeadSource } from "../content";
+import type { LeadSource } from "../content";
 
 export type LandingLeadPayload = {
   email: string;
-  role: LeadRole;
-  interestWave: InterestWave;
   source: LeadSource;
   leadConsent: boolean;
   language: string;
-  organization?: string;
-  context?: string;
-  website?: string;
   utm: Record<string, string>;
 };
 

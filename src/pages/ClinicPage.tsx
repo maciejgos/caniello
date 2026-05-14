@@ -10,7 +10,7 @@ import { copy } from "../content";
 import { readUtmParams } from "../lib/landing-leads";
 import { readAnalyticsConsent, readAnalyticsPreference, saveAnalyticsConsent, trackValidationEvent } from "../lib/validation-events";
 
-type Wave3PageProps = {
+type ClinicPageProps = {
   language: Language;
 };
 
@@ -27,7 +27,7 @@ type WavePageCopy = {
   closingTitle: string;
   closingBody: string;
   closingBenefits: Feature[];
-  clinicCta: string;
+  heroCta: string;
   success: string;
 };
 
@@ -35,11 +35,11 @@ const pageCopy = {
   pl: {
     backToWave1: "Wróć do etapu Dzisiaj",
     eyebrow: "Przyszłość · Badanie",
-    heroTitle: "Caniello Clinic Connect: historia opieki przy wizycie.",
+    heroTitle: "Pełniejszy kontekst pacjenta przed wizytą.",
     heroBody:
-      "Badamy rozwiązanie, w którym lekarz może łatwo wprowadzić dane pacjenta, zobaczyć historię zwierzęcia albo otrzymać ją od klienta za zgodą opiekuna.",
+      "Badamy Clinic Caniello jako sposób, w którym lekarz może pracować z historią opieki udostępnioną przez klienta i szybciej zobaczyć to, co ważne dla pacjenta.",
     heroNote: "Etap badawczy. To nie jest jeszcze aktywny produkt. Walidujemy zainteresowanie klinik.",
-    featuresTitle: "Caniello Clinic Connect",
+    featuresTitle: "Kontekst opieki, który pomaga w rozmowie z klientem",
     features: [
       {
         title: "Szybkie dodawanie danych",
@@ -64,25 +64,25 @@ const pageCopy = {
       { title: "Projektujemy udostępnianie", body: "Badamy prosty sposób przekazania historii zwierzęcia klinice przez klienta." },
       { title: "Walidujemy bezpieczeństwo", body: "Nie budujemy portalu klinicznego bez potwierdzenia potrzeby, zaufania i ryzyk." }
     ],
-    closingTitle: "Pomóż ukształtować przyszłość opieki nad pupilami",
+    closingTitle: "Budujemy współpracę z klinikami wokół lepszego kontekstu pacjenta.",
     closingBody:
-      "Dołącz jako klinika i powiedz nam, jak powinno wyglądać proste wprowadzanie danych pacjenta oraz bezpieczna praca z historią udostępnioną przez klienta.",
+      "Dołącz do listy i pomóż nam sprawdzić, jak Caniello może ułatwić klinikom pracę z historią opieki udostępnioną przez opiekuna.",
     closingBenefits: [
       { title: "Wczesny kontakt", body: "Odezwiemy się, gdy będziemy prowadzić rozmowy i testy badawcze." },
       { title: "Wpływ na zakres", body: "Twoja perspektywa pomoże oddzielić użyteczną historię pacjenta od nadmiaru danych." },
       { title: "Kontrola i zaufanie", body: "Przyszłość rozwijamy wokół zgód, prywatności i przejrzystości." }
     ],
-    clinicCta: "Dołącz jako klinika",
-    success: "Dziękujemy. Zapisaliśmy zainteresowanie badaniem przyszłego etapu."
+    heroCta: "Dołącz do listy",
+    success: "Dziękujemy. Zapisaliśmy Cię na listę Caniello. Szczegóły zbierzemy później w ankiecie."
   },
   en: {
     backToWave1: "Back to Today",
     eyebrow: "Future · Research",
-    heroTitle: "Caniello Clinic Connect: care history ready for the visit.",
+    heroTitle: "A clearer patient story before the visit.",
     heroBody:
-      "We're researching a solution where veterinarians can easily enter patient data, review a pet's history, or receive that history from the client with caregiver consent.",
+      "We're researching Caniello Clinic as a way for veterinary teams to work with caregiver-shared care history and see the context that matters sooner.",
     heroNote: "Research stage. Not yet an active product. Clinic interest is being validated now.",
-    featuresTitle: "Caniello Clinic Connect",
+    featuresTitle: "Care context that supports the client conversation",
     features: [
       {
         title: "Fast data entry",
@@ -107,19 +107,19 @@ const pageCopy = {
       { title: "Designing sharing", body: "We're researching a simple way for the client to share a pet's history with the clinic." },
       { title: "Validating safety", body: "We won't build a clinic portal without validating need, trust, and risks." }
     ],
-    closingTitle: "Help shape the future of pet care",
-    closingBody: "Join as a clinic and tell us what simple patient data entry and secure work with client-shared history should look like.",
+    closingTitle: "We're shaping clinic collaboration around clearer patient context.",
+    closingBody: "Join the waitlist and help us learn how Caniello can support veterinary teams working with caregiver-shared care history.",
     closingBenefits: [
       { title: "Early contact", body: "We'll reach out when we run research conversations and tests." },
       { title: "Shape the scope", body: "Your perspective helps separate useful patient history from data overload." },
       { title: "Control and trust", body: "Future is shaped around consent, privacy, and transparency." }
     ],
-    clinicCta: "Join as clinic",
-    success: "Thank you. Your interest in the future research stage has been noted."
+    heroCta: "Join Waitlist",
+    success: "Thank you. You're on the Caniello waitlist. We'll collect details later in a survey."
   }
 } satisfies Record<Language, WavePageCopy>;
 
-export function Wave3Page({ language }: Wave3PageProps) {
+export function ClinicPage({ language }: ClinicPageProps) {
   const [analyticsChoice, setAnalyticsChoice] = useState<"granted" | "declined" | null>(() =>
     typeof window !== "undefined" ? readAnalyticsPreference() : null
   );
@@ -148,7 +148,7 @@ export function Wave3Page({ language }: Wave3PageProps) {
         backLabel={text.backToWave1}
         body={text.heroBody}
         ctaHref="#clinic-interest"
-        ctaLabel={text.clinicCta}
+        ctaLabel={text.heroCta}
         eyebrow={text.eyebrow}
         imageAlt="Future clinic collaboration concept for caregiver-approved pet health context"
         imageSrc={wave3HeroArt}
@@ -168,11 +168,9 @@ export function Wave3Page({ language }: Wave3PageProps) {
               buttonClassName="sm:min-w-[190px]"
               className="max-w-[620px]"
               compactConsent
-              interestWave="wave_3"
               language={language}
-              role="clinic_vet"
               source="landing_page_wave3"
-              submitLabel={text.clinicCta}
+              submitLabel={text.heroCta}
               successMessage={text.success}
             />
           </div>

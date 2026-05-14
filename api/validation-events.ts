@@ -8,15 +8,7 @@ type ValidationEventPayload = {
   createdAt?: string;
 };
 
-const allowedEvents = [
-  "analytics_consent",
-  "page_view",
-  "waitlist_submit",
-  "waitlist_success",
-  "waitlist_error",
-  "wave2_interest",
-  "wave3_interest"
-];
+const allowedEvents = ["analytics_consent", "page_view", "waitlist_submit", "waitlist_success", "waitlist_error"];
 
 export default async function handler(request: IncomingMessage, response: ServerResponse) {
   if (request.method !== "POST") {

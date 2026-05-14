@@ -41,12 +41,9 @@ export function ResearchDialog({ language, waveIndex, onClose }: ResearchDialogP
         <div className="mt-6">
           <WaitlistForm
             language={language}
-            role={waveIndex === 0 ? "pet_service_provider" : "clinic_vet"}
-            interestWave={waveIndex === 0 ? "wave_2" : "wave_3"}
             source={waveIndex === 0 ? "landing_page_wave2" : "landing_page_wave3"}
             submitLabel={wave.cta}
             successMessage={wave.success}
-            optionalFields={wave.fields}
           />
         </div>
       </section>

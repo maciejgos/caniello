@@ -1,51 +1,35 @@
 import { FormEvent, useId, useState } from "react";
-import type { InterestWave, Language, LeadRole, LeadSource } from "../content";
+import type { Language, LeadSource } from "../content";
 import { copy } from "../content";
 import { isValidEmail, readUtmParams, submitLandingLead } from "../lib/landing-leads";
 import { trackValidationEvent } from "../lib/validation-events";
 
-type OptionalFieldLabels = {
-  organization: string;
-  context: string;
-  website: string;
-};
-
 type WaitlistFormProps = {
   language: Language;
-  role: LeadRole;
-  interestWave: InterestWave;
   source: LeadSource;
   className?: string;
   buttonClassName?: string;
   submitLabel?: string;
   successMessage?: string;
-  optionalFields?: OptionalFieldLabels;
   compactConsent?: boolean;
 };
 
 export function WaitlistForm({
   language,
-  role,
-  interestWave,
   source,
   className = "",
   buttonClassName = "",
   submitLabel,
   successMessage,
-  optionalFields,
   compactConsent = false
 }: WaitlistFormProps) {
   const text = copy[language];
   const id = useId();
   const [email, setEmail] = useState("");
-  const [organization, setOrganization] = useState("");
-  const [context, setContext] = useState("");
-  const [website, setWebsite] = useState("");
   const [hasLeadConsent, setHasLeadConsent] = useState(false);
   const [error, setError] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const isResearch = interestWave !== "wave_1";
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -74,14 +58,9 @@ export function WaitlistForm({
     try {
       const result = await submitLandingLead({
         email: trimmedEmail,
-        role,
-        interestWave,
         source,
         leadConsent: hasLeadConsent,
         language,
-        organization: organization.trim() || undefined,
-        context: context.trim() || undefined,
-        website: website.trim() || undefined,
         utm: readUtmParams()
       });
 
@@ -90,7 +69,7 @@ export function WaitlistForm({
       }
 
       trackValidationEvent({
-        name: interestWave === "wave_2" ? "wave2_interest" : interestWave === "wave_3" ? "wave3_interest" : "waitlist_success",
+        name: "waitlist_success",
         source,
         utm: readUtmParams()
       });
@@ -109,7 +88,7 @@ export function WaitlistForm({
 
   return (
     <form className={`grid w-full max-w-[520px] gap-3 ${className}`} onSubmit={handleSubmit} noValidate data-source={source}>
-      <div className={`rounded-md border border-navy/10 bg-white shadow-sm ${optionalFields ? "grid gap-3 p-3" : "sm:flex sm:items-stretch"}`}>
+      <div className="rounded-md border border-navy/10 bg-white shadow-sm sm:flex sm:items-stretch">
         <div className="min-w-0 flex-1">
           <label className="sr-only" htmlFor={`${id}-email`}>
             {text.emailLabel}
@@ -132,16 +111,8 @@ export function WaitlistForm({
           />
         </div>
 
-        {optionalFields ? (
-          <div className="grid gap-3 sm:grid-cols-3">
-            <TextField id={`${id}-organization`} label={optionalFields.organization} value={organization} onChange={setOrganization} />
-            <TextField id={`${id}-context`} label={optionalFields.context} value={context} onChange={setContext} />
-            <TextField id={`${id}-website`} label={optionalFields.website} value={website} onChange={setWebsite} />
-          </div>
-        ) : null}
-
         <button
-          className={`m-1 h-11 rounded-md bg-navy px-7 text-sm font-bold text-white shadow-sm transition hover:bg-navySoft focus:outline-none focus:ring-4 focus:ring-navy/20 disabled:cursor-not-allowed disabled:bg-navy/45 sm:h-auto sm:min-w-[136px] ${optionalFields ? "m-0" : "w-[calc(100%-0.5rem)] sm:w-auto"} ${buttonClassName}`}
+          className={`m-1 h-11 w-[calc(100%-0.5rem)] rounded-md bg-navy px-7 text-sm font-bold text-white shadow-sm transition hover:bg-navySoft focus:outline-none focus:ring-4 focus:ring-navy/20 disabled:cursor-not-allowed disabled:bg-navy/45 sm:h-auto sm:w-auto sm:min-w-[136px] ${buttonClassName}`}
           type="submit"
           disabled={isSubmitting}
         >
@@ -174,36 +145,9 @@ export function WaitlistForm({
       <div id={`${id}-message`} aria-live="polite">
         {error ? <p className="text-sm font-semibold text-red-700">{error}</p> : null}
         {submitted ? (
-          <p className="text-sm font-semibold text-emerald-700">{successMessage ?? (isResearch ? text.researchSuccess : text.emailSuccess)}</p>
+          <p className="text-sm font-semibold text-emerald-700">{successMessage ?? text.emailSuccess}</p>
         ) : null}
       </div>
     </form>
-  );
-}
-
-function TextField({
-  id,
-  label,
-  value,
-  onChange
-}: {
-  id: string;
-  label: string;
-  value: string;
-  onChange: (value: string) => void;
-}) {
-  return (
-    <div>
-      <label className="sr-only" htmlFor={id}>
-        {label}
-      </label>
-      <input
-        className="h-11 w-full rounded-md border border-navy/10 bg-white px-4 text-sm text-navy outline-none transition placeholder:text-navy/40 focus:border-gold focus:ring-4 focus:ring-gold/20"
-        id={id}
-        value={value}
-        placeholder={label}
-        onChange={(event) => onChange(event.target.value)}
-      />
-    </div>
   );
 }

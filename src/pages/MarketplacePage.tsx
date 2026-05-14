@@ -10,7 +10,7 @@ import { copy } from "../content";
 import { readUtmParams } from "../lib/landing-leads";
 import { readAnalyticsConsent, readAnalyticsPreference, saveAnalyticsConsent, trackValidationEvent } from "../lib/validation-events";
 
-type Wave2PageProps = {
+type MarketplacePageProps = {
   language: Language;
 };
 
@@ -35,12 +35,12 @@ const pageCopy = {
   pl: {
     backToWave1: "Wróć do etapu Dzisiaj",
     eyebrow: "Następnie · Eksploracja",
-    heroTitle: "Caniello Care Network: zaufana pomoc wokół pupila.",
+    heroTitle: "Zaufana pomoc, gdy opieka potrzebuje wsparcia.",
     heroBody:
-      "Sprawdzamy, jak Caniello może pomagać opiekunom znaleźć sprawdzoną pomoc przy opiece nad zwierzęciem - od codziennych usług po wsparcie w szczególnych sytuacjach.",
+      "Badamy Marketplace Caniello jako miejsce, które pomaga opiekunom odkrywać sprawdzone usługi dla pupila - spokojniej, czytelniej i bliżej realnych potrzeb.",
     heroNote: "To przyszła koncepcja. Badamy popyt.",
-    heroCta: "Dołącz jako usługodawca",
-    featuresTitle: "Caniello Care Network",
+    heroCta: "Dołącz do listy",
+    featuresTitle: "Usługi, którym opiekun może zaufać",
     features: [
       {
         title: "Zweryfikowani dostawcy",
@@ -65,24 +65,25 @@ const pageCopy = {
       { title: "Rozmawiamy z usługodawcami", body: "Badamy potrzeby firm, opiekunów i specjalistów pracujących ze zwierzętami." },
       { title: "Walidujemy właściwy zakres", body: "Kolejny etap uruchomimy tylko wtedy, gdy popyt i model zaufania będą potwierdzone." }
     ],
-    closingTitle: "Pomóż ukształtować przyszłość opieki nad pupilami",
-    closingBody: "Dołącz jako usługodawca i powiedz nam, jak powinien wyglądać zaufany sposób odkrywania usług dla zwierząt.",
+    closingTitle: "Budujemy zaufany rynek usług razem z opiekunami.",
+    closingBody:
+      "Dołącz do listy i pomóż nam sprawdzić, jak Caniello powinno łączyć opiekunów ze sprawdzoną pomocą, zanim uruchomimy ten obszar.",
     closingBenefits: [
       { title: "Wczesne rozmowy", body: "Zaprosimy Cię do badań, gdy będziemy testować założenia kolejnego etapu." },
       { title: "Wpływ na model zaufania", body: "Twoja perspektywa pomoże określić, co znaczy sprawdzony dostawca." },
       { title: "Bez obietnic rynku usług", body: "Na tym etapie badamy popyt, zakres i ryzyka." }
     ],
-    success: "Dziękujemy. Zapisaliśmy zainteresowanie badaniem kolejnego etapu."
+    success: "Dziękujemy. Zapisaliśmy Cię na listę Caniello. Szczegóły zbierzemy później w ankiecie."
   },
   en: {
     backToWave1: "Back to Today",
     eyebrow: "Next · Exploration",
-    heroTitle: "Caniello Care Network: trusted support around pet care.",
+    heroTitle: "Trusted help when pet care needs support.",
     heroBody:
-      "We're exploring how Caniello could help caregivers find reliable support for their pet's care, from everyday services to help in specific situations.",
+      "We're exploring Caniello Marketplace as a clearer way for caregivers to discover trusted pet services shaped around real care needs.",
     heroNote: "This is a future concept. We're researching demand.",
-    heroCta: "Join as provider",
-    featuresTitle: "Caniello Care Network",
+    heroCta: "Join Waitlist",
+    featuresTitle: "Services caregivers can trust",
     features: [
       {
         title: "Verified providers",
@@ -107,18 +108,18 @@ const pageCopy = {
       { title: "Talking with providers", body: "We're researching the needs of businesses, caregivers, and pet specialists." },
       { title: "Validating the right scope", body: "Next launches only if demand and a trust model are validated." }
     ],
-    closingTitle: "Help shape the future of pet care",
-    closingBody: "Join as a provider and tell us what a trusted way to discover pet services should look like.",
+    closingTitle: "We're shaping a trusted services marketplace with caregivers.",
+    closingBody: "Join the waitlist and help us learn how Caniello should connect caregivers with reliable support before this area launches.",
     closingBenefits: [
       { title: "Early research", body: "We'll invite you when we're testing next-stage assumptions." },
       { title: "Shape trust signals", body: "Your perspective helps define what verified should mean." },
       { title: "No service launch promise", body: "At this stage, we're researching demand, scope, and risks." }
     ],
-    success: "Thank you. Your interest in the next research stage has been noted."
+    success: "Thank you. You're on the Caniello waitlist. We'll collect details later in a survey."
   }
 } satisfies Record<Language, WavePageCopy>;
 
-export function Wave2Page({ language }: Wave2PageProps) {
+export function MarketplacePage({ language }: MarketplacePageProps) {
   const [analyticsChoice, setAnalyticsChoice] = useState<"granted" | "declined" | null>(() =>
     typeof window !== "undefined" ? readAnalyticsPreference() : null
   );
@@ -167,9 +168,7 @@ export function Wave2Page({ language }: Wave2PageProps) {
               buttonClassName="sm:min-w-[170px]"
               className="max-w-[620px]"
               compactConsent
-              interestWave="wave_2"
               language={language}
-              role="pet_service_provider"
               source="landing_page_wave2"
               submitLabel={sharedText.navCta}
               successMessage={text.success}

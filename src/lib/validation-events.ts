@@ -5,9 +5,7 @@ export type ValidationEventName =
   | "page_view"
   | "waitlist_submit"
   | "waitlist_success"
-  | "waitlist_error"
-  | "wave2_interest"
-  | "wave3_interest";
+  | "waitlist_error";
 
 export type ValidationEvent = {
   name: ValidationEventName;
