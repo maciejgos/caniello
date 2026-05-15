@@ -23,7 +23,7 @@ Validation of the current landing legal pages for the minimum information needed
 ## Preconditions
 
 - Landing legal routes exist for `/privacy`, `/terms`, and `/medical-boundaries`.
-- Legal content remains explicitly marked as draft and requires final human/legal review before publication.
+- Legal content is no longer visibly marked as draft on the landing page. Formal legal review remains unavailable and is tracked as a residual risk.
 
 ## Acceptance Criteria Mapping
 

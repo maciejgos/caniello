@@ -115,7 +115,7 @@ For a Vercel-hosted landing page, the recovery path should be:
 
 Ready with accepted risks.
 
-The current state is not a clean, compliance-perfect public launch. It is ready for a limited market-validation soft launch if the human accepts the named legal, vendor, deployment, analytics, and operational risks and completes the small preflight checklist before sending traffic.
+The current state is not a clean, compliance-perfect public launch. It is ready for a limited market-validation soft launch if the human accepts the named legal, vendor, deployment, analytics, and operational risks. The remaining preflight work is source-control hygiene for a traceable release.
 
 ## Follow-Up
 
