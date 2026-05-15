@@ -28,6 +28,16 @@ describe("Caniello landing page", () => {
     expect(window.localStorage.getItem("caniello.language")).toBe("en");
   });
 
+  it("falls back to Polish when the persisted language is unsupported", () => {
+    window.localStorage.setItem("caniello.language", "de");
+
+    render(<App />);
+
+    expect(screen.getByRole("heading", { name: /cała opieka nad pupilem\. zawsze pod ręką/i })).toBeInTheDocument();
+    expect(window.localStorage.getItem("caniello.language")).toBe("pl");
+    expect(document.documentElement.lang).toBe("pl");
+  });
+
   it("blocks owner waitlist submission until email and lead consent are valid", async () => {
     const user = userEvent.setup();
     render(<App />);
