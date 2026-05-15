@@ -2,7 +2,7 @@
 
 ## Status
 
-Draft
+Accepted
 
 ## Scope
 
@@ -11,6 +11,7 @@ Validation of the production routing fix and React routing refactor for direct e
 ## Source Artifacts
 
 - `vercel.json`
+- `api/vercel-config.test.ts`
 - `package.json`
 - `package-lock.json`
 - `tests/e2e/landing.spec.ts`
@@ -65,13 +66,17 @@ Validation of the production routing fix and React routing refactor for direct e
   Evidence status: Supported
   Evidence: Playwright e2e suite passed the hero/footer capture flow and both Wave 2 and Wave 3 research-page capture flows on desktop and mobile.
 
+- Criterion: API routes must continue to resolve as Vercel Functions and must not be rewritten to the SPA shell.
+  Evidence status: Supported
+  Evidence: `vercel.json` now scopes the SPA fallback to paths that do not start with `/api/`; `api/vercel-config.test.ts` guards that rewrite pattern.
+
 ## Checks
 
 - Check: `docker compose run --rm web npm run test`
   Type: Automated
   Status: Passed
-  Expected result: Unit and API tests pass.
-  Actual result: 2 test files passed, 12 tests passed.
+  Expected result: Unit, API, and Vercel config tests pass.
+  Actual result: 3 test files passed, 14 tests passed.
 
 - Check: `docker compose run --rm web npm run build`
   Type: Automated
@@ -87,7 +92,8 @@ Validation of the production routing fix and React routing refactor for direct e
 
 ## Evidence
 
-- `vercel.json` contains a catch-all rewrite from `/(.*)` to `/`.
+- `vercel.json` contains a non-API SPA fallback rewrite from `/:path((?!api/).*)` to `/`, preserving `/api/*` for Vercel Functions.
+- `api/vercel-config.test.ts` protects the non-API rewrite contract so future routing edits do not reintroduce an API catch-all.
 - `package.json` and `package-lock.json` add `react-router-dom`.
 - `src/App.tsx` declares all application routes in one route tree and preserves a shared header/footer layout with one language state.
 - `tests/e2e/landing.spec.ts` includes `direct application URLs return the SPA instead of 404`, covering `/privacy`, `/terms`, `/medical-boundaries`, `/marketplace`, and `/clinics`.
@@ -129,4 +135,4 @@ Ready for human review
 
 ## Human Decision
 
-Pending
+Accepted
