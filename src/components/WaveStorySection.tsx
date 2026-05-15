@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import type { FutureWave, WaveStoryStep } from "../content";
 import { CheckIcon, LockIcon } from "./icons/LandingIcons";
 
@@ -10,7 +11,7 @@ type WaveStorySectionProps = {
   waves: [FutureWave, FutureWave];
 };
 
-const waveLinks = ["/wave-2-exploration", "/wave-3-research"] as const;
+const waveLinks = ["/marketplace", "/clinics"] as const;
 const foundationLink = "/";
 
 export function WaveStorySection({ activeWave = "wave_1", body, foundation, researchNote, title, waves }: WaveStorySectionProps) {
@@ -118,15 +119,15 @@ function WaveStepCard({
         <strong className={`block text-base font-bold ${textClass(tone)}`}>{status}</strong>
         <span className="mt-4 block text-sm font-bold leading-6 text-navy">{title}</span>
         <span className="mt-2 block text-sm font-semibold leading-6 text-navy/78 sm:text-base sm:leading-7">{body}</span>
-        <a
+        <Link
           className={`mt-5 inline-flex h-11 w-full items-center justify-center rounded-lg px-4 text-sm font-bold transition focus:outline-none focus:ring-4 sm:mt-auto sm:w-max sm:min-w-[170px] ${buttonClass(
             tone,
             active
           )}`}
-          href={href}
+          to={href}
         >
           {cta}
-        </a>
+        </Link>
       </span>
     </article>
   );

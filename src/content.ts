@@ -469,11 +469,11 @@ export const copy: Record<Language, Copy> = {
       {
         wave: "Next",
         eyebrow: "Provider research",
-        title: "Marketplace",
+        title: "Trusted Services Research",
         body: "We're researching how Caniello could help caregivers find trusted support when everyday pet care needs an extra hand.",
         note: "This is not an active service directory, booking flow, or payment product.",
         cta: "Join Waitlist",
-        timelineCta: "Explore Marketplace",
+        timelineCta: "Explore Services Research",
         highlights: [
           { title: "Verified providers", body: "Only trusted services and pet care professionals." },
           { title: "Needs-based matching", body: "Recommendations shaped around your pet." },

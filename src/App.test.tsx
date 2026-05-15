@@ -64,8 +64,8 @@ describe("Caniello landing page", () => {
     render(<App />);
 
     expect(screen.getByRole("link", { name: /poznaj opiekę/i })).toHaveAttribute("href", "/");
-    expect(screen.getByRole("link", { name: /poznaj rynek usług/i })).toHaveAttribute("href", "/wave-2-exploration");
-    expect(screen.getByRole("link", { name: /poznaj kliniki/i })).toHaveAttribute("href", "/wave-3-research");
+    expect(screen.getByRole("link", { name: /poznaj rynek usług/i })).toHaveAttribute("href", "/marketplace");
+    expect(screen.getByRole("link", { name: /poznaj kliniki/i })).toHaveAttribute("href", "/clinics");
   });
 
   it("records validation events only after analytics consent", async () => {
@@ -116,7 +116,7 @@ describe("Caniello landing page", () => {
 
   it("renders Next exploration page and submits a generic waitlist lead", async () => {
     const user = userEvent.setup();
-    window.history.pushState({}, "", "/wave-2-exploration");
+    window.history.pushState({}, "", "/marketplace");
     render(<App />);
 
     expect(screen.getAllByRole("heading", { name: /zaufana pomoc/i }).length).toBeGreaterThan(0);
@@ -138,9 +138,22 @@ describe("Caniello landing page", () => {
     expect(JSON.parse(String(calls[0][1].body))).not.toHaveProperty("interestWave");
   });
 
+  it("redirects legacy Wave URLs to canonical marketplace and clinics routes", async () => {
+    window.history.pushState({}, "", "/wave-2-exploration");
+    const { unmount } = render(<App />);
+
+    await waitFor(() => expect(window.location.pathname).toBe("/marketplace"));
+
+    unmount();
+    window.history.pushState({}, "", "/wave-3-research");
+    render(<App />);
+
+    await waitFor(() => expect(window.location.pathname).toBe("/clinics"));
+  });
+
   it("renders Future research page and submits a generic waitlist lead", async () => {
     const user = userEvent.setup();
-    window.history.pushState({}, "", "/wave-3-research");
+    window.history.pushState({}, "", "/clinics");
     render(<App />);
 
     expect(screen.getAllByRole("heading", { name: /pełniejszy kontekst pacjenta/i }).length).toBeGreaterThan(0);

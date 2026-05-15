@@ -1,4 +1,4 @@
-import type { LegalPageKey } from "./content";
+import { BrowserRouter, Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import { SiteFooter } from "./components/SiteFooter";
 import { SiteHeader } from "./components/SiteHeader";
 import { useLanguage } from "./hooks/useLanguage";
@@ -8,62 +8,48 @@ import { LegalPage } from "./pages/LegalPage";
 import { MarketplacePage } from "./pages/MarketplacePage";
 
 export default function App() {
-  const { language, setLanguage } = useLanguage();
-  const activeLegalPage = getActiveLegalPage();
-  const isMarketplacePage = getIsMarketplacePage();
-  const isClinicPage = getIsClinicPage();
-
   return (
-    <main className={`min-h-screen bg-white text-navy ${activeLegalPage ? "" : "overflow-hidden"}`}>
-      <SiteHeader language={language} onLanguageChange={setLanguage} />
-      {activeLegalPage ? (
-        <LegalPage language={language} pageKey={activeLegalPage} />
-      ) : isMarketplacePage ? (
-        <MarketplacePage language={language} />
-      ) : isClinicPage ? (
-        <ClinicPage language={language} />
-      ) : (
-        <LandingPage language={language} />
-      )}
-      <SiteFooter language={language} />
-    </main>
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
   );
 }
 
-function getActiveLegalPage(): LegalPageKey | null {
-  if (typeof window === "undefined") {
-    return null;
-  }
+function AppRoutes() {
+  const { language, setLanguage } = useLanguage();
 
-  const path = window.location.pathname.replace(/\/$/, "");
-
-  if (path === "/privacy") {
-    return "privacy";
-  }
-
-  if (path === "/terms") {
-    return "terms";
-  }
-
-  if (path === "/medical-boundaries") {
-    return "medical-boundaries";
-  }
-
-  return null;
+  return (
+    <Routes>
+      <Route element={<AppLayout language={language} onLanguageChange={setLanguage} />}>
+        <Route index element={<LandingPage language={language} />} />
+        <Route path="privacy" element={<LegalPage language={language} pageKey="privacy" />} />
+        <Route path="terms" element={<LegalPage language={language} pageKey="terms" />} />
+        <Route path="medical-boundaries" element={<LegalPage language={language} pageKey="medical-boundaries" />} />
+        <Route path="marketplace" element={<MarketplacePage language={language} />} />
+        <Route path="clinics" element={<ClinicPage language={language} />} />
+        <Route path="wave-2-exploration" element={<Navigate replace to="/marketplace" />} />
+        <Route path="wave-3-research" element={<Navigate replace to="/clinics" />} />
+        <Route path="*" element={<Navigate replace to="/" />} />
+      </Route>
+    </Routes>
+  );
 }
 
-function getIsMarketplacePage(): boolean {
-  if (typeof window === "undefined") {
-    return false;
-  }
+type AppLayoutProps = {
+  language: ReturnType<typeof useLanguage>["language"];
+  onLanguageChange: ReturnType<typeof useLanguage>["setLanguage"];
+};
 
-  return window.location.pathname.replace(/\/$/, "") === "/wave-2-exploration";
-}
+function AppLayout({ language, onLanguageChange }: AppLayoutProps) {
+  const { pathname } = useLocation();
+  const normalizedPath = pathname.replace(/\/$/, "");
+  const isLegalPage = normalizedPath === "/privacy" || normalizedPath === "/terms" || normalizedPath === "/medical-boundaries";
 
-function getIsClinicPage(): boolean {
-  if (typeof window === "undefined") {
-    return false;
-  }
-
-  return window.location.pathname.replace(/\/$/, "") === "/wave-3-research";
+  return (
+    <main className={`min-h-screen bg-white text-navy ${isLegalPage ? "" : "overflow-hidden"}`}>
+      <SiteHeader language={language} onLanguageChange={onLanguageChange} />
+      <Outlet />
+      <SiteFooter language={language} />
+    </main>
+  );
 }

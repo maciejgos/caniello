@@ -1,4 +1,5 @@
 import { FormEvent, useId, useState } from "react";
+import { Link } from "react-router-dom";
 import type { Language, LeadSource } from "../content";
 import { copy } from "../content";
 import { isValidEmail, readUtmParams, submitLandingLead } from "../lib/landing-leads";
@@ -132,9 +133,9 @@ export function WaitlistForm({
         />
         <span>
           {text.leadConsentLabel}{" "}
-          <a className="font-bold underline decoration-gold underline-offset-4 hover:text-gold" href="/privacy">
+          <Link className="font-bold underline decoration-gold underline-offset-4 hover:text-gold" to="/privacy">
             {text.privacyLinkLabel}
-          </a>
+          </Link>
           .
         </span>
       </label>

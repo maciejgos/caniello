@@ -32,7 +32,7 @@ Validate the landing-page "Co dalej" timeline update that makes each timeline st
 
 - Criterion: The "Co dalej" section links visitors to dedicated product or research views.
   Evidence status: Supported
-  Evidence: `src/components/WaveStorySection.tsx` maps Wave 2 to `/wave-2-exploration` and Wave 3 to `/wave-3-research`; `src/App.test.tsx` asserts the new CTA labels keep those hrefs.
+  Evidence: `src/components/WaveStorySection.tsx` maps Wave 2 to `/marketplace` and Wave 3 to `/clinics`; `src/App.test.tsx` asserts the CTA labels keep those hrefs.
 
 - Criterion: Wave 2 and Wave 3 are not presented as active marketplace or clinic products.
   Evidence status: Supported
@@ -78,8 +78,8 @@ Validate the landing-page "Co dalej" timeline update that makes each timeline st
 
 - The timeline now uses the existing `WaveStorySection` cards as the primary navigation surface.
 - The Wave 1 CTA is `Otwórz moduł opieki` and links to `/`.
-- The Wave 2 CTA is `Zobacz usługę` and links to `/wave-2-exploration`.
-- The Wave 3 CTA is `Podejrzyj koncepcję` and links to `/wave-3-research`.
+- The Wave 2 CTA links to `/marketplace`.
+- The Wave 3 CTA links to `/clinics`.
 - The shared intro copy now explains that each area has its own view with assumptions, status, and planned scope.
 - Automated checks passed: lint, unit tests, build.
 

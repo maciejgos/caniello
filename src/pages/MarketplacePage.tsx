@@ -54,7 +54,7 @@ const pageCopy = {
     eyebrow: "Next · Exploration",
     heroTitle: "Trusted help when pet care needs support.",
     heroBody:
-      "We're exploring Caniello Marketplace as a clearer way for caregivers to discover trusted pet services shaped around real care needs.",
+      "We're researching trusted service discovery as a clearer way for caregivers to find pet services shaped around real care needs.",
     heroNote: "This is a future concept. We're researching demand.",
     heroCta: "Join Waitlist",
     featuresTitle: "Services caregivers can trust",
@@ -82,7 +82,7 @@ const pageCopy = {
       { title: "Talking with providers", body: "We're researching the needs of businesses, caregivers, and pet specialists." },
       { title: "Validating the right scope", body: "Next launches only if demand and a trust model are validated." }
     ],
-    closingTitle: "We're shaping a trusted services marketplace with caregivers.",
+    closingTitle: "We're researching trusted services with caregivers.",
     closingBody: "Join the waitlist and help us learn how Caniello should connect caregivers with reliable support before this area launches.",
     closingBenefits: [
       { title: "Early research", body: "We'll invite you when we're testing next-stage assumptions." },

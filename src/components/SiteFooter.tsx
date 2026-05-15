@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { BrandWordmark } from "./BrandWordmark";
 import type { Language } from "../content";
 import { copy } from "../content";
@@ -20,9 +21,9 @@ export function SiteFooter({ language }: SiteFooterProps) {
         <div className="grid gap-4 text-sm text-navy sm:justify-items-end">
           <nav className="flex flex-wrap gap-x-6 gap-y-3 sm:justify-end" aria-label="Footer">
             {text.footerLinks.map((item) => (
-              <a className="font-bold hover:text-gold" href={item.href} key={item.label}>
+              <Link className="font-bold hover:text-gold" to={item.href} key={item.label}>
                 {item.label}
-              </a>
+              </Link>
             ))}
           </nav>
           <a className="text-sm font-semibold text-navy/75 hover:text-gold" href={`mailto:${text.footerContactEmail}`}>

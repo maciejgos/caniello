@@ -1,5 +1,15 @@
 import { expect, test } from "@playwright/test";
 
+test("direct application URLs return the SPA instead of 404", async ({ page }) => {
+  const directPaths = ["/privacy", "/terms", "/medical-boundaries", "/marketplace", "/clinics"];
+
+  for (const path of directPaths) {
+    const response = await page.goto(path);
+
+    expect(response?.status(), `${path} should return a successful SPA response`).toBeLessThan(400);
+  }
+});
+
 test("main landing page email capture validates input, requires consent, and submits every signup form", async ({ page }) => {
   const submissions: unknown[] = [];
 
@@ -109,11 +119,15 @@ test("landing page is Polish-first, switchable, and captures waitlist leads with
   await expect(page.getByRole("heading", { name: /Cała opieka nad pupilem\. Zawsze pod ręką/i })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Co dalej" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Poznaj opiekę" })).toHaveAttribute("href", "/");
+  await expect(page.getByRole("link", { name: "Poznaj rynek usług" })).toHaveAttribute("href", "/marketplace");
   await page.getByRole("link", { name: "Poznaj rynek usług" }).click();
+  await expect(page).toHaveURL(/\/marketplace$/);
   await expect(page.getByRole("heading", { name: /Zaufana pomoc/i })).toBeVisible();
   await page.goBack();
   await expect(page.getByRole("heading", { name: "Co dalej" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Poznaj kliniki" })).toHaveAttribute("href", "/clinics");
   await page.getByRole("link", { name: "Poznaj kliniki" }).click();
+  await expect(page).toHaveURL(/\/clinics$/);
   await expect(page.getByRole("heading", { name: /Pełniejszy kontekst pacjenta/i }).first()).toBeVisible();
   await page.goBack();
   await expect(page.getByRole("heading", { name: "Co dalej" })).toBeVisible();
@@ -179,7 +193,7 @@ test("Next exploration page presents marketplace research and captures a generic
     });
   });
 
-  await page.goto("/wave-2-exploration?utm_source=e2e&utm_campaign=wave2");
+  await page.goto("/marketplace?utm_source=e2e&utm_campaign=wave2");
 
   await expect(page.getByRole("heading", { name: /Zaufana pomoc/i }).first()).toBeVisible();
   await expect(page.getByText(/Badanie w toku/i).first()).toBeVisible();
@@ -226,7 +240,7 @@ test("Future research page presents clinic collaboration and captures a generic 
     });
   });
 
-  await page.goto("/wave-3-research?utm_source=e2e&utm_campaign=wave3");
+  await page.goto("/clinics?utm_source=e2e&utm_campaign=wave3");
 
   await expect(page.getByRole("heading", { name: /Pełniejszy kontekst pacjenta/i })).toBeVisible();
   await expect(page.getByText(/Badanie w toku/i).first()).toBeVisible();

@@ -25,7 +25,7 @@ Validate the landing-page product-area copy, naming, and lead-capture update for
 
 - The landing page implementation exists in React, TypeScript, Vite, and TailwindCSS.
 - Dockerized project commands are available through `docker compose run --rm web`.
-- Existing routes remain `/wave-2-exploration` and `/wave-3-research`.
+- Canonical routes are `/marketplace` and `/clinics`; legacy `/wave-2-exploration` and `/wave-3-research` routes redirect.
 
 ## Acceptance Criteria Mapping
 
@@ -90,7 +90,7 @@ Validate the landing-page product-area copy, naming, and lead-capture update for
 - The current owner area now uses `Opieka` in Polish and `Care` in English, replacing the inconsistent `moduł opieki` CTA in the timeline.
 - The owner, Marketplace, and Clinic pages now use benefit-led hero copy and more specific section headlines instead of repeating product-area labels.
 - Lead segmentation is deferred: landing submissions no longer include `role` or `interestWave`; page/form source remains available for technical attribution and analytics context.
-- Routes remain unchanged: `/wave-2-exploration` and `/wave-3-research`.
+- Routes changed to canonical `/marketplace` and `/clinics`, with legacy redirects retained.
 
 ## Missing, Skipped, or Unavailable Checks
 
