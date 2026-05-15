@@ -2,7 +2,7 @@
 
 ## Status
 
-Draft
+Accepted
 
 ## Release Scope
 
@@ -51,11 +51,11 @@ This review does not approve merge, deployment, public launch traffic, productio
 - Landing-page segmented validation requirement status: `Accepted`.
 - Landing-page feature and story statuses used for this release scope: `Accepted`.
 - Stack ADR status: `Accepted`.
-- Visual direction status: `Draft`; the validation record notes human visual feedback was incorporated, but this design artifact itself is not accepted.
+- Visual direction status: `Accepted`.
 - ExecPlan progress records human approval to begin Milestone 0 implementation on 2026-05-12.
-- Validation artifact status: `Ready for human review`.
-- Human decision on Milestone 0 implementation scope, validation evidence, and whether to proceed: Pending.
-- Human release decision: Pending.
+- Validation artifact status: `Accepted`.
+- Human decision on Milestone 0 implementation scope, validation evidence, and whether to proceed: Accepted on 2026-05-14.
+- Human release-readiness decision: Accepted on 2026-05-14 as an advisory readiness artifact.
 - Working tree state at review time: implementation files, validation artifact, screenshot evidence, and this release-readiness artifact are uncommitted; old first-landing-page screenshot files are deleted and replaced by refreshed Milestone 0 screenshot folders.
 
 ## Validation and CI/CD Evidence
@@ -110,8 +110,8 @@ This review does not approve merge, deployment, public launch traffic, productio
 - Risk: Live MailerLite create/update, group assignment, and custom-field mapping are unverified.
   Release impact: Blocks public lead-capture launch until deployment secrets and group IDs are configured and smoke-tested, unless a human explicitly accepts a no-live-capture release mode.
 
-- Risk: Privacy Policy and Terms of Service are placeholders.
-  Release impact: Blocks public launch with lead capture or analytics until approved legal copy exists, or requires explicit human acceptance of a limited private-preview scope.
+- Risk: Privacy Policy, Terms of Service, and medical-boundary content need dedicated follow-up.
+  Release impact: Public launch with lead capture or analytics depends on completing the backlog item for legal/privacy terms and medical boundaries, unless a human explicitly accepts a narrower private-preview scope.
 
 - Risk: Durable validation-event storage or analytics provider is not selected.
   Release impact: Blocks public validation traffic if conversion measurement is required for the release objective; can become follow-up only for a visual/demo release.
@@ -121,9 +121,6 @@ This review does not approve merge, deployment, public launch traffic, productio
 
 - Risk: CI/CD is not configured or evidenced.
   Release impact: Requires human acceptance for a manual gate process before merge/release, or follow-up CI setup before recurring releases.
-
-- Risk: Validation artifact is `Ready for human review`, not human accepted.
-  Release impact: Blocks treating validation as accepted release evidence until the human reviews it.
 
 - Risk: The release candidate is uncommitted and includes deleted old screenshots plus new untracked API, helper, validation, screenshot, and readiness files.
   Release impact: Blocks merge/deployment until the candidate scope is reviewed and intentionally staged.
@@ -145,10 +142,9 @@ For a local branch review or private demo with no public lead capture, the candi
 ## Follow-Up
 
 - Release-blocking for public launch: smoke-test a live MailerLite subscriber upsert into `Caniello Waitlist` after human approval.
-- Release-blocking for public launch: replace privacy and terms placeholders with approved legal copy.
+- Release-blocking for public launch: complete the landing backlog item for Privacy Policy, Terms of Service, and medical-boundary content.
 - Release-blocking for validation traffic: decide and verify durable analytics or validation-event storage, or explicitly approve a non-durable validation phase.
 - Release-blocking for deployment: define hosting target, environment variable handling, and rollback/recovery path.
-- Release-blocking for governed evidence: human review of `spec/validation/landing-page-milestone-0-validation.md`.
 - Release-blocking for merge/deploy: review `git status --short`, deleted old screenshots, new screenshots, untracked API/helper files, and intentionally stage only the candidate scope.
 - Follow-up before recurring releases: add CI/CD gates for lint, unit tests, build, and Playwright.
 - Follow-up quality improvement: expand automated owner-source payload tests for mid-page and footer forms.
@@ -156,6 +152,6 @@ For a local branch review or private demo with no public lead capture, the candi
 
 ## Human Decision
 
-Pending
+Accepted on 2026-05-14 by explicit human instruction to approve the remaining documents. This accepts the advisory release-readiness record and its documented risks; it does not by itself merge, deploy, launch public traffic, tag, announce, or mark a production release complete.
 
 Human checkpoint: approve or revise the release scope, validation evidence, manual and CI/CD gate status, security/privacy/legal posture, MailerLite and analytics readiness, rollback plan, accepted risks, and next action. Codex may recommend readiness, but only a human can approve merge, release, deployment, launch traffic, deferral, or return to an earlier PDLC stage.

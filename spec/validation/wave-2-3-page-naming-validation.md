@@ -2,7 +2,7 @@
 
 ## Status
 
-Draft
+Accepted
 
 ## Scope
 
@@ -115,4 +115,4 @@ Ready for human review
 
 ## Human Decision
 
-Pending
+Accepted on 2026-05-14 by explicit human instruction to approve the remaining documents.

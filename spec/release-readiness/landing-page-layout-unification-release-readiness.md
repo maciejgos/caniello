@@ -2,7 +2,7 @@
 
 ## Status
 
-Draft
+Accepted
 
 ## Release Scope
 
@@ -38,10 +38,10 @@ This review does not approve merge, deployment, public launch traffic, productio
 - Landing Page Segmented Lead Capture feature status: `Accepted`.
 - Landing Page Provider and Clinic Interest Capture story status: `Accepted`.
 - Related footer/legal story is referenced by validation, but final legal copy remains outside this layout-unification release scope and still needs human/legal approval before public launch.
-- Visual direction remains governed by human review; validation notes that Codex cannot accept the final visual direction.
-- Validation artifact status: `Draft`; result says `Ready for human review`.
-- Human decision on layout-unification validation evidence: Pending.
-- Human release decision: Pending.
+- Visual direction status: `Accepted`.
+- Validation artifact status: `Accepted`.
+- Human decision on layout-unification validation evidence: Accepted on 2026-05-14.
+- Human release-readiness decision: Accepted on 2026-05-14 as an advisory readiness artifact.
 - Working tree state at review time: `git status --short --branch` showed the branch `codex/caniello-mvp-milestone-0...origin/codex/caniello-mvp-milestone-0` with no local modified, deleted, or untracked files before this release-readiness artifact was added.
 
 ## Validation and CI/CD Evidence
@@ -81,12 +81,6 @@ This review does not approve merge, deployment, public launch traffic, productio
 
 ## Risks
 
-- Risk: Human visual acceptance of the unified layout is still pending.
-  Release impact: Blocks release approval until the human reviews the screenshot evidence or explicitly accepts the visual risk.
-
-- Risk: Validation artifact is `Draft` and only `Ready for human review`.
-  Release impact: Blocks treating validation as accepted release evidence until the human reviews it.
-
 - Risk: CI/CD is not configured or evidenced.
   Release impact: Requires human acceptance for a manual gate process before merge/release, or follow-up CI setup before recurring releases.
 
@@ -107,14 +101,12 @@ The layout-unification candidate is ready for human release consideration for a 
 
 ## Follow-Up
 
-- Release-blocking for this layout candidate: human review of `spec/validation/landing-page-layout-unification-validation.md` and its desktop/mobile screenshot evidence.
-- Release-blocking for governed evidence: decide whether the Draft validation artifact is accepted, needs revision, or should return to implementation.
 - Release-blocking for public launch: resolve or explicitly scope out the prior Milestone 0 public-launch risks around MailerLite live mutation, legal placeholders, durable analytics/storage, deployment target, and rollback.
 - Follow-up before recurring releases: add CI/CD gates for lint, unit tests, build, and Playwright.
 - Follow-up quality improvement: keep screenshot review for main, Wave 2, and Wave 3 page parity as a gate for future shared-section changes.
 
 ## Human Decision
 
-Pending
+Accepted on 2026-05-14 by explicit human instruction to approve the remaining documents. This accepts the advisory release-readiness record and its documented risks; it does not by itself merge, deploy, launch public traffic, tag, announce, or mark a production release complete.
 
 Human checkpoint: approve or revise the release scope, validation evidence, manual and CI/CD gate status, visual acceptance, public-launch risk handling, rollback plan, and next action. Codex may recommend readiness, but only a human can approve merge, release, deployment, launch traffic, deferral, or return to an earlier PDLC stage.

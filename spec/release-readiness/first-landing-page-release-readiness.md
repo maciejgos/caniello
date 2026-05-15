@@ -35,8 +35,8 @@ This review does not approve merge, deployment, public launch traffic, analytics
 
 - Requirement status: `Accepted` in `spec/requirements/first-landing-page.md`.
 - ExecPlan progress records human authorization to implement the first landing page and later human direction to align the UI with `spec/design/visual-artifacts/caniello-better-care-landing.png`.
-- Validation artifact status: `Draft`; result says `Ready for human review`.
-- Human release decision: Pending.
+- Validation artifact status: `Accepted`.
+- Human release-readiness decision: Accepted on 2026-05-14 as an advisory readiness artifact.
 - Deployment target, analytics, persistent waitlist storage, and public validation traffic approach: Pending human decision.
 - Working tree state after this review: includes this new Draft release-readiness artifact, refreshed Playwright screenshot PNGs, and pre-existing source edits in `src/App.test.tsx` and `src/components/WaitlistForm.tsx` that were present by the end of review and were included in the validation reruns.
 
@@ -117,6 +117,6 @@ The landing page candidate is ready for a human release decision for local branc
 
 ## Human Decision
 
-Pending
+Accepted on 2026-05-14 by explicit human instruction to approve the remaining documents. This accepts the advisory release-readiness record and its documented risks; it does not by itself merge, deploy, launch public traffic, tag, announce, or mark a production release complete.
 
 Human checkpoint: approve or revise the release scope, validation evidence, manual and CI/CD gate status, risk acceptance, rollback plan, and next action. Codex may recommend readiness, but only a human can approve merge, release, deployment, launch traffic, or deferral.

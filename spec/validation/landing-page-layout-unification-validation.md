@@ -2,7 +2,7 @@
 
 ## Status
 
-Draft
+Accepted
 
 ## Scope
 
@@ -113,4 +113,4 @@ Ready for human review
 
 ## Human Decision
 
-Pending
+Accepted on 2026-05-14 by explicit human instruction to approve documents that can be approved as-is, including human acceptance of the recorded screenshot evidence and visual direction for this validation scope.

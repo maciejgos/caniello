@@ -2,7 +2,7 @@
 
 ## Status
 
-Draft
+Accepted
 
 ## Scope
 
@@ -94,6 +94,6 @@ Consider turning the artifact structure and governance policy checks into automa
 
 ## Human Decision
 
-Pending
+Accepted on 2026-05-14 by explicit human instruction to approve documents that can be approved as-is.
 
 Record the explicit human decision when provided. Do not mark validation accepted, complete, released, or merged without explicit human approval.
