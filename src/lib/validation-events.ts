@@ -16,6 +16,7 @@ export type ValidationEvent = {
 };
 
 const consentKey = "caniello.analyticsConsent";
+export const analyticsConsentChangedEvent = "caniello:analytics-consent-changed";
 
 export type AnalyticsPreference = "granted" | "declined" | null;
 
@@ -37,6 +38,7 @@ export async function saveAnalyticsConsent(granted: boolean, utm: Record<string,
   });
 
   window.localStorage.setItem(consentKey, granted ? "granted" : "declined");
+  window.dispatchEvent(new CustomEvent(analyticsConsentChangedEvent, { detail: granted ? "granted" : "declined" }));
 }
 
 export function trackValidationEvent(event: Omit<ValidationEvent, "createdAt">) {

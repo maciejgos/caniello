@@ -6,11 +6,13 @@ import { ClinicPage } from "./pages/ClinicPage";
 import { LandingPage } from "./pages/LandingPage";
 import { LegalPage } from "./pages/LegalPage";
 import { MarketplacePage } from "./pages/MarketplacePage";
+import { VercelTelemetry } from "./components/VercelTelemetry";
 
 export default function App() {
   return (
     <BrowserRouter>
       <AppRoutes />
+      <VercelTelemetry />
     </BrowserRouter>
   );
 }
