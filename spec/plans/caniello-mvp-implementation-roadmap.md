@@ -29,6 +29,7 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
 - [x] (2026-05-13) Implemented the simple MailerLite integration refinement on branch `codex/mailerlite-integration`: local secret hygiene, `Caniello Waitlist` group lookup by name, subscriber upsert into that group using email only, API unit tests, and README configuration updates.
 - [x] (2026-05-14) Human accepted the remaining Milestone 0 validation and release-readiness artifacts, including Wave 2, Wave 3, naming, timeline service links, layout unification, and Milestone 0 release-readiness records.
 - [x] (2026-05-14) Added public-launch backlog work for Privacy Policy, Terms of Service, and medical-boundary content.
+- [x] (2026-05-15) Captured the data-controller identity for the Privacy Policy draft: Cloud & More Maciej Gos / Cloud & More, NIP 5242507722, address B. Prusa 43/20, 05-800 Pruszków, privacy contact `privacy@caniello.com`.
 - [ ] Human review of roadmap scope, sequencing, and release slices beyond Milestone 0.
 - [ ] Backlog before public launch: prepare and implement Privacy Policy, Terms of Service, and medical-boundary content for landing lead capture.
 - [ ] Follow-up ADRs or solution designs for platform topology, auth/RBAC, AI document pipeline, data lifecycle, sharing/export, messaging, payments deferral, and observability.
@@ -227,6 +228,15 @@ Remaining Milestone 0 backlog before public launch:
 4. Ensure footer links lead to working Privacy Policy and Terms of Service pages before public traffic.
 5. Ensure form and trust-section copy clearly explains data use and contact consent.
 6. Submit the legal/privacy/medical-boundary content for human/legal review before public launch.
+
+Known controller details for the Privacy Policy draft:
+
+- Full name: Cloud & More Maciej Gos.
+- Trading name: Cloud & More.
+- NIP: 5242507722.
+- Address: B. Prusa 43/20, 05-800 Pruszków.
+- Privacy contact email: `privacy@caniello.com`.
+- General contact email: `hello@caniello.com`.
 
 Story order:
 

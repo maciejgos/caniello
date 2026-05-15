@@ -100,7 +100,6 @@ type Copy = {
   footerContactLabel: string;
   footerContactEmail: string;
   legalBackLabel: string;
-  legalDraftNotice: string;
   legalPages: Record<LegalPageKey, LegalPage>;
 };
 
@@ -236,8 +235,6 @@ export const copy: Record<Language, Copy> = {
     footerContactLabel: "Kontakt",
     footerContactEmail: "hello@caniello.com",
     legalBackLabel: "Wróć do strony głównej",
-    legalDraftNotice:
-      "Wersja robocza do zatwierdzenia przed publikacją. Wymaga uzupełnienia formalnych danych administratora oraz finalnej weryfikacji prawnej.",
     legalPages: {
       privacy: {
         title: "Polityka prywatności",
@@ -249,8 +246,8 @@ export const copy: Record<Language, Copy> = {
           {
             title: "Administrator i kontakt",
             body: [
-              "Administratorem danych jest operator projektu Caniello. Formalna nazwa administratora, adres i ewentualny inspektor ochrony danych zostaną uzupełnione przed publikacją.",
-              "W sprawach prywatności można skontaktować się przez hello@caniello.com."
+              "Administratorem danych jest Cloud & More Maciej Gos, działający pod nazwą Cloud & More, NIP: 5242507722, adres: B. Prusa 43/20, 05-800 Pruszków.",
+              "W sprawach prywatności można skontaktować się przez privacy@caniello.com. Caniello nie powołało inspektora ochrony danych."
             ]
           },
           {
@@ -270,8 +267,8 @@ export const copy: Record<Language, Copy> = {
           {
             title: "Odbiorcy danych",
             body: [
-              "Dane mogą być przekazywane dostawcom technicznym potrzebnym do działania strony, formularzy, hostingu, poczty i listy zainteresowanych, w tym MailerLite po skonfigurowaniu środowiska produkcyjnego.",
-              "Jeżeli dostawca przetwarza dane poza Europejskim Obszarem Gospodarczym, przed publikacją należy potwierdzić właściwe zabezpieczenia transferu danych."
+              "Dane mogą być przekazywane dostawcom technicznym potrzebnym do działania strony, formularzy, hostingu, poczty i listy zainteresowanych. Dla obecnej wersji planowani dostawcy to Vercel jako platforma hostingu oraz MailerLite jako narzędzie listy mailingowej i ankiet.",
+              "Dostawcy mogą przetwarzać dane w Europejskim Obszarze Gospodarczym oraz, w określonych przypadkach, poza EOG. W takich przypadkach transfer odbywa się na podstawie odpowiednich mechanizmów prawnych, takich jak standardowe klauzule umowne lub inne zabezpieczenia przewidziane przez RODO."
             ]
           },
           {
@@ -279,6 +276,13 @@ export const copy: Record<Language, Copy> = {
             body: [
               "Dane z listy zainteresowanych przechowujemy do czasu wycofania zgody, zakończenia walidacji danego etapu produktu albo usunięcia listy zainteresowanych.",
               "Preferencja analityczna jest zapisywana lokalnie w przeglądarce, aby nie pytać ponownie przy każdej wizycie."
+            ]
+          },
+          {
+            title: "Dobrowolność i automatyczne decyzje",
+            body: [
+              "Podanie adresu e-mail jest dobrowolne, ale potrzebne, aby dołączyć do listy zainteresowanych, otrzymać ankietę lub dostać zaproszenie do testów.",
+              "Na podstawie danych z landing page nie podejmujemy automatycznych decyzji wywołujących skutki prawne ani podobnie istotnie wpływających na użytkownika."
             ]
           },
           {
@@ -312,6 +316,20 @@ export const copy: Record<Language, Copy> = {
             ]
           },
           {
+            title: "Wymagania techniczne",
+            body: [
+              "Do korzystania ze strony potrzebne jest urządzenie z aktualną przeglądarką internetową, dostępem do internetu oraz włączoną obsługą JavaScript.",
+              "Do formularza wymagany jest działający adres e-mail."
+            ]
+          },
+          {
+            title: "Niedozwolone treści",
+            body: [
+              "Użytkownik nie może dostarczać treści bezprawnych, naruszających prawa innych osób ani danych, których nie ma prawa przekazać.",
+              "Formularze nie służą do przekazywania dokumentacji medycznej, pilnych zgłoszeń zdrowotnych ani informacji wymagających natychmiastowej reakcji."
+            ]
+          },
+          {
             title: "Zakres niedostępny na tym etapie",
             body: [
               "Strona nie oferuje diagnozy, porad leczenia, rezerwacji usług, płatności, kont użytkowników, oficjalnych dokumentów ani zastępstwa dla paszportu zwierzęcia.",
@@ -327,7 +345,10 @@ export const copy: Record<Language, Copy> = {
           },
           {
             title: "Kontakt",
-            body: ["Pytania dotyczące strony lub formularzy można wysłać na hello@caniello.com."]
+            body: [
+              "Pytania, reklamacje lub zgłoszenia dotyczące strony i formularzy można wysłać na hello@caniello.com.",
+              "Zgłoszenie powinno opisywać problem oraz zawierać adres e-mail do odpowiedzi. Odpowiemy w rozsądnym terminie, nie później niż w ciągu 14 dni."
+            ]
           }
         ]
       },
@@ -500,8 +521,6 @@ export const copy: Record<Language, Copy> = {
     footerContactLabel: "Contact",
     footerContactEmail: "hello@caniello.com",
     legalBackLabel: "Back to home",
-    legalDraftNotice:
-      "Draft for approval before publication. Formal controller details and final legal review must be completed before launch.",
     legalPages: {
       privacy: {
         title: "Privacy Policy",
@@ -513,8 +532,8 @@ export const copy: Record<Language, Copy> = {
           {
             title: "Controller and contact",
             body: [
-              "The data controller is the operator of the Caniello project. The formal controller name, address, and any data protection officer details must be completed before publication.",
-              "For privacy questions, contact hello@caniello.com."
+              "The data controller is Cloud & More Maciej Gos, operating as Cloud & More, Polish tax ID NIP: 5242507722, address: B. Prusa 43/20, 05-800 Pruszków, Poland.",
+              "For privacy questions, contact privacy@caniello.com. Caniello has not appointed a data protection officer."
             ]
           },
           {
@@ -534,8 +553,8 @@ export const copy: Record<Language, Copy> = {
           {
             title: "Recipients",
             body: [
-              "Data may be shared with technical providers needed for hosting, forms, email, and waitlist management, including MailerLite once production configuration is in place.",
-              "If a provider processes data outside the European Economic Area, appropriate transfer safeguards must be confirmed before publication."
+              "Data may be shared with technical providers needed for hosting, forms, email, and waitlist management. For the current version, the planned providers are Vercel as the hosting platform and MailerLite for the mailing list and surveys.",
+              "Providers may process data in the European Economic Area and, in certain cases, outside the EEA. In those cases, transfers are based on appropriate legal mechanisms, such as standard contractual clauses or other safeguards provided by the GDPR."
             ]
           },
           {
@@ -543,6 +562,13 @@ export const copy: Record<Language, Copy> = {
             body: [
               "Waitlist and research-interest data is kept until consent is withdrawn, the relevant validation stage ends, or the waitlist is deleted.",
               "The analytics preference is stored locally in the browser so the page does not ask again on every visit."
+            ]
+          },
+          {
+            title: "Voluntary data and automated decisions",
+            body: [
+              "Providing an email address is voluntary, but needed to join the waitlist, receive a survey, or get an invitation to tests.",
+              "We do not use landing-page data to make automated decisions that produce legal effects or similarly significant effects for the user."
             ]
           },
           {
@@ -576,6 +602,20 @@ export const copy: Record<Language, Copy> = {
             ]
           },
           {
+            title: "Technical requirements",
+            body: [
+              "Using the page requires a device with an up-to-date web browser, internet access, and JavaScript enabled.",
+              "The form requires a working email address."
+            ]
+          },
+          {
+            title: "Prohibited content",
+            body: [
+              "Users must not submit unlawful content, content that infringes other people's rights, or data they are not allowed to share.",
+              "The forms are not intended for medical documentation, urgent health reports, or information that requires immediate action."
+            ]
+          },
+          {
             title: "Unavailable scope",
             body: [
               "The landing page does not provide diagnosis, treatment advice, booking, payments, user accounts, official documents, or replacement for an official pet passport.",
@@ -591,7 +631,10 @@ export const copy: Record<Language, Copy> = {
           },
           {
             title: "Contact",
-            body: ["Questions about the page or forms can be sent to hello@caniello.com."]
+            body: [
+              "Questions, complaints, or reports about the page and forms can be sent to hello@caniello.com.",
+              "A report should describe the issue and include an email address for the response. We will respond within a reasonable time, no later than 14 days."
+            ]
           }
         ]
       },

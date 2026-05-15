@@ -19,7 +19,6 @@ export function LegalPage({ language, pageKey }: LegalPageProps) {
         <p className="mt-10 text-xs font-bold uppercase tracking-[0.16em] text-gold">{page.eyebrow}</p>
         <h1 className="mt-3 font-serif text-4xl font-bold leading-tight text-navy sm:text-5xl">{page.title}</h1>
         <p className="mt-5 max-w-3xl text-base leading-7 text-navy">{page.intro}</p>
-        <p className="mt-5 rounded-lg border border-gold/30 bg-cream px-4 py-3 text-sm font-semibold leading-6 text-navy">{text.legalDraftNotice}</p>
         <p className="mt-4 text-sm text-navy/70">{page.updated}</p>
 
         <div className="mt-10 grid gap-8">
@@ -28,7 +27,7 @@ export function LegalPage({ language, pageKey }: LegalPageProps) {
               <h2 className="font-serif text-2xl font-bold leading-tight text-navy">{section.title}</h2>
               <div className="mt-4 grid gap-3 text-sm leading-7 text-navy">
                 {section.body.map((paragraph) => (
-                  <p key={paragraph}>{paragraph}</p>
+                  <p key={paragraph}>{renderParagraphWithEmailLinks(paragraph)}</p>
                 ))}
               </div>
             </section>
@@ -37,4 +36,23 @@ export function LegalPage({ language, pageKey }: LegalPageProps) {
       </div>
     </article>
   );
+}
+
+function renderParagraphWithEmailLinks(paragraph: string) {
+  const emailPattern = /([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})/gi;
+  const parts = paragraph.split(emailPattern);
+
+  return parts.map((part, index) => {
+    if (emailPattern.test(part)) {
+      emailPattern.lastIndex = 0;
+      return (
+        <a className="font-semibold text-gold hover:text-navy" href={`mailto:${part}`} key={`${paragraph}-${part}-${index}`}>
+          {part}
+        </a>
+      );
+    }
+
+    emailPattern.lastIndex = 0;
+    return part;
+  });
 }

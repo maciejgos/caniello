@@ -93,9 +93,20 @@ describe("Caniello landing page", () => {
 
     expect(screen.getByRole("heading", { name: "Polityka prywatności" })).toBeInTheDocument();
     expect(screen.getByText(/administrator i kontakt/i)).toBeInTheDocument();
-    expect(screen.getByText(/wersja robocza/i)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "privacy@caniello.com" })).toHaveAttribute("href", "mailto:privacy@caniello.com");
+    expect(screen.getByText(/nie powołało inspektora ochrony danych/i)).toBeInTheDocument();
+    expect(screen.getByText(/nie podejmujemy automatycznych decyzji/i)).toBeInTheDocument();
 
     unmount();
+    window.history.pushState({}, "", "/terms");
+    const termsRender = render(<App />);
+
+    expect(screen.getByRole("heading", { name: "Regulamin" })).toBeInTheDocument();
+    expect(screen.getByText(/wymagania techniczne/i)).toBeInTheDocument();
+    expect(screen.getByText(/niedozwolone treści/i)).toBeInTheDocument();
+    expect(screen.getByText(/reklamacje lub zgłoszenia/i)).toBeInTheDocument();
+
+    termsRender.unmount();
     window.history.pushState({}, "", "/medical-boundaries");
     render(<App />);
 
