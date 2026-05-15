@@ -15,6 +15,11 @@ type WaitlistFormProps = {
   compactConsent?: boolean;
 };
 
+type FormError = {
+  kind: "email" | "consent" | "submit";
+  message: string;
+};
+
 export function WaitlistForm({
   language,
   source,
@@ -28,7 +33,7 @@ export function WaitlistForm({
   const id = useId();
   const [email, setEmail] = useState("");
   const [hasLeadConsent, setHasLeadConsent] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<FormError | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -39,16 +44,16 @@ export function WaitlistForm({
     setSubmitted(false);
 
     if (!isValidEmail(trimmedEmail)) {
-      setError(text.emailError);
+      setError({ kind: "email", message: text.emailError });
       return;
     }
 
     if (!hasLeadConsent) {
-      setError(text.consentError);
+      setError({ kind: "consent", message: text.consentError });
       return;
     }
 
-    setError("");
+    setError(null);
     setIsSubmitting(true);
     trackValidationEvent({
       name: "waitlist_submit",
@@ -81,7 +86,7 @@ export function WaitlistForm({
         source,
         utm: readUtmParams()
       });
-      setError(text.submitError);
+      setError({ kind: "submit", message: text.submitError });
     } finally {
       setIsSubmitting(false);
     }
@@ -103,10 +108,10 @@ export function WaitlistForm({
             value={email}
             placeholder={text.emailPlaceholder}
             aria-describedby={`${id}-message ${id}-hint`}
-            aria-invalid={Boolean(error)}
+            aria-invalid={error?.kind === "email"}
             onChange={(event) => {
               setEmail(event.target.value);
-              setError("");
+              setError(null);
               setSubmitted(false);
             }}
           />
@@ -126,9 +131,11 @@ export function WaitlistForm({
           className="mt-1 h-4 w-4 shrink-0 accent-navy"
           type="checkbox"
           checked={hasLeadConsent}
+          aria-describedby={`${id}-message`}
+          aria-invalid={error?.kind === "consent"}
           onChange={(event) => {
             setHasLeadConsent(event.target.checked);
-            setError("");
+            setError(null);
           }}
         />
         <span>
@@ -144,7 +151,7 @@ export function WaitlistForm({
         {text.formHint}
       </p>
       <div id={`${id}-message`} aria-live="polite">
-        {error ? <p className="text-sm font-semibold text-red-700">{error}</p> : null}
+        {error ? <p className="text-sm font-semibold text-red-700">{error.message}</p> : null}
         {submitted ? (
           <p className="text-sm font-semibold text-emerald-700">{successMessage ?? text.emailSuccess}</p>
         ) : null}

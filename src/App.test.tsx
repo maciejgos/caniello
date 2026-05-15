@@ -44,10 +44,13 @@ describe("Caniello landing page", () => {
 
     await user.click(screen.getAllByRole("button", { name: /^Dołącz$/i })[0]);
     expect(screen.getByText(/wpisz poprawny adres e-mail/i)).toBeInTheDocument();
+    expect(screen.getAllByLabelText(/adres e-mail/i)[0]).toHaveAttribute("aria-invalid", "true");
 
     await user.type(screen.getAllByLabelText(/adres e-mail/i)[0], "owner@example.com");
     await user.click(screen.getAllByRole("button", { name: /^Dołącz$/i })[0]);
     expect(screen.getByText(/zaznacz zgodę/i)).toBeInTheDocument();
+    expect(screen.getAllByLabelText(/adres e-mail/i)[0]).toHaveAttribute("aria-invalid", "false");
+    expect(screen.getAllByRole("checkbox")[0]).toHaveAttribute("aria-invalid", "true");
     expect(fetch).not.toHaveBeenCalled();
   });
 
