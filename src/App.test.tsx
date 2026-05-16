@@ -81,6 +81,18 @@ describe("Caniello landing page", () => {
     expect(screen.getByRole("link", { name: /poznaj kliniki/i })).toHaveAttribute("href", "/clinics");
   });
 
+  it("scrolls to the top after moving to a new route", async () => {
+    const user = userEvent.setup();
+    const scrollTo = vi.spyOn(window, "scrollTo").mockImplementation(() => undefined);
+    render(<App />);
+    scrollTo.mockClear();
+
+    await user.click(screen.getByRole("link", { name: /poznaj rynek usług/i }));
+
+    await waitFor(() => expect(window.location.pathname).toBe("/marketplace"));
+    expect(scrollTo).toHaveBeenCalledWith({ top: 0, left: 0, behavior: "auto" });
+  });
+
   it("records validation events only after analytics consent", async () => {
     const user = userEvent.setup();
     render(<App />);
