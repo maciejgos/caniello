@@ -10,6 +10,19 @@ test("direct application URLs return the SPA instead of 404", async ({ page }) =
   }
 });
 
+test("route navigation resets scroll position to the top of the new page", async ({ page }) => {
+  await page.goto("/");
+
+  await page.getByRole("heading", { name: "Co dalej" }).scrollIntoViewIfNeeded();
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
+
+  await page.getByRole("link", { name: "Poznaj rynek usług" }).click();
+
+  await expect(page).toHaveURL(/\/marketplace$/);
+  await expect(page.getByRole("heading", { name: /Zaufana pomoc/i }).first()).toBeVisible();
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+});
+
 test("main landing page email capture validates input, requires consent, and submits every signup form", async ({ page }) => {
   const submissions: unknown[] = [];
 
