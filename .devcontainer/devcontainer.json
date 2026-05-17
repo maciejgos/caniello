@@ -8,9 +8,16 @@
   "customizations": {
     "vscode": {
       "extensions": [
+        "OpenAI.chatgpt",
         "bradlc.vscode-tailwindcss",
+        "DavidAnson.vscode-markdownlint",
         "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        "mikestead.dotenv",
+        "ms-azuretools.vscode-docker",
+        "ms-playwright.playwright",
+        "redhat.vscode-yaml",
+        "openai.chatgpt"
       ]
     }
   }

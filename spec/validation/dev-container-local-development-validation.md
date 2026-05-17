@@ -42,6 +42,10 @@ The implementation branch is `codex/nextjs-monorepo-migration`. Docker Desktop i
   Evidence status: Supported
   Evidence: `README.md` identifies `.devcontainer/` in the repository structure and says `docker compose build` builds from `.devcontainer/Dockerfile`; `spec/architecture/local-development.md` documents the `workspace` service, host Docker socket access, and the no-production-Dockerfile boundary.
 
+- Criterion: The Dev Container should give contributors a ready-to-use editor environment.
+  Evidence status: Supported
+  Evidence: `.devcontainer/devcontainer.json` recommends editor extensions for Codex, Tailwind, Markdown linting, ESLint, Prettier, dotenv files, Docker, Playwright, and YAML.
+
 ## Checks
 
 - Check: `docker compose config`
@@ -50,11 +54,17 @@ The implementation branch is `codex/nextjs-monorepo-migration`. Docker Desktop i
   Expected result: Compose configuration parses and resolves the `workspace` service.
   Actual result: Passed. The resolved build target uses `.devcontainer/Dockerfile`.
 
+- Check: `docker compose run --rm workspace node -e "JSON.parse(require('fs').readFileSync('.devcontainer/devcontainer.json','utf8'))"`
+  Type: Automated
+  Status: Passed
+  Expected result: Dev Container configuration is valid JSON.
+  Actual result: Passed.
+
 - Check: `docker compose build workspace`
   Type: Automated
   Status: Passed
   Expected result: The Dev Container workspace image builds reproducibly.
-  Actual result: Passed. The image builds from the Playwright Noble base with Docker CLI, pnpm `9.15.4`, Turborepo, and Vercel CLI installed.
+  Actual result: Passed. The image builds from the standard `node:24-bookworm` base with Docker CLI, pnpm `9.15.4`, Turborepo, Vercel CLI, and Playwright Chromium installed.
 
 - Check: `docker compose run --rm workspace pnpm --version`
   Type: Automated
@@ -74,19 +84,33 @@ The implementation branch is `codex/nextjs-monorepo-migration`. Docker Desktop i
   Expected result: Supabase CLI is available through the workspace dependency graph after `pnpm install`.
   Actual result: Passed with Supabase CLI `2.98.2`.
 
+- Check: `docker compose run --rm workspace pnpm exec playwright --version`
+  Type: Automated
+  Status: Passed
+  Expected result: Playwright CLI is available through the workspace dependency graph after `pnpm install`.
+  Actual result: Passed with Playwright `1.60.0`.
+
 - Check: `docker compose run --rm workspace docker version`
   Type: Operational
   Status: Passed
   Expected result: Docker CLI is available in the workspace container and can reach the host Docker engine through the mounted socket.
   Actual result: Passed. The container reported a Docker client and the Docker Desktop server.
 
+- Check: `docker compose run --rm workspace pnpm test:e2e`
+  Type: UI
+  Status: Passed
+  Expected result: Browser E2E tests run successfully using the Playwright installation baked into the standard Node-based Dev Container.
+  Actual result: Passed. The web build completed and 12 Playwright Chromium tests passed.
+
 ## Evidence
 
 - `docker-compose.yml` builds the `workspace` service with `dockerfile: .devcontainer/Dockerfile`.
-- `.devcontainer/Dockerfile` installs Docker CLI and configures pnpm store caching at `/pnpm/store`.
+- `.devcontainer/Dockerfile` starts from `node:24-bookworm`, installs Docker CLI, installs Playwright Chromium with system dependencies, and configures pnpm store caching at `/pnpm/store`.
 - `.devcontainer/devcontainer.json` uses the Compose `workspace` service for editor-managed Dev Container sessions.
+- `.devcontainer/devcontainer.json` recommends `OpenAI.chatgpt`, `bradlc.vscode-tailwindcss`, `DavidAnson.vscode-markdownlint`, `dbaeumer.vscode-eslint`, `esbenp.prettier-vscode`, `mikestead.dotenv`, `ms-azuretools.vscode-docker`, `ms-playwright.playwright`, and `redhat.vscode-yaml`.
 - The root `Dockerfile` was removed to keep Docker scoped to local development rather than MVP production deployment.
 - `pnpm exec supabase --version` works inside the workspace container after `pnpm install`.
+- `pnpm test:e2e` works inside the workspace container with the baked-in Playwright browser installation.
 
 ## Missing, Skipped, or Unavailable Checks
 

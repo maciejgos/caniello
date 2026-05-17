@@ -18,7 +18,7 @@ Caniello has a working React/Vite landing page and two serverless API endpoints,
 - [x] (2026-05-17T10:15Z) Added Dev Container, Docker Compose workspace service, Supabase local placeholders, `.env.example`, and Vercel monorepo config.
 - [x] (2026-05-17T10:25Z) Marked the old FastAPI roadmap path as superseded by ADR 0001-0011.
 - [x] (2026-05-17T10:35Z) Discovered Supabase CLI cannot be installed globally through npm and moved it to root dev dependencies for `pnpm exec supabase`.
-- [x] (2026-05-17T10:45Z) Switched the workspace image to the official Playwright Noble base so browser E2E dependencies are present in the reproducible container.
+- [x] (2026-05-17T10:45Z) Switched the workspace image to a standard Node LTS base with Playwright Chromium and browser dependencies installed in the reproducible container.
 - [x] (2026-05-17T10:50Z) Generated `pnpm-lock.yaml`, installed dependencies, and removed root npm/Vite entrypoints, root `api/`, root `src/`, and `package-lock.json`.
 - [x] (2026-05-17T11:05Z) Ran `pnpm lint`, `pnpm test`, `pnpm build`, and `pnpm test:e2e` through the Dockerized workspace.
 - [x] (2026-05-17T11:10Z) Recorded validation evidence in `spec/validation/caniello-mvp-nextjs-monorepo-migration-validation.md`.
@@ -61,8 +61,8 @@ Caniello has a working React/Vite landing page and two serverless API endpoints,
   Rationale: The CLI rejects global npm installs. Keeping it in the committed workspace dependency graph makes the Dev Container reproducible after `pnpm install`.
   Date/Author: 2026-05-17 / Codex
 
-- Decision: Base the workspace container on `mcr.microsoft.com/playwright:v1.60.0-noble`.
-  Rationale: Browser validation is an explicit quality gate for this UI. The Playwright image already carries the needed Chromium runtime dependencies, reducing setup drift compared with installing browser libraries in an ephemeral run container.
+- Decision: Base the workspace container on standard `node:24-bookworm` and install Playwright Chromium plus browser dependencies in the Dev Container image.
+  Rationale: Keeping the image on a standard Node LTS base better matches the Dev Container intent, while baking Playwright dependencies into the image preserves reproducible browser E2E checks.
   Date/Author: 2026-05-17 / Codex
 
 - Decision: Pass `PLAYWRIGHT_BROWSERS_PATH` through Turborepo and disable Next dev indicators during local development.
