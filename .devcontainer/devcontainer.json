@@ -16,8 +16,7 @@
         "mikestead.dotenv",
         "ms-azuretools.vscode-docker",
         "ms-playwright.playwright",
-        "redhat.vscode-yaml",
-        "openai.chatgpt"
+        "redhat.vscode-yaml"
       ]
     }
   }
