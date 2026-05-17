@@ -41,8 +41,8 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
 - Observation: The landing page already has a completed ExecPlan and working React/Vite/Tailwind/Docker toolchain.
   Evidence: `spec/plans/first-landing-page.md`, `package.json`, `Dockerfile`, `docker-compose.yml`, and `playwright.config.ts` exist.
 
-- Observation: The accepted stack ADR is a parent stack decision, not enough detail for implementation planning.
-  Evidence: `spec/architecture-records/caniello-mvp-stack.md` explicitly says implementation planning depends on follow-up architecture decisions for topology, identity, AI intake, data lifecycle, sharing, messaging, payments, and observability.
+- Observation: The historical stack ADR is superseded and was not enough detail for implementation planning.
+  Evidence: `spec/architecture-records/0000-superseded-caniello-mvp-stack.md` explicitly says implementation planning depends on follow-up architecture decisions for topology, identity, AI intake, data lifecycle, sharing, messaging, payments, and observability.
 
 - Observation: The current Docker Compose setup only runs the web app.
   Evidence: `docker-compose.yml` currently defines a single `web` service and no `api`, `db`, worker, or Supabase-local service.
@@ -81,7 +81,7 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
   Evidence: On 2026-05-14, the human instructed Codex to approve the remaining documents and to add only Privacy Policy, Terms of Service, and medical-boundary work to the implementation roadmap backlog. The release-readiness records still preserve the distinction between accepting advisory evidence and actually merging, deploying, launching public traffic, tagging, announcing, or completing a production release.
 
 - Observation: The repository now has accepted ADRs 0001-0011 for a TypeScript-first Next.js monorepo, which supersede the older FastAPI and Back Office MVP assumptions in this roadmap.
-  Evidence: `docs/decisions/0001-use-typescript-nextjs-monorepo.md` through `docs/decisions/0011-use-pragmatic-engineering-practices-from-mvp-start.md` select Next.js App Router, Supabase, pnpm workspaces, Turborepo, Dev Containers, one Vercel project, Expo mobile, and pragmatic engineering practices.
+  Evidence: `spec/architecture-records/0001-use-typescript-nextjs-monorepo.md` through `spec/architecture-records/0011-use-pragmatic-engineering-practices-from-mvp-start.md` select Next.js App Router, Supabase, pnpm workspaces, Turborepo, Dev Containers, one Vercel project, Expo mobile, and pragmatic engineering practices.
 
 ## Decision Log
 
@@ -149,7 +149,7 @@ Supersession notice for readers and agents: the remaining sections of this older
 
 Caniello is a pet health and care organization utility. Its first MVP promise is one place for a pet's health records, reminders, documents, and shareable care information. The existing landing page is implemented with React, TypeScript, Vite, TailwindCSS, Docker, Vitest, and Playwright.
 
-The accepted stack decision is `spec/architecture-records/caniello-mvp-stack.md`: React for web, React Native for mobile, Python with FastAPI for backend, Vercel for deployment, Supabase for Postgres/Auth/Storage, Stripe for payments, and MailerLite for marketing and waitlist email.
+The superseded historical stack decision is `spec/architecture-records/0000-superseded-caniello-mvp-stack.md`: React for web, React Native for mobile, Python with FastAPI for backend, Vercel for deployment, Supabase for Postgres/Auth/Storage, Stripe for payments, and MailerLite for marketing and waitlist email.
 
 The main owner-facing requirement is `spec/requirements/owner-facing-mvp.md`. The back-office requirement is `spec/requirements/back-office-mvp.md`. The first landing page requirement is `spec/requirements/first-landing-page.md`. The refined landing-page validation requirement is `spec/requirements/landing-page-segmented-validation.md`; it adds owner waitlist capture, future-wave research-interest capture, MailerLite lead handling, privacy/consent behavior, and validation instrumentation.
 
@@ -294,7 +294,7 @@ This milestone produces decisions, not product code. It must happen before backe
 
 Source artifacts:
 
-- `spec/architecture-records/caniello-mvp-stack.md`
+- `spec/architecture-records/0000-superseded-caniello-mvp-stack.md`
 - `spec/requirements/owner-facing-mvp.md`
 - `spec/requirements/back-office-mvp.md`
 
@@ -691,7 +691,7 @@ Primary source artifacts:
 - `spec/requirements/landing-page-segmented-validation.md`
 - `spec/requirements/owner-facing-mvp.md`
 - `spec/requirements/back-office-mvp.md`
-- `spec/architecture-records/caniello-mvp-stack.md`
+- `spec/architecture-records/0000-superseded-caniello-mvp-stack.md`
 - `spec/features/landing-page-mvp-value-experience.md`
 - `spec/features/landing-page-segmented-lead-capture.md`
 - `spec/features/landing-page-validation-instrumentation.md`

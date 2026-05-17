@@ -10,17 +10,17 @@ Accepted
 
 ## Related decisions
 
-- [0001 — Use TypeScript-first Next.js monorepo for Caniello MVP](../decisions/0001-use-typescript-nextjs-monorepo.md)
-- [0002 — Use Caniello monorepo directory standard](../decisions/0002-use-caniello-monorepo-directory-standard.md)
-- [0003 — Keep landing, web app, and API in one Next.js project](../decisions/0003-keep-landing-app-and-api-in-one-nextjs-project.md)
-- [0004 — Use Supabase for MVP data, auth, storage, and RLS](../decisions/0004-use-supabase-for-mvp-data-auth-storage-and-rls.md)
-- [0005 — Deploy the web application on Vercel](../decisions/0005-deploy-web-on-vercel.md)
-- [0006 — Use pnpm workspaces and Turborepo for the monorepo](../decisions/0006-use-pnpm-workspaces-and-turborepo.md)
-- [0007 — Use React Native and Expo for mobile](../decisions/0007-use-react-native-expo-for-mobile.md)
-- [0008 — Use MVP product tooling baseline](../decisions/0008-use-mvp-product-tooling-baseline.md)
-- [0009 — Use one Vercel project for Caniello MVP](../decisions/0009-use-one-vercel-project-for-mvp.md)
-- [0010 — Use Dev Containers for local development](../decisions/0010-use-dev-containers-for-local-development.md)
-- [0011 — Use pragmatic engineering practices from MVP start](../decisions/0011-use-pragmatic-engineering-practices-from-mvp-start.md)
+- [0001 — Use TypeScript-first Next.js monorepo for Caniello MVP](../architecture-records/0001-use-typescript-nextjs-monorepo.md)
+- [0002 — Use Caniello monorepo directory standard](../architecture-records/0002-use-caniello-monorepo-directory-standard.md)
+- [0003 — Keep landing, web app, and API in one Next.js project](../architecture-records/0003-keep-landing-app-and-api-in-one-nextjs-project.md)
+- [0004 — Use Supabase for MVP data, auth, storage, and RLS](../architecture-records/0004-use-supabase-for-mvp-data-auth-storage-and-rls.md)
+- [0005 — Deploy the web application on Vercel](../architecture-records/0005-deploy-web-on-vercel.md)
+- [0006 — Use pnpm workspaces and Turborepo for the monorepo](../architecture-records/0006-use-pnpm-workspaces-and-turborepo.md)
+- [0007 — Use React Native and Expo for mobile](../architecture-records/0007-use-react-native-expo-for-mobile.md)
+- [0008 — Use MVP product tooling baseline](../architecture-records/0008-use-mvp-product-tooling-baseline.md)
+- [0009 — Use one Vercel project for Caniello MVP](../architecture-records/0009-use-one-vercel-project-for-mvp.md)
+- [0010 — Use Dev Containers for local development](../architecture-records/0010-use-dev-containers-for-local-development.md)
+- [0011 — Use pragmatic engineering practices from MVP start](../architecture-records/0011-use-pragmatic-engineering-practices-from-mvp-start.md)
 
 ## Summary
 
@@ -95,7 +95,7 @@ flowchart TB
       supabaseInfra["supabase\nMigrations, RLS policies, seed data"]
     end
 
-    docs["docs\nArchitecture and ADRs"]
+    spec["spec\nPDLC artifacts, architecture, and ADRs"]
   end
 
   subgraph platform["External platforms"]

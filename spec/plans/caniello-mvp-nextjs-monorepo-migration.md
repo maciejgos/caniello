@@ -75,7 +75,7 @@ Completed implementation validation on 2026-05-17. The repository now has a runn
 
 ## Context and Orientation
 
-The repository previously had a root Vite app in `src/`, root serverless endpoint files in `api/`, root Vite/Tailwind/PostCSS configs, `package-lock.json`, and npm scripts. The accepted architecture decisions in `docs/decisions/0001-use-typescript-nextjs-monorepo.md` through `docs/decisions/0011-use-pragmatic-engineering-practices-from-mvp-start.md` now govern implementation. In plain terms, a monorepo means one repository containing multiple applications and shared packages. App Router means Next.js uses folders under `app/` to define pages and API routes. Turborepo runs package scripts across the workspace. Supabase CLI is the local development foundation for the future database, authentication, storage, and row-level security work.
+The repository previously had a root Vite app in `src/`, root serverless endpoint files in `api/`, root Vite/Tailwind/PostCSS configs, `package-lock.json`, and npm scripts. The accepted architecture decisions in `spec/architecture-records/0001-use-typescript-nextjs-monorepo.md` through `spec/architecture-records/0011-use-pragmatic-engineering-practices-from-mvp-start.md` now govern implementation. In plain terms, a monorepo means one repository containing multiple applications and shared packages. App Router means Next.js uses folders under `app/` to define pages and API routes. Turborepo runs package scripts across the workspace. Supabase CLI is the local development foundation for the future database, authentication, storage, and row-level security work.
 
 The important new paths are:
 

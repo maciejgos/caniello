@@ -10,11 +10,11 @@ Accepted
 
 ## Related decisions
 
-- [0001 — Use TypeScript-first Next.js monorepo for Caniello MVP](../decisions/0001-use-typescript-nextjs-monorepo.md)
-- [0002 — Use Caniello monorepo directory standard](../decisions/0002-use-caniello-monorepo-directory-standard.md)
-- [0004 — Use Supabase for MVP data, auth, storage, and RLS](../decisions/0004-use-supabase-for-mvp-data-auth-storage-and-rls.md)
-- [0005 — Deploy the web application on Vercel](../decisions/0005-deploy-web-on-vercel.md)
-- [0010 — Use Dev Containers for local development](../decisions/0010-use-dev-containers-for-local-development.md)
+- [0001 — Use TypeScript-first Next.js monorepo for Caniello MVP](../architecture-records/0001-use-typescript-nextjs-monorepo.md)
+- [0002 — Use Caniello monorepo directory standard](../architecture-records/0002-use-caniello-monorepo-directory-standard.md)
+- [0004 — Use Supabase for MVP data, auth, storage, and RLS](../architecture-records/0004-use-supabase-for-mvp-data-auth-storage-and-rls.md)
+- [0005 — Deploy the web application on Vercel](../architecture-records/0005-deploy-web-on-vercel.md)
+- [0010 — Use Dev Containers for local development](../architecture-records/0010-use-dev-containers-for-local-development.md)
 
 ## Summary
 
@@ -33,7 +33,7 @@ caniello/
 │  └─ mobile/
 ├─ packages/
 ├─ infra/supabase/
-├─ docs/
+├─ spec/
 ├─ package.json
 ├─ pnpm-workspace.yaml
 ├─ turbo.json

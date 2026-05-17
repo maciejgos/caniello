@@ -12,7 +12,7 @@ Accepted
 
 Caniello implementation work will use a consistent monorepo directory standard aligned with [0001 — Use TypeScript-first Next.js monorepo for Caniello MVP](./0001-use-typescript-nextjs-monorepo.md).
 
-The repository should be organized around deployable applications in `apps/`, shared TypeScript packages in `packages/`, Supabase infrastructure in `infra/supabase/`, and durable project documentation in `docs/`.
+The repository should be organized around deployable applications in `apps/`, shared TypeScript packages in `packages/`, Supabase infrastructure in `infra/supabase/`, and durable product-development artifacts in `spec/`.
 
 The target structure is:
 
@@ -48,9 +48,9 @@ caniello/
 ├─ infra/
 │  └─ supabase/               # migrations, RLS policies, seed data
 │
-├─ docs/
+├─ spec/
 │  ├─ architecture/
-│  └─ decisions/
+│  └─ architecture-records/
 │
 ├─ package.json
 ├─ pnpm-workspace.yaml
@@ -113,11 +113,13 @@ Web-only service helpers should live under `apps/web/lib/`, grouped by integrati
 
 `infra/supabase` contains Supabase migrations, row-level security policies, seed data, and infrastructure artifacts needed to reproduce and validate the database setup.
 
-### `docs`
+### `spec/architecture`
 
-`docs/architecture/` contains long-form architecture notes, diagrams, and system descriptions.
+`spec/architecture/` contains long-form architecture notes, diagrams, and system descriptions.
 
-`docs/decisions/` contains accepted architecture decision records. New durable architecture decisions should be added here with sequential numeric prefixes.
+### `spec/architecture-records`
+
+`spec/architecture-records/` contains architecture decision records. New durable architecture decisions should be added here with sequential numeric prefixes.
 
 ## Context
 
@@ -156,8 +158,8 @@ Code placement should use these rules:
 - Put genuinely reusable components in `packages/ui`.
 - Put shared linting, formatting, and TypeScript configuration in `packages/config`.
 - Put Supabase migrations, RLS policies, and seed data in `infra/supabase`.
-- Put architecture explanations in `docs/architecture`.
-- Put durable ADRs in `docs/decisions`.
+- Put architecture explanations in `spec/architecture`.
+- Put durable ADRs in `spec/architecture-records`.
 
 ## Review triggers
 

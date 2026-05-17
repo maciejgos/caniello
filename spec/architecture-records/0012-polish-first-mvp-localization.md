@@ -1,8 +1,12 @@
-# Polish-First MVP Localization
+# 0012 — Polish-first MVP localization
 
 ## Status
 
 Accepted
+
+## Date
+
+2026-05-11
 
 ## Context
 

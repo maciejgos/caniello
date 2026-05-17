@@ -12,17 +12,17 @@ This validation reviews the migration from the root React/Vite/npm landing app a
 
 - `spec/plans/caniello-mvp-nextjs-monorepo-migration.md`
 - `spec/plans/caniello-mvp-implementation-roadmap.md`
-- `docs/decisions/0001-use-typescript-nextjs-monorepo.md`
-- `docs/decisions/0002-use-caniello-monorepo-directory-standard.md`
-- `docs/decisions/0003-keep-landing-app-and-api-in-one-nextjs-project.md`
-- `docs/decisions/0004-use-supabase-for-mvp-data-auth-storage-and-rls.md`
-- `docs/decisions/0005-deploy-web-on-vercel.md`
-- `docs/decisions/0006-use-pnpm-workspaces-and-turborepo.md`
-- `docs/decisions/0007-use-react-native-expo-for-mobile.md`
-- `docs/decisions/0008-use-mvp-product-tooling-baseline.md`
-- `docs/decisions/0009-use-one-vercel-project-for-mvp.md`
-- `docs/decisions/0010-use-dev-containers-for-local-development.md`
-- `docs/decisions/0011-use-pragmatic-engineering-practices-from-mvp-start.md`
+- `spec/architecture-records/0001-use-typescript-nextjs-monorepo.md`
+- `spec/architecture-records/0002-use-caniello-monorepo-directory-standard.md`
+- `spec/architecture-records/0003-keep-landing-app-and-api-in-one-nextjs-project.md`
+- `spec/architecture-records/0004-use-supabase-for-mvp-data-auth-storage-and-rls.md`
+- `spec/architecture-records/0005-deploy-web-on-vercel.md`
+- `spec/architecture-records/0006-use-pnpm-workspaces-and-turborepo.md`
+- `spec/architecture-records/0007-use-react-native-expo-for-mobile.md`
+- `spec/architecture-records/0008-use-mvp-product-tooling-baseline.md`
+- `spec/architecture-records/0009-use-one-vercel-project-for-mvp.md`
+- `spec/architecture-records/0010-use-dev-containers-for-local-development.md`
+- `spec/architecture-records/0011-use-pragmatic-engineering-practices-from-mvp-start.md`
 - `apps/web/app/(marketing)/page.tsx`
 - `apps/web/features/marketing/MarketingApp.tsx`
 - `apps/web/app/api/landing-leads/route.ts`
@@ -150,4 +150,3 @@ This validation is ready for human review, but it is not accepted or complete un
 ## Human Decision
 
 Reviewed
-

@@ -1,8 +1,22 @@
-# Caniello MVP Stack
+# 0000 — Superseded Caniello MVP stack baseline
 
 ## Status
 
-Accepted
+Superseded
+
+## Date
+
+2026-05-11
+
+## Superseded by
+
+- [0001 — Use TypeScript-first Next.js monorepo for Caniello MVP](./0001-use-typescript-nextjs-monorepo.md)
+- [0003 — Keep landing, web app, and API in one Next.js project](./0003-keep-landing-app-and-api-in-one-nextjs-project.md)
+- [0004 — Use Supabase for MVP data, auth, storage, and RLS](./0004-use-supabase-for-mvp-data-auth-storage-and-rls.md)
+- [0005 — Deploy the web application on Vercel](./0005-deploy-web-on-vercel.md)
+- [0008 — Use MVP product tooling baseline](./0008-use-mvp-product-tooling-baseline.md)
+
+This record is retained as historical context. Its FastAPI backend, Stripe payment, and broad back-office assumptions are not active MVP architecture unless a later human-approved ADR reintroduces them.
 
 ## Context
 
@@ -12,7 +26,7 @@ The stack needs to be practical for a small MVP team while leaving room for secu
 
 ## Decision
 
-Caniello's MVP stack is:
+This historical record originally selected this MVP stack:
 
 - React for the web application.
 - React Native for the mobile MVP.
@@ -22,7 +36,7 @@ Caniello's MVP stack is:
 - Stripe for payments.
 - MailerLite for marketing and waitlist email.
 
-This stack is accepted for the MVP because it fits the current scope: pet health records, reminders, document vault, trusted sharing, waitlist acquisition, and beta operations.
+This stack fit an earlier planning scope around pet health records, reminders, document vault, trusted sharing, waitlist acquisition, and beta operations. The active MVP architecture is now governed by ADRs 0001-0012.
 
 ## Consequences
 
@@ -45,7 +59,7 @@ This ADR accepts the stack direction, not the full implementation architecture. 
 Follow-up ADRs should capture:
 
 - Platform topology and deployment boundaries for React, React Native, FastAPI, Vercel, environments, preview deployments, rollback, and backend hosting.
-- Localization structure for Polish-first MVP behavior with English switching across web and mobile. This is captured in [Polish-First MVP Localization](polish-first-mvp-localization.md).
+- Localization structure for Polish-first MVP behavior with English switching across web and mobile. This is captured in [0012 — Polish-First MVP Localization](./0012-polish-first-mvp-localization.md).
 - Identity and access model for owner auth, admin auth, MFA, RBAC, privileged sessions, and audit behavior.
 - AI document intake pipeline for signed uploads, queue/worker execution, OCR/AI provider boundary, retry behavior, status tracking, and human review handoff.
 - Data ownership and GDPR lifecycle for raw uploads, extracted fields, confirmed records, audit logs, share artifacts, exports, deletion, retention, and backups.
@@ -57,7 +71,7 @@ Follow-up ADRs should capture:
 ## Related Artifacts
 
 - [Owner-Facing MVP Requirement](../requirements/owner-facing-mvp.md)
-- [Polish-First MVP Localization](polish-first-mvp-localization.md)
+- [0012 — Polish-First MVP Localization](./0012-polish-first-mvp-localization.md)
 - [Back Office MVP Requirement](../requirements/back-office-mvp.md)
 - [Owner Account and Privacy Foundation](../features/owner-account-privacy-foundation.md)
 - [Pet Onboarding and Owner Workspace](../features/pet-onboarding-and-workspace.md)

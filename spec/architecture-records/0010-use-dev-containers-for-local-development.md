@@ -26,7 +26,7 @@ The local development layer should add:
 - `docker-compose.yml`
 - `.dockerignore`
 - `.env.example`
-- `docs/architecture/local-development.md`
+- `spec/architecture/local-development.md`
 
 This decision does not change the main application structure:
 
@@ -36,7 +36,7 @@ caniello/
 ├─ apps/mobile
 ├─ packages/*
 ├─ infra/supabase
-└─ docs/*
+└─ spec/*
 ```
 
 It adds a local development environment layer around the accepted TypeScript-first monorepo.
@@ -76,9 +76,9 @@ caniello/
 ├─ infra/
 │  └─ supabase/
 │
-├─ docs/
+├─ spec/
 │  ├─ architecture/
-│  └─ decisions/
+│  └─ architecture-records/
 │
 ├─ package.json
 ├─ pnpm-workspace.yaml
@@ -198,7 +198,7 @@ Implementation should:
 - run apps through pnpm and Turborepo commands from the Dev Container;
 - keep production web deployment on Vercel;
 - avoid introducing a production Next.js Docker deployment for MVP;
-- document local setup in `docs/architecture/local-development.md` and the project README.
+- document local setup in `spec/architecture/local-development.md` and the project README.
 
 ## Review triggers
 
