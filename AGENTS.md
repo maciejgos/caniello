@@ -14,7 +14,11 @@ This repository is Flow Forge, an AI-native PDLC workflow template for running h
 - `spec/release-readiness/` for advisory release, merge, and deployment readiness records before human release decisions.
 - `spec/lifecycle/` for post-release retrospectives, incidents, feedback, metrics, and continuous improvement notes.
 - `.codex/` for Codex runtime configuration, including agent definitions, rules, and skills. Project-scoped custom subagents belong in standalone `.codex/agents/*.toml` files with `name`, `description`, and `developer_instructions`.
-- `src/` for product implementation code once this template is instantiated. Source-specific agent guidance belongs in `src/AGENTS.md`.
+- `apps/web/` for the Next.js App Router web app and MVP Vercel root.
+- `apps/mobile/` for the future React Native / Expo mobile app scaffold.
+- `packages/` for shared contracts, domain, application, db, ui, and config packages.
+- `infra/supabase/` for Supabase CLI configuration, migrations, and local seed data.
+- `src/` is superseded by the monorepo layout and should not receive new MVP source code.
 - `tests/` for executable product tests once implementation tooling exists.
 
 Each spec subdirectory should include a `README.md` explaining its purpose and a `TEMPLATE.md` for new artifacts, except `spec/plans/`, where `spec/plans/PLANS.md` is the authoritative self-contained guide for ExecPlan format and maintenance rules.
@@ -23,17 +27,18 @@ Keep generated output, caches, and dependency folders out of version control. Ad
 
 ## Build, Test, and Development Commands
 
-This repository now includes a Dockerized React, TypeScript, Vite, and TailwindCSS landing page. Use npm as the package manager because `package-lock.json` is committed.
+This repository now uses a TypeScript-first pnpm and Turborepo monorepo. The web app is a Next.js App Router app under `apps/web`.
 
-- `npm install`: install dependencies from committed package files.
-- `npm run dev`: start the Vite development server on `http://localhost:5173`.
-- `npm run build`: type-check and build production static files into `dist/`.
-- `npm run test`: run the Vitest and React Testing Library test suite.
-- `npm run test:e2e`: run Playwright browser checks against the landing page.
-- `npm run lint`: run the TypeScript validation gate.
-- `docker compose build`: build the local development container.
-- `docker compose up`: run the landing page in Docker on `http://localhost:5173`.
-- `docker compose down`: stop the Docker development container.
+- `pnpm install`: install dependencies from committed package files.
+- `pnpm dev`: start the Next.js development server on `http://localhost:3000`.
+- `pnpm build`: type-check and build production outputs through Turborepo.
+- `pnpm test`: run the Vitest and React Testing Library test suite.
+- `pnpm test:e2e`: run Playwright browser checks against the landing page.
+- `pnpm lint`: run the TypeScript validation gate.
+- `pnpm exec supabase start --workdir infra/supabase`: start local Supabase services when the CLI is available.
+- `docker compose build`: build the Dev Container workspace image.
+- `docker compose up`: run the workspace container.
+- `docker compose down`: stop the workspace container.
 
 Do not add setup steps that cannot be reproduced from committed files.
 
@@ -41,7 +46,7 @@ Do not add setup steps that cannot be reproduced from committed files.
 
 Follow project tooling once it exists. Until then, use 2-space indentation for JavaScript, TypeScript, JSON, and Markdown. Prefer `camelCase` for variables and functions, `PascalCase` for classes and components, and `kebab-case` for filenames unless a framework requires otherwise.
 
-Keep modules focused. Avoid large utility files; group shared helpers under `src/lib/` or `src/utils/` when needed.
+Keep modules focused. Avoid large utility files; group web helpers under feature-local folders such as `apps/web/features/<feature>/lib/`, and cross-app helpers under the appropriate `packages/*` package.
 
 ## Testing Guidelines
 

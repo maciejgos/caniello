@@ -3,20 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@9.15.4",
   "scripts": {
-    "dev": "vite --host 0.0.0.0",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview --host 0.0.0.0",
-    "lint": "tsc -b --pretty false",
-    "test": "vitest run",
-    "test:e2e": "playwright test"
-  },
-  "dependencies": {
-    "@vercel/analytics": "^2.0.1",
-    "@vercel/speed-insights": "^2.0.0",
-    "react": "latest",
-    "react-dom": "latest",
-    "react-router-dom": "^7.15.1"
+    "dev": "turbo dev --filter=web",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "test:e2e": "turbo test:e2e --filter=web",
+    "typecheck": "turbo typecheck"
   },
   "devDependencies": {
     "@playwright/test": "latest",
@@ -30,9 +24,11 @@
     "autoprefixer": "latest",
     "jsdom": "latest",
     "postcss": "latest",
+    "prettier": "latest",
+    "supabase": "latest",
     "tailwindcss": "3.4.17",
+    "turbo": "latest",
     "typescript": "latest",
-    "vite": "latest",
     "vitest": "latest"
   }
 }

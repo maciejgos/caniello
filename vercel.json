@@ -1,8 +1,7 @@
 {
-  "rewrites": [
-    {
-      "source": "/:path((?!api/).*)",
-      "destination": "/"
-    }
-  ]
+  "framework": "nextjs",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "buildCommand": "pnpm --filter web build",
+  "devCommand": "pnpm --filter web dev"
 }
+

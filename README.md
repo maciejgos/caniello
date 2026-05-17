@@ -84,28 +84,42 @@ If retention is weak, do not expand into marketplace or clinic tooling.
 ## Repository Structure
 
 ```text
-spec/    Product discovery, requirements, design, plans, validation, and lifecycle artifacts
-src/     Application source code once implementation begins
-tests/   Executable tests once implementation tooling exists
+apps/web/          Next.js App Router web app and MVP Vercel root
+apps/mobile/       Minimal mobile workspace scaffold for future Expo work
+packages/          Shared contracts, domain, application, db, ui, and config packages
+infra/supabase/    Supabase CLI configuration, migrations, and seed file
+spec/              Product discovery, requirements, design, plans, validation, and lifecycle artifacts
+tests/             Cross-app executable tests, including Playwright E2E
 ```
 
 ## Development Commands
 
-The first landing page is a Dockerized React, TypeScript, Vite, and TailwindCSS app.
+The MVP workspace is a pnpm and Turborepo monorepo. The web app is a Next.js App Router application under `apps/web`.
 
-- `npm install`: install dependencies from `package-lock.json`.
-- `npm run dev`: start the Vite development server on `http://localhost:5173`.
-- `npm run build`: type-check and build the production static files in `dist/`.
-- `npm run test`: run Vitest and React Testing Library tests.
-- `npm run test:e2e`: run Playwright browser checks against the landing page.
-- `npm run lint`: run the TypeScript validation gate.
-- `docker compose build`: build the local development container.
-- `docker compose up`: run the landing page in Docker on `http://localhost:5173`.
-- `docker compose down`: stop the Docker development container.
+- `pnpm install`: install workspace dependencies from `pnpm-lock.yaml`.
+- `pnpm dev`: start the Next.js development server for `apps/web` on `http://localhost:3000`.
+- `pnpm build`: type-check and build all workspace packages and apps through Turborepo.
+- `pnpm test`: run Vitest and React Testing Library tests.
+- `pnpm test:e2e`: run Playwright browser checks against the landing page.
+- `pnpm lint`: run the TypeScript validation gate across the workspace.
+- `pnpm exec supabase start --workdir infra/supabase`: start local Supabase services when the Supabase CLI is available.
+- `docker compose build`: build the Dev Container workspace image.
+- `docker compose up`: start the workspace container and expose the web and Supabase ports.
+- `docker compose down`: stop the workspace container.
+
+Local ports:
+
+- `3000`: Next.js web app.
+- `54321`: Supabase API.
+- `54322`: Supabase local database.
+- `54323`: Supabase Studio.
+- `54324`: Supabase Inbucket/email testing.
+
+Vercel should use `apps/web` as the Root Directory. The MVP uses one Vercel project for the web app and its `/api/*` routes; do not create a separate API project for the MVP.
 
 ## Landing Lead Capture Configuration
 
-Landing-page forms submit to the server-side `/api/landing-leads` boundary so MailerLite secrets are not exposed in browser code. Configure these environment variables in the deployment environment before live lead capture:
+Landing-page forms submit to the Next.js server-side `/api/landing-leads` boundary so MailerLite secrets are not exposed in browser code. Configure these environment variables in `.env.local` and in the deployment environment before live lead capture:
 
 - `MAILERLITE_API_KEY`
 - `MAILERLITE_GROUP_NAME` (defaults to `Caniello Waitlist`)

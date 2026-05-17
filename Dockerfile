@@ -1,12 +1,9 @@
-FROM mcr.microsoft.com/playwright:v1.59.1-noble
+FROM mcr.microsoft.com/playwright:v1.60.0-noble
 
-WORKDIR /app
+RUN npm install -g pnpm@9.15.4 turbo@latest vercel@latest
 
-COPY package*.json ./
-RUN npm ci
+WORKDIR /workspaces/caniello
 
-COPY . .
+EXPOSE 3000
 
-EXPOSE 5173
-
-CMD ["npm", "run", "dev"]
+CMD ["sleep", "infinity"]

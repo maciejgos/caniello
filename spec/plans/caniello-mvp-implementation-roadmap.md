@@ -6,9 +6,9 @@ This plan follows `spec/plans/PLANS.md`. Keep this file self-contained so a fres
 
 ## Purpose / Big Picture
 
-After this roadmap is approved and executed, Caniello will move from a validated landing page into a working MVP delivered in safe increments: Landing Page, Web MVP, Mobile MVP, and Back Office MVP. A pet owner should eventually be able to sign in, add a pet, upload or scan a document, review extracted information, see timeline and reminders, ask sourced questions, and share a care summary. A beta operator should eventually be able to monitor health, support users, and review AI extraction risks.
+After this roadmap is approved and executed, Caniello will move from a validated landing page into a working MVP delivered in safe increments: Landing Page, Next.js Web MVP, Mobile MVP, and later operational tooling. A pet owner should eventually be able to sign in, add a pet, upload or scan a document, review extracted information, see timeline and reminders, ask sourced questions, and share a care summary.
 
-This roadmap is story-by-story and feature-by-feature. It now treats the landing page as an accepted validation product slice, not merely a completed static page. The landing slice explains Wave 1 owner value, routes consented waitlist leads through MailerLite, preserves attribution for later segmentation, and measures validation events behind explicit consent. The later product slices include platform work that the stories depend on: a FastAPI backend, local API and database containers, Supabase integration boundaries, database migrations, background document-processing jobs, and automated unit, integration, and Playwright end-to-end tests.
+This roadmap is story-by-story and feature-by-feature. It now treats the landing page as an accepted validation product slice, not merely a completed static page. The landing slice explains Wave 1 owner value, routes consented waitlist leads through MailerLite, preserves attribution for later segmentation, and measures validation events behind explicit consent. As of ADR 0001-0011, the previous FastAPI and Back Office MVP path is superseded for the MVP. The active MVP architecture is a TypeScript-first pnpm/Turborepo monorepo with `apps/web` as a Next.js App Router application, `apps/mobile` as the future Expo scaffold, shared packages under `packages/*`, Supabase as the local backend foundation, and one Vercel project rooted at `apps/web`.
 
 ## Progress
 
@@ -30,6 +30,7 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
 - [x] (2026-05-14) Human accepted the remaining Milestone 0 validation and release-readiness artifacts, including Wave 2, Wave 3, naming, timeline service links, layout unification, and Milestone 0 release-readiness records.
 - [x] (2026-05-14) Added public-launch backlog work for Privacy Policy, Terms of Service, and medical-boundary content.
 - [x] (2026-05-15) Captured the data-controller identity for the Privacy Policy draft: Cloud & More Maciej Gos / Cloud & More, NIP 5242507722, address B. Prusa 43/20, 05-800 Pruszków, privacy contact `privacy@caniello.com`.
+- [x] (2026-05-17) Marked the older FastAPI and Back Office MVP implementation path as superseded by ADR 0001-0011 and linked the active migration plan in `spec/plans/caniello-mvp-nextjs-monorepo-migration.md`.
 - [ ] Human review of roadmap scope, sequencing, and release slices beyond Milestone 0.
 - [ ] Backlog before public launch: prepare and implement Privacy Policy, Terms of Service, and medical-boundary content for landing lead capture.
 - [ ] Follow-up ADRs or solution designs for platform topology, auth/RBAC, AI document pipeline, data lifecycle, sharing/export, messaging, payments deferral, and observability.
@@ -79,11 +80,18 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
 - Observation: Milestone 0 validation and release-readiness records are now accepted, but public launch still has explicit follow-up work.
   Evidence: On 2026-05-14, the human instructed Codex to approve the remaining documents and to add only Privacy Policy, Terms of Service, and medical-boundary work to the implementation roadmap backlog. The release-readiness records still preserve the distinction between accepting advisory evidence and actually merging, deploying, launching public traffic, tagging, announcing, or completing a production release.
 
+- Observation: The repository now has accepted ADRs 0001-0011 for a TypeScript-first Next.js monorepo, which supersede the older FastAPI and Back Office MVP assumptions in this roadmap.
+  Evidence: `docs/decisions/0001-use-typescript-nextjs-monorepo.md` through `docs/decisions/0011-use-pragmatic-engineering-practices-from-mvp-start.md` select Next.js App Router, Supabase, pnpm workspaces, Turborepo, Dev Containers, one Vercel project, Expo mobile, and pragmatic engineering practices.
+
 ## Decision Log
 
 - Decision: Sequence the MVP as Landing Page, Platform Foundation, Web MVP, Mobile MVP, Back Office MVP, then deferred payments and hardening.
   Rationale: The landing page exists and validates acquisition. The Web MVP can prove core owner value faster than mobile-specific camera work. Mobile should reuse the same backend once the web flow proves the data model and API. Back office depends on real operational data and review states.
   Date/Author: 2026-05-11 / Codex
+
+- Decision: Supersede the roadmap's FastAPI backend and Back Office MVP path for the MVP with the ADR 0001-0011 TypeScript-first monorepo path.
+  Rationale: The accepted ADR chain now makes Next.js App Router API routes, Supabase, pnpm workspaces, Turborepo, Dev Containers, Expo mobile, and one Vercel project the governing MVP architecture. FastAPI, a separate `apps/api`, and Back Office product scope remain outside the active MVP path unless a future human-approved ADR or feature reintroduces them.
+  Date/Author: 2026-05-17 / Codex
 
 - Decision: Treat API, database, background jobs, and E2E tests as first-class roadmap slices rather than hidden implementation details.
   Rationale: The stories depend on durable data, document status, auth, and observable validation. These platform tasks must be visible so implementation does not produce isolated UI screens without working behavior.
@@ -136,6 +144,8 @@ Milestone 0 implementation, validation evidence, visual direction, and release-r
 Validation passed for `npm run test`, `npm run lint`, `npm run build`, and `npm run test:e2e`. The E2E check required the official Playwright container image because the Alpine app container could not launch the downloaded Playwright fallback browser. The MailerLite API token is configured locally in ignored `.env.local`, and a read-only lookup verified the `Caniello Waitlist` group. Acceptance of the advisory records does not itself merge, deploy, launch public traffic, tag, announce, or mark a production release complete. Public launch remains gated by the backlog work for Privacy Policy, Terms of Service, medical boundaries, live MailerLite smoke testing, deployment target, rollback path, analytics/storage decisions where required, and intentional staging of the release candidate.
 
 ## Context and Orientation
+
+Supersession notice for readers and agents: the remaining sections of this older roadmap preserve historical Milestone 0 evidence and pre-ADR planning context. Any later instruction in this file that says to build a FastAPI backend, create a separate `api/` or `apps/api` implementation, keep React/Vite as the active web runtime, use npm/package-lock as the active package-management path, expose the web app on port `5173`, or deliver Back Office as part of the MVP is superseded by ADR 0001-0011 and by `spec/plans/caniello-mvp-nextjs-monorepo-migration.md`. The active MVP path is Next.js App Router under `apps/web`, Next.js API routes under `apps/web/app/api`, pnpm workspaces, Turborepo, Supabase local foundation, Dev Containers, and one Vercel project rooted at `apps/web`.
 
 Caniello is a pet health and care organization utility. Its first MVP promise is one place for a pet's health records, reminders, documents, and shareable care information. The existing landing page is implemented with React, TypeScript, Vite, TailwindCSS, Docker, Vitest, and Playwright.
 
