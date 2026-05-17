@@ -57,6 +57,8 @@ The Dev Container is the main local development environment. It should provide:
 
 Developers should be able to open the repository in VS Code or Cursor and work from inside the container.
 
+The image is defined in `.devcontainer/Dockerfile`; the repository root should not contain a production Dockerfile for the web app during MVP. The Dev Container includes Docker CLI and mounts the host Docker socket so Supabase CLI can manage its local service containers through the host Docker engine.
+
 ### Supabase CLI
 
 Supabase CLI is the preferred local backend stack for MVP.
@@ -80,11 +82,11 @@ infra/supabase/
 
 ### Docker Compose
 
-Docker Compose should run supporting services that are not already covered by Supabase CLI.
+Docker Compose should run the Dev Container workspace and any supporting services that are not already covered by Supabase CLI. The `workspace` service builds from `.devcontainer/Dockerfile`, mounts the repository at `/workspaces/caniello`, and forwards the local web and Supabase ports.
 
 Expected services:
 
-- `devcontainer` for the Node / pnpm / Turborepo workspace
+- `workspace` for the Node / pnpm / Turborepo Dev Container workspace
 - `mailhog` optionally for local email testing if Supabase Inbucket is not enough
 - `redis` later if queues or background jobs enter scope
 - `postgres` only if the team deliberately chooses not to use Supabase CLI for a specific local workflow

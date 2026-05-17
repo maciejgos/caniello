@@ -1,9 +1,12 @@
 services:
   workspace:
-    build: .
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
     working_dir: /workspaces/caniello
     env_file:
-      - .env.local
+      - path: .env.local
+        required: false
     ports:
       - "3000:3000"
       - "54321:54321"
@@ -12,7 +15,8 @@ services:
       - "54324:54324"
     volumes:
       - .:/workspaces/caniello
-      - pnpm-store:/home/node/.local/share/pnpm/store
+      - pnpm-store:/pnpm/store
+      - /var/run/docker.sock:/var/run/docker.sock
     command: sleep infinity
 
 volumes:

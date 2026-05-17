@@ -54,7 +54,7 @@ The implementation branch is `codex/nextjs-monorepo-migration`. Dependencies wer
 
 - Criterion: Local development and deployment docs identify pnpm, Dev Container, Supabase local foundation, Next.js port `3000`, and Vercel Root Directory `apps/web`.
   Evidence status: Supported
-  Evidence: `README.md`, `AGENTS.md`, `.devcontainer/devcontainer.json`, `Dockerfile`, `docker-compose.yml`, `.env.example`, `infra/supabase/config.toml`, and `vercel.json`.
+  Evidence: `README.md`, `AGENTS.md`, `.devcontainer/devcontainer.json`, `.devcontainer/Dockerfile`, `docker-compose.yml`, `.env.example`, `infra/supabase/config.toml`, and `vercel.json`.
 
 ## Checks
 

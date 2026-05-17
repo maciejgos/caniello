@@ -88,6 +88,7 @@ apps/web/          Next.js App Router web app and MVP Vercel root
 apps/mobile/       Minimal mobile workspace scaffold for future Expo work
 packages/          Shared contracts, domain, application, db, ui, and config packages
 infra/supabase/    Supabase CLI configuration, migrations, and seed file
+.devcontainer/     Dev Container image and editor environment for local development
 spec/              Product discovery, requirements, design, plans, validation, and lifecycle artifacts
 tests/             Cross-app executable tests, including Playwright E2E
 ```
@@ -103,7 +104,7 @@ The MVP workspace is a pnpm and Turborepo monorepo. The web app is a Next.js App
 - `pnpm test:e2e`: run Playwright browser checks against the landing page.
 - `pnpm lint`: run the TypeScript validation gate across the workspace.
 - `pnpm exec supabase start --workdir infra/supabase`: start local Supabase services when the Supabase CLI is available.
-- `docker compose build`: build the Dev Container workspace image.
+- `docker compose build`: build the Dev Container workspace image from `.devcontainer/Dockerfile`.
 - `docker compose up`: start the workspace container and expose the web and Supabase ports.
 - `docker compose down`: stop the workspace container.
 
