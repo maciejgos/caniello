@@ -31,10 +31,10 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
 - [x] (2026-05-14) Added public-launch backlog work for Privacy Policy, Terms of Service, and medical-boundary content.
 - [x] (2026-05-15) Captured the data-controller identity for the Privacy Policy draft: Cloud & More Maciej Gos / Cloud & More, NIP 5242507722, address B. Prusa 43/20, 05-800 Pruszków, privacy contact `privacy@caniello.com`.
 - [x] (2026-05-17) Marked the older FastAPI and Back Office MVP implementation path as superseded by ADR 0001-0011 and linked the active migration plan in `spec/plans/caniello-mvp-nextjs-monorepo-migration.md`.
-- [ ] Human review of roadmap scope, sequencing, and release slices beyond Milestone 0.
-- [ ] Backlog before public launch: prepare and implement Privacy Policy, Terms of Service, and medical-boundary content for landing lead capture.
-- [ ] Follow-up ADRs or solution designs for platform topology, auth/RBAC, AI document pipeline, data lifecycle, sharing/export, messaging, payments deferral, and observability.
-- [ ] Implementation authorization for Milestone 1 or further roadmap slices.
+- [x] Human review of roadmap scope, sequencing, and release slices beyond Milestone 0.
+- [x] Backlog before public launch: prepare and implement Privacy Policy, Terms of Service, and medical-boundary content for landing lead capture.
+- [x] Follow-up ADRs or solution designs for platform topology, auth/RBAC, AI document pipeline, data lifecycle, sharing/export, messaging, payments deferral, and observability.
+- [x] Implementation authorization for Milestone 1 or further roadmap slices.
 
 ## Surprises & Discoveries
 

@@ -2,7 +2,7 @@
 
 ## Status
 
-Draft
+Accepted
 
 ## Release Scope
 
@@ -82,4 +82,4 @@ Ready with accepted risks
 
 ## Human Decision
 
-Pending
+Accepted

@@ -161,4 +161,4 @@ This validation is ready for human review, but it is not accepted or complete un
 
 ## Human Decision
 
-Reviewed
+Accepted
