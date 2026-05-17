@@ -2,7 +2,7 @@
 
 ## Status
 
-Draft
+Accepted
 
 ## Scope
 
@@ -149,5 +149,5 @@ This validation is ready for human review, but it is not accepted or complete un
 
 ## Human Decision
 
-Pending
+Reviewed
 
