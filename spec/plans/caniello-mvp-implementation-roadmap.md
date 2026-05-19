@@ -178,7 +178,7 @@ Analytics consent means the visitor explicitly allows non-essential validation e
 
 Milestone 0 is Landing Page and acquisition validation. Its implementation and evidence are accepted. The landing page is now the Polish-first validation surface for Wave 1 owner value, research-safe Wave 2 and Wave 3 framing, lead-capture consent, analytics consent, MailerLite waitlist submission, validation-event routing, UTM preservation, and responsive screenshot evidence. Remaining Milestone 0 work is public-launch preparation rather than core landing implementation: Privacy Policy, Terms of Service, medical-boundary copy, live MailerLite smoke testing, deployment target, rollback path, analytics/storage decisions where needed, and final staging.
 
-Milestone 1 is Architecture and platform design. ADR 0001-0012 are accepted, and draft ADRs 0013-0020 now propose the remaining MVP platform boundaries: Next.js App Router in `apps/web`, Vercel deployment, Supabase data/auth/storage/RLS, pnpm/Turborepo, Dev Containers, MailerLite for marketing and waitlist lifecycle email, Stripe deferred until paid-plan stories are approved, and separate decisions for identity/access, data lifecycle, AI document intake, sharing/export, messaging, and observability. After human acceptance of ADRs 0013-0020, Milestone 1 prevents API, database, auth, storage, integration, and worker choices from being improvised during feature work.
+Milestone 1 is Architecture and platform design. ADR 0001-0012 are accepted, and draft ADRs 0013-0021 now propose the remaining MVP platform boundaries: Next.js App Router in `apps/web`, Vercel deployment, Supabase data/auth/storage/RLS, pnpm/Turborepo, Dev Containers, MailerLite for marketing and waitlist lifecycle email, Stripe deferred until paid-plan stories are approved, and separate decisions for identity/access, data lifecycle, AI document intake, sharing/export, messaging, and observability. After human acceptance of ADRs 0013-0021, Milestone 1 prevents API, database, auth, storage, integration, and worker choices from being improvised during feature work.
 
 Milestone 2 is Local platform foundation. Add the first Supabase-backed foundation under the accepted monorepo path: local Supabase start, migrations and seed structure, RLS skeletons, shared contracts and database helpers, lightweight Next.js health/version API routes, environment examples, and validation commands through pnpm/Turborepo. Do not add FastAPI, a separate API service, or a production Docker path unless a later human-approved ADR reopens that scope.
 
@@ -309,12 +309,13 @@ Draft ADR and solution-design coverage:
 6. Messaging: ADR 0008 and draft ADR 0018 keep MailerLite for marketing, waitlist, early-access lifecycle email, and surveys while deferring product transactional email provider choice to the relevant story.
 7. Observability and operations: ADR 0005, 0008, 0009, and draft ADR 0019 define Vercel logs, Vercel Analytics, Speed Insights, Supabase operational visibility, future application events, deferred PostHog, health checks, and incident/recovery expectations.
 8. Payments: draft ADR 0020 records Stripe as the accepted payment provider with implementation deferred until paid-plan requirements or stories are approved.
+9. AI provider routing: draft ADR 0021 chooses Vercel AI Gateway as the server-side model access boundary with data-minimization, observability, retry/fallback, and safety constraints that complement draft ADR 0016.
 
 Validation:
 
-- Each draft ADR 0013-0020 has `Status`, `Context`, `Decision`, `Consequences`, and `Related Artifacts`.
+- Each draft ADR 0013-0021 has `Status`, `Context`, `Decision`, `Consequences`, and `Related Artifacts`.
 - Each architecture decision is captured in a separate ADR file and reflected in `spec/architecture/mvp-target-architecture.md` diagrams.
-- Milestone 1 becomes complete only after human acceptance of ADRs 0013-0020 or explicit human revision of their decisions.
+- Milestone 1 becomes complete only after human acceptance of ADRs 0013-0021 or explicit human revision of their decisions.
 
 ### Milestone 2: Local Platform Foundation
 
@@ -594,9 +595,9 @@ Run validation for this public-launch backlog slice on the active monorepo path:
     pnpm lint
     pnpm test:e2e
 
-After this public-launch backlog is validated and accepted, the next product-app slice is Milestone 1 approval followed by Milestone 2 local platform foundation, without building owner features yet. Draft ADRs 0013-0020 supply the missing Milestone 1 decisions for topology, auth, data lifecycle, AI pipeline, sharing/export, messaging, payments, and observability.
+After this public-launch backlog is validated and accepted, the next product-app slice is Milestone 1 approval followed by Milestone 2 local platform foundation, without building owner features yet. Draft ADRs 0013-0021 supply the missing Milestone 1 decisions for topology, auth, data lifecycle, AI pipeline, AI provider routing, sharing/export, messaging, payments, and observability.
 
-After ADRs 0013-0020 are accepted or revised by the human, use them as the boundary for Milestone 2. Add or validate local platform files under the accepted monorepo path:
+After ADRs 0013-0021 are accepted or revised by the human, use them as the boundary for Milestone 2. Add or validate local platform files under the accepted monorepo path:
 
     apps/web/app/api/health/route.ts
     apps/web/app/api/version/route.ts
