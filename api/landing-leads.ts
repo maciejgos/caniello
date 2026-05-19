@@ -1,5 +1,7 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
 
+type LandingLeadLanguage = "pl" | "en";
+
 type LandingLeadPayload = {
   email?: string;
   source?: string;
@@ -8,7 +10,10 @@ type LandingLeadPayload = {
   utm?: Record<string, string>;
 };
 
-type ValidLandingLeadPayload = Required<Pick<LandingLeadPayload, "email" | "leadConsent">> & Omit<LandingLeadPayload, "email" | "leadConsent">;
+type ValidLandingLeadPayload = Required<Pick<LandingLeadPayload, "email" | "leadConsent">> &
+  Omit<LandingLeadPayload, "email" | "leadConsent" | "language"> & {
+    language: LandingLeadLanguage;
+  };
 
 type MailerLiteGroup = {
   id: string;
@@ -27,6 +32,7 @@ type MailerLiteClientOptions = {
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const sources = ["landing_page_hero", "landing_page_mid_cta", "landing_page_footer", "landing_page_wave2", "landing_page_wave3"];
+const languages: readonly LandingLeadLanguage[] = ["pl", "en"];
 const defaultMailerLiteGroupName = "Caniello Waitlist";
 const mailerLiteApiBaseUrl = "https://connect.mailerlite.com/api";
 
@@ -86,6 +92,10 @@ export function validateLandingLeadPayload(payload: LandingLeadPayload) {
     return { ok: false as const, status: 400, message: "Lead source is invalid." };
   }
 
+  if (!isAllowed(payload.language, languages)) {
+    return { ok: false as const, status: 400, message: "Lead language is invalid." };
+  }
+
   return { ok: true as const, payload: payload as ValidLandingLeadPayload };
 }
 
@@ -106,7 +116,10 @@ export async function upsertMailerLiteSubscriber(payload: ValidLandingLeadPayloa
     },
     body: JSON.stringify({
       email: payload.email,
-      groups: [groupId]
+      groups: [groupId],
+      fields: {
+        language: formatMailerLiteLanguage(payload.language)
+      }
     })
   });
 
@@ -137,8 +150,12 @@ async function findMailerLiteGroupId(groupName: string, apiKey: string, fetchFn:
   return exactMatch?.id;
 }
 
-function isAllowed<T extends string>(value: unknown, allowed: T[]): value is T {
+function isAllowed<T extends string>(value: unknown, allowed: readonly T[]): value is T {
   return typeof value === "string" && allowed.includes(value as T);
+}
+
+function formatMailerLiteLanguage(language: LandingLeadLanguage) {
+  return language.toUpperCase();
 }
 
 function readJsonBody(request: IncomingMessage) {

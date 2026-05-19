@@ -4,7 +4,7 @@ const validPayload = {
   email: "owner@example.com",
   source: "landing_page_hero" as const,
   leadConsent: true,
-  language: "pl",
+  language: "pl" as const,
   utm: {
     utm_source: "newsletter",
     utm_medium: "email",
@@ -35,7 +35,15 @@ describe("landing lead MailerLite integration", () => {
     });
   });
 
-  it("upserts a subscriber into the configured waitlist group only", async () => {
+  it("rejects unsupported language context", () => {
+    expect(validateLandingLeadPayload({ ...validPayload, language: "de" })).toEqual({
+      ok: false,
+      status: 400,
+      message: "Lead language is invalid."
+    });
+  });
+
+  it("upserts a subscriber into the configured waitlist group with Polish language context", async () => {
     const fetchMock = vi
       .fn()
       .mockResolvedValueOnce(
@@ -68,9 +76,36 @@ describe("landing lead MailerLite integration", () => {
     });
     expect(JSON.parse(String(subscriberRequest.body))).toMatchObject({
       email: "owner@example.com",
-      groups: ["123"]
+      groups: ["123"],
+      fields: {
+        language: "PL"
+      }
     });
-    expect(JSON.parse(String(subscriberRequest.body))).not.toHaveProperty("fields");
+  });
+
+  it("maps English landing context to the MailerLite language field", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ data: [{ id: "123", name: "Caniello Waitlist" }] }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" }
+        })
+      )
+      .mockResolvedValueOnce(new Response(JSON.stringify({ data: { id: "subscriber-1" } }), { status: 200 }));
+
+    await upsertMailerLiteSubscriber({ ...validPayload, language: "en" }, {
+      apiKey: "test-token",
+      groupName: "Caniello Waitlist",
+      fetchFn: fetchMock
+    });
+
+    const [, subscriberRequest] = fetchMock.mock.calls[1];
+    expect(JSON.parse(String(subscriberRequest.body))).toMatchObject({
+      fields: {
+        language: "EN"
+      }
+    });
   });
 
   it("fails without exposing secrets when the configured MailerLite group is missing", async () => {
