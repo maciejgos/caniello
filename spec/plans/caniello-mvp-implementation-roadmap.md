@@ -31,7 +31,7 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
 - [x] (2026-05-14) Added public-launch backlog work for Privacy Policy, Terms of Service, and medical-boundary content.
 - [x] (2026-05-15) Captured the data-controller identity for the Privacy Policy draft: Cloud & More Maciej Gos / Cloud & More, NIP 5242507722, address B. Prusa 43/20, 05-800 Pruszków, privacy contact `privacy@caniello.com`.
 - [x] (2026-05-17) Marked the older FastAPI and Back Office MVP implementation path as superseded by ADR 0001-0011 and linked the active migration plan in `spec/plans/completed-foundation-plans.md`.
-- [x] (2026-05-17) Split the remaining Milestone 1 architecture decisions into separate draft ADRs 0013-0020 for platform topology, identity/access, data lifecycle, AI document intake, sharing/export, messaging, observability, and Stripe payment deferral.
+- [x] (2026-05-17) Split the remaining Milestone 1 architecture decisions into separate ADRs 0013-0020 for platform topology, identity/access, data lifecycle, AI document intake, sharing/export, messaging, observability, and Stripe payment deferral.
 - [x] Human review of roadmap scope, sequencing, and release slices beyond Milestone 0.
 - [x] Backlog before public launch: prepare and implement Privacy Policy, Terms of Service, and medical-boundary content for landing lead capture.
 - [x] Follow-up ADRs or solution designs for platform topology, auth/RBAC, AI document pipeline, data lifecycle, sharing/export, messaging, payments deferral, and observability.
@@ -191,7 +191,7 @@ Analytics consent means the visitor explicitly allows non-essential validation e
 
 Milestone 0 is Landing Page and acquisition validation. Its implementation and evidence are accepted. The landing page is now the Polish-first validation surface for Wave 1 owner value, research-safe Wave 2 and Wave 3 framing, lead-capture consent, analytics consent, MailerLite waitlist submission, validation-event routing, UTM preservation, and responsive screenshot evidence. Remaining Milestone 0 work is public-launch preparation rather than core landing implementation: Privacy Policy, Terms of Service, medical-boundary copy, live MailerLite smoke testing, deployment target, rollback path, analytics/storage decisions where needed, and final staging.
 
-Milestone 1 is Architecture and platform design. ADR 0001-0012 are accepted, and draft ADRs 0013-0021 now propose the remaining MVP platform boundaries: Next.js App Router in `apps/web`, Vercel deployment, Supabase data/auth/storage/RLS, pnpm/Turborepo, Dev Containers, MailerLite for marketing and waitlist lifecycle email, Stripe deferred until paid-plan stories are approved, and separate decisions for identity/access, data lifecycle, AI document intake, sharing/export, messaging, and observability. After human acceptance of ADRs 0013-0021, Milestone 1 prevents API, database, auth, storage, integration, and worker choices from being improvised during feature work.
+Milestone 1 is Architecture and platform design. ADRs 0001-0021 are accepted and define the remaining MVP platform boundaries: Next.js App Router in `apps/web`, Vercel deployment, Supabase data/auth/storage/RLS, pnpm/Turborepo, Dev Containers, MailerLite for marketing and waitlist lifecycle email, Stripe deferred until paid-plan stories are approved, and separate decisions for identity/access, data lifecycle, AI document intake, sharing/export, messaging, and observability. Milestone 1 prevents API, database, auth, storage, integration, and worker choices from being improvised during feature work.
 
 Milestone 2 is Local platform foundation. Add the first Supabase-backed foundation under the accepted monorepo path: local Supabase start, migrations and seed structure, RLS skeletons, shared contracts and database helpers, lightweight Next.js health/version API routes, environment examples, and validation commands through pnpm/Turborepo. Do not add FastAPI, a separate API service, or a production Docker path unless a later human-approved ADR reopens that scope.
 
@@ -312,23 +312,23 @@ Source artifacts:
 - `spec/requirements/owner-facing-mvp.md`
 - `spec/requirements/back-office-mvp.md`
 
-Draft ADR and solution-design coverage:
+Accepted ADR and solution-design coverage:
 
-1. Platform topology and deployment boundary: ADR 0001, 0003, 0005, 0009, 0010, 0011, and draft ADR 0013 keep the MVP in one Next.js web app on Vercel with Supabase-backed data services and Dev Containers for local development.
-2. Identity and access: ADR 0004 and draft ADR 0014 choose Supabase Auth, owner sessions, minimal roles, explicit operator constraints, MFA requirement before operator/admin data access, and audit behavior for sensitive actions.
-3. Data lifecycle: ADR 0004 and draft ADR 0015 assign schema, migrations, RLS, Storage, retention, export/deletion, backup/recovery, and audit-log expectations to the Supabase-backed platform foundation.
-4. AI document intake pipeline: draft ADR 0016 starts with deterministic processing states and server-side orchestration in Next.js/Supabase, deferring real OCR/AI provider choice until a dedicated ADR/story defines provider, data flow, retry, and evaluation behavior.
-5. Sharing/export: ADR 0002, 0003, 0004, 0009, and draft ADR 0017 define `/share/[token]`, opaque scoped tokens, revocation, optional expiry, access logging, and deferred PDF generation.
-6. Messaging: ADR 0008 and draft ADR 0018 keep MailerLite for marketing, waitlist, early-access lifecycle email, and surveys while deferring product transactional email provider choice to the relevant story.
-7. Observability and operations: ADR 0005, 0008, 0009, and draft ADR 0019 define Vercel logs, Vercel Analytics, Speed Insights, Supabase operational visibility, future application events, deferred PostHog, health checks, and incident/recovery expectations.
-8. Payments: draft ADR 0020 records Stripe as the accepted payment provider with implementation deferred until paid-plan requirements or stories are approved.
-9. AI provider routing: draft ADR 0021 chooses Vercel AI Gateway as the server-side model access boundary with data-minimization, observability, retry/fallback, and safety constraints that complement draft ADR 0016.
+1. Platform topology and deployment boundary: ADR 0001, 0003, 0005, 0009, 0010, 0011, and ADR 0013 keep the MVP in one Next.js web app on Vercel with Supabase-backed data services and Dev Containers for local development.
+2. Identity and access: ADR 0004 and ADR 0014 choose Supabase Auth, owner sessions, minimal roles, explicit operator constraints, MFA requirement before operator/admin data access, and audit behavior for sensitive actions.
+3. Data lifecycle: ADR 0004 and ADR 0015 assign schema, migrations, RLS, Storage, retention, export/deletion, backup/recovery, and audit-log expectations to the Supabase-backed platform foundation.
+4. AI document intake pipeline: ADR 0016 starts with deterministic processing states and server-side orchestration in Next.js/Supabase, deferring real OCR/AI provider choice until a dedicated ADR/story defines provider, data flow, retry, and evaluation behavior.
+5. Sharing/export: ADR 0002, 0003, 0004, 0009, and ADR 0017 define `/share/[token]`, opaque scoped tokens, revocation, optional expiry, access logging, and deferred PDF generation.
+6. Messaging: ADR 0008 and ADR 0018 keep MailerLite for marketing, waitlist, early-access lifecycle email, and surveys while deferring product transactional email provider choice to the relevant story.
+7. Observability and operations: ADR 0005, 0008, 0009, and ADR 0019 define Vercel logs, Vercel Analytics, Speed Insights, Supabase operational visibility, future application events, deferred PostHog, health checks, and incident/recovery expectations.
+8. Payments: ADR 0020 records Stripe as the accepted payment provider with implementation deferred until paid-plan requirements or stories are approved.
+9. AI provider routing: ADR 0021 chooses Vercel AI Gateway as the server-side model access boundary with data-minimization, observability, retry/fallback, and safety constraints that complement ADR 0016.
 
 Validation:
 
-- Each draft ADR 0013-0021 has `Status`, `Context`, `Decision`, `Consequences`, and `Related Artifacts`.
+- Each ADR 0013-0021 has `Status`, `Context`, `Decision`, `Consequences`, and `Related Artifacts`.
 - Each architecture decision is captured in a separate ADR file and reflected in `spec/architecture/mvp-target-architecture.md` diagrams.
-- Milestone 1 becomes complete only after human acceptance of ADRs 0013-0021 or explicit human revision of their decisions.
+- Milestone 1 is complete after human acceptance of ADRs 0013-0021 on 2026-05-19.
 
 ### Milestone 2: Local Platform Foundation
 
@@ -608,9 +608,9 @@ Run validation for this public-launch backlog slice on the active monorepo path:
     pnpm lint
     pnpm test:e2e
 
-After this public-launch backlog is validated and accepted, the next product-app slice is Milestone 1 approval followed by Milestone 2 local platform foundation, without building owner features yet. Draft ADRs 0013-0021 supply the missing Milestone 1 decisions for topology, auth, data lifecycle, AI pipeline, AI provider routing, sharing/export, messaging, payments, and observability.
+After this public-launch backlog is validated and accepted, the next product-app slice is Milestone 2 local platform foundation, without building owner features yet. Accepted ADRs 0013-0021 supply the missing Milestone 1 decisions for topology, auth, data lifecycle, AI pipeline, AI provider routing, sharing/export, messaging, payments, and observability.
 
-After ADRs 0013-0021 are accepted or revised by the human, use them as the boundary for Milestone 2. Add or validate local platform files under the accepted monorepo path:
+Use accepted ADRs 0013-0021 as the boundary for Milestone 2. Add or validate local platform files under the accepted monorepo path:
 
     apps/web/app/api/health/route.ts
     apps/web/app/api/version/route.ts

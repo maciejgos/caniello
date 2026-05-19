@@ -2,7 +2,7 @@
 
 ## Status
 
-Draft consolidation
+Accepted consolidation
 
 This file consolidates accepted and review-ready landing-page validation records into one historical index. It does not create a new human acceptance decision.
 
@@ -130,4 +130,4 @@ The source validation records were historical evidence records with their own st
 
 ## Human Decision
 
-Pending. A human may accept or revise this consolidation, but Codex has not accepted it on their behalf.
+Accepted by explicit human instruction on 2026-05-19 as a historical consolidation. This acceptance does not create a new product validation decision beyond the source records.

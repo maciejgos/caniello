@@ -256,7 +256,7 @@ Private pet, document, reminder, and sharing data must cross server-side validat
 
 Before implementation planning, this target architecture should be checked against:
 
-- accepted ADR coverage for stack, deployment, monorepo tooling, local development, Supabase, and draft ADR coverage for Milestone 1 decisions 0013-0020;
+- accepted ADR coverage for stack, deployment, monorepo tooling, local development, Supabase, and Milestone 1 decisions 0013-0021;
 - route ownership in `apps/web`;
 - package ownership under `packages/*`;
 - Supabase RLS and migration placement under `infra/supabase`;

@@ -2,7 +2,7 @@
 
 ## Status
 
-Draft consolidation
+Accepted consolidation
 
 This file consolidates earlier landing-page lifecycle reflections. It does not approve follow-up priorities, close incidents, or start a new lifecycle loop.
 
@@ -47,7 +47,7 @@ Supporting evidence now lives in:
 ## Confirmed Assumptions
 
 - A self-contained ExecPlan can carry implementation context forward when paired with validation and release-readiness artifacts.
-- Human approval boundaries need to stay explicit, especially when artifacts contain `Accepted` source statuses but the current checkpoint is only advisory.
+- Human approval boundaries need to stay explicit, especially when accepted consolidations do not approve downstream release, lifecycle, or implementation actions.
 - Landing-page market validation can proceed in limited form when legal, vendor, analytics, and CI/CD risks are named for human acceptance.
 
 ## Disproven or Risky Assumptions
@@ -72,4 +72,4 @@ Supporting evidence now lives in:
 
 ## Human Checkpoint
 
-Pending. A human may approve or revise this consolidation, decide which lessons are actionable, and choose whether any follow-up work should enter requirements, features, stories, design, plans, validation, release readiness, or operations.
+Accepted by explicit human instruction on 2026-05-19 as a historical consolidation. This acceptance does not approve follow-up priorities, close incidents, start a new lifecycle loop, or choose which recommendations become implementation work.

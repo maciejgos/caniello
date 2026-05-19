@@ -31,11 +31,12 @@ Keep superseded records in this directory when they explain important history, b
 | [0010](./0010-use-dev-containers-for-local-development.md) | Accepted | Use Dev Containers for local development |
 | [0011](./0011-use-pragmatic-engineering-practices-from-mvp-start.md) | Accepted | Use pragmatic engineering practices from MVP start |
 | [0012](./0012-polish-first-mvp-localization.md) | Accepted | Use Polish-first MVP localization |
-| [0013](./0013-use-vercel-nextjs-platform-topology.md) | Draft | Use Vercel and Next.js as the MVP platform topology |
-| [0014](./0014-use-supabase-auth-minimal-rbac-and-audit.md) | Draft | Use Supabase Auth with minimal RBAC and audit controls |
-| [0015](./0015-use-supabase-data-lifecycle-and-rls.md) | Draft | Use Supabase migrations, RLS, and lifecycle controls for MVP data |
-| [0016](./0016-use-staged-ai-document-intake-pipeline.md) | Draft | Use a staged AI document intake pipeline |
-| [0017](./0017-use-scoped-share-tokens-and-deferred-pdf-export.md) | Draft | Use scoped share tokens and defer PDF export |
-| [0018](./0018-use-mailerlite-for-marketing-and-defer-transactional-email.md) | Draft | Use MailerLite for marketing email and defer transactional email choice |
-| [0019](./0019-use-vercel-supabase-observability-and-mvp-recovery.md) | Draft | Use Vercel and Supabase observability with MVP recovery playbooks |
-| [0020](./0020-defer-stripe-payments-until-paid-plan-stories.md) | Draft | Defer Stripe payments until paid-plan stories are approved |
+| [0013](./0013-use-vercel-nextjs-platform-topology.md) | Accepted | Use Vercel and Next.js as the MVP platform topology |
+| [0014](./0014-use-supabase-auth-minimal-rbac-and-audit.md) | Accepted | Use Supabase Auth with minimal RBAC and audit controls |
+| [0015](./0015-use-supabase-data-lifecycle-and-rls.md) | Accepted | Use Supabase migrations, RLS, and lifecycle controls for MVP data |
+| [0016](./0016-use-staged-ai-document-intake-pipeline.md) | Accepted | Use a staged AI document intake pipeline |
+| [0017](./0017-use-scoped-share-tokens-and-deferred-pdf-export.md) | Accepted | Use scoped share tokens and defer PDF export |
+| [0018](./0018-use-mailerlite-for-marketing-and-defer-transactional-email.md) | Accepted | Use MailerLite for marketing email and defer transactional email choice |
+| [0019](./0019-use-vercel-supabase-observability-and-mvp-recovery.md) | Accepted | Use Vercel and Supabase observability with MVP recovery playbooks |
+| [0020](./0020-defer-stripe-payments-until-paid-plan-stories.md) | Accepted | Defer Stripe payments until paid-plan stories are approved |
+| [0021](./0021-use-vercel-ai-gateway-for-ai-provider-routing.md) | Accepted | Use Vercel AI Gateway for AI provider routing in MVP |

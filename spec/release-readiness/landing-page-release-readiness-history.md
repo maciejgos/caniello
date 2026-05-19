@@ -2,7 +2,7 @@
 
 ## Status
 
-Draft consolidation
+Accepted consolidation
 
 This file consolidates older landing-page release-readiness records. It does not approve release, deployment, public traffic, merge, tag, announcement, or incident closure.
 
@@ -33,7 +33,7 @@ Historical release-readiness trail for the landing-page stream:
 
 - Several source release-readiness records were accepted by explicit human instruction on 2026-05-14 or later.
 - Those acceptances applied to the original advisory artifacts and documented risks; they did not automatically merge, deploy, launch traffic, tag, announce, or mark production release complete.
-- This consolidation remains pending human review.
+- This consolidation was accepted by explicit human instruction on 2026-05-19.
 
 ## Validation and CI/CD Evidence
 
@@ -85,4 +85,4 @@ Do not use this file as current release approval. Prepare a new release-readines
 
 ## Human Decision
 
-Pending. A human may accept or revise this consolidation; Codex has not approved release or deployment.
+Accepted by explicit human instruction on 2026-05-19 as a historical consolidation. This acceptance does not approve release, deployment, public traffic, merge, tag, announcement, or incident closure.
