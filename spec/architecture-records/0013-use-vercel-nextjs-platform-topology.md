@@ -27,7 +27,7 @@ This keeps hosting, routing, preview deployments, and API boundaries simple for 
 ## Related Artifacts
 
 - [Caniello MVP Implementation Roadmap](../plans/caniello-mvp-implementation-roadmap.md)
-- [Migrate Caniello MVP to the Next.js monorepo architecture](../plans/caniello-mvp-nextjs-monorepo-migration.md)
+- [Migrate Caniello MVP to the Next.js monorepo architecture](../plans/completed-foundation-plans.md)
 - [0001 - Use TypeScript-first Next.js monorepo for Caniello MVP](./0001-use-typescript-nextjs-monorepo.md)
 - [0003 - Keep landing, web app, and API in one Next.js project](./0003-keep-landing-app-and-api-in-one-nextjs-project.md)
 - [0005 - Deploy the web application on Vercel](./0005-deploy-web-on-vercel.md)

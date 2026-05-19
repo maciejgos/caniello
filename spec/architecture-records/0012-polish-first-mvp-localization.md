@@ -50,4 +50,4 @@ The decision adds a small amount of implementation overhead, but it reduces late
 - [Owner Account and Privacy Foundation](../features/owner-account-privacy-foundation.md)
 - [Polish-First Language Switching Story](../stories/polish-first-language-switching.md)
 - [Caniello MVP Implementation Roadmap](../plans/caniello-mvp-implementation-roadmap.md)
-- [First Landing Page ExecPlan](../plans/first-landing-page.md)
+- [First Landing Page ExecPlan](../plans/completed-foundation-plans.md)

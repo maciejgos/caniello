@@ -22,7 +22,7 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
 - [x] (2026-05-12) Implemented the Milestone 0 landing page slice: Polish-first language switching, consent-gated segmented forms, future-wave research framing, footer/legal placeholders, server-side MailerLite upsert boundary, UTM capture, and consent-gated validation events.
 - [x] (2026-05-12) Updated unit and Playwright E2E coverage for Polish default, English switching, consent blocking, owner/provider/clinic payloads, source attribution, UTM preservation, validation events, and responsive screenshots.
 - [x] (2026-05-12) Ran validation gates for Milestone 0 implementation: `npm run test`, `npm run lint`, `npm run build`, and `npm run test:e2e` using Dockerized Node/Playwright runtimes.
-- [x] (2026-05-12) Added validation evidence in `spec/validation/landing-page-milestone-0-validation.md`.
+- [x] (2026-05-12) Added validation evidence in `spec/validation/landing-page-validation-history.md`.
 - [x] (2026-05-12) Revised the mid-page layout after human feedback that the implemented UI did not match the mockup: the process card, owner CTA, compact "What's next" cards, and final waitlist strip now follow the `image 1.png` composition more closely, with Wave 2/Wave 3 full forms opened from compact research CTAs.
 - [x] (2026-05-12) Adjusted the three mid-page cards to equal desktop height after human visual feedback, then reran lint, build, and Playwright E2E screenshot validation.
 - [x] (2026-05-12) Replaced the full-width analytics consent section with a small dismissing bottom popup and routed analytics consent and validation events through `/api/validation-events`.
@@ -30,7 +30,7 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
 - [x] (2026-05-14) Human accepted the remaining Milestone 0 validation and release-readiness artifacts, including Wave 2, Wave 3, naming, timeline service links, layout unification, and Milestone 0 release-readiness records.
 - [x] (2026-05-14) Added public-launch backlog work for Privacy Policy, Terms of Service, and medical-boundary content.
 - [x] (2026-05-15) Captured the data-controller identity for the Privacy Policy draft: Cloud & More Maciej Gos / Cloud & More, NIP 5242507722, address B. Prusa 43/20, 05-800 Pruszków, privacy contact `privacy@caniello.com`.
-- [x] (2026-05-17) Marked the older FastAPI and Back Office MVP implementation path as superseded by ADR 0001-0011 and linked the active migration plan in `spec/plans/caniello-mvp-nextjs-monorepo-migration.md`.
+- [x] (2026-05-17) Marked the older FastAPI and Back Office MVP implementation path as superseded by ADR 0001-0011 and linked the active migration plan in `spec/plans/completed-foundation-plans.md`.
 - [x] (2026-05-17) Split the remaining Milestone 1 architecture decisions into separate draft ADRs 0013-0020 for platform topology, identity/access, data lifecycle, AI document intake, sharing/export, messaging, observability, and Stripe payment deferral.
 - [x] Human review of roadmap scope, sequencing, and release slices beyond Milestone 0.
 - [x] Backlog before public launch: prepare and implement Privacy Policy, Terms of Service, and medical-boundary content for landing lead capture.
@@ -51,7 +51,7 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
   Evidence: `packages/db/src/index.ts` now centralizes Supabase URL/key reading and stable REST/Storage URL construction, while the first migration establishes schema and RLS boundaries for later Supabase client work.
 
 - Observation: The landing page already has a completed ExecPlan and working React/Vite/Tailwind/Docker toolchain.
-  Evidence: `spec/plans/first-landing-page.md`, `package.json`, `Dockerfile`, `docker-compose.yml`, and `playwright.config.ts` exist.
+  Evidence: `spec/plans/completed-foundation-plans.md`, `package.json`, `Dockerfile`, `docker-compose.yml`, and `playwright.config.ts` exist.
 
 - Observation: The historical stack ADR is superseded and was not enough detail for implementation planning.
   Evidence: `spec/architecture-records/0000-superseded-caniello-mvp-stack.md` explicitly says implementation planning depends on follow-up architecture decisions for topology, identity, AI intake, data lifecycle, sharing, messaging, payments, and observability.
@@ -159,7 +159,7 @@ Validation passed for `npm run test`, `npm run lint`, `npm run build`, and `npm 
 
 ## Context and Orientation
 
-Supersession notice for readers and agents: the remaining sections of this older roadmap preserve historical Milestone 0 evidence and pre-ADR planning context. Any later instruction in this file that says to build a FastAPI backend, create a separate `api/` or `apps/api` implementation, keep React/Vite as the active web runtime, use npm/package-lock as the active package-management path, expose the web app on port `5173`, or deliver Back Office as part of the MVP is superseded by ADR 0001-0011 and by `spec/plans/caniello-mvp-nextjs-monorepo-migration.md`. The active MVP path is Next.js App Router under `apps/web`, Next.js API routes under `apps/web/app/api`, pnpm workspaces, Turborepo, Supabase local foundation, Dev Containers, and one Vercel project rooted at `apps/web`.
+Supersession notice for readers and agents: the remaining sections of this older roadmap preserve historical Milestone 0 evidence and pre-ADR planning context. Any later instruction in this file that says to build a FastAPI backend, create a separate `api/` or `apps/api` implementation, keep React/Vite as the active web runtime, use npm/package-lock as the active package-management path, expose the web app on port `5173`, or deliver Back Office as part of the MVP is superseded by ADR 0001-0011 and by `spec/plans/completed-foundation-plans.md`. The active MVP path is Next.js App Router under `apps/web`, Next.js API routes under `apps/web/app/api`, pnpm workspaces, Turborepo, Supabase local foundation, Dev Containers, and one Vercel project rooted at `apps/web`.
 
 Caniello is a pet health and care organization utility. Its first MVP promise is one place for a pet's health records, reminders, documents, and shareable care information. The existing landing page is implemented with React, TypeScript, Vite, TailwindCSS, Docker, Vitest, and Playwright.
 
@@ -217,7 +217,7 @@ Source artifacts:
 
 - `spec/requirements/first-landing-page.md`
 - `spec/requirements/landing-page-segmented-validation.md`
-- `spec/plans/first-landing-page.md`
+- `spec/plans/completed-foundation-plans.md`
 - `spec/features/landing-page-mvp-value-experience.md`
 - `spec/features/landing-page-segmented-lead-capture.md`
 - `spec/features/landing-page-validation-instrumentation.md`
@@ -589,8 +589,8 @@ Inspect the accepted landing-page and release-readiness artifacts before editing
     sed -n '1,220p' spec/stories/landing-page-consent-and-analytics-policy-baseline.md
     sed -n '1,220p' spec/stories/landing-page-footer-legal-and-responsive-trust.md
     sed -n '1,220p' spec/stories/cookie-consent-privacy-and-medical-boundaries.md
-    sed -n '1,220p' spec/validation/landing-page-milestone-0-validation.md
-    sed -n '1,220p' spec/release-readiness/landing-page-milestone-0-release-readiness.md
+    sed -n '1,220p' spec/validation/landing-page-validation-history.md
+    sed -n '1,220p' spec/release-readiness/landing-page-release-readiness-history.md
 
 Implement the public-launch backlog in this order:
 
