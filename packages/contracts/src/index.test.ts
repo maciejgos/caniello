@@ -14,6 +14,17 @@ describe("Caniello API contracts", () => {
     ).toMatchObject({ email: "owner@example.com" });
   });
 
+  it("rejects unsupported landing lead language values", () => {
+    expect(() =>
+      landingLeadPayloadSchema.parse({
+        email: "owner@example.com",
+        source: "landing_page_hero",
+        leadConsent: true,
+        language: "de"
+      })
+    ).toThrow();
+  });
+
   it("rejects lead segmentation fields handled by MailerLite survey", () => {
     expect(() =>
       landingLeadPayloadSchema.parse({

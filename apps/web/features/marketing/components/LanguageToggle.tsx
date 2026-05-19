@@ -1,19 +1,15 @@
 import type { Language } from "../content";
+import { languageOptions } from "../language";
 
 type LanguageToggleProps = {
   language: Language;
   onChange: (language: Language) => void;
 };
 
-const options: Array<{ value: Language; label: string }> = [
-  { value: "pl", label: "PL" },
-  { value: "en", label: "EN" }
-];
-
 export function LanguageToggle({ language, onChange }: LanguageToggleProps) {
   return (
     <div className="inline-flex rounded-md border border-navy/10 bg-white p-1 shadow-sm" aria-label="Language">
-      {options.map((option) => {
+      {languageOptions.map((option) => {
         const isActive = language === option.value;
 
         return (

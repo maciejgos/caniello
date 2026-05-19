@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
-import { upsertMailerLiteSubscriber, validateLandingLeadPayload } from "./landing-leads";
+import { getMailerLiteLeadFailureResponse, upsertMailerLiteSubscriber, validateLandingLeadPayload } from "./landing-leads";
 
 const validPayload = {
   email: "owner@example.com",
   source: "landing_page_hero" as const,
   leadConsent: true as const,
-  language: "pl",
+  language: "pl" as const,
   utm: {
     utm_source: "newsletter",
     utm_medium: "email",
@@ -36,7 +36,15 @@ describe("landing lead MailerLite integration", () => {
     });
   });
 
-  it("upserts a subscriber into the configured waitlist group only", async () => {
+  it("rejects unsupported language context", () => {
+    expect(validateLandingLeadPayload({ ...validPayload, language: "de" })).toEqual({
+      ok: false,
+      status: 400,
+      message: "Invalid lead payload."
+    });
+  });
+
+  it("upserts a subscriber into the configured waitlist group with Polish language context", async () => {
     const fetchMock = vi
       .fn()
       .mockResolvedValueOnce(
@@ -69,9 +77,74 @@ describe("landing lead MailerLite integration", () => {
     });
     expect(JSON.parse(String(subscriberRequest.body))).toMatchObject({
       email: "owner@example.com",
-      groups: ["123"]
+      groups: ["123"],
+      fields: {
+        language: "PL"
+      }
     });
-    expect(JSON.parse(String(subscriberRequest.body))).not.toHaveProperty("fields");
+  });
+
+  it("maps English landing context to the MailerLite language field", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ data: [{ id: "123", name: "Caniello Waitlist" }] }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" }
+        })
+      )
+      .mockResolvedValueOnce(new Response(JSON.stringify({ data: { id: "subscriber-1" } }), { status: 200 }));
+
+    await upsertMailerLiteSubscriber({ ...validPayload, language: "en" }, {
+      apiKey: "test-token",
+      groupName: "Caniello Waitlist",
+      fetchFn: fetchMock
+    });
+
+    const [, subscriberRequest] = fetchMock.mock.calls[1];
+    expect(JSON.parse(String(subscriberRequest.body))).toMatchObject({
+      fields: {
+        language: "EN"
+      }
+    });
+  });
+
+  it("maps inactive MailerLite subscribers to a conflict response", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ data: [{ id: "123", name: "Caniello Waitlist" }] }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" }
+        })
+      )
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            message: "The given data was invalid.",
+            errors: { email: ["This subscriber is not active and cannot be imported"] },
+            subscriber: ""
+          }),
+          { status: 422, headers: { "Content-Type": "application/json" } }
+        )
+      );
+
+    let caughtError: unknown;
+
+    try {
+      await upsertMailerLiteSubscriber(validPayload, {
+        apiKey: "test-token",
+        groupName: "Caniello Waitlist",
+        fetchFn: fetchMock
+      });
+    } catch (error) {
+      caughtError = error;
+    }
+
+    expect(getMailerLiteLeadFailureResponse(caughtError)).toEqual({
+      status: 409,
+      message: "This email address cannot be subscribed automatically."
+    });
   });
 
   it("fails without exposing secrets when the configured MailerLite group is missing", async () => {

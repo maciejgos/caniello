@@ -8,6 +8,8 @@ export const leadSources = [
   "landing_page_wave3"
 ] as const;
 
+export const landingLeadLanguages = ["pl", "en"] as const;
+
 export const utmSchema = z.record(z.string(), z.string());
 
 export const landingLeadPayloadSchema = z
@@ -15,11 +17,12 @@ export const landingLeadPayloadSchema = z
     email: z.string().email(),
     source: z.enum(leadSources).optional(),
     leadConsent: z.literal(true),
-    language: z.string().optional(),
+    language: z.enum(landingLeadLanguages),
     utm: utmSchema.optional()
   })
   .strict();
 
+export type LandingLeadLanguage = (typeof landingLeadLanguages)[number];
 export type LandingLeadPayload = z.infer<typeof landingLeadPayloadSchema>;
 
 export const validationEventNames = [

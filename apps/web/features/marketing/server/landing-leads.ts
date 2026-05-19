@@ -1,4 +1,5 @@
 import { landingLeadPayloadSchema, type LandingLeadPayload } from "@caniello/contracts";
+import { getLanguageLabel } from "../language";
 
 type MailerLiteGroup = {
   id: string;
@@ -9,6 +10,17 @@ type MailerLiteGroupListResponse = {
   data?: MailerLiteGroup[];
 };
 
+class MailerLiteRequestError extends Error {
+  constructor(
+    message: string,
+    readonly status: number,
+    readonly responseBody: string
+  ) {
+    super(message);
+    this.name = "MailerLiteRequestError";
+  }
+}
+
 type MailerLiteClientOptions = {
   apiKey: string;
   groupName: string;
@@ -17,6 +29,7 @@ type MailerLiteClientOptions = {
 
 export const defaultMailerLiteGroupName = "Caniello Waitlist";
 const mailerLiteApiBaseUrl = "https://connect.mailerlite.com/api";
+const inactiveSubscriberErrorText = "This subscriber is not active and cannot be imported";
 
 export function validateLandingLeadPayload(payload: unknown) {
   const validation = landingLeadPayloadSchema.safeParse(payload);
@@ -63,12 +76,19 @@ export async function upsertMailerLiteSubscriber(payload: LandingLeadPayload, op
     },
     body: JSON.stringify({
       email: payload.email,
-      groups: [groupId]
+      groups: [groupId],
+      fields: {
+        language: getLanguageLabel(payload.language)
+      }
     })
   });
 
   if (!mailerLiteResponse.ok) {
-    throw new Error("MailerLite subscriber upsert failed.");
+    throw new MailerLiteRequestError(
+      "MailerLite subscriber upsert failed.",
+      mailerLiteResponse.status,
+      await readMailerLiteErrorBody(mailerLiteResponse)
+    );
   }
 }
 
@@ -85,12 +105,62 @@ async function findMailerLiteGroupId(groupName: string, apiKey: string, fetchFn:
   });
 
   if (!groupsResponse.ok) {
-    throw new Error("MailerLite group lookup failed.");
+    throw new MailerLiteRequestError(
+      "MailerLite group lookup failed.",
+      groupsResponse.status,
+      await readMailerLiteErrorBody(groupsResponse)
+    );
   }
 
   const groups = (await groupsResponse.json()) as MailerLiteGroupListResponse;
   const exactMatch = groups.data?.find((group) => group.name.toLowerCase() === groupName.toLowerCase());
 
   return exactMatch?.id;
+}
+
+async function readMailerLiteErrorBody(response: Response) {
+  try {
+    return sanitizeMailerLiteErrorBody(await response.text());
+  } catch {
+    return "";
+  }
+}
+
+function sanitizeMailerLiteErrorBody(responseBody: string) {
+  return responseBody.replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, "[redacted-email]").slice(0, 1000);
+}
+
+export function describeMailerLiteError(error: unknown) {
+  if (error instanceof MailerLiteRequestError) {
+    return {
+      message: error.message,
+      status: error.status,
+      responseBody: error.responseBody
+    };
+  }
+
+  if (error instanceof Error) {
+    return { message: error.message };
+  }
+
+  return { message: "Unknown MailerLite error." };
+}
+
+export function getMailerLiteLeadFailureResponse(error: unknown) {
+  if (isInactiveSubscriberError(error)) {
+    return {
+      status: 409,
+      message: "This email address cannot be subscribed automatically."
+    };
+  }
+
+  return {
+    status: 502,
+    message: "Lead capture failed."
+  };
+}
+
+function isInactiveSubscriberError(error: unknown) {
+  return error instanceof MailerLiteRequestError && error.status === 422 && error.responseBody.includes(inactiveSubscriberErrorText);
 }
 

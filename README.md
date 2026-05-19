@@ -103,6 +103,7 @@ The MVP workspace is a pnpm and Turborepo monorepo. The web app is a Next.js App
 - `pnpm test`: run Vitest and React Testing Library tests.
 - `pnpm test:e2e`: run Playwright browser checks against the landing page.
 - `pnpm lint`: run the TypeScript validation gate across the workspace.
+- `pnpm validation:mailerlite-integration`: run the focused MailerLite integration gate for landing lead contracts, consent/error handling, server payload mapping, and web type safety.
 - `pnpm exec supabase start --workdir infra/supabase`: start local Supabase services when the Supabase CLI is available.
 - `docker compose build`: build the Dev Container workspace image from `.devcontainer/Dockerfile`.
 - `docker compose up`: start the workspace container and expose the web and Supabase ports.

@@ -9,6 +9,7 @@
     "build": "turbo build",
     "lint": "turbo lint",
     "pdlc:lifecycle-gate": "node scripts/pdlc-lifecycle-gate.mjs",
+    "validation:mailerlite-integration": "node scripts/mailerlite-integration-gate.mjs",
     "test": "turbo test",
     "test:e2e": "turbo test:e2e --filter=web",
     "typecheck": "turbo typecheck"

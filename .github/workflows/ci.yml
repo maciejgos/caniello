@@ -62,6 +62,9 @@ jobs:
       - name: Run unit and contract tests
         run: pnpm test
 
+      - name: Run MailerLite integration validation gate
+        run: pnpm validation:mailerlite-integration
+
       - name: Build workspace
         run: pnpm build
 

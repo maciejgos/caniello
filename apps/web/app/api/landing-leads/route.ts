@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { defaultMailerLiteGroupName, upsertMailerLiteSubscriber, validateLandingLeadPayload } from "../../../features/marketing/server/landing-leads";
+import { defaultMailerLiteGroupName, describeMailerLiteError, getMailerLiteLeadFailureResponse, upsertMailerLiteSubscriber, validateLandingLeadPayload } from "../../../features/marketing/server/landing-leads";
 
 export async function POST(request: Request) {
   let payload: unknown;
@@ -24,8 +24,10 @@ export async function POST(request: Request) {
 
   try {
     await upsertMailerLiteSubscriber(validation.payload, { apiKey, groupName });
-  } catch {
-    return NextResponse.json({ ok: false, message: "Lead capture failed." }, { status: 502 });
+  } catch (error) {
+    console.error("Landing lead MailerLite upsert failed", describeMailerLiteError(error));
+    const failure = getMailerLiteLeadFailureResponse(error);
+    return NextResponse.json({ ok: false, message: failure.message }, { status: failure.status });
   }
 
   return NextResponse.json({ ok: true });
