@@ -36,6 +36,7 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
 - [x] Backlog before public launch: prepare and implement Privacy Policy, Terms of Service, and medical-boundary content for landing lead capture.
 - [x] Follow-up ADRs or solution designs for platform topology, auth/RBAC, AI document pipeline, data lifecycle, sharing/export, messaging, payments deferral, and observability.
 - [x] Implementation authorization for Milestone 1 or further roadmap slices.
+- [x] (2026-05-19) Human accepted the full Milestone 1 ADR package 0013-0021, including AI provider routing via ADR 0021.
 
 ## Surprises & Discoveries
 
