@@ -62,6 +62,7 @@ function changedFilesFromGit() {
   for (const args of [
     ["diff", "--name-only", "--diff-filter=ACMRT", "HEAD"],
     ["diff", "--cached", "--name-only", "--diff-filter=ACMRT"],
+    ["ls-files", "--others", "--exclude-standard"],
   ]) {
     try {
       git(args)

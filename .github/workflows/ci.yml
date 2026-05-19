@@ -65,6 +65,9 @@ jobs:
       - name: Run MailerLite integration validation gate
         run: pnpm validation:mailerlite-integration
 
+      - name: Run platform foundation validation gate
+        run: pnpm validation:platform-foundation
+
       - name: Build workspace
         run: pnpm build
 

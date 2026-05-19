@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { landingLeadPayloadSchema, validationEventPayloadSchema } from ".";
+import {
+  createHealthPayload,
+  createVersionPayload,
+  healthPayloadSchema,
+  landingLeadPayloadSchema,
+  validationEventPayloadSchema,
+  versionPayloadSchema
+} from ".";
 
 describe("Caniello API contracts", () => {
   it("accepts consented landing leads with UTM context", () => {
@@ -39,6 +46,30 @@ describe("Caniello API contracts", () => {
   it("accepts consent and page-view validation events", () => {
     expect(validationEventPayloadSchema.parse({ name: "analytics_consent", analyticsConsent: true })).toMatchObject({
       name: "analytics_consent"
+    });
+  });
+
+  it("creates a health payload for the web service", () => {
+    const payload = createHealthPayload(new Date("2026-05-19T12:00:00.000Z"));
+
+    expect(healthPayloadSchema.parse(payload)).toEqual({
+      ok: true,
+      service: "caniello-web",
+      checkedAt: "2026-05-19T12:00:00.000Z"
+    });
+  });
+
+  it("creates a version payload without leaking deployment-only values", () => {
+    const payload = createVersionPayload({
+      version: "0.1.0",
+      commit: "",
+      environment: "preview"
+    });
+
+    expect(versionPayloadSchema.parse(payload)).toEqual({
+      app: "web",
+      version: "0.1.0",
+      environment: "preview"
     });
   });
 });
