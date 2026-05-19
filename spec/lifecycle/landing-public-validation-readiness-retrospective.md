@@ -2,7 +2,7 @@
 
 ## Status
 
-Draft
+Accepted
 
 ## Scope
 
@@ -98,7 +98,7 @@ Validation gates are strong locally but still manual. The absence of remote CI/C
 
 ## Human Checkpoint
 
-Pending human review.
+Accepted.
 
 Approve or revise this retrospective scope, evidence summary, lessons learned, and follow-up routing. The recommended next PDLC loop after launch is a validation-review loop based on real market evidence, followed by requirements or feature updates only if the evidence changes the problem framing or the next product slice.
 

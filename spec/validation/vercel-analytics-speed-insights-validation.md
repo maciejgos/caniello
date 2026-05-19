@@ -2,7 +2,7 @@
 
 ## Status
 
-Draft
+Accepted
 
 ## Scope
 
@@ -126,4 +126,4 @@ Ready for human review
 
 ## Human Decision
 
-Pending
+Accepted

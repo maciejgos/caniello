@@ -17,7 +17,7 @@ This review does not approve merge, deployment, public launch traffic, productio
 - Story: [Landing Page Provider and Clinic Interest Capture](../stories/landing-page-provider-and-clinic-interest-capture.md)
 - Story: [Landing Page Footer Legal and Responsive Trust](../stories/landing-page-footer-legal-and-responsive-trust.md)
 - Design: [Caniello Visual Direction](../design/caniello-visual-direction.md)
-- ADR: [Caniello MVP Stack](../architecture-records/caniello-mvp-stack.md)
+- ADR: [0000 — Superseded Caniello MVP stack baseline](../architecture-records/0000-superseded-caniello-mvp-stack.md)
 - ExecPlan: [Caniello MVP Implementation Roadmap](../plans/caniello-mvp-implementation-roadmap.md)
 - Validation: [Validation: Landing Page Layout Unification](../validation/landing-page-layout-unification-validation.md)
 - Prior release-readiness context: [Landing Page Milestone 0](landing-page-milestone-0-release-readiness.md)

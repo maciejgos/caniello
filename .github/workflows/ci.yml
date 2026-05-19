@@ -1,0 +1,72 @@
+name: CI/CD and Lifecycle Gates
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - "codex/**"
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lifecycle-gate:
+    name: Lifecycle Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Check PDLC lifecycle decisions
+        run: node scripts/pdlc-lifecycle-gate.mjs
+        env:
+          PDLC_GATE_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          PDLC_GATE_HEAD: ${{ github.sha }}
+
+  ci:
+    name: pnpm/Turbo CI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Enable pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@9.15.4 --activate
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Lint and type-check workspace
+        run: pnpm lint
+
+      - name: Run unit and contract tests
+        run: pnpm test
+
+      - name: Run MailerLite integration validation gate
+        run: pnpm validation:mailerlite-integration
+
+      - name: Build workspace
+        run: pnpm build
+
+      - name: Run Playwright browser checks
+        run: pnpm test:e2e

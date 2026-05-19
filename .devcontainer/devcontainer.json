@@ -1,0 +1,24 @@
+{
+  "name": "Caniello MVP",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "workspace",
+  "workspaceFolder": "/workspaces/caniello",
+  "postCreateCommand": "pnpm install",
+  "forwardPorts": [3000, 54321, 54322, 54323, 54324],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "OpenAI.chatgpt",
+        "bradlc.vscode-tailwindcss",
+        "DavidAnson.vscode-markdownlint",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "mikestead.dotenv",
+        "ms-azuretools.vscode-docker",
+        "ms-playwright.playwright",
+        "redhat.vscode-yaml",
+        "github.vscode-github-actions"
+      ]
+    }
+  }
+}

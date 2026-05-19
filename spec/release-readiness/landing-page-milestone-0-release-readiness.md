@@ -28,7 +28,7 @@ This review does not approve merge, deployment, public launch traffic, productio
   - [Landing Page MailerLite Subscriber Upsert](../stories/landing-page-mailerlite-subscriber-upsert.md)
   - [Landing Page Validation Events and UTM Capture](../stories/landing-page-validation-events-and-utm-capture.md)
 - Design: [Caniello Visual Direction](../design/caniello-visual-direction.md)
-- ADR: [Caniello MVP Stack](../architecture-records/caniello-mvp-stack.md)
+- ADR: [0000 — Superseded Caniello MVP stack baseline](../architecture-records/0000-superseded-caniello-mvp-stack.md)
 - ExecPlan: [Caniello MVP Implementation Roadmap](../plans/caniello-mvp-implementation-roadmap.md)
 - Validation: [Validation: Landing Page Milestone 0](../validation/landing-page-milestone-0-validation.md)
 - Repository guidance: [README](../../README.md), [AGENTS](../../AGENTS.md)

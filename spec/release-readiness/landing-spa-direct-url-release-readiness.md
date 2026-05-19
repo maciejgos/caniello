@@ -2,7 +2,7 @@
 
 ## Status
 
-Draft
+Accepted
 
 ## Release Scope
 
@@ -96,4 +96,4 @@ The local implementation, build, unit tests, and Playwright checks are complete 
 
 ## Human Decision
 
-Pending
+Accepted

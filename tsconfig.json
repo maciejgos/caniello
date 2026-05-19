@@ -2,10 +2,26 @@
   "files": [],
   "references": [
     {
-      "path": "./tsconfig.app.json"
+      "path": "./apps/web"
     },
     {
-      "path": "./tsconfig.node.json"
+      "path": "./apps/mobile"
+    },
+    {
+      "path": "./packages/contracts"
+    },
+    {
+      "path": "./packages/domain"
+    },
+    {
+      "path": "./packages/db"
+    },
+    {
+      "path": "./packages/application"
+    },
+    {
+      "path": "./packages/ui"
     }
   ]
 }
+
