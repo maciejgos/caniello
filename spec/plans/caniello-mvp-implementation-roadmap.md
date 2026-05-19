@@ -31,6 +31,7 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
 - [x] (2026-05-14) Added public-launch backlog work for Privacy Policy, Terms of Service, and medical-boundary content.
 - [x] (2026-05-15) Captured the data-controller identity for the Privacy Policy draft: Cloud & More Maciej Gos / Cloud & More, NIP 5242507722, address B. Prusa 43/20, 05-800 Pruszków, privacy contact `privacy@caniello.com`.
 - [x] (2026-05-17) Marked the older FastAPI and Back Office MVP implementation path as superseded by ADR 0001-0011 and linked the active migration plan in `spec/plans/caniello-mvp-nextjs-monorepo-migration.md`.
+- [x] (2026-05-17) Split the remaining Milestone 1 architecture decisions into separate draft ADRs 0013-0020 for platform topology, identity/access, data lifecycle, AI document intake, sharing/export, messaging, observability, and Stripe payment deferral.
 - [x] Human review of roadmap scope, sequencing, and release slices beyond Milestone 0.
 - [x] Backlog before public launch: prepare and implement Privacy Policy, Terms of Service, and medical-boundary content for landing lead capture.
 - [x] Follow-up ADRs or solution designs for platform topology, auth/RBAC, AI document pipeline, data lifecycle, sharing/export, messaging, payments deferral, and observability.
@@ -161,7 +162,7 @@ Mobile MVP means the React Native application focused on owner onboarding, camer
 
 Polish-first language support means the first MVP opens in Polish by default and offers an English switch. English mockups in `spec/notes/` are layout references unless a human separately approves English as final copy.
 
-FastAPI is the Python framework for the backend API. In this roadmap, the API is the server-side boundary for business logic, AI/OCR orchestration, secure file operations, audit events, and integrations.
+FastAPI is the Python backend framework from the superseded historical path. The active MVP API boundary is Next.js API routes under `apps/web/app/api`, with Supabase owning data, auth, storage, and RLS. FastAPI should not be implemented unless a later human-approved ADR reintroduces it.
 
 Database container means a local development Postgres-compatible service that lets contributors run API tests and migrations without touching production data. Because Supabase is the accepted hosted database provider, the database schema and SQL should remain compatible with Supabase Postgres.
 
@@ -177,9 +178,9 @@ Analytics consent means the visitor explicitly allows non-essential validation e
 
 Milestone 0 is Landing Page and acquisition validation. Its implementation and evidence are accepted. The landing page is now the Polish-first validation surface for Wave 1 owner value, research-safe Wave 2 and Wave 3 framing, lead-capture consent, analytics consent, MailerLite waitlist submission, validation-event routing, UTM preservation, and responsive screenshot evidence. Remaining Milestone 0 work is public-launch preparation rather than core landing implementation: Privacy Policy, Terms of Service, medical-boundary copy, live MailerLite smoke testing, deployment target, rollback path, analytics/storage decisions where needed, and final staging.
 
-Milestone 1 is Architecture and platform design. Before coding the product app, create or approve follow-up ADRs for deployment topology, owner/admin identity, data lifecycle, AI document pipeline, sharing/export, messaging, observability, and payments deferral. This milestone prevents the API, database, auth, storage, and worker choices from being improvised during feature work.
+Milestone 1 is Architecture and platform design. ADR 0001-0012 are accepted, and draft ADRs 0013-0020 now propose the remaining MVP platform boundaries: Next.js App Router in `apps/web`, Vercel deployment, Supabase data/auth/storage/RLS, pnpm/Turborepo, Dev Containers, MailerLite for marketing and waitlist lifecycle email, Stripe deferred until paid-plan stories are approved, and separate decisions for identity/access, data lifecycle, AI document intake, sharing/export, messaging, and observability. After human acceptance of ADRs 0013-0020, Milestone 1 prevents API, database, auth, storage, integration, and worker choices from being improvised during feature work.
 
-Milestone 2 is Local development and backend foundation. Add an `api` service for FastAPI and a local `db` service for Postgres-compatible development. Add migrations, health checks, API tests, seed data, and Docker Compose commands that start web, API, and database together.
+Milestone 2 is Local platform foundation. Add the first Supabase-backed foundation under the accepted monorepo path: local Supabase start, migrations and seed structure, RLS skeletons, shared contracts and database helpers, lightweight Next.js health/version API routes, environment examples, and validation commands through pnpm/Turborepo. Do not add FastAPI, a separate API service, or a production Docker path unless a later human-approved ADR reopens that scope.
 
 Milestone 3 is Web MVP owner foundation. Implement account/privacy, first-pet onboarding, and the home workspace in the browser app against the backend.
 
@@ -270,7 +271,7 @@ Current and likely source files for Milestone 0 follow-up:
 
 Validation:
 
-- Run `npm run build`, `npm run test`, `npm run lint`, and `npm run test:e2e`.
+- Run `pnpm build`, `pnpm test`, `pnpm lint`, and `pnpm test:e2e` on the active monorepo path.
 - Verify the landing page opens in Polish by default and can switch to English without losing entered form state unexpectedly.
 - Verify the rendered page still follows the current Caniello brand direction: wordmark, navy/gold/cream palette, pet/app hero image, compact feature/process blocks, and mockup-informed future-wave cards.
 - Verify landing waitlist submissions preserve source, language, consent, and UTM context.
@@ -298,65 +299,63 @@ Source artifacts:
 - `spec/requirements/owner-facing-mvp.md`
 - `spec/requirements/back-office-mvp.md`
 
-Required follow-up ADRs or solution designs:
+Draft ADR and solution-design coverage:
 
-1. Platform topology and deployment boundary: decide how React, React Native, FastAPI, Vercel, local Docker, environments, preview deployments, and rollback fit together.
-2. Identity and access: decide owner auth, admin auth, MFA, RBAC, sessions, Supabase Auth usage, and audit behavior.
-3. Data lifecycle: decide schema ownership, migrations, row-level security, storage buckets, retention, export, deletion, backup, and audit-log policy.
-4. AI document intake pipeline: decide upload flow, signed URLs, worker/queue model, OCR/AI provider boundary, retries, processing states, and review handoff.
-5. Sharing/export: decide share-token scope, revocation, expiry policy, PDF generation, storage, and access logging.
-6. Messaging: decide MailerLite boundaries versus transactional auth, reminder, export, and operational email.
-7. Observability and operations: decide logs, job monitoring, support visibility, health checks, alerts, incident response, and recovery.
-8. Payments: record Stripe as deferred or define the exact paid-plan trigger.
+1. Platform topology and deployment boundary: ADR 0001, 0003, 0005, 0009, 0010, 0011, and draft ADR 0013 keep the MVP in one Next.js web app on Vercel with Supabase-backed data services and Dev Containers for local development.
+2. Identity and access: ADR 0004 and draft ADR 0014 choose Supabase Auth, owner sessions, minimal roles, explicit operator constraints, MFA requirement before operator/admin data access, and audit behavior for sensitive actions.
+3. Data lifecycle: ADR 0004 and draft ADR 0015 assign schema, migrations, RLS, Storage, retention, export/deletion, backup/recovery, and audit-log expectations to the Supabase-backed platform foundation.
+4. AI document intake pipeline: draft ADR 0016 starts with deterministic processing states and server-side orchestration in Next.js/Supabase, deferring real OCR/AI provider choice until a dedicated ADR/story defines provider, data flow, retry, and evaluation behavior.
+5. Sharing/export: ADR 0002, 0003, 0004, 0009, and draft ADR 0017 define `/share/[token]`, opaque scoped tokens, revocation, optional expiry, access logging, and deferred PDF generation.
+6. Messaging: ADR 0008 and draft ADR 0018 keep MailerLite for marketing, waitlist, early-access lifecycle email, and surveys while deferring product transactional email provider choice to the relevant story.
+7. Observability and operations: ADR 0005, 0008, 0009, and draft ADR 0019 define Vercel logs, Vercel Analytics, Speed Insights, Supabase operational visibility, future application events, deferred PostHog, health checks, and incident/recovery expectations.
+8. Payments: draft ADR 0020 records Stripe as the accepted payment provider with implementation deferred until paid-plan requirements or stories are approved.
 
 Validation:
 
-- Each ADR has `Status`, `Context`, `Decision`, `Consequences`, and `Related Artifacts`.
-- Architecture reviewer should review the topology, auth, AI pipeline, data lifecycle, and sharing ADRs before implementation starts.
+- Each draft ADR 0013-0020 has `Status`, `Context`, `Decision`, `Consequences`, and `Related Artifacts`.
+- Each architecture decision is captured in a separate ADR file and reflected in `spec/architecture/mvp-target-architecture.md` diagrams.
+- Milestone 1 becomes complete only after human acceptance of ADRs 0013-0020 or explicit human revision of their decisions.
 
 ### Milestone 2: Local Platform Foundation
 
-At the end of this milestone, contributors can run the web app, FastAPI backend, and local database from Docker Compose. The API exposes health and version endpoints, migrations run locally, and tests prove API/database connectivity.
+At the end of this milestone, contributors can run the Next.js web app from the pnpm/Turborepo workspace, start the local Supabase stack when data/Auth/Storage/RLS work begins, and call lightweight Next.js health/version endpoints. Migrations, seed data, RLS skeletons, shared contracts, and database helpers are in their accepted monorepo locations.
 
 Features enabled:
 
 - `spec/features/owner-account-privacy-foundation.md`
 - `spec/features/pet-onboarding-and-workspace.md`
-- `spec/features/back-office-access-control.md`
 
 Stories supported:
 
 - `spec/stories/account-signup-login-and-session.md`
 - `spec/stories/create-first-pet-profile.md`
-- `spec/stories/back-office-admin-auth-and-rbac.md`
+
+Back-office access remains deferred from the active MVP unless a later human-approved ADR or feature reintroduces it.
 
 Implementation tasks:
 
-1. Add backend source under `api/` with a FastAPI app, dependency management, configuration, health endpoint, and test setup.
-2. Add an API Dockerfile, for example `api/Dockerfile`, that starts the FastAPI development server.
-3. Extend `docker-compose.yml` with `api` and `db` services. The `db` service should be Postgres-compatible for local development and use a named Docker volume so data survives container restarts.
-4. Add local environment examples, such as `.env.example`, with non-secret placeholders for `DATABASE_URL`, Supabase URL, Supabase anon key, Supabase service role key, Stripe keys, MailerLite key, and app URLs.
-5. Add migration tooling under `api/migrations/` or a clearly named migration directory. The first schema should cover users/profile references, households, pets, documents, extracted fields, timeline events, reminders, share links, audit logs, and processing jobs at a minimal level.
-6. Add API tests for health, database connection, and migration presence.
-7. Update README and AGENTS only after tooling is real and reproducible.
+1. Add lightweight Next.js health and version API routes under `apps/web/app/api/health/route.ts` and `apps/web/app/api/version/route.ts`.
+2. Keep shared payload schemas and API contracts in `packages/contracts`.
+3. Add or complete Supabase client and repository-style helpers in `packages/db` without scattering raw Supabase queries through UI components.
+4. Add local environment examples in `.env.example` with non-secret placeholders for Supabase URL, Supabase anon key, Supabase service role key, Vercel app URLs, Stripe keys for deferred billing, MailerLite key, and analytics settings.
+5. Keep migration tooling under `infra/supabase/migrations/`; the first schema should cover user/profile references, households, pets, documents, extracted fields, timeline events, reminders, share links, audit logs, and processing jobs at a minimal level.
+6. Add RLS policy skeletons before exposing private pet, document, reminder, account, or sharing data.
+7. Add tests for health/version routes, shared contracts, Supabase helper construction, and migration presence.
+8. Update README and AGENTS only after tooling is real and reproducible.
 
 Expected local commands after this milestone:
 
-    docker compose build
-    docker compose up web api db
-    npm run build
-    npm run test
-    npm run lint
-    npm run test:e2e
-
-Expected future API commands should be added once the backend tooling is chosen:
-
-    docker compose run --rm api pytest
-    docker compose run --rm api python -m alembic upgrade head
+    pnpm install
+    pnpm dev
+    pnpm lint
+    pnpm test
+    pnpm build
+    pnpm test:e2e
+    pnpm exec supabase start --workdir infra/supabase
 
 Validation:
 
-- `GET /health` on the API returns HTTP 200.
+- `GET /api/health` in the Next.js app returns HTTP 200.
 - The API can connect to the local database.
 - Migrations can be applied from a clean database.
 - The web app can read an API health value in a controlled test or smoke page without exposing secrets.
@@ -383,19 +382,19 @@ Story order:
 Implementation tasks:
 
 1. Add app routing for public landing, auth screens, onboarding, and authenticated app shell.
-2. Integrate Supabase Auth according to the identity ADR.
+2. Integrate Supabase Auth according to ADR 0013 after it is accepted or revised by the human.
 3. Implement Polish-first language behavior with an English switch before broadening owner flows.
 4. Implement cookie consent and policy/disclaimer surfaces before analytics or MailerLite tracking.
-5. Implement first-pet creation through FastAPI and the database.
+5. Implement first-pet creation through Next.js API/server boundaries and Supabase.
 6. Implement home workspace using real pet, reminder, document, and pending-review data where available, with empty states when not available.
 7. Add unit and integration tests for auth states, language switching, pet creation, onboarding branches, and home states.
 8. Add Playwright E2E tests for signup/login mock or test auth flow, Polish default, English switch, create first pet, and reach Home.
 
 Validation:
 
-- `npm run test` covers component and state behavior.
-- API tests cover owner profile and pet creation.
-- `npm run test:e2e` proves a user can reach the web app in Polish by default, switch to English, create or use a test session, add a pet, and see the home workspace.
+- `pnpm test` covers component, contract, server-boundary, and state behavior.
+- API/server-boundary tests cover owner profile and pet creation.
+- `pnpm test:e2e` proves a user can reach the web app in Polish by default, switch to English, create or use a test session, add a pet, and see the home workspace.
 
 ### Milestone 4: Web MVP Document Memory Loop
 
@@ -418,14 +417,14 @@ Story order:
 
 Implementation tasks:
 
-1. Implement signed upload flow through FastAPI and Supabase Storage.
+1. Implement signed upload flow through Next.js API/server boundaries and Supabase Storage.
 2. Implement document metadata, processing job records, and status transitions.
 3. Add a worker or queue process according to the AI document pipeline ADR. For early local testing, this may use deterministic fake extraction before a real OCR/AI provider is introduced.
 4. Implement review/edit/confirm UI using mockups from `spec/notes/web`.
 5. On confirmation, create timeline events and reminder suggestions from confirmed fields only.
 6. Implement documents library and detail views.
 7. Implement reminders list, edit, complete, and notification preferences.
-8. Add API, worker, and E2E tests for the full upload-to-confirm-to-timeline flow.
+8. Add API/server-boundary, worker or deterministic-processing, and E2E tests for the full upload-to-confirm-to-timeline flow.
 
 Validation:
 
@@ -588,43 +587,37 @@ Implement the public-launch backlog in this order:
 5. Keep MailerLite, consent, analytics, UTM, and research-wave behavior unchanged unless a new accepted story explicitly changes them.
 6. Add or update focused tests for legal links and medical-boundary copy.
 
-Run validation for this public-launch backlog slice:
+Run validation for this public-launch backlog slice on the active monorepo path:
 
-    npm run build
-    npm run test
-    npm run lint
-    npm run test:e2e
+    pnpm build
+    pnpm test
+    pnpm lint
+    pnpm test:e2e
 
-After this public-launch backlog is validated and accepted, the next product-app slice is Milestone 1 and Milestone 2 together, but without building owner features yet. That slice should create the missing design/ADR foundation and local platform skeleton.
+After this public-launch backlog is validated and accepted, the next product-app slice is Milestone 1 approval followed by Milestone 2 local platform foundation, without building owner features yet. Draft ADRs 0013-0020 supply the missing Milestone 1 decisions for topology, auth, data lifecycle, AI pipeline, sharing/export, messaging, payments, and observability.
 
-Create or update ADRs under `spec/architecture-records/` for topology, auth, data lifecycle, AI pipeline, sharing/export, messaging, payments, and observability.
+After ADRs 0013-0020 are accepted or revised by the human, use them as the boundary for Milestone 2. Add or validate local platform files under the accepted monorepo path:
 
-After those are accepted or explicitly deferred by the human, add local platform files:
-
-    api/
-    api/Dockerfile
-    api/pyproject.toml
-    api/app/
-    api/tests/
-    docker-compose.yml
+    apps/web/app/api/health/route.ts
+    apps/web/app/api/version/route.ts
+    packages/contracts/
+    packages/db/
+    infra/supabase/config.toml
+    infra/supabase/migrations/
+    infra/supabase/seed.sql
     .env.example
 
-Extend Docker Compose to include:
-
-    web: React/Vite frontend on http://localhost:5173
-    api: FastAPI backend on http://localhost:8000
-    db: local Postgres-compatible database for development and tests
+Keep Docker Compose focused on the Dev Container workspace and supporting local services. Use Supabase CLI for the local database/Auth/Storage/RLS stack instead of adding a separate FastAPI API service or hand-written Postgres-only development path.
 
 Add expected commands to README only after they work:
 
-    docker compose build
-    docker compose up web api db
-    docker compose run --rm api pytest
-    docker compose run --rm api python -m alembic upgrade head
-    npm run build
-    npm run test
-    npm run lint
-    npm run test:e2e
+    pnpm install
+    pnpm dev
+    pnpm lint
+    pnpm test
+    pnpm build
+    pnpm test:e2e
+    pnpm exec supabase start --workdir infra/supabase
 
 ## Validation and Acceptance
 
@@ -639,17 +632,17 @@ For Milestone 0, acceptance should prove the landing page is a consent-safe vali
 - Wave 2 and Wave 3 pages preserve research framing, unavailable-scope copy, and generic waitlist capture without sending role or interest-wave segmentation before the later MailerLite survey exists.
 - MailerLite can receive the subscriber email in the configured `Caniello Waitlist` group through the server-side boundary without exposing secrets to browser code.
 - Non-essential analytics events are not sent before analytics consent, and after analytics consent the team can count page views, waitlist successes, waitlist errors, Wave 2 interest, Wave 3 interest, and UTM context.
-- `npm run build`, `npm run test`, `npm run lint`, and `npm run test:e2e` pass.
+- `pnpm build`, `pnpm test`, `pnpm lint`, and `pnpm test:e2e` pass.
 - Before public launch, working Privacy Policy, Terms of Service, and medical-boundary content are added and accepted.
 
 For Milestone 2, acceptance should be observable:
 
-- Starting Docker Compose brings up web, API, and database services.
-- Visiting `http://localhost:5173` shows the existing web app.
-- Calling `http://localhost:8000/health` returns HTTP 200 with a simple healthy response.
-- Running API tests proves the backend can connect to the local database.
-- Running migrations from an empty database succeeds.
-- Running `npm run test:e2e` still passes the existing landing checks.
+- The Dev Container workspace builds and can run pnpm/Turborepo commands.
+- Visiting `http://localhost:3000` shows the existing Next.js web app.
+- Calling a lightweight Next.js health endpoint returns HTTP 200 with a simple healthy response.
+- Supabase local services can start through `pnpm exec supabase start --workdir infra/supabase` when schema/RLS work begins.
+- Running migrations from an empty local Supabase database succeeds once the first schema migration exists.
+- Running `pnpm lint`, `pnpm test`, `pnpm build`, and `pnpm test:e2e` still passes the existing landing and API-route checks.
 
 For Web MVP milestones, acceptance should be end-to-end:
 
@@ -675,11 +668,11 @@ Secrets must not be committed. Use `.env.example` for variable names and keep re
 
 ## Interfaces and Dependencies
 
-The accepted dependency direction is React for web, React Native for mobile, FastAPI for backend, Vercel for deployment, Supabase for Postgres/Auth/Storage, Stripe for payments, and MailerLite for marketing/waitlist email.
+The accepted dependency direction is Next.js and React for web, React Native and Expo for mobile, Next.js API routes for MVP backend-for-frontend boundaries, Vercel for deployment and rollback, Supabase for Postgres/Auth/Storage/RLS, Stripe for deferred payments, and MailerLite for marketing, waitlist, early-access lifecycle email, and surveys.
 
-The API should expose clear owner-facing resources for pets, documents, extraction reviews, timeline events, reminders, assistant questions, summaries, share links, and account data controls. It should expose admin-facing resources for dashboard health, user search, support actions, review queue, audit log, and AI safety.
+Next.js API routes should expose clear owner-facing resources for pets, documents, extraction reviews, timeline events, reminders, assistant questions, summaries, share links, and account data controls when their stories enter implementation. Administrative resources remain deferred; any temporary operator utilities must be narrow, server-side, audited, and explicitly approved before touching user data.
 
-The database should persist durable product state: pets, households, documents, extracted fields, confirmed records, timeline events, reminders, share links, processing jobs, audit entries, support notes, and admin permissions. Raw files should live in Supabase Storage or a local storage-compatible development path defined by the storage design.
+Supabase should persist durable product state: pets, households, documents, extracted fields, confirmed records, timeline events, reminders, share links, processing jobs, audit entries, account data controls, and any approved operator/support records. Raw files and generated exports should live in Supabase Storage or a local Supabase-compatible development path defined by migrations and storage policies.
 
 The E2E test suite should start with Playwright for web because it already exists. It should later include seeded user and admin flows, not only landing-page checks.
 
