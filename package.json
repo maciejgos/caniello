@@ -12,7 +12,8 @@
     "validation:mailerlite-integration": "node scripts/mailerlite-integration-gate.mjs",
     "test": "turbo test",
     "test:e2e": "turbo test:e2e --filter=web",
-    "typecheck": "turbo typecheck"
+    "typecheck": "turbo typecheck",
+    "validation:platform-foundation": "node scripts/platform-foundation-gate.mjs"
   },
   "devDependencies": {
     "@playwright/test": "latest",

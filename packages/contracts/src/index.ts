@@ -45,3 +45,46 @@ export const validationEventPayloadSchema = z
 
 export type ValidationEventPayload = z.infer<typeof validationEventPayloadSchema>;
 
+export const healthPayloadSchema = z
+  .object({
+    ok: z.literal(true),
+    service: z.literal("caniello-web"),
+    checkedAt: z.string().datetime()
+  })
+  .strict();
+
+export type HealthPayload = z.infer<typeof healthPayloadSchema>;
+
+export function createHealthPayload(now: Date = new Date()): HealthPayload {
+  return {
+    ok: true,
+    service: "caniello-web",
+    checkedAt: now.toISOString()
+  };
+}
+
+export const versionPayloadSchema = z
+  .object({
+    app: z.literal("web"),
+    version: z.string().min(1),
+    commit: z.string().min(1).optional(),
+    environment: z.string().min(1).optional()
+  })
+  .strict();
+
+export type VersionPayload = z.infer<typeof versionPayloadSchema>;
+
+export type VersionPayloadInput = {
+  version: string;
+  commit?: string | null;
+  environment?: string | null;
+};
+
+export function createVersionPayload(input: VersionPayloadInput): VersionPayload {
+  return versionPayloadSchema.parse({
+    app: "web",
+    version: input.version,
+    commit: input.commit || undefined,
+    environment: input.environment || undefined
+  });
+}

@@ -37,8 +37,18 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
 - [x] Follow-up ADRs or solution designs for platform topology, auth/RBAC, AI document pipeline, data lifecycle, sharing/export, messaging, payments deferral, and observability.
 - [x] Implementation authorization for Milestone 1 or further roadmap slices.
 - [x] (2026-05-19) Human accepted the full Milestone 1 ADR package 0013-0021, including AI provider routing via ADR 0021.
+- [x] (2026-05-19) Created branch `codex/milestone-2-platform-foundation` and implemented the Milestone 2 local platform foundation slice: health/version API routes, shared health/version contracts, Supabase config helpers, `.env.example` placeholders, and the first RLS-enabled Supabase migration skeleton.
+- [x] (2026-05-19) Added focused Vitest coverage for health/version contracts, API routes, Supabase config helpers, and migration/RLS presence.
+- [x] (2026-05-19) Ran Milestone 2 validation gates: `pnpm test`, `pnpm lint`, `pnpm build`, and `pnpm test:e2e`; recorded evidence in `spec/validation/milestone-2-platform-foundation-validation.md` for human review.
+- [x] (2026-05-19) Implemented the Milestone 2 platform foundation lifecycle gate as `pnpm validation:platform-foundation` and wired it into `.github/workflows/ci.yml` after the MailerLite integration gate.
 
 ## Surprises & Discoveries
+
+- Observation: The Codex filesystem patch helper could not run in this workspace because the sandbox cannot create a user namespace.
+  Evidence: `apply_patch` and initial sandboxed read commands failed with `bwrap: No permissions to create a new namespace`; scoped edits and validation commands were run with approved escalation.
+
+- Observation: Milestone 2 can add a useful platform foundation without introducing a Supabase JavaScript client dependency yet.
+  Evidence: `packages/db/src/index.ts` now centralizes Supabase URL/key reading and stable REST/Storage URL construction, while the first migration establishes schema and RLS boundaries for later Supabase client work.
 
 - Observation: The landing page already has a completed ExecPlan and working React/Vite/Tailwind/Docker toolchain.
   Evidence: `spec/plans/first-landing-page.md`, `package.json`, `Dockerfile`, `docker-compose.yml`, and `playwright.config.ts` exist.
@@ -140,6 +150,8 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
   Date/Author: 2026-05-14 / Codex
 
 ## Outcomes & Retrospective
+
+Milestone 2 local platform foundation implementation evidence is ready for human review as of 2026-05-19. The web app now exposes dynamic no-store `/api/health` and `/api/version` endpoints, shared contracts validate health/version payloads, `packages/db` centralizes Supabase environment handling, `.env.example` documents public and server-only platform placeholders, and `infra/supabase/migrations/20260519000100_mvp_foundation.sql` defines the first owner data tables with RLS enabled. Validation evidence is recorded in `spec/validation/milestone-2-platform-foundation-validation.md`. This implementation does not collect health records from public users, does not start Supabase services, and does not mark validation or release accepted.
 
 Milestone 0 implementation, validation evidence, visual direction, and release-readiness records are accepted as of 2026-05-14. The landing page now defaults to Polish, preserves an English switch, renders Wave 1 value, captures landing lead interest through consent-gated forms, preserves source and UTM metadata, routes lead submissions through a server-side MailerLite boundary, records validation events through `/api/validation-events` only after analytics consent, and includes updated responsive Playwright screenshots under `spec/validation/screenshots/`. After human visual feedback, the mid-page process, CTA, future-wave cards, and final signup strip were revised to align more closely with the compact `image 1.png` mockup.
 
