@@ -2,9 +2,7 @@
 
 ## Status
 
-Accepted consolidation
-
-This file consolidates older landing-page release-readiness records. It does not approve release, deployment, public traffic, merge, tag, announcement, or incident closure.
+Accepted
 
 ## Release Scope
 

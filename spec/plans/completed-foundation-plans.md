@@ -4,9 +4,7 @@ This file consolidates completed foundational ExecPlans that are no longer the a
 
 ## Status
 
-Accepted consolidation
-
-Source ExecPlans referenced here recorded completed work and human-approved follow-on artifacts. This consolidation file was accepted by explicit human instruction on 2026-05-19.
+Accepted
 
 ## Progress
 

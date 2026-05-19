@@ -2,9 +2,7 @@
 
 ## Status
 
-Accepted consolidation
-
-This file consolidates accepted and review-ready landing-page validation records into one historical index. It does not create a new human acceptance decision.
+Accepted
 
 ## Scope
 

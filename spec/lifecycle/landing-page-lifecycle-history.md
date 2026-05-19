@@ -2,9 +2,7 @@
 
 ## Status
 
-Accepted consolidation
-
-This file consolidates earlier landing-page lifecycle reflections. It does not approve follow-up priorities, close incidents, or start a new lifecycle loop.
+Accepted
 
 ## Scope
 
