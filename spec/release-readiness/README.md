@@ -8,6 +8,10 @@ Create one file per active release candidate, merge candidate, deployment candid
 
 Release readiness is not approval. Codex and subagents may recommend readiness, but only a human can approve, merge, release, deploy, tag, announce, or mark release complete.
 
+## Human Checkpoint State
+
+Directory guidance changes are draft workflow updates until a human explicitly reviews and approves them. Do not mark release readiness accepted, approved, released, merged, deployed, tagged, announced, or complete without an explicit human decision.
+
 Current rollups:
 
 - `landing-page-release-readiness-history.md`: consolidated landing-page release-readiness trail.

@@ -6,6 +6,10 @@ Lifecycle artifacts close the PDLC loop by turning real-world evidence into rout
 
 Create one focused Markdown file per active retrospective or learning review using `TEMPLATE.md`. Consolidate older reflections when they cover the same product slice and no longer need separate operational handling.
 
+## Human Checkpoint State
+
+Directory guidance changes are draft workflow updates until a human explicitly reviews and approves them. Do not mark lifecycle retrospectives, incidents, learnings, follow-up priorities, or lifecycle checkpoints complete without an explicit human decision.
+
 Current rollups:
 
 - `landing-page-lifecycle-history.md`: consolidated landing-page process and public-validation learnings.
