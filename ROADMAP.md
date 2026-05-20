@@ -1,6 +1,6 @@
 # Caniello Roadmap
 
-This roadmap is the lightweight navigation layer for current Caniello work. The governed source of truth remains the PDLC artifact set under `spec/`, especially the active ExecPlan at `spec/plans/caniello-mvp-implementation-roadmap.md`.
+This roadmap is the lightweight navigation layer for current Caniello work. The governed source of truth remains the PDLC artifact set under `spec/`, especially the active MVP roadmap at `spec/plans/caniello-mvp-implementation-roadmap.md` and focused feature ExecPlans under `spec/plans/`.
 
 Status values:
 
@@ -96,16 +96,17 @@ Source:
 - Story: Platform-foundation validation gate in CI workflow - `Done`
 - Story: Tests for health/version routes, contracts, Supabase helpers, and migration/RLS presence - `Done`
 
-### Milestone 3: Web MVP Owner Foundation - `Todo`
+### Milestone 3: Web MVP Owner Foundation - `InProgress`
 
 Source:
 
+- `spec/plans/owner-account-privacy-foundation.md`
 - `spec/features/owner-account-privacy-foundation.md`
 - `spec/features/pet-onboarding-and-workspace.md`
 - `spec/design/visual-artifacts/mvp/backlog.md`
 - `spec/design/visual-artifacts/mvp/`
 
-#### Feature: Owner Account Privacy Foundation - `Todo`
+#### Feature: Owner Account Privacy Foundation - `InProgress`
 
 - Story: `account-signup-login-and-session` - `Todo`
 - Story: `cookie-consent-privacy-and-medical-boundaries` - `Todo`
