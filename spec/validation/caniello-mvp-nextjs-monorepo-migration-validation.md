@@ -10,7 +10,7 @@ This validation reviews the migration from the root React/Vite/npm landing app a
 
 ## Source Artifacts
 
-- `spec/plans/caniello-mvp-nextjs-monorepo-migration.md`
+- `spec/plans/completed-foundation-plans.md`
 - `spec/plans/caniello-mvp-implementation-roadmap.md`
 - `spec/architecture-records/0001-use-typescript-nextjs-monorepo.md`
 - `spec/architecture-records/0002-use-caniello-monorepo-directory-standard.md`

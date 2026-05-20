@@ -45,7 +45,7 @@ The human product decision is that Polish is the default language for the first 
 ## Implementation Notes
 
 - Treat the English mockups in `spec/notes/web/` and `spec/notes/back-office/` as layout references, not as final language decisions.
-- Use the earlier landing-page direction recorded in [first landing page plan](../plans/first-landing-page.md): Polish default with an English switch.
+- Use the earlier landing-page direction recorded in [first landing page plan](../plans/completed-foundation-plans.md): Polish default with an English switch.
 - Translation keys should be stable enough to cover web and mobile later; avoid hard-coding copy deeply into individual components when shared language behavior is needed.
 
 ## Validation

@@ -12,7 +12,7 @@ This validation reviews the local development support for ADR 0010 after correct
 
 - `spec/architecture-records/0010-use-dev-containers-for-local-development.md`
 - `spec/architecture/local-development.md`
-- `spec/plans/caniello-mvp-nextjs-monorepo-migration.md`
+- `spec/plans/completed-foundation-plans.md`
 - `.devcontainer/devcontainer.json`
 - `.devcontainer/Dockerfile`
 - `docker-compose.yml`

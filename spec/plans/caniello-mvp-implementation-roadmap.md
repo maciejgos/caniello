@@ -22,7 +22,7 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
 - [x] (2026-05-12) Implemented the Milestone 0 landing page slice: Polish-first language switching, consent-gated segmented forms, future-wave research framing, footer/legal placeholders, server-side MailerLite upsert boundary, UTM capture, and consent-gated validation events.
 - [x] (2026-05-12) Updated unit and Playwright E2E coverage for Polish default, English switching, consent blocking, owner/provider/clinic payloads, source attribution, UTM preservation, validation events, and responsive screenshots.
 - [x] (2026-05-12) Ran validation gates for Milestone 0 implementation: `npm run test`, `npm run lint`, `npm run build`, and `npm run test:e2e` using Dockerized Node/Playwright runtimes.
-- [x] (2026-05-12) Added validation evidence in `spec/validation/landing-page-milestone-0-validation.md`.
+- [x] (2026-05-12) Added validation evidence in `spec/validation/landing-page-validation-history.md`.
 - [x] (2026-05-12) Revised the mid-page layout after human feedback that the implemented UI did not match the mockup: the process card, owner CTA, compact "What's next" cards, and final waitlist strip now follow the `image 1.png` composition more closely, with Wave 2/Wave 3 full forms opened from compact research CTAs.
 - [x] (2026-05-12) Adjusted the three mid-page cards to equal desktop height after human visual feedback, then reran lint, build, and Playwright E2E screenshot validation.
 - [x] (2026-05-12) Replaced the full-width analytics consent section with a small dismissing bottom popup and routed analytics consent and validation events through `/api/validation-events`.
@@ -30,8 +30,8 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
 - [x] (2026-05-14) Human accepted the remaining Milestone 0 validation and release-readiness artifacts, including Wave 2, Wave 3, naming, timeline service links, layout unification, and Milestone 0 release-readiness records.
 - [x] (2026-05-14) Added public-launch backlog work for Privacy Policy, Terms of Service, and medical-boundary content.
 - [x] (2026-05-15) Captured the data-controller identity for the Privacy Policy draft: Cloud & More Maciej Gos / Cloud & More, NIP 5242507722, address B. Prusa 43/20, 05-800 Pruszków, privacy contact `privacy@caniello.com`.
-- [x] (2026-05-17) Marked the older FastAPI and Back Office MVP implementation path as superseded by ADR 0001-0011 and linked the active migration plan in `spec/plans/caniello-mvp-nextjs-monorepo-migration.md`.
-- [x] (2026-05-17) Split the remaining Milestone 1 architecture decisions into separate draft ADRs 0013-0020 for platform topology, identity/access, data lifecycle, AI document intake, sharing/export, messaging, observability, and Stripe payment deferral.
+- [x] (2026-05-17) Marked the older FastAPI and Back Office MVP implementation path as superseded by ADR 0001-0011 and linked the active migration plan in `spec/plans/completed-foundation-plans.md`.
+- [x] (2026-05-17) Split the remaining Milestone 1 architecture decisions into separate ADRs 0013-0020 for platform topology, identity/access, data lifecycle, AI document intake, sharing/export, messaging, observability, and Stripe payment deferral.
 - [x] Human review of roadmap scope, sequencing, and release slices beyond Milestone 0.
 - [x] Backlog before public launch: prepare and implement Privacy Policy, Terms of Service, and medical-boundary content for landing lead capture.
 - [x] Follow-up ADRs or solution designs for platform topology, auth/RBAC, AI document pipeline, data lifecycle, sharing/export, messaging, payments deferral, and observability.
@@ -51,7 +51,7 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
   Evidence: `packages/db/src/index.ts` now centralizes Supabase URL/key reading and stable REST/Storage URL construction, while the first migration establishes schema and RLS boundaries for later Supabase client work.
 
 - Observation: The landing page already has a completed ExecPlan and working React/Vite/Tailwind/Docker toolchain.
-  Evidence: `spec/plans/first-landing-page.md`, `package.json`, `Dockerfile`, `docker-compose.yml`, and `playwright.config.ts` exist.
+  Evidence: `spec/plans/completed-foundation-plans.md`, `package.json`, `Dockerfile`, `docker-compose.yml`, and `playwright.config.ts` exist.
 
 - Observation: The historical stack ADR is superseded and was not enough detail for implementation planning.
   Evidence: `spec/architecture-records/0000-superseded-caniello-mvp-stack.md` explicitly says implementation planning depends on follow-up architecture decisions for topology, identity, AI intake, data lifecycle, sharing, messaging, payments, and observability.
@@ -159,7 +159,7 @@ Validation passed for `npm run test`, `npm run lint`, `npm run build`, and `npm 
 
 ## Context and Orientation
 
-Supersession notice for readers and agents: the remaining sections of this older roadmap preserve historical Milestone 0 evidence and pre-ADR planning context. Any later instruction in this file that says to build a FastAPI backend, create a separate `api/` or `apps/api` implementation, keep React/Vite as the active web runtime, use npm/package-lock as the active package-management path, expose the web app on port `5173`, or deliver Back Office as part of the MVP is superseded by ADR 0001-0011 and by `spec/plans/caniello-mvp-nextjs-monorepo-migration.md`. The active MVP path is Next.js App Router under `apps/web`, Next.js API routes under `apps/web/app/api`, pnpm workspaces, Turborepo, Supabase local foundation, Dev Containers, and one Vercel project rooted at `apps/web`.
+Supersession notice for readers and agents: the remaining sections of this older roadmap preserve historical Milestone 0 evidence and pre-ADR planning context. Any later instruction in this file that says to build a FastAPI backend, create a separate `api/` or `apps/api` implementation, keep React/Vite as the active web runtime, use npm/package-lock as the active package-management path, expose the web app on port `5173`, or deliver Back Office as part of the MVP is superseded by ADR 0001-0011 and by `spec/plans/completed-foundation-plans.md`. The active MVP path is Next.js App Router under `apps/web`, Next.js API routes under `apps/web/app/api`, pnpm workspaces, Turborepo, Supabase local foundation, Dev Containers, and one Vercel project rooted at `apps/web`.
 
 Caniello is a pet health and care organization utility. Its first MVP promise is one place for a pet's health records, reminders, documents, and shareable care information. The existing landing page is implemented with React, TypeScript, Vite, TailwindCSS, Docker, Vitest, and Playwright.
 
@@ -191,7 +191,7 @@ Analytics consent means the visitor explicitly allows non-essential validation e
 
 Milestone 0 is Landing Page and acquisition validation. Its implementation and evidence are accepted. The landing page is now the Polish-first validation surface for Wave 1 owner value, research-safe Wave 2 and Wave 3 framing, lead-capture consent, analytics consent, MailerLite waitlist submission, validation-event routing, UTM preservation, and responsive screenshot evidence. Remaining Milestone 0 work is public-launch preparation rather than core landing implementation: Privacy Policy, Terms of Service, medical-boundary copy, live MailerLite smoke testing, deployment target, rollback path, analytics/storage decisions where needed, and final staging.
 
-Milestone 1 is Architecture and platform design. ADR 0001-0012 are accepted, and draft ADRs 0013-0021 now propose the remaining MVP platform boundaries: Next.js App Router in `apps/web`, Vercel deployment, Supabase data/auth/storage/RLS, pnpm/Turborepo, Dev Containers, MailerLite for marketing and waitlist lifecycle email, Stripe deferred until paid-plan stories are approved, and separate decisions for identity/access, data lifecycle, AI document intake, sharing/export, messaging, and observability. After human acceptance of ADRs 0013-0021, Milestone 1 prevents API, database, auth, storage, integration, and worker choices from being improvised during feature work.
+Milestone 1 is Architecture and platform design. ADRs 0001-0021 are accepted and define the remaining MVP platform boundaries: Next.js App Router in `apps/web`, Vercel deployment, Supabase data/auth/storage/RLS, pnpm/Turborepo, Dev Containers, MailerLite for marketing and waitlist lifecycle email, Stripe deferred until paid-plan stories are approved, and separate decisions for identity/access, data lifecycle, AI document intake, sharing/export, messaging, and observability. Milestone 1 prevents API, database, auth, storage, integration, and worker choices from being improvised during feature work.
 
 Milestone 2 is Local platform foundation. Add the first Supabase-backed foundation under the accepted monorepo path: local Supabase start, migrations and seed structure, RLS skeletons, shared contracts and database helpers, lightweight Next.js health/version API routes, environment examples, and validation commands through pnpm/Turborepo. Do not add FastAPI, a separate API service, or a production Docker path unless a later human-approved ADR reopens that scope.
 
@@ -217,7 +217,7 @@ Source artifacts:
 
 - `spec/requirements/first-landing-page.md`
 - `spec/requirements/landing-page-segmented-validation.md`
-- `spec/plans/first-landing-page.md`
+- `spec/plans/completed-foundation-plans.md`
 - `spec/features/landing-page-mvp-value-experience.md`
 - `spec/features/landing-page-segmented-lead-capture.md`
 - `spec/features/landing-page-validation-instrumentation.md`
@@ -312,23 +312,23 @@ Source artifacts:
 - `spec/requirements/owner-facing-mvp.md`
 - `spec/requirements/back-office-mvp.md`
 
-Draft ADR and solution-design coverage:
+Accepted ADR and solution-design coverage:
 
-1. Platform topology and deployment boundary: ADR 0001, 0003, 0005, 0009, 0010, 0011, and draft ADR 0013 keep the MVP in one Next.js web app on Vercel with Supabase-backed data services and Dev Containers for local development.
-2. Identity and access: ADR 0004 and draft ADR 0014 choose Supabase Auth, owner sessions, minimal roles, explicit operator constraints, MFA requirement before operator/admin data access, and audit behavior for sensitive actions.
-3. Data lifecycle: ADR 0004 and draft ADR 0015 assign schema, migrations, RLS, Storage, retention, export/deletion, backup/recovery, and audit-log expectations to the Supabase-backed platform foundation.
-4. AI document intake pipeline: draft ADR 0016 starts with deterministic processing states and server-side orchestration in Next.js/Supabase, deferring real OCR/AI provider choice until a dedicated ADR/story defines provider, data flow, retry, and evaluation behavior.
-5. Sharing/export: ADR 0002, 0003, 0004, 0009, and draft ADR 0017 define `/share/[token]`, opaque scoped tokens, revocation, optional expiry, access logging, and deferred PDF generation.
-6. Messaging: ADR 0008 and draft ADR 0018 keep MailerLite for marketing, waitlist, early-access lifecycle email, and surveys while deferring product transactional email provider choice to the relevant story.
-7. Observability and operations: ADR 0005, 0008, 0009, and draft ADR 0019 define Vercel logs, Vercel Analytics, Speed Insights, Supabase operational visibility, future application events, deferred PostHog, health checks, and incident/recovery expectations.
-8. Payments: draft ADR 0020 records Stripe as the accepted payment provider with implementation deferred until paid-plan requirements or stories are approved.
-9. AI provider routing: draft ADR 0021 chooses Vercel AI Gateway as the server-side model access boundary with data-minimization, observability, retry/fallback, and safety constraints that complement draft ADR 0016.
+1. Platform topology and deployment boundary: ADR 0001, 0003, 0005, 0009, 0010, 0011, and ADR 0013 keep the MVP in one Next.js web app on Vercel with Supabase-backed data services and Dev Containers for local development.
+2. Identity and access: ADR 0004 and ADR 0014 choose Supabase Auth, owner sessions, minimal roles, explicit operator constraints, MFA requirement before operator/admin data access, and audit behavior for sensitive actions.
+3. Data lifecycle: ADR 0004 and ADR 0015 assign schema, migrations, RLS, Storage, retention, export/deletion, backup/recovery, and audit-log expectations to the Supabase-backed platform foundation.
+4. AI document intake pipeline: ADR 0016 starts with deterministic processing states and server-side orchestration in Next.js/Supabase, deferring real OCR/AI provider choice until a dedicated ADR/story defines provider, data flow, retry, and evaluation behavior.
+5. Sharing/export: ADR 0002, 0003, 0004, 0009, and ADR 0017 define `/share/[token]`, opaque scoped tokens, revocation, optional expiry, access logging, and deferred PDF generation.
+6. Messaging: ADR 0008 and ADR 0018 keep MailerLite for marketing, waitlist, early-access lifecycle email, and surveys while deferring product transactional email provider choice to the relevant story.
+7. Observability and operations: ADR 0005, 0008, 0009, and ADR 0019 define Vercel logs, Vercel Analytics, Speed Insights, Supabase operational visibility, future application events, deferred PostHog, health checks, and incident/recovery expectations.
+8. Payments: ADR 0020 records Stripe as the accepted payment provider with implementation deferred until paid-plan requirements or stories are approved.
+9. AI provider routing: ADR 0021 chooses Vercel AI Gateway as the server-side model access boundary with data-minimization, observability, retry/fallback, and safety constraints that complement ADR 0016.
 
 Validation:
 
-- Each draft ADR 0013-0021 has `Status`, `Context`, `Decision`, `Consequences`, and `Related Artifacts`.
+- Each ADR 0013-0021 has `Status`, `Context`, `Decision`, `Consequences`, and `Related Artifacts`.
 - Each architecture decision is captured in a separate ADR file and reflected in `spec/architecture/mvp-target-architecture.md` diagrams.
-- Milestone 1 becomes complete only after human acceptance of ADRs 0013-0021 or explicit human revision of their decisions.
+- Milestone 1 is complete after human acceptance of ADRs 0013-0021 on 2026-05-19.
 
 ### Milestone 2: Local Platform Foundation
 
@@ -589,8 +589,8 @@ Inspect the accepted landing-page and release-readiness artifacts before editing
     sed -n '1,220p' spec/stories/landing-page-consent-and-analytics-policy-baseline.md
     sed -n '1,220p' spec/stories/landing-page-footer-legal-and-responsive-trust.md
     sed -n '1,220p' spec/stories/cookie-consent-privacy-and-medical-boundaries.md
-    sed -n '1,220p' spec/validation/landing-page-milestone-0-validation.md
-    sed -n '1,220p' spec/release-readiness/landing-page-milestone-0-release-readiness.md
+    sed -n '1,220p' spec/validation/landing-page-validation-history.md
+    sed -n '1,220p' spec/release-readiness/landing-page-release-readiness-history.md
 
 Implement the public-launch backlog in this order:
 
@@ -608,9 +608,9 @@ Run validation for this public-launch backlog slice on the active monorepo path:
     pnpm lint
     pnpm test:e2e
 
-After this public-launch backlog is validated and accepted, the next product-app slice is Milestone 1 approval followed by Milestone 2 local platform foundation, without building owner features yet. Draft ADRs 0013-0021 supply the missing Milestone 1 decisions for topology, auth, data lifecycle, AI pipeline, AI provider routing, sharing/export, messaging, payments, and observability.
+After this public-launch backlog is validated and accepted, the next product-app slice is Milestone 2 local platform foundation, without building owner features yet. Accepted ADRs 0013-0021 supply the missing Milestone 1 decisions for topology, auth, data lifecycle, AI pipeline, AI provider routing, sharing/export, messaging, payments, and observability.
 
-After ADRs 0013-0021 are accepted or revised by the human, use them as the boundary for Milestone 2. Add or validate local platform files under the accepted monorepo path:
+Use accepted ADRs 0013-0021 as the boundary for Milestone 2. Add or validate local platform files under the accepted monorepo path:
 
     apps/web/app/api/health/route.ts
     apps/web/app/api/version/route.ts

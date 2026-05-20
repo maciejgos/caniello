@@ -66,6 +66,8 @@ Nested `AGENTS.md` files may add more specific instructions for their subtree. F
 
 Do not self-approve PDLC artifacts or checkpoints. Codex and subagents may draft artifacts, review artifacts, recommend readiness, and summarize evidence, but only an explicit human instruction can approve, accept, reject, or mark a checkpoint complete. Keep generated artifacts in `Draft` status unless the human explicitly asks to change the status.
 
+Keep root `ROADMAP.md` current as the lightweight status index for the PDLC artifact set. When milestones, features, stories, current focus, or open decisions change in `spec/` or implementation work, update `ROADMAP.md` in the same change so it points to the durable source artifacts and uses `Done`, `InProgress`, or `Todo` without implying human approval where none was given.
+
 Only use Codex subagents when the user explicitly asks for subagents, delegation, or parallel agent work. Prefer review subagents after PDLC artifacts exist:
 
 - `product_coherence_reviewer` for product intent, scope, and artifact-chain consistency.

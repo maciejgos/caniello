@@ -45,7 +45,7 @@ The repository currently defines Caniello as a pet health and care organization 
 - The page should reflect the Caniello name and primary domain, `https://caniello.com`.
 - Polish should be the default language for the first MVP public experience, with an option to switch the landing page to English.
 - Implementation details must be reproducible from committed files once tooling is introduced.
-- Until a human explicitly approves this requirement, downstream feature, story, design, plan, and implementation artifacts should treat it as Draft.
+- This requirement is accepted; downstream feature, story, design, plan, and implementation artifacts may treat it as approved source scope.
 
 ## Acceptance Criteria
 
