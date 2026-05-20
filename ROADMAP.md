@@ -15,6 +15,7 @@ Status values:
 Source:
 
 - `spec/plans/caniello-mvp-implementation-roadmap.md`
+- `spec/design/visual-artifacts/landing/`
 - `spec/validation/landing-page-validation-history.md`
 - `spec/release-readiness/landing-page-release-readiness-history.md`
 - `spec/lifecycle/landing-page-lifecycle-history.md`
@@ -101,6 +102,8 @@ Source:
 
 - `spec/features/owner-account-privacy-foundation.md`
 - `spec/features/pet-onboarding-and-workspace.md`
+- `spec/design/visual-artifacts/mvp/backlog.md`
+- `spec/design/visual-artifacts/mvp/`
 
 #### Feature: Owner Account Privacy Foundation - `Todo`
 
@@ -174,6 +177,8 @@ Source:
 - `spec/features/back-office-support-console.md`
 - `spec/features/back-office-ai-review-queue.md`
 - `spec/features/back-office-health-audit-and-ai-safety.md`
+- `spec/design/visual-artifacts/back-office/backlog.md`
+- `spec/design/visual-artifacts/back-office/`
 
 #### Feature: Back Office Access Control - `Todo`
 
