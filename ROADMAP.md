@@ -108,10 +108,13 @@ Source:
 
 #### Feature: Owner Account Privacy Foundation - `InProgress`
 
+- Story: account privacy dependencies, contracts, request tables, RLS, and audit trigger foundation - `Done`
 - Story: `account-signup-login-and-session` - `Todo`
 - Story: `cookie-consent-privacy-and-medical-boundaries` - `Todo`
 - Story: `polish-first-language-switching` in authenticated owner flows - `Todo`
 - Story: `data-export-and-account-deletion` - `Todo`
+
+Current evidence: `spec/plans/owner-account-privacy-foundation.md` records the Milestone 1 implementation pass and focused validation; human acceptance and broader validation review remain pending.
 
 #### Feature: Pet Onboarding and Workspace - `Todo`
 

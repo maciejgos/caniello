@@ -88,3 +88,115 @@ export function createVersionPayload(input: VersionPayloadInput): VersionPayload
     environment: input.environment || undefined
   });
 }
+
+export const accountLanguages = ["pl", "en"] as const;
+export const accountLanguageSchema = z.enum(accountLanguages);
+export type AccountLanguage = z.infer<typeof accountLanguageSchema>;
+
+const ownerEmailSchema = z.string().trim().toLowerCase().email();
+const ownerPasswordSchema = z.string().min(12);
+
+export const accountSignupPayloadSchema = z
+  .object({
+    email: ownerEmailSchema,
+    password: ownerPasswordSchema,
+    language: accountLanguageSchema,
+    acceptedTerms: z.literal(true)
+  })
+  .strict();
+
+export type AccountSignupPayload = z.infer<typeof accountSignupPayloadSchema>;
+
+export const accountLoginPayloadSchema = z
+  .object({
+    email: ownerEmailSchema,
+    password: ownerPasswordSchema
+  })
+  .strict();
+
+export type AccountLoginPayload = z.infer<typeof accountLoginPayloadSchema>;
+
+export const passwordResetRequestPayloadSchema = z
+  .object({
+    email: ownerEmailSchema,
+    language: accountLanguageSchema
+  })
+  .strict();
+
+export type PasswordResetRequestPayload = z.infer<typeof passwordResetRequestPayloadSchema>;
+
+export const accountProfileUpdatePayloadSchema = z
+  .object({
+    displayName: z.string().trim().min(1).max(120).optional(),
+    language: accountLanguageSchema
+  })
+  .strict();
+
+export type AccountProfileUpdatePayload = z.infer<typeof accountProfileUpdatePayloadSchema>;
+
+export const consentPreferencePayloadSchema = z
+  .object({
+    analyticsConsent: z.boolean(),
+    marketingConsent: z.boolean().optional(),
+    language: accountLanguageSchema
+  })
+  .strict();
+
+export type ConsentPreferencePayload = z.infer<typeof consentPreferencePayloadSchema>;
+
+export const dataExportRequestPayloadSchema = z
+  .object({
+    language: accountLanguageSchema
+  })
+  .strict();
+
+export type DataExportRequestPayload = z.infer<typeof dataExportRequestPayloadSchema>;
+
+export const accountDeletionRequestPayloadSchema = z
+  .object({
+    confirmation: z.literal("DELETE"),
+    language: accountLanguageSchema
+  })
+  .strict();
+
+export type AccountDeletionRequestPayload = z.infer<typeof accountDeletionRequestPayloadSchema>;
+
+export const dataRightsRequestStatuses = ["requested", "processing", "completed", "failed", "cancelled"] as const;
+export const dataRightsRequestStatusSchema = z.enum(dataRightsRequestStatuses);
+
+export const dataExportRequestResponseSchema = z
+  .object({
+    id: z.string().uuid(),
+    status: dataRightsRequestStatusSchema,
+    requestedAt: z.string().datetime()
+  })
+  .strict();
+
+export type DataExportRequestResponse = z.infer<typeof dataExportRequestResponseSchema>;
+
+export const accountDeletionRequestResponseSchema = z
+  .object({
+    id: z.string().uuid(),
+    status: dataRightsRequestStatusSchema,
+    requestedAt: z.string().datetime()
+  })
+  .strict();
+
+export type AccountDeletionRequestResponse = z.infer<typeof accountDeletionRequestResponseSchema>;
+
+export const accountPrivacyAuditActions = {
+  profileUpdated: "account.profile_updated",
+  consentUpdated: "account.consent_updated",
+  dataExportRequested: "account.data_export_requested",
+  accountDeletionRequested: "account.deletion_requested"
+} as const;
+
+export const accountPrivacyAuditActionNames = [
+  accountPrivacyAuditActions.profileUpdated,
+  accountPrivacyAuditActions.consentUpdated,
+  accountPrivacyAuditActions.dataExportRequested,
+  accountPrivacyAuditActions.accountDeletionRequested
+] as const;
+
+export const accountPrivacyAuditActionSchema = z.enum(accountPrivacyAuditActionNames);
+export type AccountPrivacyAuditAction = z.infer<typeof accountPrivacyAuditActionSchema>;

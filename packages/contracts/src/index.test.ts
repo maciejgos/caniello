@@ -1,9 +1,15 @@
 import { describe, expect, it } from "vitest";
 import {
+  accountDeletionRequestPayloadSchema,
+  accountLoginPayloadSchema,
+  accountSignupPayloadSchema,
+  consentPreferencePayloadSchema,
   createHealthPayload,
   createVersionPayload,
+  dataExportRequestPayloadSchema,
   healthPayloadSchema,
   landingLeadPayloadSchema,
+  passwordResetRequestPayloadSchema,
   validationEventPayloadSchema,
   versionPayloadSchema
 } from ".";
@@ -71,6 +77,64 @@ describe("Caniello API contracts", () => {
       version: "0.1.0",
       environment: "preview"
     });
+  });
+
+  it("accepts owner account signup details with explicit terms acceptance", () => {
+    expect(
+      accountSignupPayloadSchema.parse({
+        email: "owner@example.com",
+        password: "correct horse battery staple",
+        language: "pl",
+        acceptedTerms: true
+      })
+    ).toMatchObject({ email: "owner@example.com", language: "pl" });
+  });
+
+  it("rejects invalid owner account credentials and unsupported languages", () => {
+    expect(() =>
+      accountSignupPayloadSchema.parse({
+        email: "not-an-email",
+        password: "short",
+        language: "de",
+        acceptedTerms: true
+      })
+    ).toThrow();
+
+    expect(() =>
+      accountLoginPayloadSchema.parse({
+        email: "owner@example.com",
+        password: "short"
+      })
+    ).toThrow();
+  });
+
+  it("keeps owner account and privacy payloads strict", () => {
+    expect(() =>
+      passwordResetRequestPayloadSchema.parse({
+        email: "owner@example.com",
+        language: "en",
+        redirectTo: "https://example.com/reset"
+      })
+    ).toThrow();
+
+    expect(() =>
+      consentPreferencePayloadSchema.parse({
+        analyticsConsent: true,
+        marketingConsent: false,
+        language: "pl",
+        trackingVendor: "unexpected"
+      })
+    ).toThrow();
+  });
+
+  it("accepts data-rights request payloads with clear confirmation", () => {
+    expect(dataExportRequestPayloadSchema.parse({ language: "en" })).toEqual({ language: "en" });
+    expect(
+      accountDeletionRequestPayloadSchema.parse({
+        confirmation: "DELETE",
+        language: "pl"
+      })
+    ).toEqual({ confirmation: "DELETE", language: "pl" });
   });
 });
 

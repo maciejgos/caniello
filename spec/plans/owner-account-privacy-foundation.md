@@ -14,9 +14,14 @@ The feature matters because the owner-facing MVP handles sensitive pet-care info
 
 - [x] (2026-05-20T14:37Z) Read planning rules, repository guidance, the accepted owner-facing MVP requirement, accepted owner account privacy feature, accepted account/privacy/data-rights stories, target architecture, Supabase/Auth/RLS/localization ADRs, existing web app structure, current validation evidence, and ROADMAP status.
 - [x] (2026-05-20T14:37Z) Drafted this self-contained ExecPlan for human review.
-- [ ] Human approves or revises plan scope, milestone sequence, implementation steps, validation approach, risks, and whether subagent review is needed before implementation.
-- [ ] Implementation begins on a feature branch only after human approval.
-- [ ] Validation review is recorded under `spec/validation/` after implementation evidence exists.
+- [x] (2026-05-20T14:45Z) Human explicitly requested `implementation-execution` for Owner Account Privacy Foundation, authorizing implementation work from this plan while preserving human acceptance checkpoints.
+- [x] (2026-05-20T14:48Z) Created feature branch `codex/owner-account-privacy-foundation`.
+- [x] (2026-05-20T15:00Z) Completed Milestone 1 implementation pass: added Supabase dependencies, strict owner account/privacy/data-rights contracts, centralized Supabase client and audit-action helpers, and an owner account privacy migration for account profiles, consent events, data export requests, and account deletion requests with RLS and audit triggers.
+- [x] (2026-05-20T15:07Z) Ran Milestone 1 focused validation: `pnpm --filter @caniello/contracts test`, `pnpm --filter @caniello/db test`, `pnpm --filter @caniello/contracts typecheck`, `pnpm --filter @caniello/db typecheck`, and `pnpm validation:platform-foundation` passed.
+- [x] (2026-05-20T15:20Z) Ran broader workspace validation for this implementation pass: `pnpm test` and `pnpm lint` passed.
+- [x] (2026-05-20T15:39Z) Refactored Milestone 1 pragmatic-engineering drift: moved account privacy audit action names to the shared contracts source of truth, removed the duplicate db audit-action export, replaced repeated SQL language/status check constraints with reusable Postgres enum types, and updated root `AGENTS.md` guardrails to scan for duplicated shared vocabularies before handoff. Focused contracts/db tests, contracts/db typechecks, and `pnpm validation:platform-foundation` passed after the refactor.
+- [ ] Human reviews Milestone 1 scope, implementation, validation evidence, and whether Codex should proceed to Milestone 2 authenticated routing and account access.
+- [ ] Validation review is recorded under `spec/validation/` after broader implementation evidence exists.
 - [ ] Release readiness is prepared under `spec/release-readiness/` only after validation review and human direction.
 
 ## Surprises & Discoveries
@@ -27,6 +32,10 @@ The feature matters because the owner-facing MVP handles sensitive pet-care info
   Evidence: `apps/web/package.json` depends on Next.js, React, Zod, Vercel Analytics, Speed Insights, and `@caniello/contracts`, but not `@supabase/ssr` or `@supabase/supabase-js`.
 - Observation: The marketing landing already has Polish-first language switching, legal pages, and consent-gated validation events.
   Evidence: `apps/web/features/marketing/MarketingApp.test.tsx` covers Polish default, English switching, legal routes, and validation events only after analytics consent.
+- Observation: The sandbox namespace helper cannot run in this environment, so ordinary file reads, tests, and the patch helper failed unless commands were escalated.
+  Evidence: initial `git status`, `sed`, `find`, and `apply_patch` attempts failed with `bwrap: No permissions to create a new namespace`; subsequent escalated local commands succeeded.
+- Observation: Supabase dependency installation succeeded with pnpm using the planned package names.
+  Evidence: `packages/db/package.json` now depends on `@supabase/supabase-js`; `apps/web/package.json` now depends on `@supabase/ssr` and `@supabase/supabase-js`; `pnpm-lock.yaml` was updated by pnpm.
 
 ## Decision Log
 
@@ -52,7 +61,7 @@ The feature matters because the owner-facing MVP handles sensitive pet-care info
 
 ## Outcomes & Retrospective
 
-No implementation outcomes exist yet. The expected outcome after execution is a tested owner account privacy foundation ready for validation review. During implementation, update this section after each major milestone with what changed, what evidence passed, what remains, and whether any assumptions were wrong.
+Milestone 1 implementation pass is complete and ready for human review. The repository now has Supabase runtime dependencies for `@caniello/db` and `web`, strict account/privacy/data-rights contracts in `packages/contracts`, centralized Supabase client construction in `packages/db`, shared account privacy audit action names in `packages/contracts`, and a new migration for `account_profiles`, `consent_events`, `data_export_requests`, and `account_deletion_requests` with reusable database enum types, RLS, and audit triggers. Focused validation passed for contracts, db, typechecks, and the platform foundation gate. Broader `pnpm test` and `pnpm lint` also passed. Milestones 2 through 5 remain open: authenticated web routes, account access UI, consent settings, export/deletion UI/API behavior, full validation review, and release readiness handoff are not complete yet.
 
 ## Context and Orientation
 

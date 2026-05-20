@@ -1,3 +1,5 @@
+import { createClient } from "@supabase/supabase-js";
+
 export type SupabaseClientConfig = {
   url: string;
   anonKey: string;
@@ -62,4 +64,22 @@ export function buildSupabaseRestUrl(config: Pick<SupabaseClientConfig, "url">):
 
 export function buildSupabaseStorageUrl(config: Pick<SupabaseClientConfig, "url">): string {
   return `${config.url}/storage/v1`;
+}
+
+export function createSupabaseBrowserClient(config: SupabaseClientConfig) {
+  return createClient(config.url, config.anonKey, {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true
+    }
+  });
+}
+
+export function createSupabaseServiceRoleClient(config: SupabaseServiceRoleConfig) {
+  return createClient(config.url, config.serviceRoleKey, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false
+    }
+  });
 }
