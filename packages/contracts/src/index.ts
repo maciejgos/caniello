@@ -98,6 +98,7 @@ const ownerPasswordSchema = z.string().min(12);
 
 export const accountSignupPayloadSchema = z
   .object({
+    fullName: z.string().trim().min(1).max(120),
     email: ownerEmailSchema,
     password: ownerPasswordSchema,
     language: accountLanguageSchema,

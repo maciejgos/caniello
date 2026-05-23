@@ -8,6 +8,12 @@ Status values:
 - `InProgress`: active or next implementation/review focus.
 - `Todo`: planned but not started, or intentionally deferred.
 
+## Open Decisions
+
+- Local development standard update - `InProgress`
+  Source: `spec/architecture-records/0022-use-host-first-local-development-setup.md`
+  Note: Draft ADR proposes host-first setup via `scripts/setup.sh`, with Docker Desktop retained only for Supabase local services. Human approval is still pending.
+
 ## Milestones
 
 ### Milestone 0: Landing Page - `InProgress`
@@ -59,12 +65,13 @@ Source:
 - `spec/architecture-records/0019-use-vercel-supabase-observability-and-mvp-recovery.md`
 - `spec/architecture-records/0020-defer-stripe-payments-until-paid-plan-stories.md`
 - `spec/architecture-records/0021-use-vercel-ai-gateway-for-ai-provider-routing.md`
+- `spec/architecture-records/0022-use-host-first-local-development-setup.md`
 
 #### Feature: Platform Topology and Deployment Boundary - `Done`
 
 - Story: One Next.js App Router web app on Vercel - `Done`
 - Story: pnpm workspaces and Turborepo monorepo standard - `Done`
-- Story: Dev Container local-development baseline - `Done`
+- Story: Host-first local-development baseline - `InProgress`
 
 #### Feature: Identity, Data, AI, Sharing, Messaging, and Operations Decisions - `Done`
 
@@ -109,12 +116,12 @@ Source:
 #### Feature: Owner Account Privacy Foundation - `InProgress`
 
 - Story: account privacy dependencies, contracts, request tables, RLS, and audit trigger foundation - `Done`
-- Story: `account-signup-login-and-session` - `Todo`
+- Story: `account-signup-login-and-session` - `Done`
 - Story: `cookie-consent-privacy-and-medical-boundaries` - `Todo`
-- Story: `polish-first-language-switching` in authenticated owner flows - `Todo`
+- Story: `polish-first-language-switching` in authenticated owner flows - `InProgress`
 - Story: `data-export-and-account-deletion` - `Todo`
 
-Current evidence: `spec/plans/owner-account-privacy-foundation.md` records the Milestone 1 implementation pass and focused validation; human acceptance and broader validation review remain pending.
+Current evidence: `spec/plans/owner-account-privacy-foundation.md` records Milestone 1-2 implementation passes, focused validation, web build, and Playwright account-route evidence. `spec/validation/auth-visual-implementation-validation.md` records the draft validation review for the login and signup visual implementation against the supplied MVP mockups; human acceptance remains pending.
 
 #### Feature: Pet Onboarding and Workspace - `Todo`
 

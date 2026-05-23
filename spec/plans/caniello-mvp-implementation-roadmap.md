@@ -51,13 +51,13 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
   Evidence: `packages/db/src/index.ts` now centralizes Supabase URL/key reading and stable REST/Storage URL construction, while the first migration establishes schema and RLS boundaries for later Supabase client work.
 
 - Observation: The landing page already has a completed ExecPlan and working React/Vite/Tailwind/Docker toolchain.
-  Evidence: `spec/plans/completed-foundation-plans.md`, `package.json`, `Dockerfile`, `docker-compose.yml`, and `playwright.config.ts` exist.
+  Evidence: `spec/plans/completed-foundation-plans.md`, `package.json`, and `playwright.config.ts` exist.
 
 - Observation: The historical stack ADR is superseded and was not enough detail for implementation planning.
   Evidence: `spec/architecture-records/0000-superseded-caniello-mvp-stack.md` explicitly says implementation planning depends on follow-up architecture decisions for topology, identity, AI intake, data lifecycle, sharing, messaging, payments, and observability.
 
-- Observation: The current Docker Compose setup only runs the web app.
-  Evidence: `docker-compose.yml` currently defines a single `web` service and no `api`, `db`, worker, or Supabase-local service.
+- Observation: The historical local container setup only ran the web app and has since been removed in favor of host-first local scripts.
+  Evidence: `scripts/setup.sh`, `scripts/start.sh`, `scripts/stop.sh`, and `scripts/cleanup.sh` define the current local lifecycle.
 
 - Observation: Landing-page scope has expanded from a basic waitlist page into a segmented validation slice.
   Evidence: `spec/requirements/landing-page-segmented-validation.md`, `spec/features/landing-page-mvp-value-experience.md`, `spec/features/landing-page-segmented-lead-capture.md`, `spec/features/landing-page-validation-instrumentation.md`, and eight accepted `spec/stories/landing-page-*.md` files now exist.
@@ -93,7 +93,7 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
   Evidence: On 2026-05-14, the human instructed Codex to approve the remaining documents and to add only Privacy Policy, Terms of Service, and medical-boundary work to the implementation roadmap backlog. The release-readiness records still preserve the distinction between accepting advisory evidence and actually merging, deploying, launching public traffic, tagging, announcing, or completing a production release.
 
 - Observation: The repository now has accepted ADRs 0001-0011 for a TypeScript-first Next.js monorepo, which supersede the older FastAPI and Back Office MVP assumptions in this roadmap.
-  Evidence: `spec/architecture-records/0001-use-typescript-nextjs-monorepo.md` through `spec/architecture-records/0011-use-pragmatic-engineering-practices-from-mvp-start.md` select Next.js App Router, Supabase, pnpm workspaces, Turborepo, Dev Containers, one Vercel project, Expo mobile, and pragmatic engineering practices.
+  Evidence: active architecture records select Next.js App Router, Supabase, pnpm workspaces, Turborepo, host-first local setup, one Vercel project, Expo mobile, and pragmatic engineering practices.
 
 ## Decision Log
 
@@ -102,7 +102,7 @@ This roadmap is story-by-story and feature-by-feature. It now treats the landing
   Date/Author: 2026-05-11 / Codex
 
 - Decision: Supersede the roadmap's FastAPI backend and Back Office MVP path for the MVP with the ADR 0001-0011 TypeScript-first monorepo path.
-  Rationale: The accepted ADR chain now makes Next.js App Router API routes, Supabase, pnpm workspaces, Turborepo, Dev Containers, Expo mobile, and one Vercel project the governing MVP architecture. FastAPI, a separate `apps/api`, and Back Office product scope remain outside the active MVP path unless a future human-approved ADR or feature reintroduces them.
+  Rationale: The active architecture chain now makes Next.js App Router API routes, Supabase, pnpm workspaces, Turborepo, host-first local setup, Expo mobile, and one Vercel project the governing MVP architecture. FastAPI, a separate `apps/api`, and Back Office product scope remain outside the active MVP path unless a future human-approved ADR or feature reintroduces them.
   Date/Author: 2026-05-17 / Codex
 
 - Decision: Treat API, database, background jobs, and E2E tests as first-class roadmap slices rather than hidden implementation details.
@@ -159,7 +159,7 @@ Validation passed for `npm run test`, `npm run lint`, `npm run build`, and `npm 
 
 ## Context and Orientation
 
-Supersession notice for readers and agents: the remaining sections of this older roadmap preserve historical Milestone 0 evidence and pre-ADR planning context. Any later instruction in this file that says to build a FastAPI backend, create a separate `api/` or `apps/api` implementation, keep React/Vite as the active web runtime, use npm/package-lock as the active package-management path, expose the web app on port `5173`, or deliver Back Office as part of the MVP is superseded by ADR 0001-0011 and by `spec/plans/completed-foundation-plans.md`. The active MVP path is Next.js App Router under `apps/web`, Next.js API routes under `apps/web/app/api`, pnpm workspaces, Turborepo, Supabase local foundation, Dev Containers, and one Vercel project rooted at `apps/web`.
+Supersession notice for readers and agents: the remaining sections of this older roadmap preserve historical Milestone 0 evidence and pre-ADR planning context. Any later instruction in this file that says to build a FastAPI backend, create a separate `api` or `apps/api` implementation, keep React/Vite as the active web runtime, use npm/package-lock as the active package-management path, expose the web app on port `5173`, or deliver Back Office as part of the MVP is superseded by active architecture records and by `spec/plans/completed-foundation-plans.md`. The active MVP path is Next.js App Router under `apps/web`, Next.js API routes under `apps/web/app/api`, pnpm workspaces, Turborepo, Supabase local foundation, host-first local setup scripts, and one Vercel project rooted at `apps/web`.
 
 Caniello is a pet health and care organization utility. Its first MVP promise is one place for a pet's health records, reminders, documents, and shareable care information. The existing landing page is implemented with React, TypeScript, Vite, TailwindCSS, Docker, Vitest, and Playwright.
 
@@ -191,7 +191,7 @@ Analytics consent means the visitor explicitly allows non-essential validation e
 
 Milestone 0 is Landing Page and acquisition validation. Its implementation and evidence are accepted. The landing page is now the Polish-first validation surface for Wave 1 owner value, research-safe Wave 2 and Wave 3 framing, lead-capture consent, analytics consent, MailerLite waitlist submission, validation-event routing, UTM preservation, and responsive screenshot evidence. Remaining Milestone 0 work is public-launch preparation rather than core landing implementation: Privacy Policy, Terms of Service, medical-boundary copy, live MailerLite smoke testing, deployment target, rollback path, analytics/storage decisions where needed, and final staging.
 
-Milestone 1 is Architecture and platform design. ADRs 0001-0021 are accepted and define the remaining MVP platform boundaries: Next.js App Router in `apps/web`, Vercel deployment, Supabase data/auth/storage/RLS, pnpm/Turborepo, Dev Containers, MailerLite for marketing and waitlist lifecycle email, Stripe deferred until paid-plan stories are approved, and separate decisions for identity/access, data lifecycle, AI document intake, sharing/export, messaging, and observability. Milestone 1 prevents API, database, auth, storage, integration, and worker choices from being improvised during feature work.
+Milestone 1 is Architecture and platform design. Active ADRs define the remaining MVP platform boundaries: Next.js App Router in `apps/web`, Vercel deployment, Supabase data/auth/storage/RLS, pnpm/Turborepo, host-first local setup scripts, MailerLite for marketing and waitlist lifecycle email, Stripe deferred until paid-plan stories are approved, and separate decisions for identity/access, data lifecycle, AI document intake, sharing/export, messaging, and observability. Milestone 1 prevents API, database, auth, storage, integration, and worker choices from being improvised during feature work.
 
 Milestone 2 is Local platform foundation. Add the first Supabase-backed foundation under the accepted monorepo path: local Supabase start, migrations and seed structure, RLS skeletons, shared contracts and database helpers, lightweight Next.js health/version API routes, environment examples, and validation commands through pnpm/Turborepo. Do not add FastAPI, a separate API service, or a production Docker path unless a later human-approved ADR reopens that scope.
 
@@ -314,7 +314,7 @@ Source artifacts:
 
 Accepted ADR and solution-design coverage:
 
-1. Platform topology and deployment boundary: ADR 0001, 0003, 0005, 0009, 0010, 0011, and ADR 0013 keep the MVP in one Next.js web app on Vercel with Supabase-backed data services and Dev Containers for local development.
+1. Platform topology and deployment boundary: active architecture records keep the MVP in one Next.js web app on Vercel with Supabase-backed data services and host-first local setup scripts.
 2. Identity and access: ADR 0004 and ADR 0014 choose Supabase Auth, owner sessions, minimal roles, explicit operator constraints, MFA requirement before operator/admin data access, and audit behavior for sensitive actions.
 3. Data lifecycle: ADR 0004 and ADR 0015 assign schema, migrations, RLS, Storage, retention, export/deletion, backup/recovery, and audit-log expectations to the Supabase-backed platform foundation.
 4. AI document intake pipeline: ADR 0016 starts with deterministic processing states and server-side orchestration in Next.js/Supabase, deferring real OCR/AI provider choice until a dedicated ADR/story defines provider, data flow, retry, and evaluation behavior.
@@ -621,7 +621,7 @@ Use accepted ADRs 0013-0021 as the boundary for Milestone 2. Add or validate loc
     infra/supabase/seed.sql
     .env.example
 
-Keep Docker Compose focused on the Dev Container workspace and supporting local services. Use Supabase CLI for the local database/Auth/Storage/RLS stack instead of adding a separate FastAPI API service or hand-written Postgres-only development path.
+Use Supabase CLI for the local database/Auth/Storage/RLS stack instead of adding a separate FastAPI API service or hand-written Postgres-only development path.
 
 Add expected commands to README only after they work:
 
@@ -651,7 +651,7 @@ For Milestone 0, acceptance should prove the landing page is a consent-safe vali
 
 For Milestone 2, acceptance should be observable:
 
-- The Dev Container workspace builds and can run pnpm/Turborepo commands.
+- Host-first local setup scripts can install dependencies and run pnpm/Turborepo commands.
 - Visiting `http://localhost:3000` shows the existing Next.js web app.
 - Calling a lightweight Next.js health endpoint returns HTTP 200 with a simple healthy response.
 - Supabase local services can start through `pnpm exec supabase start --workdir infra/supabase` when schema/RLS work begins.
@@ -676,7 +676,7 @@ For Back Office MVP, acceptance should prove safe beta operations:
 
 Roadmap work is documentation-only and can be revised safely. Implementation work should be additive and branch-based. Do not delete existing landing page files or rewrite the current app structure until a topology decision says where web code should live.
 
-Docker Compose changes should preserve the existing `web` service. Add `api` and `db` services without breaking `docker compose up` for the landing page. If database migrations fail, reset only the local development volume after confirming no real or user-provided data lives there.
+Local setup changes should preserve the host-first scripts. If database migrations fail, reset only local development data after confirming no real or user-provided data lives there.
 
 Secrets must not be committed. Use `.env.example` for variable names and keep real values in local `.env` files or deployment environment variables.
 

@@ -82,17 +82,19 @@ describe("Caniello API contracts", () => {
   it("accepts owner account signup details with explicit terms acceptance", () => {
     expect(
       accountSignupPayloadSchema.parse({
+        fullName: "Test Owner",
         email: "owner@example.com",
         password: "correct horse battery staple",
         language: "pl",
         acceptedTerms: true
       })
-    ).toMatchObject({ email: "owner@example.com", language: "pl" });
+    ).toMatchObject({ fullName: "Test Owner", email: "owner@example.com", language: "pl" });
   });
 
   it("rejects invalid owner account credentials and unsupported languages", () => {
     expect(() =>
       accountSignupPayloadSchema.parse({
+        fullName: "Test Owner",
         email: "not-an-email",
         password: "short",
         language: "de",
@@ -137,4 +139,3 @@ describe("Caniello API contracts", () => {
     ).toEqual({ confirmation: "DELETE", language: "pl" });
   });
 });
-

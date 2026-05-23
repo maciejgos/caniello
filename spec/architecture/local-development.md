@@ -2,37 +2,46 @@
 
 ## Status
 
-Accepted
+Draft
 
 ## Date
 
-2026-05-17
+2026-05-21
 
 ## Related decisions
 
-- [0001 — Use TypeScript-first Next.js monorepo for Caniello MVP](../architecture-records/0001-use-typescript-nextjs-monorepo.md)
-- [0002 — Use Caniello monorepo directory standard](../architecture-records/0002-use-caniello-monorepo-directory-standard.md)
-- [0004 — Use Supabase for MVP data, auth, storage, and RLS](../architecture-records/0004-use-supabase-for-mvp-data-auth-storage-and-rls.md)
-- [0005 — Deploy the web application on Vercel](../architecture-records/0005-deploy-web-on-vercel.md)
-- [0010 — Use Dev Containers for local development](../architecture-records/0010-use-dev-containers-for-local-development.md)
+- [0001 - Use TypeScript-first Next.js monorepo for Caniello MVP](../architecture-records/0001-use-typescript-nextjs-monorepo.md)
+- [0002 - Use Caniello monorepo directory standard](../architecture-records/0002-use-caniello-monorepo-directory-standard.md)
+- [0004 - Use Supabase for MVP data, auth, storage, and RLS](../architecture-records/0004-use-supabase-for-mvp-data-auth-storage-and-rls.md)
+- [0005 - Deploy the web application on Vercel](../architecture-records/0005-deploy-web-on-vercel.md)
+- [0022 - Use host-first local development setup](../architecture-records/0022-use-host-first-local-development-setup.md)
 
 ## Summary
 
-Caniello MVP local development should use Dev Containers for the developer toolchain, Supabase CLI for the local backend stack, Docker Compose for supporting services, and pnpm / Turborepo for running applications and package tasks.
+Caniello MVP local development runs on the host by default:
 
-This local development layer supports the accepted monorepo structure without changing it:
+- Node.js and pnpm run the monorepo.
+- Supabase CLI runs local Supabase services.
+- Docker Desktop is required only because Supabase CLI uses Docker for local database/auth/storage services.
+- Vercel CLI runs from the host for login, preview deployment, and production deployment after human release approval.
+
+The repository should not include project-owned containerized workspace configuration unless a future human-approved ADR reintroduces that path.
+
+## Repository Structure
 
 ```text
 caniello/
-├─ .devcontainer/
-├─ docker-compose.yml
-├─ .dockerignore
 ├─ .env.example
 ├─ apps/
 │  ├─ web/
 │  └─ mobile/
 ├─ packages/
 ├─ infra/supabase/
+├─ scripts/
+│  ├─ setup.sh
+│  ├─ start.sh
+│  ├─ stop.sh
+│  └─ cleanup.sh
 ├─ spec/
 ├─ package.json
 ├─ pnpm-workspace.yaml
@@ -42,36 +51,51 @@ caniello/
 
 ## Responsibilities
 
-### Dev Container
+### Host Toolchain
 
-The Dev Container is the main local development environment. It should provide:
+The host toolchain provides:
 
-- Node.js LTS
+- Node.js 18+
 - pnpm
-- Turborepo
-- Git
+- Turborepo through project dependencies
 - Supabase CLI
 - Vercel CLI
-- Expo CLI / EAS CLI when mobile work starts
-- Playwright dependencies when browser checks become part of the active workflow
+- Docker Desktop for Supabase local services
 
-Developers should be able to open the repository in VS Code or Cursor and work from inside the container.
+First-time setup should use:
 
-The image is defined in `.devcontainer/Dockerfile`; the repository root should not contain a production Dockerfile for the web app during MVP. The Dev Container includes Docker CLI and mounts the host Docker socket so Supabase CLI can manage its local service containers through the host Docker engine.
+```text
+./scripts/setup.sh
+```
+
+Daily local services should use:
+
+```text
+./scripts/start.sh
+./scripts/stop.sh
+```
+
+Local generated files and caches can be removed with:
+
+```text
+./scripts/cleanup.sh --yes
+```
 
 ### Supabase CLI
 
-Supabase CLI is the preferred local backend stack for MVP.
+Supabase CLI owns the local backend stack for MVP.
 
 Use:
 
 ```text
-supabase start
+supabase start --workdir infra
 ```
 
-Supabase CLI should provide local services for the database, Auth, Storage, Studio, and email testing surfaces that mirror Supabase behavior more closely than a hand-written Postgres-only Compose service.
+through `scripts/setup.sh` or `scripts/start.sh`.
 
-Supabase project files should live under:
+Supabase CLI provides local services for database, Auth, Storage, Studio, and email testing surfaces that mirror Supabase behavior more closely than a hand-written Postgres-only service.
+
+Supabase project files live under:
 
 ```text
 infra/supabase/
@@ -80,44 +104,32 @@ infra/supabase/
 └─ config.toml
 ```
 
-### Docker Compose
-
-Docker Compose should run the Dev Container workspace and any supporting services that are not already covered by Supabase CLI. The `workspace` service builds from `.devcontainer/Dockerfile`, mounts the repository at `/workspaces/caniello`, and forwards the local web and Supabase ports.
-
-Expected services:
-
-- `workspace` for the Node / pnpm / Turborepo Dev Container workspace
-- `mailhog` optionally for local email testing if Supabase Inbucket is not enough
-- `redis` later if queues or background jobs enter scope
-- `postgres` only if the team deliberately chooses not to use Supabase CLI for a specific local workflow
-
-Docker Compose should not become the production deployment model for `apps/web`.
-
 ### pnpm and Turborepo
 
-Applications and package tasks should run through pnpm and Turborepo from inside the Dev Container.
+Applications and package tasks run through pnpm and Turborepo on the host.
 
-Typical local commands after the monorepo migration:
+Typical local commands:
 
 ```text
 pnpm install
 pnpm dev
-pnpm turbo build --filter=web
+pnpm build
+pnpm test
+pnpm lint
 ```
 
-## Local ports
+## Local Ports
 
 Recommended local port assignments:
 
 - `3000` for Next.js web
-- `54321` for local Supabase API
-- `54322` for local Supabase DB
-- `54323` for Supabase Studio
+- `55321` for local Supabase API
+- `55322` for local Supabase DB
+- `55323` for Supabase Studio
 - `54324` for Supabase Inbucket / email
-- `8080` for Mailhog if used separately
 - `19000` for Expo, depending on mobile configuration
 
-## Production deployment boundary
+## Production Deployment Boundary
 
 Vercel remains the production deployment path for the web application.
 
@@ -125,12 +137,13 @@ Vercel should deploy:
 
 - Root Directory: `apps/web`
 
-Dev Containers and Docker Compose are local development concerns. They should not be required by Vercel production deployment.
+Local setup scripts are development concerns. They should not be required by Vercel production deployment.
 
 ## Non-goals
 
 The MVP local development standard does not introduce:
 
+- project-owned containerized workspace configuration;
 - a production Dockerfile for the Next.js app;
 - a separate production API container;
 - a back-office container;
@@ -141,9 +154,11 @@ The MVP local development standard does not introduce:
 
 When implemented, local development setup should be validated by checking that:
 
-- the Dev Container builds successfully;
-- `pnpm install` works inside the Dev Container;
+- `./scripts/setup.sh` installs/checks host dependencies and starts Supabase;
+- `./scripts/start.sh` starts local Supabase services;
+- `./scripts/stop.sh` stops local Supabase services;
+- `./scripts/cleanup.sh --yes` removes generated local project files;
+- `pnpm install` works on the host;
 - `pnpm dev` starts the web app;
-- `supabase start` starts the local Supabase stack;
 - Vercel build configuration still targets `apps/web`;
 - local environment variables are documented in `.env.example`.

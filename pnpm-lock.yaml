@@ -71,6 +71,9 @@ importers:
       '@caniello/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
+      '@caniello/db':
+        specifier: workspace:^
+        version: link:../../packages/db
       '@supabase/ssr':
         specifier: ^0.10.3
         version: 0.10.3(@supabase/supabase-js@2.106.1)

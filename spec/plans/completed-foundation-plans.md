@@ -10,7 +10,7 @@ Accepted
 
 - [x] (2026-05-09 to 2026-05-11) First landing page plan executed through a Vite, React, TypeScript, TailwindCSS, Docker, Vitest, and Playwright implementation.
 - [x] (2026-05-12 to 2026-05-15) Landing Milestone 0 expanded the landing page into the segmented validation slice described in `spec/plans/caniello-mvp-implementation-roadmap.md`.
-- [x] (2026-05-17) Next.js monorepo migration executed and validated, moving the active MVP path to `apps/web`, pnpm workspaces, Turborepo, shared packages, Supabase local placeholders, Dev Container support, and Vercel alignment.
+- [x] (2026-05-17) Next.js monorepo migration executed and validated, moving the active MVP path to `apps/web`, pnpm workspaces, Turborepo, shared packages, Supabase local placeholders, and Vercel alignment.
 - [x] (2026-05-19) Historical completed plan detail consolidated into this summary to reduce duplicate planning surface area.
 
 ## Surprises & Discoveries
@@ -69,7 +69,7 @@ Former plan file: `caniello-mvp-nextjs-monorepo-migration.md`
 
 Outcome:
 - Migrated the landing app and API behavior into a Next.js App Router web app under `apps/web`.
-- Added pnpm workspaces, Turborepo, shared packages, Dev Container support, Supabase placeholders, `.env.example`, and Vercel monorepo configuration.
+- Added pnpm workspaces, Turborepo, shared packages, Supabase placeholders, `.env.example`, and Vercel monorepo configuration.
 - Removed the root Vite runtime as the active product path.
 - Validated the migration with lint, tests, build, and Playwright checks.
 

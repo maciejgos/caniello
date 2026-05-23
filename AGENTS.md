@@ -29,16 +29,21 @@ Keep generated output, caches, and dependency folders out of version control. Ad
 
 This repository now uses a TypeScript-first pnpm and Turborepo monorepo. The web app is a Next.js App Router app under `apps/web`.
 
+Local development runs on the host by default. Docker Desktop is still required because Supabase local development runs its database and support services in Docker. Do not add a containerized workspace setup unless a future human-approved ADR reintroduces it.
+
+- `./scripts/setup.sh`: install/check Homebrew-managed host tools, install dependencies, install Vercel CLI, create `.env.local` if missing, and start local Supabase.
 - `pnpm install`: install dependencies from committed package files.
 - `pnpm dev`: start the Next.js development server on `http://localhost:3000`.
 - `pnpm build`: type-check and build production outputs through Turborepo.
 - `pnpm test`: run the Vitest and React Testing Library test suite.
 - `pnpm test:e2e`: run Playwright browser checks against the landing page.
 - `pnpm lint`: run the TypeScript validation gate.
-- `pnpm exec supabase start --workdir infra/supabase`: start local Supabase services when the CLI is available.
-- `docker compose build`: build the Dev Container workspace image.
-- `docker compose up`: run the workspace container.
-- `docker compose down`: stop the workspace container.
+- `./scripts/start.sh`: start local Supabase services from the host.
+- `./scripts/stop.sh`: stop local Supabase services without taking a backup.
+- `./scripts/cleanup.sh --yes`: stop local Supabase and remove generated project files such as `node_modules`, build output, test output, local env files, and local caches. It does not uninstall shared host tools.
+- `vercel login`: authenticate the Vercel CLI once.
+- `vercel`: create a Vercel preview deployment.
+- `vercel --prod`: deploy to production after human release approval.
 
 Do not add setup steps that cannot be reproduced from committed files.
 

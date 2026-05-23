@@ -19,7 +19,7 @@ Accepted
 - [0007 - Use React Native and Expo for mobile](../architecture-records/0007-use-react-native-expo-for-mobile.md)
 - [0008 - Use MVP product tooling baseline](../architecture-records/0008-use-mvp-product-tooling-baseline.md)
 - [0009 - Use one Vercel project for Caniello MVP](../architecture-records/0009-use-one-vercel-project-for-mvp.md)
-- [0010 - Use Dev Containers for local development](../architecture-records/0010-use-dev-containers-for-local-development.md)
+- [0022 - Use host-first local development setup](../architecture-records/0022-use-host-first-local-development-setup.md)
 - [0011 - Use pragmatic engineering practices from MVP start](../architecture-records/0011-use-pragmatic-engineering-practices-from-mvp-start.md)
 - [0012 - Polish-first MVP localization](../architecture-records/0012-polish-first-mvp-localization.md)
 - [0013 - Use Vercel and Next.js as the MVP platform topology](../architecture-records/0013-use-vercel-nextjs-platform-topology.md)
@@ -33,7 +33,7 @@ Accepted
 
 ## Summary
 
-Caniello MVP is a TypeScript-first monorepo with one deployable web application on Vercel, one future mobile application under Expo / React Native, shared packages for domain logic and contracts, Supabase for data/auth/storage/RLS, MailerLite for marketing and early-access email, Stripe deferred for future paid plans, and Dev Containers for repeatable local development.
+Caniello MVP is a TypeScript-first monorepo with one deployable web application on Vercel, one future mobile application under Expo / React Native, shared packages for domain logic and contracts, Supabase for data/auth/storage/RLS, MailerLite for marketing and early-access email, Stripe deferred for future paid plans, and host-first local development scripts.
 
 The MVP intentionally excludes a separate FastAPI backend, separate API repository, back-office application, marketplace, bookings, payments, clinic SaaS, AI diagnosis, and official pet passport replacement.
 
@@ -182,24 +182,20 @@ Future deployable applications may introduce separate Vercel projects for `apps/
 ```mermaid
 flowchart TB
   dev["Developer\nVS Code / Cursor"]
-  container["Dev Container\nNode LTS, pnpm, Turbo,\nGit, Supabase CLI, Vercel CLI"]
+  host["Host toolchain\nNode.js, pnpm, Turbo,\nSupabase CLI, Vercel CLI"]
   commands["pnpm / turbo\ninstall, dev, build, test"]
-  compose["Docker Compose\nSupporting services only"]
   supabaseCli["Supabase CLI\nsupabase start"]
   localSupabase["Local Supabase stack\nAPI, DB, Studio, Inbucket"]
-  mailhog["Mailhog\nOptional"]
-  redis["Redis\nLater, if queues appear"]
+  docker["Docker Desktop\nSupabase local containers"]
 
-  dev --> container
-  container --> commands
-  container --> supabaseCli
-  container --> compose
-  supabaseCli --> localSupabase
-  compose -.->|"optional email testing"| mailhog
-  compose -.->|"future background jobs"| redis
+  dev --> host
+  host --> commands
+  host --> supabaseCli
+  supabaseCli --> docker
+  docker --> localSupabase
 ```
 
-Local development uses Dev Containers for the working environment, Supabase CLI for local Supabase services, Docker Compose for auxiliary dependencies, and pnpm / Turborepo to run applications.
+Local development uses host scripts for setup/start/stop/cleanup, Supabase CLI for local Supabase services, Docker Desktop only for Supabase-managed containers, and pnpm / Turborepo to run applications.
 
 ## Data and Trust Boundaries
 
@@ -245,8 +241,8 @@ Private pet, document, reminder, and sharing data must cross server-side validat
 - `packages/contracts` owns shared TypeScript types, schemas, and API contracts.
 - `packages/db` owns Supabase access helpers.
 - `infra/supabase` owns migrations, RLS policies, and seed data.
-- `.devcontainer` and Docker Compose support local development only.
-- Vercel production deployment should not depend on Dev Containers or Docker Compose.
+- Local setup scripts support development only.
+- Vercel production deployment should not depend on local setup scripts or Docker Desktop.
 - KISS is the default implementation posture; abstractions should earn their place through repeated behavior, integration boundaries, or clear lifecycle complexity.
 - Retry belongs at transient, repeat-safe boundaries such as integrations, network calls, and future background jobs.
 - Factory helpers belong at repeated or environment-specific construction points such as Supabase clients, integration clients, repositories, and test fixtures.

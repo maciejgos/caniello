@@ -28,7 +28,6 @@ Keep superseded records in this directory when they explain important history, b
 | [0007](./0007-use-react-native-expo-for-mobile.md) | Accepted | Use React Native and Expo for mobile |
 | [0008](./0008-use-mvp-product-tooling-baseline.md) | Accepted | Use MVP product tooling baseline |
 | [0009](./0009-use-one-vercel-project-for-mvp.md) | Accepted | Use one Vercel project for Caniello MVP |
-| [0010](./0010-use-dev-containers-for-local-development.md) | Accepted | Use Dev Containers for local development |
 | [0011](./0011-use-pragmatic-engineering-practices-from-mvp-start.md) | Accepted | Use pragmatic engineering practices from MVP start |
 | [0012](./0012-polish-first-mvp-localization.md) | Accepted | Use Polish-first MVP localization |
 | [0013](./0013-use-vercel-nextjs-platform-topology.md) | Accepted | Use Vercel and Next.js as the MVP platform topology |
@@ -40,3 +39,4 @@ Keep superseded records in this directory when they explain important history, b
 | [0019](./0019-use-vercel-supabase-observability-and-mvp-recovery.md) | Accepted | Use Vercel and Supabase observability with MVP recovery playbooks |
 | [0020](./0020-defer-stripe-payments-until-paid-plan-stories.md) | Accepted | Defer Stripe payments until paid-plan stories are approved |
 | [0021](./0021-use-vercel-ai-gateway-for-ai-provider-routing.md) | Accepted | Use Vercel AI Gateway for AI provider routing in MVP |
+| [0022](./0022-use-host-first-local-development-setup.md) | Draft | Use host-first local development setup |
