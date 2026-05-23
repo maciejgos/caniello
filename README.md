@@ -19,7 +19,7 @@ The initial product should be useful before it becomes a platform. Caniello star
 
 Status: `validation`
 
-This repository is currently in product discovery and PDLC setup. The primary work should happen in `spec/` until implementation scope is clear enough to build.
+This repository is validating and building the Caniello MVP through a lightweight, human-governed Forge workflow. The active operating loop and durable evidence both live under `spec/`, with task-sized files for daily work and heavier records only when they are useful.
 
 The first goal is to validate whether pet owners repeatedly use and trust Caniello for pet health organization.
 
@@ -88,7 +88,7 @@ apps/web/          Next.js App Router web app and MVP Vercel root
 apps/mobile/       Minimal mobile workspace scaffold for future Expo work
 packages/          Shared contracts, domain, application, db, ui, and config packages
 infra/supabase/    Supabase CLI configuration, migrations, and seed file
-spec/              Product discovery, requirements, design, plans, validation, and lifecycle artifacts
+spec/              Forge roadmap, feature briefs, tasks, handoff, ADRs, validation, release, and lifecycle records
 tests/             Cross-app executable tests, including Playwright E2E
 ```
 
@@ -154,16 +154,31 @@ Landing-page analytics consent and validation events are posted to `/api/validat
 
 ## Development Model
 
-Caniello follows an AI-assisted, human-governed PDLC model:
+Caniello follows a lightweight AI-assisted, human-governed Forge model:
 
-1. Define intent and constraints in `spec/`.
-2. Draft requirements, feature definitions, and validation criteria.
-3. Review product scope before implementation.
-4. Build the smallest validated product slice.
-5. Capture validation evidence before expanding scope.
-6. Feed learnings back into the control plane and this repository.
+```text
+roadmap filter -> task -> implementation -> verification -> handoff
+```
 
-Implementation should not begin by adding a broad app scaffold. Start with validated product artifacts, then choose tooling when the first build slice is clear.
+Use `spec/roadmap.md` to decide whether work belongs in `Now`, `Next`, `Later`, or `Not Now`. Use `spec/tasks/` for executable work, and update `spec/handoff.md` so the next session can continue without chat history.
+
+Optional steps:
+
+- Use `spec/features/` when broad notes need to become a lightweight feature brief and candidate tasks before planning.
+- Use `spec/architecture-records/` when a durable architecture decision is needed. ADRs drafted by Codex stay `Draft` until explicitly approved by Maciej.
+- Use `spec/validation/`, `spec/release-readiness/`, and `spec/lifecycle/` for heavier evidence only when the work genuinely needs those records.
+
+The active Forge skills under `.codex/skills/` support this flow:
+
+- `forge-shaper`: notes to feature brief and candidate tasks.
+- `forge-planner`: intent or candidate task to one executable task.
+- `forge-architect`: architecture question to note or draft ADR.
+- `forge-implementer`: one task to implementation and validation notes.
+- `forge-evaluator`: implementation review against acceptance criteria and scope.
+- `forge-handoff`: continuation state for the next session.
+- `forge-roadmap-review`: priority and scope drift review.
+
+Implementation should stay task-sized, roadmap-aligned, and focused on the smallest validated product slice. Do not expand into marketplace, clinic SaaS, booking, payments-first flows, AI diagnosis, or official passport replacement claims without explicit human approval.
 
 ## Relationship to The Future Thinker World
 

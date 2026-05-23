@@ -1,0 +1,10 @@
+# Project-local Codex command execution rules.
+#
+# Codex `.rules` files are Starlark files for sandbox-escalation policy,
+# not general repository guidance. Keep behavioral workflow instructions in
+# `AGENTS.md`, `docs/`, and active skills under `.codex/skills/`.
+#
+# This project intentionally defines no project-local auto-allow rules yet.
+# Add `prefix_rule(...)` entries only for recurring commands that are safe to
+# run outside the sandbox without weakening review of destructive or external
+# side effects.
