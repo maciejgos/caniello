@@ -209,6 +209,14 @@ start_supabase() {
   supabase start --workdir "$PROJECT_ROOT/infra"
 }
 
+ensure_supabase_studio_paths() {
+  if ! docker ps --format '{{.Names}}' | grep -qx 'supabase_studio_caniello-local'; then
+    return
+  fi
+
+  docker exec supabase_studio_caniello-local mkdir -p "$PROJECT_ROOT/infra/supabase/functions" >/dev/null 2>&1 || true
+}
+
 stop_supabase() {
   if ! have supabase; then
     echo "Supabase CLI is not installed; nothing to stop."

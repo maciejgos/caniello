@@ -247,6 +247,10 @@ function AccountForm({ title, intro, actionLabel, endpoint, language, mode, succ
         body: JSON.stringify(body)
       });
       const result = (await response.json().catch(() => null)) as { status?: string } | null;
+      if (response.ok && mode === "login") {
+        window.location.assign(getPostLoginRedirectPath());
+        return;
+      }
       setState(
         response.ok
           ? "success"
@@ -361,6 +365,17 @@ function AccountForm({ title, intro, actionLabel, endpoint, language, mode, succ
       </div>
     </form>
   );
+}
+
+function getPostLoginRedirectPath() {
+  const fallbackPath = "/app";
+  const nextPath = new URLSearchParams(window.location.search).get("next");
+
+  if (!nextPath || !nextPath.startsWith("/") || nextPath.startsWith("//")) {
+    return fallbackPath;
+  }
+
+  return nextPath;
 }
 
 function Field({

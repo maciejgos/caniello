@@ -8,6 +8,7 @@ cd "$PROJECT_ROOT"
 ensure_host_runtime
 ensure_env_file
 start_supabase
+ensure_supabase_studio_paths
 sync_local_supabase_env
 
 cat <<'MSG'

@@ -13,6 +13,9 @@ Status values:
 - Local development standard update - `InProgress`
   Source: `spec/architecture-records/0022-use-host-first-local-development-setup.md`
   Note: Draft ADR proposes host-first setup via `scripts/setup.sh`, with Docker Desktop retained only for Supabase local services. Human approval is still pending.
+- Local Supabase Auth provider configuration - `InProgress`
+  Source: `spec/architecture-records/0023-use-config-toml-for-local-supabase-auth-providers.md`
+  Note: Draft ADR records that the current local Supabase Studio Providers screen can stay stuck in skeleton loading and that local Auth providers should be configured through `infra/supabase/config.toml`. Human approval is still pending.
 
 ## Milestones
 
@@ -66,6 +69,7 @@ Source:
 - `spec/architecture-records/0020-defer-stripe-payments-until-paid-plan-stories.md`
 - `spec/architecture-records/0021-use-vercel-ai-gateway-for-ai-provider-routing.md`
 - `spec/architecture-records/0022-use-host-first-local-development-setup.md`
+- `spec/architecture-records/0023-use-config-toml-for-local-supabase-auth-providers.md`
 
 #### Feature: Platform Topology and Deployment Boundary - `Done`
 
@@ -121,7 +125,7 @@ Source:
 - Story: `polish-first-language-switching` in authenticated owner flows - `InProgress`
 - Story: `data-export-and-account-deletion` - `Todo`
 
-Current evidence: `spec/plans/owner-account-privacy-foundation.md` records Milestone 1-2 implementation passes, focused validation, web build, and Playwright account-route evidence. `spec/validation/auth-visual-implementation-validation.md` records the draft validation review for the login and signup visual implementation against the supplied MVP mockups; human acceptance remains pending.
+Current evidence: `spec/plans/owner-account-privacy-foundation.md` records Milestone 1-2 implementation passes, focused validation, web build, and Playwright account-route evidence. `spec/validation/auth-visual-implementation-validation.md` records the draft validation review for the login and signup visual implementation against the supplied MVP mockups. `spec/validation/account-login-redirect-validation.md` records the direct post-login redirect validation; human acceptance remains pending.
 
 #### Feature: Pet Onboarding and Workspace - `Todo`
 

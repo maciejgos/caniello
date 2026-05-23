@@ -76,6 +76,23 @@ describe("Caniello account experience", () => {
     expect(screen.getByRole("status")).toHaveTextContent(/wysłaliśmy instrukcję/i);
   });
 
+  it("redirects to the protected owner app after successful login", async () => {
+    const assign = vi.fn();
+    Object.defineProperty(window, "location", {
+      configurable: true,
+      value: { assign, search: "?next=%2Fapp" }
+    });
+    const user = userEvent.setup();
+    render(<AccountApp route="login" />);
+
+    await user.type(screen.getByLabelText(/adres e-mail/i), "owner@example.com");
+    await user.type(screen.getByLabelText(/hasło/i), "correct horse battery staple");
+    await user.click(screen.getByRole("button", { name: /zaloguj się/i }));
+
+    await waitFor(() => expect(assign).toHaveBeenCalledWith("/app"));
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+  });
+
   it("renders the protected app home and logs out through the account API", async () => {
     const assign = vi.fn();
     Object.defineProperty(window, "location", {
