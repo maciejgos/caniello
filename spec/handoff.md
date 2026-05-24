@@ -3,8 +3,8 @@
 ## Current State
 
 - Active task: none.
-- Active branch: `codex/caniello-lightweight-harness`.
-- Current workflow: flattened `spec/` workspace cleanup implemented for review.
+- Active branch: `codex/shape-app-dashboard-skeleton`.
+- Current workflow: shaped authenticated app dashboard skeleton feature and task candidates from MVP mockups/backlog.
 
 ## Latest Notes
 
@@ -13,6 +13,13 @@
 - Durable product context now lives in `spec/product-context.md`.
 - Old Flow Forge-era spec artifacts were archived under `spec/archive/flow-forge-history/` instead of deleted.
 - Active guidance now points normal work to `spec/product-context.md`, `spec/roadmap.md`, lightweight feature briefs, task files, architecture notes or ADRs, validation, and handoff.
+- Created feature brief `spec/features/authenticated-app-dashboard-skeleton.md` for the post-auth app dashboard and onboarding skeleton.
+- Created task candidates:
+  - `spec/tasks/authenticated-app-shell-navigation.md`
+  - `spec/tasks/first-run-onboarding-skeleton.md`
+  - `spec/tasks/home-dashboard-skeleton.md`
+  - `spec/tasks/app-section-empty-states.md`
+  - `spec/tasks/dashboard-skeleton-validation.md`
 
 ## Validation Status
 
@@ -32,7 +39,8 @@
 - No Playwright validation is expected unless implementation touches app UI.
 - `pnpm test` emitted existing Vitest localStorage experimental warnings and Turbo output warnings; tests still passed.
 - `node_modules/` was installed locally for validation and should remain ignored.
+- No implementation validation has been run for the dashboard skeleton shaping work because it only adds spec artifacts.
 
 ## Next Recommended Action
 
-- Review the flattened `spec/` workspace and continue with `forge-shaper`, `forge-planner`, or `forge-architect` depending on the next task.
+- Choose the first dashboard skeleton task to plan or implement. Recommended first task: `spec/tasks/authenticated-app-shell-navigation.md`.
