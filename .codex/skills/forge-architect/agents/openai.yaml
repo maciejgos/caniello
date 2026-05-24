@@ -1,0 +1,4 @@
+interface:
+  display_name: "Forge Architect"
+  short_description: "Draft architecture notes and ADRs."
+  default_prompt: "Use $forge-architect to turn this architecture question into a lightweight note or ADR draft."

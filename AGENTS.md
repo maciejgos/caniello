@@ -1,33 +1,86 @@
 # Repository Guidelines
 
-## Project Structure & Module Organization
+## Product Context
 
-This repository is Flow Forge, an AI-native PDLC workflow template for running human-governed product development with Codex. Treat `spec/` as the primary workspace until product implementation begins:
+This repository is Caniello, a pet health and care organization utility. Caniello helps pet owners keep trusted, shareable records for pet profiles, reminders, documents, and care information in one place.
 
-- `spec/requirements/` for business needs, constraints, and acceptance criteria.
-- `spec/features/` for feature definitions, scope, and outcomes.
-- `spec/stories/` for implementation-ready user stories and tasks.
-- `spec/design/` for UX, technical design, and flows.
-- `spec/plans/` for ExecPlans that guide complex Codex-executed implementation work.
-- `spec/architecture-records/` for ADRs based on the included template.
-- `spec/validation/` for acceptance checks, evaluation plans, and evidence that PDLC artifacts or delivered outcomes are complete.
-- `spec/release-readiness/` for advisory release, merge, and deployment readiness records before human release decisions.
-- `spec/lifecycle/` for post-release retrospectives, incidents, feedback, metrics, and continuous improvement notes.
-- `.codex/` for Codex runtime configuration, including agent definitions, rules, and skills. Project-scoped custom subagents belong in standalone `.codex/agents/*.toml` files with `name`, `description`, and `developer_instructions`.
+Durable product truth lives in `spec/product-context.md`. Read it with `spec/roadmap.md` before shaping, planning, implementing, or evaluating Caniello product work.
+
+The MVP promise is:
+
+> One place for a pet's health records, reminders, documents, and shareable care information.
+
+Initial MVP scope:
+
+- pet profile with basic data, chip, allergies, medication, and important notes;
+- reminders for vaccination, medication, deworming, and visits;
+- document vault for medical records and test results;
+- shareable care card or PDF export;
+- family or caregiver access sharing.
+
+Explicitly out of scope for the first product phase:
+
+- marketplace mechanics;
+- clinic SaaS, PIMS, or EHR integrations;
+- booking and payments-first monetization;
+- AI symptom checking, AI diagnosis, or veterinary replacement claims;
+- claims that Caniello replaces an official EU pet passport.
+
+## Lightweight Codex Workflow
+
+The default process is:
+
+```text
+roadmap filter -> task -> implementation -> verification -> handoff -> optional publish
+```
+
+When notes are too broad or ambiguous to become one task directly, use the optional shaping bridge:
+
+```text
+notes -> feature brief -> candidate tasks -> task -> implementation -> verification -> handoff -> optional publish
+```
+
+When work needs a durable architecture decision, use the optional ADR branch:
+
+```text
+task or feature brief -> draft ADR -> human approval -> implementation
+```
+
+Use `spec/roadmap.md` to decide whether a task belongs in `Now`, `Next`, `Later`, or `Not Now`. Use `spec/tasks/` for executable task files and `spec/handoff.md` for current working state.
+
+For normal Caniello MVP work, prefer the active Forge skills:
+
+- `forge-shaper` to turn messy notes into a lightweight feature brief and candidate tasks;
+- `forge-planner` to turn intent into one scoped task file;
+- `forge-architect` to turn architecture questions into notes or draft ADRs;
+- `forge-implementer` to implement one task narrowly;
+- `forge-evaluator` to verify task behavior, tests, UI, API, data, and scope;
+- `forge-handoff` to update continuation notes;
+- `forge-publisher` to commit, push, and open a draft PR after successful validation or explicit human instruction;
+- `forge-roadmap-review` to check roadmap drift and stale priorities;
+- `forge-weekly-reporter` to create evidence-based weekly reports and ask the human for feedback before finalizing.
+
+Archived Flow Forge skills and agents live under `.codex/flow-forge-reference/`. Older Flow Forge-era spec artifacts live under `spec/archive/flow-forge-history/`. Treat archived material as reference only unless a human maintainer explicitly asks to use a heavier process for a specific architecture, security, release, lifecycle, or large planning need.
+
+Use `forge-architect` for non-trivial architecture questions. Planner and implementer skills may draft small obvious ADRs under `spec/architecture-records/` when they discover durable architecture decisions, but ADR drafts must remain `Draft` until human explicitly approves them, and implementation that depends on a new decision must stop before relying on the draft.
+
+## Project Structure
+
 - `apps/web/` for the Next.js App Router web app and MVP Vercel root.
 - `apps/mobile/` for the future React Native / Expo mobile app scaffold.
 - `packages/` for shared contracts, domain, application, db, ui, and config packages.
-- `infra/supabase/` for Supabase CLI configuration, migrations, and local seed data.
-- `src/` is superseded by the monorepo layout and should not receive new MVP source code.
+- `infra/supabase/` for Supabase CLI configuration, migrations, local functions, and seed data.
+- `spec/` for the flattened Caniello workspace: product context, roadmap, feature briefs, tasks, handoff notes, architecture notes, ADRs, validation evidence, and archived historical/reference artifacts.
+- `.codex/` for Codex runtime configuration, active Forge skills, rules, and archived Flow Forge reference material.
 - `tests/` for executable product tests once implementation tooling exists.
 
-Each spec subdirectory should include a `README.md` explaining its purpose and a `TEMPLATE.md` for new artifacts, except `spec/plans/`, where `spec/plans/PLANS.md` is the authoritative self-contained guide for ExecPlan format and maintenance rules.
+Do not add new MVP source code under `src/`; the monorepo layout supersedes it.
 
-Keep generated output, caches, and dependency folders out of version control. Add `.gitignore` when a toolchain is introduced.
+Keep generated output, caches, dependency folders, local env files, and tool output out of version control.
 
 ## Build, Test, and Development Commands
 
-This repository now uses a TypeScript-first pnpm and Turborepo monorepo. The web app is a Next.js App Router app under `apps/web`.
+This repository uses a TypeScript-first pnpm and Turborepo monorepo. The web app is a Next.js App Router application under `apps/web`.
 
 Local development runs on the host by default. Docker Desktop is still required because Supabase local development runs its database and support services in Docker. Do not add a containerized workspace setup unless a future human-approved ADR reintroduces it.
 
@@ -36,71 +89,86 @@ Local development runs on the host by default. Docker Desktop is still required 
 - `pnpm dev`: start the Next.js development server on `http://localhost:3000`.
 - `pnpm build`: type-check and build production outputs through Turborepo.
 - `pnpm test`: run the Vitest and React Testing Library test suite.
-- `pnpm test:e2e`: run Playwright browser checks against the landing page.
+- `pnpm test:e2e`: run Playwright browser checks.
 - `pnpm lint`: run the TypeScript validation gate.
 - `./scripts/start.sh`: start local Supabase services from the host.
 - `./scripts/stop.sh`: stop local Supabase services without taking a backup.
-- `./scripts/cleanup.sh --yes`: stop local Supabase and remove generated project files such as `node_modules`, build output, test output, local env files, and local caches. It does not uninstall shared host tools.
-- `vercel login`: authenticate the Vercel CLI once.
+- `./scripts/cleanup.sh --yes`: stop local Supabase and remove generated local project files.
 - `vercel`: create a Vercel preview deployment.
 - `vercel --prod`: deploy to production after human release approval.
 
 Do not add setup steps that cannot be reproduced from committed files.
 
-## Coding Style & Naming Conventions
+## Coding Style and Engineering Standards
 
-Follow project tooling once it exists. Until then, use 2-space indentation for JavaScript, TypeScript, JSON, and Markdown. Prefer `camelCase` for variables and functions, `PascalCase` for classes and components, and `kebab-case` for filenames unless a framework requires otherwise.
+Follow ADR `spec/architecture-records/0011-use-pragmatic-engineering-practices-from-mvp-start.md`.
 
-Keep modules focused. Avoid large utility files; group web helpers under feature-local folders such as `apps/web/features/<feature>/lib/`, and cross-app helpers under the appropriate `packages/*` package.
+Implementation defaults:
 
-## Testing Guidelines
+- KISS: prefer the simplest direct implementation that correctly supports current behavior.
+- Use SOLID where it protects clear responsibilities, explicit dependencies, and narrow interfaces.
+- Use TypeScript strictness and shared contracts at browser/API/data boundaries.
+- Validate untrusted input with Zod or an approved schema layer.
+- Keep shared schemas and types in `packages/contracts`.
+- Keep shared domain rules in `packages/domain` when reused across web and mobile.
+- Keep Supabase access helpers in `packages/db`.
+- Use Retry only for transient, repeat-safe boundaries with bounded attempts and clear final errors.
+- Use Factory only when construction is repeated, conditional, environment-specific, or test-heavy.
+- Prefer framework-native React, Next.js, React Native, and Expo patterns.
+- Avoid broad service layers, queues, generic frameworks, or speculative abstractions before the product needs them.
 
-During workflow-template work, validate Markdown structure, links, examples, and artifact completeness. Use `spec/validation/` for acceptance evidence before product code exists. During product implementation, place executable tests under `tests/` or beside source files with a suffix such as `.test.ts` or `.spec.ts`. Each behavior change should include a focused test where practical.
+Style defaults:
 
-## Commit & Pull Request Guidelines
+- Use 2-space indentation for JavaScript, TypeScript, JSON, and Markdown.
+- Prefer `camelCase` for variables and functions, `PascalCase` for classes and components, and `kebab-case` for filenames unless a framework requires otherwise.
+- Keep modules focused. Prefer feature-local helpers under `apps/web/features/<feature>/lib/` and cross-app helpers under the appropriate `packages/*` package.
 
-This repository has no commits yet, so no historical convention can be inferred. Use clear, imperative commit messages such as `Add PDLC spec templates`.
+## Testing and Verification
 
-Before committing, run `git status --short` and verify only intentional files are staged. Pull requests should include a short summary, testing notes, and linked issues when applicable. Include screenshots or terminal output for user-visible changes, CLI behavior, or generated artifacts.
+Each behavior change should include focused tests where practical. Run the smallest meaningful validation first, then broaden when risk or shared behavior warrants it.
+
+Use:
+
+- TypeScript, lint, build, unit, integration, and E2E checks when relevant;
+- React Testing Library and Vitest for component and behavior tests;
+- Playwright for browser UI validation when a UI exists or changes;
+- manual validation notes when automation is unavailable or insufficient.
+
+Record skipped, failed, unavailable, or deferred checks in the task file or handoff. Do not imply validation is accepted or complete without explicit human approval.
+
+## Branches, Commits, and Pull Requests
+
+Before broad changes, inspect the tree with `git status --short` and preserve user edits. Do not rewrite history on `main` unless explicitly requested.
+
+During implementation, create or switch to a feature branch before edits unless a human maintainer explicitly says to stay on the current branch.
+
+Before committing, run `git status --short` and verify only intentional files are staged. Use clear, imperative commit messages such as `Add Caniello task harness`. Pull requests should include a short summary, testing notes, linked issues when applicable, and screenshots or terminal evidence for user-visible changes.
+
+## Roadmap Governance
+
+The roadmap is a planning and prioritization artifact. It answers whether a task should exist now.
+
+Codex may:
+
+- suggest roadmap updates;
+- identify task and roadmap misalignment;
+- propose new roadmap items in `spec/handoff.md`;
+- update roadmap links or task references when a human maintainer requests it.
+
+Codex must not:
+
+- silently add features to active `Now` scope;
+- move `Next`, `Later`, or `Not Now` work into `Now`;
+- remove strategic constraints;
+- expand MVP scope without explicit human approval;
+- approve, accept, reject, release, merge, or mark human checkpoints complete.
+
+Keep root `ROADMAP.md` as the discoverable index and `spec/roadmap.md` as the active lightweight prioritization filter.
 
 ## Agent-Specific Instructions
 
-Before broad changes, inspect the tree with `git status --short` and preserve user edits. Do not rewrite history on `main` unless requested. Update this guide whenever the repository gains tooling, directories, remotes, or contribution rules.
-
 Nested `AGENTS.md` files may add more specific instructions for their subtree. Follow the closest applicable `AGENTS.md` when editing files.
 
-Do not self-approve PDLC artifacts or checkpoints. Codex and subagents may draft artifacts, review artifacts, recommend readiness, and summarize evidence, but only an explicit human instruction can approve, accept, reject, or mark a checkpoint complete. Keep generated artifacts in `Draft` status unless the human explicitly asks to change the status.
+Work on one task at a time. Do not expand scope while implementing. Stop and ask for approval when a task requires a durable architecture decision, migration, security-sensitive change, external service change, destructive action, release action, or product scope expansion.
 
-Keep root `ROADMAP.md` current as the lightweight status index for the PDLC artifact set. When milestones, features, stories, current focus, or open decisions change in `spec/` or implementation work, update `ROADMAP.md` in the same change so it points to the durable source artifacts and uses `Done`, `InProgress`, or `Todo` without implying human approval where none was given.
-
-Only use Codex subagents when the user explicitly asks for subagents, delegation, or parallel agent work. Prefer review subagents after PDLC artifacts exist:
-
-- `product_coherence_reviewer` for product intent, scope, and artifact-chain consistency.
-- `architecture_decision_reviewer` for solution design, ADR coverage, and architectural risk.
-- `validation_gate_reviewer` for acceptance criteria, validation evidence, and CI/CD gate readiness.
-- `execution_plan_reviewer` for ExecPlan self-containment, milestones, concrete steps, recovery, and implementation readiness.
-- `implementation_reviewer` for checking implementation changes against the approved ExecPlan, scope, acceptance criteria, validation evidence, and no-self-approval policy.
-- `security_reviewer` for security, privacy, permissions, data handling, dependency risk, and abuse cases.
-- `quality_gate_reviewer` for maintainability, test quality, lint/type/build gates, Playwright UI evidence, and implementation hygiene.
-- `release_readiness_reviewer` for final merge, release, or deployment readiness, approval state, validation evidence, unresolved risks, rollback, and no-self-approval policy.
-- `lifecycle_learning_reviewer` for post-release learning, incidents, feedback, metrics, missed assumptions, follow-up requirements, ADR drift, and validation improvements.
-
-## ExecPlans
-
-When writing complex features or significant refactors, use an ExecPlan (as described in spec/plans/PLANS.md) from design to implementation. When executing an approved ExecPlan, use the `implementation-execution` skill and keep the ExecPlan updated as a living artifact.
-
-## Implementation Guardrails
-
-During implementation, create or switch to a feature branch before edits unless the human explicitly says to stay on the current branch. Use TDD and BDD where practical: define behavior first, add or update tests first when tooling exists, then implement the smallest scoped change. Apply SOLID and KISS principles so responsibilities stay focused, dependencies stay explicit, interfaces stay narrow, and the implementation remains as simple as the behavior allows. Use established design patterns when they clarify boundaries, lifecycle, orchestration, or extension points; avoid patterns that add ceremony without reducing real complexity. Before handoff, scan new shared literals such as action names, statuses, language values, consent values, and database check constraints; keep the TypeScript source of truth in `packages/contracts` where browser/API code consumes it, and use database enum/domain types for durable SQL vocabularies instead of repeating inline constraints. Validate usability with available lint, typecheck, build, unit, integration, manual, and end-to-end checks. Use Playwright for browser UI validation when a UI exists, and capture screenshots as reference evidence when useful. Review changes against design, security, quality, validation gates, and the no-self-approval policy before asking for human acceptance.
-
-## Validation Review
-
-After implementation, use the `validation-review` skill to record evidence under `spec/validation/`. Map validation back to requirements, features, stories, designs, ADRs, and ExecPlans. Distinguish passed, failed, skipped, unavailable, and future CI/CD checks. Do not mark validation accepted or complete without explicit human approval.
-
-## Release Readiness
-
-After validation review, use the `release-readiness` skill to prepare the final human release decision and record durable evidence under `spec/release-readiness/`. Summarize approval state, validation and CI/CD evidence, security and quality review notes, unresolved risks, rollback or recovery notes, and recommended next action. Do not merge, release, deploy, tag, announce, or mark release complete without explicit human approval.
-
-## Lifecycle Retrospective
-
-After release, merge, deployment, incident, or sustained usage, use the `lifecycle-retrospective` skill to record learnings under `spec/lifecycle/`. Route approved follow-up work back into requirements refinement, ADR updates, validation improvements, process changes, or operational work. Do not approve priorities, close incidents, or start a new lifecycle loop without explicit human approval.
+Use subagents only when a human maintainer explicitly asks for subagents, delegation, or parallel agent work. Otherwise use the active Forge skills and update `spec/handoff.md` before stopping.
