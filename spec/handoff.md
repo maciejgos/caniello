@@ -3,8 +3,8 @@
 ## Current State
 
 - Active task: `spec/tasks/authenticated-app-shell-navigation.md`.
-- Active branch: `codex/shape-app-dashboard-skeleton`.
-- Current workflow: authenticated app shell navigation has been implemented and validated. It is ready for `forge-evaluator`; publish only after evaluation passes or the human explicitly requests publishing.
+- Active branch: `codex/authenticated-app-shell-navigation`.
+- Current workflow: authenticated app shell navigation has been published as draft PR https://github.com/maciejgos/caniello/pull/13, stacked on `codex/shape-app-dashboard-skeleton` to keep the review diff scoped.
 
 ## Latest Notes
 
@@ -26,6 +26,7 @@
 - Added matching `agents/openai.yaml` UI metadata for all active Forge skills so `forge-publisher` is consistent with the rest of the skill set.
 - Implemented `spec/tasks/authenticated-app-shell-navigation.md` in `apps/web/features/account/AccountApp.tsx` and `apps/web/features/account/content.ts`: signed-in `/app` now renders a localized shell with desktop side navigation, mobile horizontal fallback navigation, active Home state, inert search/pet/notification/account affordances, existing logout behavior, and a minimal non-card main content region. No dashboard cards, onboarding, persistence, live search, notifications, AI, sharing, or section routes were added.
 - Added focused `AccountApp` coverage for authenticated shell labels, active Home navigation, protected-route behavior, and logout/session behavior.
+- Published draft PR https://github.com/maciejgos/caniello/pull/13 from `codex/authenticated-app-shell-navigation` to `codex/shape-app-dashboard-skeleton`. The branch includes commit `e32f571` for the app-shell task and intentionally excludes the unrelated local weekly-reporter commit that remained on `codex/shape-app-dashboard-skeleton`.
 
 ## Changed Files
 
@@ -35,9 +36,9 @@
 - `spec/tasks/authenticated-app-shell-navigation.md`
 - `spec/handoff.md`
 
-Dirty worktree note:
+Publish note:
 
-- Untracked `.codex/skills/forge-weekly-reporter/` is present with `SKILL.md` and `agents/openai.yaml`; it appears unrelated to the authenticated app shell task and was not included as part of this handoff update.
+- `git status --short --untracked-files=all` is clean on `codex/authenticated-app-shell-navigation` after the draft PR was opened.
 
 ## Validation Status
 
@@ -71,11 +72,10 @@ Previous repository validation notes still relevant to the dirty worktree:
 - The app shell task intentionally does not add dashboard cards, onboarding, persistence, live search, notifications, AI, sharing behavior, section routes, or mobile app work.
 - `pnpm test` emitted existing Vitest localStorage experimental warnings and Turbo output warnings; tests still passed.
 - `node_modules/` was installed locally for validation and should remain ignored.
-- `forge-publisher` has not been forward-tested on a real publish flow yet.
 - Official skill quick validation is pending until `PyYAML` is available.
 - No `pnpm build` or full `pnpm test:e2e` run was recorded for the app-shell task.
 
 ## Next Recommended Action
 
-- Evaluate `spec/tasks/authenticated-app-shell-navigation.md`; if it passes, use `forge-publisher` when ready to commit, push, and open a draft PR.
+- Review draft PR https://github.com/maciejgos/caniello/pull/13. It remains draft and needs human review before any ready-for-review, merge, release, or deployment action.
 - Next product task after this shell work: `spec/tasks/first-run-onboarding-skeleton.md`, because it builds on the new authenticated frame without adding dashboard cards or persistence.
