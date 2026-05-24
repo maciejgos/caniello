@@ -17,6 +17,7 @@ Verify whether one implemented task works and stays within roadmap scope. The ev
 - `spec/product-context.md`
 - `spec/roadmap.md`
 - `spec/handoff.md`
+- `spec/validation/TEMPLATE.md`
 - Relevant tests, code, API routes, database migrations, and UI routes.
 
 ## Workflow
@@ -29,7 +30,9 @@ Verify whether one implemented task works and stays within roadmap scope. The ev
 6. For UI changes, use Playwright or browser validation across relevant viewports.
 7. For API or database changes, verify request validation, persistence, permissions, and error behavior where relevant.
 8. Record failures, skipped checks, unavailable tooling, and residual risk.
-9. Update the task verification notes and `spec/handoff.md` when requested.
+9. Create or update a durable validation artifact in `spec/validation/` using `spec/validation/TEMPLATE.md`.
+10. Link the validation artifact from the task verification notes when the task file is in scope.
+11. Update `spec/handoff.md` when requested or when evaluation changes the current workflow state.
 
 ## Evaluation Criteria
 
@@ -49,6 +52,30 @@ Check:
 - privacy, security, and medical-safety boundaries are preserved;
 - no `Next`, `Later`, or `Not Now` work slipped into the task.
 
+## Validation Artifact
+
+Every evaluation must leave an artifact from its work so the AI-assisted delivery loop can be closed without relying on chat history.
+
+Create one focused Markdown file under `spec/validation/` unless a clearly matching validation file already exists and should be updated. Use a task-derived kebab-case name when practical, for example:
+
+```text
+spec/validation/<task-slug>-evaluation.md
+```
+
+The artifact must include:
+
+- task or outcome being evaluated;
+- source artifacts and changed files reviewed;
+- acceptance criteria mapping with evidence status;
+- commands, browser checks, manual checks, and their results;
+- findings ordered by severity;
+- skipped, unavailable, or deferred checks with risk;
+- final evaluator verdict: `Pass`, `Pass with gaps`, or `Fail`;
+- recommended next action;
+- approval caveat that the evaluator does not approve, merge, release, or mark human checkpoints complete.
+
+If the evaluation is blocked before meaningful inspection, still create the artifact with `Result: Blocked`, the blocker, attempted checks, and the next action.
+
 ## Rules
 
 - Do not approve, merge, release, or mark human checkpoints complete.
@@ -64,4 +91,5 @@ End with:
 - findings ordered by severity;
 - missing validation;
 - recommended fixes or next action;
+- validation artifact path;
 - approval caveat.

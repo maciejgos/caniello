@@ -2,9 +2,9 @@
 
 ## Current State
 
-- Active task: None. Last completed task: `spec/tasks/authenticated-app-shell-navigation.md`.
-- Active branch: `codex/shape-app-dashboard-skeleton`.
-- Current workflow: authenticated app shell navigation has been published as draft PR https://github.com/maciejgos/caniello/pull/13, stacked on `codex/shape-app-dashboard-skeleton` to keep the review diff scoped.
+- Active task: None. Last completed product task: `spec/tasks/authenticated-app-shell-navigation.md`.
+- Active branch: `codex/evaluator-validation-artifact`.
+- Current workflow: updating the active `forge-evaluator` skill so every evaluation leaves a durable validation artifact in `spec/validation/`.
 
 ## Latest Notes
 
@@ -28,22 +28,25 @@
 - Added focused `AccountApp` coverage for authenticated shell labels, active Home navigation, protected-route behavior, and logout/session behavior.
 - Published draft PR https://github.com/maciejgos/caniello/pull/13 from `codex/authenticated-app-shell-navigation` to `codex/shape-app-dashboard-skeleton`. The branch includes commit `e32f571` for the app-shell task and intentionally excludes the unrelated local weekly-reporter commit that remained on `codex/shape-app-dashboard-skeleton`.
 - Roadmap review on 2026-05-24 found the active roadmap and candidate dashboard tasks broadly aligned with MVP Foundation. The main stale item was the handoff labeling the completed app-shell task as active. Recommended but unapproved editorial follow-up: tighten `spec/roadmap.md` and `README.md` non-goal wording so it mirrors `spec/product-context.md` more completely for treatment recommendations, veterinary decision-making, broad clinic or partner workflow ownership, advanced household permissions, and advanced analytics/referral/calendar/partner-upload work.
+- Updated `.codex/skills/forge-evaluator/SKILL.md` so evaluations must create or update a focused `spec/validation/<task-slug>-evaluation.md` artifact, link it from task verification notes when applicable, and include the artifact path in the final response. This is a workflow-harness change, not product-scope work.
 
 ## Changed Files
 
-- `apps/web/features/account/AccountApp.tsx`
-- `apps/web/features/account/AccountApp.test.tsx`
-- `apps/web/features/account/content.ts`
-- `spec/tasks/authenticated-app-shell-navigation.md`
+- `.codex/skills/forge-evaluator/SKILL.md`
 - `spec/handoff.md`
 
-Publish note:
+Previous publish note:
 
 - `git status --short --untracked-files=all` was clean on `codex/authenticated-app-shell-navigation` after the draft PR was opened.
 
 ## Validation Status
 
-Current task validation for `spec/tasks/authenticated-app-shell-navigation.md`:
+Current workflow-harness update:
+
+- Reviewed the evaluator skill diff and existing `spec/validation/TEMPLATE.md`.
+- No product tests were run because the change only updates local skill instructions and handoff notes.
+
+Previous task validation for `spec/tasks/authenticated-app-shell-navigation.md`:
 
 - `pnpm --filter web test -- AccountApp.test.tsx` passed outside the sandbox after the sandboxed command failed with `[ERROR] fetch failed`.
 - `pnpm --filter web lint` passed outside the sandbox after the sandboxed command failed with `[ERROR] fetch failed`.
