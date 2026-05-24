@@ -53,7 +53,7 @@ export const accountCopy = {
     appGreeting: "Witaj w Caniello",
     appShellIntro: "Twoje miejsce na profile pupili, dokumenty, przypomnienia i bezpieczne informacje do udostępniania.",
     appShellStatus: "To pierwszy widok po zalogowaniu. Kolejne zadania dodadzą treść dashboardu i dane pupili.",
-    appNavHome: "Home",
+    appNavHome: "Start",
     appNavPets: "Pupile",
     appNavTimeline: "Oś czasu",
     appNavDocuments: "Dokumenty",
