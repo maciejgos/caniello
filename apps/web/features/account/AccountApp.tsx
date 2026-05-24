@@ -586,7 +586,7 @@ function AppTopBar({
           </span>
           <span className="sr-only">{copy.appSearchLabel}</span>
           <input className="min-w-0 flex-1 bg-transparent outline-none placeholder:text-navy/56" placeholder={copy.appSearchPlaceholder} readOnly type="search" />
-          <kbd className="hidden rounded-md border border-[#d9dee8] px-2 py-1 text-xs font-black text-navy/58 sm:inline">⌘ K</kbd>
+          <kbd aria-hidden="true" className="hidden rounded-md border border-[#d9dee8] px-2 py-1 text-xs font-black text-navy/58 sm:inline">⌘ K</kbd>
         </label>
         <button className="flex min-h-11 items-center gap-3 rounded-lg border border-[#dce2ec] bg-white px-3 text-sm font-black text-navy" type="button" aria-label={copy.appPetSelectorLabel}>
           <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#ffe4bd] text-lg" aria-hidden="true">B</span>
