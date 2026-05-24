@@ -1,41 +1,44 @@
-# Feature: <Short Name>
+# Feature: [Feature name]
 
-## Status
+## Source Notes
 
-Draft
+[Summarize the raw notes or discovery context. Do not paste long transcripts.]
 
-## Summary
+## User Problem
 
-Describe the capability and the outcome it enables.
+[Describe the user problem or business need.]
 
-## Source Requirements
+## Outcome
 
-Link to the requirement files that motivate this feature.
+[Describe what should become true for the user or business.]
 
-## Users and Use Cases
+## Roadmap Alignment
 
-Describe who uses the feature and what they need to accomplish.
+Phase: [Now / Next / Later / Not Now]
+
+Why this belongs here:
+
+[Explain the roadmap fit in one or two sentences.]
 
 ## Scope
 
-Describe what is included.
+- [In-scope capability or behavior.]
+- [In-scope capability or behavior.]
 
-## Out of Scope
+## Non-Goals
 
-Describe what is excluded for now.
+- [Explicitly excluded work.]
+- [Explicitly excluded work.]
 
-## Behavior
+## Candidate Tasks
 
-Describe the expected behavior in observable terms.
+- [Small task candidate that can be refined by `forge-planner`.]
+- [Small task candidate that can be refined by `forge-planner`.]
 
-## Acceptance Criteria
+## Open Questions
 
-- Given <context>, when <action>, then <observable result>.
+- [Question that affects scope, order, UX, data, or validation.]
 
-## Related Stories
+## Approval Notes
 
-Link to implementation-ready stories when they exist.
-
-## Related Artifacts
-
-Link to designs, ADRs, ExecPlans, validation artifacts, release-readiness records, or lifecycle notes that depend on or revise this feature.
+[Record any roadmap, product, architecture, security, privacy, or release approval needed before implementation.]

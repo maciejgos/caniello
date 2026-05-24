@@ -1,0 +1,4 @@
+interface:
+  display_name: "Forge Evaluator"
+  short_description: "Evaluate task readiness and scope."
+  default_prompt: "Use $forge-evaluator to evaluate this implemented task against acceptance criteria, validation, and roadmap scope."

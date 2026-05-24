@@ -19,7 +19,7 @@ The initial product should be useful before it becomes a platform. Caniello star
 
 Status: `validation`
 
-This repository is currently in product discovery and PDLC setup. The primary work should happen in `spec/` until implementation scope is clear enough to build.
+This repository is validating and building the Caniello MVP through a lightweight, human-governed Forge workflow. The active operating loop and durable evidence both live under `spec/`, with task-sized files for daily work and heavier records only when they are useful.
 
 The first goal is to validate whether pet owners repeatedly use and trust Caniello for pet health organization.
 
@@ -88,14 +88,26 @@ apps/web/          Next.js App Router web app and MVP Vercel root
 apps/mobile/       Minimal mobile workspace scaffold for future Expo work
 packages/          Shared contracts, domain, application, db, ui, and config packages
 infra/supabase/    Supabase CLI configuration, migrations, and seed file
-.devcontainer/     Dev Container image and editor environment for local development
-spec/              Product discovery, requirements, design, plans, validation, and lifecycle artifacts
+spec/              Product context, roadmap, feature briefs, tasks, handoff, ADRs, validation, and archived history
 tests/             Cross-app executable tests, including Playwright E2E
 ```
 
 ## Development Commands
 
 The MVP workspace is a pnpm and Turborepo monorepo. The web app is a Next.js App Router application under `apps/web`.
+
+Local development runs on the host by default. Docker Desktop is still required because Supabase local development runs its database and support services in Docker.
+
+First-time setup on macOS:
+
+- `./scripts/setup.sh`: install/check Homebrew-managed tools, install project dependencies, install the Vercel CLI, create `.env.local` if missing, and start local Supabase.
+
+Host tools managed by setup:
+
+- Docker Desktop for Supabase local services.
+- Node.js and pnpm for the monorepo.
+- Supabase CLI for local database/auth/storage services.
+- Vercel CLI, installed with `pnpm i -g vercel` following Vercel's current getting-started guidance.
 
 - `pnpm install`: install workspace dependencies from `pnpm-lock.yaml`.
 - `pnpm dev`: start the Next.js development server for `apps/web` on `http://localhost:3000`.
@@ -104,18 +116,28 @@ The MVP workspace is a pnpm and Turborepo monorepo. The web app is a Next.js App
 - `pnpm test:e2e`: run Playwright browser checks against the landing page.
 - `pnpm lint`: run the TypeScript validation gate across the workspace.
 - `pnpm validation:mailerlite-integration`: run the focused MailerLite integration gate for landing lead contracts, consent/error handling, server payload mapping, and web type safety.
-- `pnpm exec supabase start --workdir infra/supabase`: start local Supabase services when the Supabase CLI is available.
-- `docker compose build`: build the Dev Container workspace image from `.devcontainer/Dockerfile`.
-- `docker compose up`: start the workspace container and expose the web and Supabase ports.
-- `docker compose down`: stop the workspace container.
+- `./scripts/start.sh`: start local Supabase services from the host.
+- `./scripts/stop.sh`: stop local Supabase services without taking a backup.
+- `./scripts/cleanup.sh --yes`: stop local Supabase and remove generated project files such as `node_modules`, build output, test output, local env files, and local caches. It does not uninstall shared host tools.
+- `vercel login`: authenticate the Vercel CLI once.
+- `vercel`: create a Vercel preview deployment.
+- `vercel --prod`: deploy to production after human release approval.
 
 Local ports:
 
 - `3000`: Next.js web app.
-- `54321`: Supabase API.
-- `54322`: Supabase local database.
-- `54323`: Supabase Studio.
+- `55321`: Supabase API.
+- `55322`: Supabase local database.
+- `55323`: Supabase Studio.
 - `54324`: Supabase Inbucket/email testing.
+
+Local demo account:
+
+- Name: `Anna Kowalska`
+- Email: `akowalska@example.com`
+- Password: `CanielloDemo123!`
+
+The demo account is defined in `infra/supabase/seed.sql` for local development only. After changing seed data, recreate the local database with `supabase db reset --workdir infra`, then restart `pnpm dev` if the web app is already running.
 
 Vercel should use `apps/web` as the Root Directory. The MVP uses one Vercel project for the web app and its `/api/*` routes; do not create a separate API project for the MVP.
 
@@ -132,16 +154,36 @@ Landing-page analytics consent and validation events are posted to `/api/validat
 
 ## Development Model
 
-Caniello follows an AI-assisted, human-governed PDLC model:
+Caniello follows a lightweight AI-assisted, human-governed Forge model:
 
-1. Define intent and constraints in `spec/`.
-2. Draft requirements, feature definitions, and validation criteria.
-3. Review product scope before implementation.
-4. Build the smallest validated product slice.
-5. Capture validation evidence before expanding scope.
-6. Feed learnings back into the control plane and this repository.
+```text
+roadmap filter -> task -> implementation -> verification -> handoff -> optional publish
+```
 
-Implementation should not begin by adding a broad app scaffold. Start with validated product artifacts, then choose tooling when the first build slice is clear.
+Use `spec/product-context.md` for durable product truth and `spec/roadmap.md` to decide whether work belongs in `Now`, `Next`, `Later`, or `Not Now`. Use `spec/tasks/` for executable work, and update `spec/handoff.md` so the next session can continue without chat history.
+
+Optional steps:
+
+- Use `spec/features/` with `spec/features/LIGHTWEIGHT_TEMPLATE.md` when broad notes need to become a lightweight feature brief and candidate tasks before planning.
+- Use `spec/architecture-records/` when a durable architecture decision is needed. ADRs drafted by Codex stay `Draft` until explicitly approved by a human maintainer.
+- Use `spec/architecture/` for exploratory architecture notes before an ADR is warranted.
+- Use `spec/validation/` for durable validation evidence when task notes are not enough.
+
+Older Flow Forge-era artifacts are archived under `spec/archive/flow-forge-history/` as reference material. Do not use them as default workflow paths unless a human maintainer explicitly asks to revive a heavier process for a specific reason.
+
+The active Forge skills under `.codex/skills/` support this flow:
+
+- `forge-shaper`: notes to feature brief and candidate tasks.
+- `forge-planner`: intent or candidate task to one executable task.
+- `forge-architect`: architecture question to note or draft ADR.
+- `forge-implementer`: one task to implementation and validation notes.
+- `forge-evaluator`: implementation review against acceptance criteria and scope.
+- `forge-handoff`: continuation state for the next session.
+- `forge-publisher`: commit, push, and open a draft PR after successful validation or explicit human instruction.
+- `forge-roadmap-review`: priority and scope drift review.
+- `forge-weekly-reporter`: weekly work report with human feedback before finalizing.
+
+Implementation should stay task-sized, roadmap-aligned, and focused on the smallest validated product slice. Do not expand into marketplace, clinic SaaS, booking, payments-first flows, AI diagnosis, or official passport replacement claims without explicit human approval.
 
 ## Relationship to The Future Thinker World
 

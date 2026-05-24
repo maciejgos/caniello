@@ -1,3 +1,5 @@
+import { createClient } from "@supabase/supabase-js";
+
 export type SupabaseClientConfig = {
   url: string;
   anonKey: string;
@@ -38,10 +40,32 @@ export function readSupabaseClientConfig(env: Record<string, string | undefined>
   return { url, anonKey };
 }
 
+export function readSupabaseServerClientConfig(
+  env: Record<string, string | undefined> = process.env
+): SupabaseClientConfig | null {
+  const publicConfig = readSupabaseClientConfig(env);
+  if (!publicConfig) {
+    return null;
+  }
+
+  const rawInternalUrl = readRequiredEnvValue(env, "SUPABASE_INTERNAL_URL");
+  if (!rawInternalUrl) {
+    return publicConfig;
+  }
+
+  const internalUrl = normalizeSupabaseUrl(rawInternalUrl);
+  if (!internalUrl) {
+    return null;
+  }
+
+  return { ...publicConfig, url: internalUrl };
+}
+
 export function readSupabaseServiceRoleConfig(
   env: Record<string, string | undefined> = process.env
 ): SupabaseServiceRoleConfig | null {
-  const rawUrl = readRequiredEnvValue(env, "NEXT_PUBLIC_SUPABASE_URL");
+  const rawUrl =
+    readRequiredEnvValue(env, "SUPABASE_INTERNAL_URL") ?? readRequiredEnvValue(env, "NEXT_PUBLIC_SUPABASE_URL");
   const serviceRoleKey = readRequiredEnvValue(env, "SUPABASE_SERVICE_ROLE_KEY");
 
   if (!rawUrl || !serviceRoleKey) {
@@ -62,4 +86,22 @@ export function buildSupabaseRestUrl(config: Pick<SupabaseClientConfig, "url">):
 
 export function buildSupabaseStorageUrl(config: Pick<SupabaseClientConfig, "url">): string {
   return `${config.url}/storage/v1`;
+}
+
+export function createSupabaseBrowserClient(config: SupabaseClientConfig) {
+  return createClient(config.url, config.anonKey, {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true
+    }
+  });
+}
+
+export function createSupabaseServiceRoleClient(config: SupabaseServiceRoleConfig) {
+  return createClient(config.url, config.serviceRoleKey, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false
+    }
+  });
 }

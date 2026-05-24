@@ -36,7 +36,7 @@ Patterns such as Retry and Factory are approved for MVP, but they must be applie
 
 Caniello MVP needs to move quickly without accumulating avoidable technical debt. The product will handle user accounts, pet records, reminders, documents, and trusted sharing, so implementation quality matters even during validation.
 
-The architecture already chooses a TypeScript-first monorepo, Next.js, React Native / Expo, Supabase, Vercel, pnpm workspaces, Turborepo, and Dev Containers. This decision defines how code should be written inside that architecture.
+The architecture already chooses a TypeScript-first monorepo, Next.js, React Native / Expo, Supabase, Vercel, pnpm workspaces, Turborepo, and host-first local setup scripts. This decision defines how code should be written inside that architecture.
 
 ## Engineering standards
 

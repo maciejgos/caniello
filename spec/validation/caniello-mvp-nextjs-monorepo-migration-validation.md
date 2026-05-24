@@ -6,7 +6,7 @@ Accepted
 
 ## Scope
 
-This validation reviews the migration from the root React/Vite/npm landing app and root `api/` endpoints into the ADR 0001-0011 TypeScript-first monorepo. The validated outcome is a pnpm/Turborepo workspace with `apps/web` as a Next.js App Router app, minimal `apps/mobile`, baseline `packages/*`, Supabase local placeholders, Dev Container support, Vercel alignment to one web project, and preserved landing/API behavior.
+This validation reviews the migration from the root React/Vite/npm landing app and root `api/` endpoints into the ADR 0001-0011 TypeScript-first monorepo. The validated outcome is a pnpm/Turborepo workspace with `apps/web` as a Next.js App Router app, minimal `apps/mobile`, baseline `packages/*`, Supabase local placeholders, Vercel alignment to one web project, and preserved landing/API behavior.
 
 ## Source Artifacts
 
@@ -21,7 +21,7 @@ This validation reviews the migration from the root React/Vite/npm landing app a
 - `spec/architecture-records/0007-use-react-native-expo-for-mobile.md`
 - `spec/architecture-records/0008-use-mvp-product-tooling-baseline.md`
 - `spec/architecture-records/0009-use-one-vercel-project-for-mvp.md`
-- `spec/architecture-records/0010-use-dev-containers-for-local-development.md`
+- `spec/architecture-records/0022-use-host-first-local-development-setup.md`
 - `spec/architecture-records/0011-use-pragmatic-engineering-practices-from-mvp-start.md`
 - `apps/web/app/(marketing)/page.tsx`
 - `apps/web/features/marketing/MarketingApp.tsx`
@@ -34,7 +34,7 @@ This validation reviews the migration from the root React/Vite/npm landing app a
 
 ## Preconditions
 
-The implementation branch is `codex/nextjs-monorepo-migration`. Dependencies were installed through the Dockerized workspace with `pnpm install`, producing `pnpm-lock.yaml`. The current workspace image is based on standard `node:24-bookworm` and installs Playwright Chromium plus browser system dependencies during image build.
+The implementation branch is `codex/nextjs-monorepo-migration`. Dependencies were installed during migration validation, producing `pnpm-lock.yaml`. The current local development path uses host-first scripts.
 
 ## Acceptance Criteria Mapping
 
@@ -54,65 +54,65 @@ The implementation branch is `codex/nextjs-monorepo-migration`. Dependencies wer
   Evidence status: Supported
   Evidence: `spec/plans/caniello-mvp-implementation-roadmap.md` now states that the older FastAPI and Back Office path is superseded by ADR 0001-0011, and the new migration ExecPlan defines Next.js API routes and Supabase as the active foundation.
 
-- Criterion: Local development and deployment docs identify pnpm, Dev Container, Supabase local foundation, Next.js port `3000`, and Vercel Root Directory `apps/web`.
+- Criterion: Local development and deployment docs identify pnpm, Supabase local foundation, Next.js port `3000`, and Vercel Root Directory `apps/web`.
   Evidence status: Supported
-  Evidence: `README.md`, `AGENTS.md`, `.devcontainer/devcontainer.json`, `.devcontainer/Dockerfile`, `docker-compose.yml`, `.env.example`, `infra/supabase/config.toml`, and `vercel.json`.
+  Evidence: `README.md`, `AGENTS.md`, `scripts/setup.sh`, `scripts/start.sh`, `scripts/stop.sh`, `scripts/cleanup.sh`, `.env.example`, `infra/supabase/config.toml`, and `vercel.json`.
 
 ## Checks
 
-- Check: `docker compose build workspace`
+- Check: Historical containerized workspace build
   Type: Automated
   Status: Passed
-  Expected result: The workspace image builds reproducibly.
-  Actual result: Passed after switching to a standard Node LTS base image and installing Docker CLI, global `pnpm`, `turbo`, `vercel`, and Playwright Chromium dependencies.
+  Expected result: Historical containerized workspace image built reproducibly before the project moved to host-first local setup.
+  Actual result: Passed during the historical migration validation.
 
-- Check: `docker compose run --rm workspace pnpm install`
+- Check: `pnpm install`
   Type: Automated
   Status: Passed
   Expected result: Workspace dependencies install and `pnpm-lock.yaml` is generated.
   Actual result: Passed. Supabase CLI installed as a workspace dev dependency and completed its postinstall download.
 
-- Check: `docker compose run --rm workspace pnpm lint`
+- Check: `pnpm lint`
   Type: Automated
   Status: Passed
   Expected result: TypeScript validation passes across workspace packages and apps.
   Actual result: Passed after adding Node types to `packages/db` and setting `ignoreDeprecations` for TypeScript 6.
 
-- Check: `docker compose run --rm workspace pnpm test`
+- Check: `pnpm test`
   Type: Automated
   Status: Passed
   Expected result: Unit, contract, and server tests pass.
   Actual result: Passed. Web reported 4 test files and 19 tests passing; contracts reported 3 tests passing.
 
-- Check: `docker compose run --rm workspace pnpm build`
+- Check: `pnpm build`
   Type: Automated
   Status: Passed
   Expected result: Next.js and packages build/type-check successfully.
   Actual result: Passed. Next.js generated static pages for `/`, `/privacy`, `/terms`, `/medical-boundaries`, `/marketplace`, `/clinics`, and dynamic API routes for `/api/landing-leads` and `/api/validation-events`.
 
-- Check: `docker compose run --rm workspace pnpm test:e2e`
+- Check: `pnpm test:e2e`
   Type: UI
   Status: Passed
   Expected result: Playwright validates direct routes, scroll reset, forms, consent, language switching, validation events, marketplace, and clinics flows on desktop and mobile.
   Actual result: Passed with 12 tests passing after passing `PLAYWRIGHT_BROWSERS_PATH` through Turborepo and disabling the Next dev indicator for E2E strict locators.
 
-- Check: `docker compose run --rm workspace node scripts/pdlc-lifecycle-gate.mjs`
+- Check: `node scripts/pdlc-lifecycle-gate.mjs`
   Type: Automated
   Status: Passed
   Expected result: Changed validation, release-readiness, and lifecycle checkpoint artifacts cannot silently move to accepted or terminal status without a human decision or checkpoint section.
-  Actual result: Passed locally in the Docker workspace after adding `.github/workflows/ci.yml`, `scripts/pdlc-lifecycle-gate.mjs`, and `pnpm pdlc:lifecycle-gate`.
+  Actual result: Passed locally after adding `.github/workflows/ci.yml`, `scripts/pdlc-lifecycle-gate.mjs`, and `pnpm pdlc:lifecycle-gate`.
 
 ## Evidence
 
 Command evidence:
 
-- `docker compose build workspace`: passed.
-- `docker compose run --rm workspace pnpm install`: passed and generated `pnpm-lock.yaml`.
-- `docker compose run --rm workspace pnpm lint`: passed with 7 successful tasks.
-- `docker compose run --rm workspace pnpm test`: passed with 9 successful tasks; web had 19 passing tests.
-- `docker compose run --rm workspace pnpm build`: passed with 7 successful tasks.
-- `docker compose run --rm workspace pnpm test:e2e`: passed with 12 Playwright tests.
-- `docker compose run --rm workspace node scripts/pdlc-lifecycle-gate.mjs`: passed and checked changed checkpoint artifacts.
+- Historical containerized workspace build: passed before host-first local setup replaced that path.
+- `pnpm install`: passed and generated `pnpm-lock.yaml`.
+- `pnpm lint`: passed with 7 successful tasks.
+- `pnpm test`: passed with 9 successful tasks; web had 19 passing tests.
+- `pnpm build`: passed with 7 successful tasks.
+- `pnpm test:e2e`: passed with 12 Playwright tests.
+- `node scripts/pdlc-lifecycle-gate.mjs`: passed and checked changed checkpoint artifacts.
 
 UI screenshot evidence was refreshed under `spec/validation/screenshots/` for the landing success flows generated by the Playwright run.
 

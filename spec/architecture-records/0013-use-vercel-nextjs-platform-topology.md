@@ -10,7 +10,7 @@ Accepted
 
 ## Context
 
-Milestone 1 requires a clear platform topology before product implementation continues. ADRs 0001, 0003, 0005, 0009, and 0010 already choose a TypeScript-first monorepo, one Next.js app under `apps/web`, one Vercel project, and Dev Containers for local development. The old FastAPI and separate API-service path is superseded.
+Milestone 1 requires a clear platform topology before product implementation continues. ADRs 0001, 0003, 0005, and 0009 already choose a TypeScript-first monorepo, one Next.js app under `apps/web`, and one Vercel project. ADR 0022 updates local development to a host-first setup. The old FastAPI and separate API-service path is superseded.
 
 ## Decision
 
@@ -32,4 +32,5 @@ This keeps hosting, routing, preview deployments, and API boundaries simple for 
 - [0003 - Keep landing, web app, and API in one Next.js project](./0003-keep-landing-app-and-api-in-one-nextjs-project.md)
 - [0005 - Deploy the web application on Vercel](./0005-deploy-web-on-vercel.md)
 - [0009 - Use one Vercel project for Caniello MVP](./0009-use-one-vercel-project-for-mvp.md)
+- [0022 - Use host-first local development setup](./0022-use-host-first-local-development-setup.md)
 - [Caniello MVP Target Architecture](../architecture/mvp-target-architecture.md)
