@@ -1,0 +1,4 @@
+interface:
+  display_name: "Forge Planner"
+  short_description: "Create one roadmap-aligned task."
+  default_prompt: "Use $forge-planner to turn this intent into one scoped roadmap-aligned task file."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Forge Publisher"
+  short_description: "Publish validated task work to GitHub."
+  default_prompt: "Use $forge-publisher to publish validated task changes by committing intentional files, pushing the branch, and opening a draft PR."

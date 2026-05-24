@@ -4,7 +4,7 @@
 
 - Active task: none.
 - Active branch: `codex/shape-app-dashboard-skeleton`.
-- Current workflow: shaped authenticated app dashboard skeleton feature and task candidates from MVP mockups/backlog.
+- Current workflow: added Forge publishing step after validation and handoff.
 
 ## Latest Notes
 
@@ -20,6 +20,9 @@
   - `spec/tasks/home-dashboard-skeleton.md`
   - `spec/tasks/app-section-empty-states.md`
   - `spec/tasks/dashboard-skeleton-validation.md`
+- Created `forge-publisher` as the optional post-validation publishing skill for commit, push, and draft PR creation.
+- Updated `AGENTS.md`, `README.md`, and `spec/README.md` so the lightweight Forge flow ends with optional publishing after handoff.
+- Added matching `agents/openai.yaml` UI metadata for all active Forge skills so `forge-publisher` is consistent with the rest of the skill set.
 
 ## Validation Status
 
@@ -31,6 +34,10 @@
 - `pnpm install` was run outside the sandbox because dependencies were missing and validation needed `turbo`.
 - `pnpm lint` passed outside the sandbox after sandboxed attempts failed with `[ERROR] fetch failed`.
 - `pnpm test` passed outside the sandbox after sandboxed attempts failed with `[ERROR] fetch failed`.
+- `git diff --check` passed after adding `forge-publisher`.
+- Ruby `Psych.safe_load` frontmatter sanity check passed for `.codex/skills/forge-publisher/SKILL.md`.
+- Ruby `Psych.safe_load` metadata sanity check passed for every `.codex/skills/forge-*/agents/openai.yaml` file, including `$skill-name` default prompt references.
+- `quick_validate.py .codex/skills/forge-publisher` could not run because the host Python lacks the `yaml` module.
 
 ## Known Gaps
 
@@ -40,7 +47,9 @@
 - `pnpm test` emitted existing Vitest localStorage experimental warnings and Turbo output warnings; tests still passed.
 - `node_modules/` was installed locally for validation and should remain ignored.
 - No implementation validation has been run for the dashboard skeleton shaping work because it only adds spec artifacts.
+- `forge-publisher` has not been forward-tested on a real publish flow yet.
+- Official skill quick validation is pending until `PyYAML` is available.
 
 ## Next Recommended Action
 
-- Choose the first dashboard skeleton task to plan or implement. Recommended first task: `spec/tasks/authenticated-app-shell-navigation.md`.
+- If the new publishing workflow looks right, use `forge-publisher` after the next successful task evaluation to commit, push, and open a draft PR.

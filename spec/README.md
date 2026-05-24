@@ -5,7 +5,7 @@ The `spec/` directory is the single Caniello product and delivery workspace. It 
 Default lightweight flow:
 
 ```text
-roadmap filter -> task -> implementation -> verification -> handoff
+roadmap filter -> task -> implementation -> verification -> handoff -> optional publish
 ```
 
 Optional shaping and architecture paths:
