@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AccountApp } from "./AccountApp";
+import { accountCopy } from "./content";
 
 describe("Caniello account experience", () => {
   beforeEach(() => {
@@ -104,14 +105,14 @@ describe("Caniello account experience", () => {
 
     expect(screen.getByRole("heading", { name: /panel opiekuna/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /witaj w caniello/i })).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: /home/i })[0]).toHaveAttribute("aria-current", "page");
-    expect(screen.getAllByRole("link", { name: /pupile/i })[0]).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: /oś czasu/i })[0]).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: /dokumenty/i })[0]).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: /przypomnienia/i })[0]).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: /zapytaj caniello/i })[0]).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: /udostępnianie/i })[0]).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: /ustawienia/i })[0]).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: accountCopy.pl.appNavHome })[0]).toHaveAttribute("aria-current", "page");
+    expect(screen.getAllByRole("link", { name: accountCopy.pl.appNavPets })[0]).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: accountCopy.pl.appNavTimeline })[0]).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: accountCopy.pl.appNavDocuments })[0]).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: accountCopy.pl.appNavReminders })[0]).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: accountCopy.pl.appNavAsk })[0]).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: accountCopy.pl.appNavSharing })[0]).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: accountCopy.pl.appNavSettings })[0]).toBeInTheDocument();
     expect(screen.getByRole("searchbox", { name: /szukaj w caniello/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /aktywny pupil/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /powiadomienia/i })).toBeInTheDocument();
