@@ -18,7 +18,7 @@ Use this skill when notes contain more than one task, conflicting ideas, uncerta
 - `README.md`
 - `spec/product-context.md`
 - `spec/roadmap.md`
-- `spec/features/LIGHTWEIGHT_TEMPLATE.md`
+- `spec/features/TEMPLATE.md`
 - `spec/handoff.md`
 - Relevant `spec/tasks/*`, active ADRs, source notes, or archived reference artifacts when needed.
 
@@ -45,7 +45,7 @@ Use this skill when notes contain more than one task, conflicting ideas, uncerta
 
 ## Output
 
-Create or update one feature brief under `spec/features/` using `spec/features/LIGHTWEIGHT_TEMPLATE.md`.
+Create or update one feature brief under `spec/features/` using `spec/features/TEMPLATE.md`.
 
 End with:
 
