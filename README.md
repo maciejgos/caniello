@@ -181,6 +181,7 @@ The active Forge skills under `.codex/skills/` support this flow:
 - `forge-handoff`: continuation state for the next session.
 - `forge-publisher`: commit, push, and open a draft PR after successful validation or explicit human instruction.
 - `forge-roadmap-review`: priority and scope drift review.
+- `forge-weekly-reporter`: weekly work report with human feedback before finalizing.
 
 Implementation should stay task-sized, roadmap-aligned, and focused on the smallest validated product slice. Do not expand into marketplace, clinic SaaS, booking, payments-first flows, AI diagnosis, or official passport replacement claims without explicit human approval.
 

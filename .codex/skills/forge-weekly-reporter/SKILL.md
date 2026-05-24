@@ -43,7 +43,7 @@ The report is a communication artifact, not a roadmap authority. It may summariz
    - What feedback should The Future Thinker World be asked to provide?
    - Is there anything sensitive or internal that should be removed?
 8. After the human responds, incorporate their feedback and write the final report.
-9. If the human does not respond and asked only for a draft, write a draft clearly labeled `Draft - awaiting human feedback`.
+9. If the human asks only for a draft, write a draft clearly labeled `Draft - awaiting human feedback`.
 10. Mention skipped or unavailable evidence instead of pretending the report is complete.
 
 ## Rules
