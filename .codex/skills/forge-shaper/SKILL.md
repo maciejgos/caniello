@@ -16,21 +16,23 @@ Use this skill when notes contain more than one task, conflicting ideas, uncerta
 - Raw notes, discovery findings, stakeholder comments, or a broad feature idea.
 - `AGENTS.md`
 - `README.md`
+- `spec/product-context.md`
 - `spec/roadmap.md`
 - `spec/features/LIGHTWEIGHT_TEMPLATE.md`
 - `spec/handoff.md`
-- Relevant `spec/decisions.md`, `spec/tasks/*`, or `spec/` reference artifacts when needed.
+- Relevant `spec/tasks/*`, active ADRs, source notes, or archived reference artifacts when needed.
 
 ## Workflow
 
 1. Read the roadmap before shaping.
-2. Classify the idea as `Now`, `Next`, `Later`, or `Not Now`.
-3. Extract the user problem, desired outcome, constraints, and non-goals.
-4. Preserve source-note context as a summary, not a transcript dump.
-5. Draft a lightweight feature brief under `spec/features/`.
-6. Propose candidate tasks that are small enough for `forge-planner`.
-7. Call out open questions and approval needs.
-8. Stop before implementation.
+2. Read `spec/product-context.md` for product boundaries, audience, validation goals, and non-goals.
+3. Classify the idea as `Now`, `Next`, `Later`, or `Not Now`.
+4. Extract the user problem, desired outcome, constraints, and non-goals.
+5. Preserve source-note context as a summary, not a transcript dump.
+6. Draft a lightweight feature brief under `spec/features/`.
+7. Propose candidate tasks that are small enough for `forge-planner`.
+8. Call out open questions and approval needs.
+9. Stop before implementation.
 
 ## Rules
 

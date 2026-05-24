@@ -12,15 +12,16 @@ Keep the roadmap useful as a lightweight decision filter. This skill reviews pri
 ## Inputs
 
 - `spec/roadmap.md`
+- `spec/product-context.md`
 - `ROADMAP.md`
 - `spec/tasks/`
 - `spec/handoff.md`
 - `README.md`
-- Relevant `spec/` reference artifacts and ADRs when needed.
+- Relevant source notes, archived reference artifacts, and ADRs when needed.
 
 ## Workflow
 
-1. Read `spec/roadmap.md` and root `ROADMAP.md`.
+1. Read `spec/product-context.md`, `spec/roadmap.md`, and root `ROADMAP.md`.
 2. Inspect active or recent task files.
 3. Identify tasks that do not belong in `Now`.
 4. Identify stale roadmap statements, missing non-goals, or conflicts with README/product context.

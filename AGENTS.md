@@ -4,6 +4,8 @@
 
 This repository is Caniello, a pet health and care organization utility. Caniello helps pet owners keep trusted, shareable records for pet profiles, reminders, documents, and care information in one place.
 
+Durable product truth lives in `spec/product-context.md`. Read it with `spec/roadmap.md` before shaping, planning, implementing, or evaluating Caniello product work.
+
 The MVP promise is:
 
 > One place for a pet's health records, reminders, documents, and shareable care information.
@@ -56,9 +58,9 @@ For normal Caniello MVP work, prefer the active Forge skills:
 - `forge-handoff` to update continuation notes;
 - `forge-roadmap-review` to check roadmap drift and stale priorities.
 
-Archived Flow Forge skills and agents live under `.codex/flow-forge-reference/`. Treat them as reference material only unless Maciej explicitly asks to use the heavier PDLC workflow for architecture, security, release, lifecycle, or large planning work.
+Archived Flow Forge skills and agents live under `.codex/flow-forge-reference/`. Older Flow Forge-era spec artifacts live under `spec/archive/flow-forge-history/`. Treat archived material as reference only unless a human maintainer explicitly asks to use a heavier process for a specific architecture, security, release, lifecycle, or large planning need.
 
-Use `forge-architect` for non-trivial architecture questions. Planner and implementer skills may draft small obvious ADRs under `spec/architecture-records/` when they discover durable architecture decisions, but ADR drafts must remain `Draft` until Maciej explicitly approves them, and implementation that depends on a new decision must stop before relying on the draft.
+Use `forge-architect` for non-trivial architecture questions. Planner and implementer skills may draft small obvious ADRs under `spec/architecture-records/` when they discover durable architecture decisions, but ADR drafts must remain `Draft` until human explicitly approves them, and implementation that depends on a new decision must stop before relying on the draft.
 
 ## Project Structure
 
@@ -66,7 +68,7 @@ Use `forge-architect` for non-trivial architecture questions. Planner and implem
 - `apps/mobile/` for the future React Native / Expo mobile app scaffold.
 - `packages/` for shared contracts, domain, application, db, ui, and config packages.
 - `infra/supabase/` for Supabase CLI configuration, migrations, local functions, and seed data.
-- `spec/` for the flattened Caniello workspace: roadmap, feature briefs, tasks, handoff notes, ADRs, validation evidence, release-readiness records, lifecycle notes, and heavier historical/reference artifacts.
+- `spec/` for the flattened Caniello workspace: product context, roadmap, feature briefs, tasks, handoff notes, architecture notes, ADRs, validation evidence, and archived historical/reference artifacts.
 - `.codex/` for Codex runtime configuration, active Forge skills, rules, and archived Flow Forge reference material.
 - `tests/` for executable product tests once implementation tooling exists.
 
@@ -136,7 +138,7 @@ Record skipped, failed, unavailable, or deferred checks in the task file or hand
 
 Before broad changes, inspect the tree with `git status --short` and preserve user edits. Do not rewrite history on `main` unless explicitly requested.
 
-During implementation, create or switch to a feature branch before edits unless Maciej explicitly says to stay on the current branch.
+During implementation, create or switch to a feature branch before edits unless a human maintainer explicitly says to stay on the current branch.
 
 Before committing, run `git status --short` and verify only intentional files are staged. Use clear, imperative commit messages such as `Add Caniello task harness`. Pull requests should include a short summary, testing notes, linked issues when applicable, and screenshots or terminal evidence for user-visible changes.
 
@@ -149,14 +151,14 @@ Codex may:
 - suggest roadmap updates;
 - identify task and roadmap misalignment;
 - propose new roadmap items in `spec/handoff.md`;
-- update roadmap links or task references when Maciej requests it.
+- update roadmap links or task references when a human maintainer requests it.
 
 Codex must not:
 
 - silently add features to active `Now` scope;
 - move `Next`, `Later`, or `Not Now` work into `Now`;
 - remove strategic constraints;
-- expand MVP scope without Maciej approval;
+- expand MVP scope without explicit human approval;
 - approve, accept, reject, release, merge, or mark human checkpoints complete.
 
 Keep root `ROADMAP.md` as the discoverable index and `spec/roadmap.md` as the active lightweight prioritization filter.
@@ -167,4 +169,4 @@ Nested `AGENTS.md` files may add more specific instructions for their subtree. F
 
 Work on one task at a time. Do not expand scope while implementing. Stop and ask for approval when a task requires a durable architecture decision, migration, security-sensitive change, external service change, destructive action, release action, or product scope expansion.
 
-Use subagents only when Maciej explicitly asks for subagents, delegation, or parallel agent work. Otherwise use the active Forge skills and update `spec/handoff.md` before stopping.
+Use subagents only when a human maintainer explicitly asks for subagents, delegation, or parallel agent work. Otherwise use the active Forge skills and update `spec/handoff.md` before stopping.

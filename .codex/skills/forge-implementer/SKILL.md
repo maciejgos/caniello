@@ -14,6 +14,7 @@ Implement one approved `spec/tasks/*` task narrowly, verify it, and update task 
 - One `spec/tasks/*` task file.
 - `AGENTS.md`
 - The closest nested `AGENTS.md`.
+- `spec/product-context.md`
 - `spec/roadmap.md`
 - `spec/handoff.md`
 - Relevant code, tests, contracts, ADRs, and existing patterns.
@@ -21,17 +22,18 @@ Implement one approved `spec/tasks/*` task narrowly, verify it, and update task 
 ## Workflow
 
 1. Run `git status --short` and preserve user edits.
-2. Confirm the task belongs to `Now` or has explicit human approval.
-3. Create or switch to a feature branch before edits unless the human explicitly says to stay on the current branch.
-4. Identify the smallest implementation slice that satisfies the acceptance criteria.
-5. Add or update focused behavior tests where practical before or alongside implementation.
-6. Before coding, check whether the task depends on a new or changed architecture decision. If yes, route non-trivial decisions to `forge-architect`; draft only small obvious ADRs yourself, and stop for human approval before implementing dependent code.
-7. Implement the smallest direct change.
-8. Keep shared browser/API contracts in `packages/contracts` and durable SQL vocabularies in database enum/domain types when relevant.
-9. Run relevant validation: lint, typecheck, build, unit, integration, E2E, and manual checks as appropriate to the risk.
-10. Use Playwright/browser validation for UI work.
-11. Update the task verification and handoff sections.
-12. Update `spec/handoff.md` before stopping.
+2. Read `spec/product-context.md` and confirm the task does not violate MVP non-goals.
+3. Confirm the task belongs to `Now` or has explicit human approval.
+4. Create or switch to a feature branch before edits unless the human explicitly says to stay on the current branch.
+5. Identify the smallest implementation slice that satisfies the acceptance criteria.
+6. Add or update focused behavior tests where practical before or alongside implementation.
+7. Before coding, check whether the task depends on a new or changed architecture decision. If yes, route non-trivial decisions to `forge-architect`; draft only small obvious ADRs yourself, and stop for human approval before implementing dependent code.
+8. Implement the smallest direct change.
+9. Keep shared browser/API contracts in `packages/contracts` and durable SQL vocabularies in database enum/domain types when relevant.
+10. Run relevant validation: lint, typecheck, build, unit, integration, E2E, and manual checks as appropriate to the risk.
+11. Use Playwright/browser validation for UI work.
+12. Update the task verification and handoff sections.
+13. Update `spec/handoff.md` before stopping.
 
 ## Engineering Standards
 

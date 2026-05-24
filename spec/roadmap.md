@@ -66,7 +66,7 @@ AI and partner work must preserve medical-safety, privacy, and owner-control bou
 
 ## Not Now
 
-Do not implement without explicit Maciej approval and a roadmap update:
+Do not implement without explicit human approval and a roadmap update:
 
 - marketplace mechanics;
 - clinic SaaS;

@@ -18,6 +18,7 @@ Use this skill when a task, feature brief, or note raises a non-trivial architec
 - Optional `spec/tasks/*` task file.
 - `AGENTS.md`
 - `README.md`
+- `spec/product-context.md`
 - `spec/roadmap.md`
 - Existing `spec/architecture-records/*`
 - `spec/architecture-records/TEMPLATE.md`
@@ -26,13 +27,14 @@ Use this skill when a task, feature brief, or note raises a non-trivial architec
 ## Workflow
 
 1. Confirm the question is architectural and not a local implementation detail.
-2. Inspect existing ADRs and identify whether an accepted decision already covers the question.
-3. If an existing ADR covers it, summarize the applicable decision and stop unless a new decision is explicitly needed.
-4. If the topic is exploratory but not yet a decision, create or update a concise architecture note under `spec/architecture/`.
-5. If a durable decision is needed, create or update an ADR draft under `spec/architecture-records/`.
-6. Include context, decision, consequences, alternatives considered when useful, related artifacts, validation implications, and approval state.
-7. Update the related task or feature brief with the ADR or architecture note path when requested.
-8. Stop for human approval before implementation depends on a draft ADR.
+2. Read `spec/product-context.md` and `spec/roadmap.md` so the architecture answer respects MVP boundaries.
+3. Inspect existing ADRs and identify whether an accepted decision already covers the question.
+4. If an existing ADR covers it, summarize the applicable decision and stop unless a new decision is explicitly needed.
+5. If the topic is exploratory but not yet a decision, create or update a concise architecture note under `spec/architecture/`.
+6. If a durable decision is needed, create or update an ADR draft under `spec/architecture-records/`.
+7. Include context, decision, consequences, alternatives considered when useful, related artifacts, validation implications, and approval state.
+8. Update the related task or feature brief with the ADR or architecture note path when requested.
+9. Stop for human approval before implementation depends on a draft ADR.
 
 ## ADR Draft Rules
 

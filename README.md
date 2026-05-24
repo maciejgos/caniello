@@ -88,7 +88,7 @@ apps/web/          Next.js App Router web app and MVP Vercel root
 apps/mobile/       Minimal mobile workspace scaffold for future Expo work
 packages/          Shared contracts, domain, application, db, ui, and config packages
 infra/supabase/    Supabase CLI configuration, migrations, and seed file
-spec/              Forge roadmap, feature briefs, tasks, handoff, ADRs, validation, release, and lifecycle records
+spec/              Product context, roadmap, feature briefs, tasks, handoff, ADRs, validation, and archived history
 tests/             Cross-app executable tests, including Playwright E2E
 ```
 
@@ -160,13 +160,16 @@ Caniello follows a lightweight AI-assisted, human-governed Forge model:
 roadmap filter -> task -> implementation -> verification -> handoff
 ```
 
-Use `spec/roadmap.md` to decide whether work belongs in `Now`, `Next`, `Later`, or `Not Now`. Use `spec/tasks/` for executable work, and update `spec/handoff.md` so the next session can continue without chat history.
+Use `spec/product-context.md` for durable product truth and `spec/roadmap.md` to decide whether work belongs in `Now`, `Next`, `Later`, or `Not Now`. Use `spec/tasks/` for executable work, and update `spec/handoff.md` so the next session can continue without chat history.
 
 Optional steps:
 
-- Use `spec/features/` when broad notes need to become a lightweight feature brief and candidate tasks before planning.
-- Use `spec/architecture-records/` when a durable architecture decision is needed. ADRs drafted by Codex stay `Draft` until explicitly approved by Maciej.
-- Use `spec/validation/`, `spec/release-readiness/`, and `spec/lifecycle/` for heavier evidence only when the work genuinely needs those records.
+- Use `spec/features/` with `spec/features/LIGHTWEIGHT_TEMPLATE.md` when broad notes need to become a lightweight feature brief and candidate tasks before planning.
+- Use `spec/architecture-records/` when a durable architecture decision is needed. ADRs drafted by Codex stay `Draft` until explicitly approved by a human maintainer.
+- Use `spec/architecture/` for exploratory architecture notes before an ADR is warranted.
+- Use `spec/validation/` for durable validation evidence when task notes are not enough.
+
+Older Flow Forge-era artifacts are archived under `spec/archive/flow-forge-history/` as reference material. Do not use them as default workflow paths unless a human maintainer explicitly asks to revive a heavier process for a specific reason.
 
 The active Forge skills under `.codex/skills/` support this flow:
 

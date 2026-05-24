@@ -15,16 +15,18 @@ Keep `spec/handoff.md` current as the lightweight working memory for the project
 - `git status --short`
 - Recent validation results.
 - Known blockers, risks, and next recommended action.
+- `spec/product-context.md`
 - `spec/roadmap.md`
 
 ## Workflow
 
 1. Inspect the current task, branch, and worktree status.
-2. Summarize what changed or what was reviewed.
-3. Record validation status as passed, failed, skipped, unavailable, or pending.
-4. Record known gaps and risks.
-5. Record the next recommended action.
-6. Preserve human approval state accurately.
+2. Check product context and roadmap when the handoff includes product scope or next work.
+3. Summarize what changed or what was reviewed.
+4. Record validation status as passed, failed, skipped, unavailable, or pending.
+5. Record known gaps and risks.
+6. Record the next recommended action.
+7. Preserve human approval state accurately.
 
 ## Rules
 

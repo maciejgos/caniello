@@ -16,24 +16,26 @@ Turn a short intent into one scoped task file under `spec/tasks/`. The planner p
 - Optional existing `spec/tasks/*` task file.
 - `AGENTS.md`
 - `README.md`
+- `spec/product-context.md`
 - `spec/roadmap.md`
 - `spec/handoff.md`
 - `spec/features/LIGHTWEIGHT_TEMPLATE.md` and relevant `spec/features/*` files when planning from a shaped feature.
 - `spec/tasks/TEMPLATE.md`
-- Relevant `spec/decisions.md` or `spec/architecture-records/*` when the intent touches durable decisions.
+- Relevant `spec/architecture-records/*` when the intent touches durable decisions.
 
 ## Workflow
 
 1. Inspect the roadmap before drafting.
-2. Classify the intent as `Now`, `Next`, `Later`, or `Not Now`.
-3. If the work is `Next`, `Later`, or `Not Now`, produce a planning recommendation and stop unless the human explicitly approves planning it as a task.
-4. If the input is broad notes with multiple possible tasks, recommend `forge-shaper` first instead of forcing a task.
-5. Draft the smallest useful task that supports the `Now` roadmap.
-6. Write explicit scope, non-goals, acceptance criteria, implementation notes, and verification expectations.
-7. Identify whether the task requires a durable architecture decision.
-8. If the architecture decision is non-trivial, route to `forge-architect` and stop before implementation planning depends on it.
-9. If the ADR need is small and obvious, draft it under `spec/architecture-records/` using `spec/architecture-records/TEMPLATE.md`, keep status `Draft`, link it from the task, and record that human approval is required before implementation depends on the decision.
-10. Call out product, privacy, security, data, architecture, or release questions that require Maciej approval.
+2. Read `spec/product-context.md` for MVP promise, audience, validation goals, and non-goals.
+3. Classify the intent as `Now`, `Next`, `Later`, or `Not Now`.
+4. If the work is `Next`, `Later`, or `Not Now`, produce a planning recommendation and stop unless the human explicitly approves planning it as a task.
+5. If the input is broad notes with multiple possible tasks, recommend `forge-shaper` first instead of forcing a task.
+6. Draft the smallest useful task that supports the `Now` roadmap.
+7. Write explicit scope, non-goals, acceptance criteria, implementation notes, and verification expectations.
+8. Identify whether the task requires a durable architecture decision.
+9. If the architecture decision is non-trivial, route to `forge-architect` and stop before implementation planning depends on it.
+10. If the ADR need is small and obvious, draft it under `spec/architecture-records/` using `spec/architecture-records/TEMPLATE.md`, keep status `Draft`, link it from the task, and record that human approval is required before implementation depends on the decision.
+11. Call out product, privacy, security, data, architecture, or release questions that require explicit human approval.
 
 ## Rules
 

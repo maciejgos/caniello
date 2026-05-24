@@ -14,6 +14,7 @@ Verify whether one implemented task works and stays within roadmap scope. The ev
 - One `spec/tasks/*` task file.
 - Current git diff and changed files.
 - `AGENTS.md`
+- `spec/product-context.md`
 - `spec/roadmap.md`
 - `spec/handoff.md`
 - Relevant tests, code, API routes, database migrations, and UI routes.
@@ -21,13 +22,14 @@ Verify whether one implemented task works and stays within roadmap scope. The ev
 ## Workflow
 
 1. Read the task goal, roadmap alignment, scope, non-goals, and acceptance criteria.
-2. Inspect changed files and identify the behavior under test.
-3. Check for roadmap or MVP scope drift.
-4. Run relevant validation commands when practical.
-5. For UI changes, use Playwright or browser validation across relevant viewports.
-6. For API or database changes, verify request validation, persistence, permissions, and error behavior where relevant.
-7. Record failures, skipped checks, unavailable tooling, and residual risk.
-8. Update the task verification notes and `spec/handoff.md` when requested.
+2. Read `spec/product-context.md` and `spec/roadmap.md`.
+3. Inspect changed files and identify the behavior under test.
+4. Check for roadmap or MVP scope drift.
+5. Run relevant validation commands when practical.
+6. For UI changes, use Playwright or browser validation across relevant viewports.
+7. For API or database changes, verify request validation, persistence, permissions, and error behavior where relevant.
+8. Record failures, skipped checks, unavailable tooling, and residual risk.
+9. Update the task verification notes and `spec/handoff.md` when requested.
 
 ## Evaluation Criteria
 
