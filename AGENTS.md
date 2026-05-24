@@ -57,7 +57,8 @@ For normal Caniello MVP work, prefer the active Forge skills:
 - `forge-evaluator` to verify task behavior, tests, UI, API, data, and scope;
 - `forge-handoff` to update continuation notes;
 - `forge-publisher` to commit, push, and open a draft PR after successful validation or explicit human instruction;
-- `forge-roadmap-review` to check roadmap drift and stale priorities.
+- `forge-roadmap-review` to check roadmap drift and stale priorities;
+- `forge-weekly-reporter` to create evidence-based weekly reports and ask the human for feedback before finalizing.
 
 Archived Flow Forge skills and agents live under `.codex/flow-forge-reference/`. Older Flow Forge-era spec artifacts live under `spec/archive/flow-forge-history/`. Treat archived material as reference only unless a human maintainer explicitly asks to use a heavier process for a specific architecture, security, release, lifecycle, or large planning need.
 

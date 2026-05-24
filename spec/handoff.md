@@ -2,7 +2,7 @@
 
 ## Current State
 
-- Active task: `spec/tasks/authenticated-app-shell-navigation.md`.
+- Active task: None. Last completed task: `spec/tasks/authenticated-app-shell-navigation.md`.
 - Active branch: `codex/authenticated-app-shell-navigation`.
 - Current workflow: authenticated app shell navigation has been published as draft PR https://github.com/maciejgos/caniello/pull/13, stacked on `codex/shape-app-dashboard-skeleton` to keep the review diff scoped.
 
@@ -27,6 +27,7 @@
 - Implemented `spec/tasks/authenticated-app-shell-navigation.md` in `apps/web/features/account/AccountApp.tsx` and `apps/web/features/account/content.ts`: signed-in `/app` now renders a localized shell with desktop side navigation, mobile horizontal fallback navigation, active Home state, inert search/pet/notification/account affordances, existing logout behavior, and a minimal non-card main content region. No dashboard cards, onboarding, persistence, live search, notifications, AI, sharing, or section routes were added.
 - Added focused `AccountApp` coverage for authenticated shell labels, active Home navigation, protected-route behavior, and logout/session behavior.
 - Published draft PR https://github.com/maciejgos/caniello/pull/13 from `codex/authenticated-app-shell-navigation` to `codex/shape-app-dashboard-skeleton`. The branch includes commit `e32f571` for the app-shell task and intentionally excludes the unrelated local weekly-reporter commit that remained on `codex/shape-app-dashboard-skeleton`.
+- Roadmap review on 2026-05-24 found the active roadmap and candidate dashboard tasks broadly aligned with MVP Foundation. The main stale item was the handoff labeling the completed app-shell task as active. Recommended but unapproved editorial follow-up: tighten `spec/roadmap.md` and `README.md` non-goal wording so it mirrors `spec/product-context.md` more completely for treatment recommendations, veterinary decision-making, broad clinic or partner workflow ownership, advanced household permissions, and advanced analytics/referral/calendar/partner-upload work.
 
 ## Changed Files
 
@@ -70,6 +71,7 @@ Previous repository validation notes still relevant to the dirty worktree:
 ## Known Gaps
 
 - The app shell task intentionally does not add dashboard cards, onboarding, persistence, live search, notifications, AI, sharing behavior, section routes, or mobile app work.
+- Roadmap-sensitive future dashboard tasks expose Ask Caniello and sharing only as skeleton/navigation surfaces. Keep them inert and safety-worded until a human-approved task explicitly includes AI behavior, share links, caregiver access, or export behavior.
 - `pnpm test` emitted existing Vitest localStorage experimental warnings and Turbo output warnings; tests still passed.
 - `node_modules/` was installed locally for validation and should remain ignored.
 - Official skill quick validation is pending until `PyYAML` is available.
