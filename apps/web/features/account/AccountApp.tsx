@@ -28,21 +28,7 @@ export function AccountApp({ route }: AccountAppProps) {
   const copy = accountCopy[language];
 
   if (route === "app-home") {
-    return (
-      <main className="min-h-screen bg-[#fbfaf7] px-5 py-8 text-navy">
-        <div className="mx-auto max-w-5xl">
-          <div className="mb-8 flex items-center justify-between">
-            <a href="/" aria-label="Caniello">
-              <BrandWordmark small />
-            </a>
-            <LanguageToggle language={language} onChange={setLanguage} />
-          </div>
-          <div className="rounded-lg border border-navy/10 bg-white p-6 shadow-sm md:p-8">
-            <ProtectedHome />
-          </div>
-        </div>
-      </main>
-    );
+    return <AuthenticatedAppShell language={language} onLanguageChange={setLanguage} />;
   }
 
   return (
@@ -463,8 +449,13 @@ function AppleMark() {
   );
 }
 
-function ProtectedHome() {
-  const { language } = useLanguage();
+function AuthenticatedAppShell({
+  language,
+  onLanguageChange
+}: {
+  language: ReturnType<typeof useLanguage>["language"];
+  onLanguageChange: (language: ReturnType<typeof useLanguage>["language"]) => void;
+}) {
   const copy = accountCopy[language];
 
   async function logout() {
@@ -473,14 +464,151 @@ function ProtectedHome() {
   }
 
   return (
-    <div className="space-y-5">
-      <h1 className="text-3xl font-black tracking-[0] md:text-4xl">{copy.appTitle}</h1>
-      <p className="text-base leading-7 text-navy/76">{copy.appIntro}</p>
-      <p className="rounded-md border border-forest/20 bg-forest/5 p-4 text-sm leading-6 text-navy/78">{copy.protectedNote}</p>
-      <button className="min-h-12 rounded-md bg-navy px-5 py-3 text-sm font-black text-white transition hover:bg-forest" type="button" onClick={() => void logout()}>
-        {copy.logoutAction}
-      </button>
+    <main className="min-h-screen bg-[#fbfaf7] text-navy">
+      <div className="min-h-screen lg:grid lg:grid-cols-[236px_1fr]">
+        <AppSidebar copy={copy} />
+        <div className="min-w-0 border-l border-[#e6e9ef] bg-white">
+          <AppTopBar copy={copy} language={language} onLanguageChange={onLanguageChange} onLogout={logout} />
+          <MobileAppNav copy={copy} />
+          <section className="min-w-0 px-5 py-8 sm:px-8 lg:px-12 lg:py-10 xl:px-16" aria-labelledby="app-home-title">
+            <div className="mx-auto max-w-[1300px]">
+              <div className="flex max-w-3xl items-start gap-4">
+                <span className="mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#fff3e5] text-[#f59a23]" aria-hidden="true">
+                  <AppIcon name="sun" />
+                </span>
+                <div className="min-w-0">
+                  <h2 className="mb-2 text-sm font-black uppercase tracking-[0.08em] text-navy/54">{copy.appTitle}</h2>
+                  <h1 id="app-home-title" className="font-serif text-[clamp(2rem,4vw,3.3rem)] font-black leading-tight tracking-[0] text-navy">
+                    {copy.appGreeting}
+                  </h1>
+                  <p className="mt-3 max-w-2xl text-base font-medium leading-7 text-navy/74">{copy.appShellIntro}</p>
+                  <p className="mt-5 max-w-2xl border-l-4 border-[#f0b45f] bg-[#fff8ee] px-4 py-3 text-sm font-semibold leading-6 text-navy/72">{copy.appShellStatus}</p>
+                  <p className="mt-4 max-w-2xl text-sm leading-6 text-navy/62">{copy.medicalBoundary}</p>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+  );
+}
+
+function AppSidebar({ copy }: { copy: (typeof accountCopy)[keyof typeof accountCopy] }) {
+  return (
+    <aside className="hidden min-h-screen flex-col bg-[#fdfcf9] px-4 py-6 lg:flex">
+      <a className="mb-10 block px-2" href="/" aria-label="Caniello">
+        <BrandWordmark small />
+      </a>
+      <AppNav copy={copy} orientation="vertical" />
+      <div className="mt-auto rounded-lg border border-[#f1dcbf] bg-[#fff8ee] p-4 text-sm font-black leading-5 text-navy">
+        <span className="mb-3 flex h-9 w-9 items-center justify-center rounded-md border border-navy/12 bg-white text-navy" aria-hidden="true">
+          <AppIcon name="shield" />
+        </span>
+        {copy.appDataSafety}
+      </div>
+    </aside>
+  );
+}
+
+function MobileAppNav({ copy }: { copy: (typeof accountCopy)[keyof typeof accountCopy] }) {
+  return (
+    <div className="border-b border-[#e6e9ef] bg-[#fdfcf9] px-4 py-3 lg:hidden">
+      <AppNav copy={copy} orientation="horizontal" />
     </div>
+  );
+}
+
+function AppNav({
+  copy,
+  orientation
+}: {
+  copy: (typeof accountCopy)[keyof typeof accountCopy];
+  orientation: "horizontal" | "vertical";
+}) {
+  const items = [
+    { label: copy.appNavHome, icon: "home", href: "/app", active: true },
+    { label: copy.appNavPets, icon: "paw", href: "/app", active: false },
+    { label: copy.appNavTimeline, icon: "clock", href: "/app", active: false },
+    { label: copy.appNavDocuments, icon: "document", href: "/app", active: false },
+    { label: copy.appNavReminders, icon: "bell", href: "/app", active: false },
+    { label: copy.appNavAsk, icon: "chat", href: "/app", active: false },
+    { label: copy.appNavSharing, icon: "users", href: "/app", active: false },
+    { label: copy.appNavSettings, icon: "settings", href: "/app", active: false }
+  ] as const;
+
+  return (
+    <nav aria-label="Caniello app">
+      <ul className={orientation === "vertical" ? "space-y-2" : "flex gap-2 overflow-x-auto pb-1"}>
+        {items.map((item) => (
+          <li className={orientation === "horizontal" ? "shrink-0" : undefined} key={item.label}>
+            <a
+              className={`flex min-h-11 items-center gap-3 rounded-lg px-4 text-sm font-black transition ${
+                item.active
+                  ? "bg-[#fff1dc] text-navy shadow-[0_8px_24px_rgba(225,164,81,0.14)]"
+                  : "text-navy/82 hover:bg-[#f5f7fb] hover:text-navy"
+              }`}
+              href={item.href}
+              aria-current={item.active ? "page" : undefined}
+            >
+              <span className="flex h-5 w-5 shrink-0 items-center justify-center" aria-hidden="true">
+                <AppIcon name={item.icon} />
+              </span>
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}
+
+function AppTopBar({
+  copy,
+  language,
+  onLanguageChange,
+  onLogout
+}: {
+  copy: (typeof accountCopy)[keyof typeof accountCopy];
+  language: ReturnType<typeof useLanguage>["language"];
+  onLanguageChange: (language: ReturnType<typeof useLanguage>["language"]) => void;
+  onLogout: () => Promise<void>;
+}) {
+  return (
+    <header className="border-b border-[#e6e9ef] bg-white px-4 py-3 sm:px-6 lg:px-8">
+      <div className="flex flex-wrap items-center gap-3">
+        <a className="mr-auto block lg:hidden" href="/" aria-label="Caniello">
+          <BrandWordmark small />
+        </a>
+        <label className="order-last flex min-h-11 w-full min-w-0 items-center gap-3 rounded-lg border border-[#dce2ec] bg-white px-4 text-sm font-bold text-navy/72 sm:order-none sm:ml-auto sm:w-[min(34vw,340px)]">
+          <span className="shrink-0 text-navy/70" aria-hidden="true">
+            <AppIcon name="search" />
+          </span>
+          <span className="sr-only">{copy.appSearchLabel}</span>
+          <input className="min-w-0 flex-1 bg-transparent outline-none placeholder:text-navy/56" placeholder={copy.appSearchPlaceholder} readOnly type="search" />
+          <kbd className="hidden rounded-md border border-[#d9dee8] px-2 py-1 text-xs font-black text-navy/58 sm:inline">⌘ K</kbd>
+        </label>
+        <button className="flex min-h-11 items-center gap-3 rounded-lg border border-[#dce2ec] bg-white px-3 text-sm font-black text-navy" type="button" aria-label={copy.appPetSelectorLabel}>
+          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#ffe4bd] text-lg" aria-hidden="true">B</span>
+          <span className="hidden sm:inline">{copy.appPetSelectorValue}</span>
+          <span className="text-navy/62" aria-hidden="true"><AppIcon name="chevronDown" /></span>
+        </button>
+        <button className="relative flex h-11 w-11 items-center justify-center rounded-lg border border-[#dce2ec] bg-white text-navy" type="button" aria-label={copy.appNotificationsLabel}>
+          <AppIcon name="bell" />
+          <span className="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-[#f04438]" aria-hidden="true" />
+        </button>
+        <div className="flex min-h-11 items-center gap-3 rounded-lg border border-[#dce2ec] bg-white px-3" role="group" aria-label={copy.appAccountLabel}>
+          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#f1ede6] text-sm font-black text-navy" aria-hidden="true">
+            {copy.appAccountName.slice(0, 1)}
+          </span>
+          <span className="hidden text-sm font-black text-navy sm:inline">{copy.appAccountName}</span>
+          <button className="rounded-md px-2 py-1 text-sm font-black text-[#7651e6] transition hover:bg-[#f6f2ff]" type="button" onClick={() => void onLogout()}>
+            {copy.logoutAction}
+          </button>
+        </div>
+        <LanguageToggle language={language} onChange={onLanguageChange} />
+      </div>
+    </header>
   );
 }
 
@@ -505,6 +633,116 @@ function validateFields({ fullName, email, password, confirmPassword, acceptedTe
 }
 
 type IconName = "calendar" | "chat" | "eye" | "folder" | "lock" | "mail" | "shield" | "user";
+type AppIconName = "bell" | "chat" | "chevronDown" | "clock" | "document" | "home" | "paw" | "search" | "settings" | "shield" | "sun" | "users";
+
+function AppIcon({ name }: { name: AppIconName }) {
+  const common = "h-5 w-5";
+
+  if (name === "home") {
+    return (
+      <svg className={common} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M4 10.4 12 4l8 6.4V20a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1v-9.6Z" />
+      </svg>
+    );
+  }
+
+  if (name === "chevronDown") {
+    return (
+      <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="m6 9 6 6 6-6" />
+      </svg>
+    );
+  }
+
+  if (name === "sun") {
+    return (
+      <svg className="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+      </svg>
+    );
+  }
+
+  if (name === "paw") {
+    return (
+      <svg className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M8.5 11.5c1.1 0 2-1.35 2-3s-.9-3-2-3-2 1.35-2 3 .9 3 2 3ZM15.5 11.5c1.1 0 2-1.35 2-3s-.9-3-2-3-2 1.35-2 3 .9 3 2 3ZM5.4 15.2c.86.42 1.98-.16 2.5-1.28.52-1.13.25-2.38-.61-2.8-.86-.41-1.98.17-2.5 1.29-.52 1.12-.25 2.38.61 2.79ZM18.6 15.2c.86-.41 1.13-1.67.61-2.79-.52-1.12-1.64-1.7-2.5-1.29-.86.42-1.13 1.67-.61 2.8.52 1.12 1.64 1.7 2.5 1.28Z" />
+        <path d="M8 18.5c0-2.2 1.8-4 4-4s4 1.8 4 4c0 1.2-.9 2-2 2-.8 0-1.2-.4-2-.4s-1.2.4-2 .4c-1.1 0-2-.8-2-2Z" />
+      </svg>
+    );
+  }
+
+  if (name === "clock") {
+    return (
+      <svg className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 7v5l3 2" />
+      </svg>
+    );
+  }
+
+  if (name === "document") {
+    return (
+      <svg className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M7 3h7l4 4v14H7z" />
+        <path d="M14 3v5h4M9.5 13h5M9.5 17h5" />
+      </svg>
+    );
+  }
+
+  if (name === "bell") {
+    return (
+      <svg className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
+        <path d="M10 21h4" />
+      </svg>
+    );
+  }
+
+  if (name === "chat") {
+    return (
+      <svg className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M7 17 4 20v-4a7 7 0 1 1 3 1Z" />
+        <path d="M9 10h.01M13 10h.01M17 10h.01" />
+      </svg>
+    );
+  }
+
+  if (name === "users") {
+    return (
+      <svg className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
+        <circle cx="9.5" cy="7" r="4" />
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+    );
+  }
+
+  if (name === "settings") {
+    return (
+      <svg className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" />
+        <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 9 19.36a1.7 1.7 0 0 0-1.88.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.64 9a1.7 1.7 0 0 0-.34-1.88l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09A1.7 1.7 0 0 0 15 4.64a1.7 1.7 0 0 0 1.88-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.1.37.4.68.78.86.24.12.5.14.76.14H21a2 2 0 1 1 0 4h-.09A1.7 1.7 0 0 0 19.4 15Z" />
+      </svg>
+    );
+  }
+
+  if (name === "search") {
+    return (
+      <svg className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" />
+        <path d="m20 20-3.5-3.5" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg className={common} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 3 5 6v5c0 5 3 8 7 10 4-2 7-5 7-10V6Z" />
+      <path d="m9 12 2 2 4-5" />
+    </svg>
+  );
+}
 
 function AuthIcon({ name }: { name: IconName }) {
   const common = "h-5 w-5";

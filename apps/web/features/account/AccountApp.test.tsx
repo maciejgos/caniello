@@ -103,10 +103,36 @@ describe("Caniello account experience", () => {
     render(<AccountApp route="app-home" />);
 
     expect(screen.getByRole("heading", { name: /panel opiekuna/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /witaj w caniello/i })).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: /home/i })[0]).toHaveAttribute("aria-current", "page");
+    expect(screen.getAllByRole("link", { name: /pupile/i })[0]).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: /oś czasu/i })[0]).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: /dokumenty/i })[0]).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: /przypomnienia/i })[0]).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: /zapytaj caniello/i })[0]).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: /udostępnianie/i })[0]).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: /ustawienia/i })[0]).toBeInTheDocument();
+    expect(screen.getByRole("searchbox", { name: /szukaj w caniello/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /aktywny pupil/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /powiadomienia/i })).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: /wyloguj się/i }));
 
     await waitFor(() => expect(fetch).toHaveBeenCalledWith("/api/account/logout", { method: "POST" }));
     expect(assign).toHaveBeenCalledWith("/login");
+  });
+
+  it("keeps protected app shell labels coherent after switching to English", async () => {
+    const user = userEvent.setup();
+    render(<AccountApp route="app-home" />);
+
+    await user.click(screen.getByRole("button", { name: "EN" }));
+
+    expect(screen.getByRole("heading", { name: /owner dashboard/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /welcome to caniello/i })).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: /pets/i })[0]).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: /timeline/i })[0]).toBeInTheDocument();
+    expect(screen.getByRole("searchbox", { name: /search caniello/i })).toBeInTheDocument();
+    expect(screen.getByText(/does not replace a veterinarian/i)).toBeInTheDocument();
   });
 
   it("shows a setup-specific message when Supabase auth is unavailable", async () => {
