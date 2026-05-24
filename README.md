@@ -157,7 +157,7 @@ Landing-page analytics consent and validation events are posted to `/api/validat
 Caniello follows a lightweight AI-assisted, human-governed Forge model:
 
 ```text
-roadmap filter -> task -> implementation -> verification -> handoff
+roadmap filter -> task -> implementation -> verification -> handoff -> optional publish
 ```
 
 Use `spec/product-context.md` for durable product truth and `spec/roadmap.md` to decide whether work belongs in `Now`, `Next`, `Later`, or `Not Now`. Use `spec/tasks/` for executable work, and update `spec/handoff.md` so the next session can continue without chat history.
@@ -179,7 +179,9 @@ The active Forge skills under `.codex/skills/` support this flow:
 - `forge-implementer`: one task to implementation and validation notes.
 - `forge-evaluator`: implementation review against acceptance criteria and scope.
 - `forge-handoff`: continuation state for the next session.
+- `forge-publisher`: commit, push, and open a draft PR after successful validation or explicit human instruction.
 - `forge-roadmap-review`: priority and scope drift review.
+- `forge-weekly-reporter`: weekly work report with human feedback before finalizing.
 
 Implementation should stay task-sized, roadmap-aligned, and focused on the smallest validated product slice. Do not expand into marketplace, clinic SaaS, booking, payments-first flows, AI diagnosis, or official passport replacement claims without explicit human approval.
 

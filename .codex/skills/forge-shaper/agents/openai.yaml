@@ -1,0 +1,4 @@
+interface:
+  display_name: "Forge Shaper"
+  short_description: "Shape notes into feature task candidates."
+  default_prompt: "Use $forge-shaper to turn these broad notes into a lightweight feature brief and candidate tasks."

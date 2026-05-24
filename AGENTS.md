@@ -31,13 +31,13 @@ Explicitly out of scope for the first product phase:
 The default process is:
 
 ```text
-roadmap filter -> task -> implementation -> verification -> handoff
+roadmap filter -> task -> implementation -> verification -> handoff -> optional publish
 ```
 
 When notes are too broad or ambiguous to become one task directly, use the optional shaping bridge:
 
 ```text
-notes -> feature brief -> candidate tasks -> task -> implementation -> verification -> handoff
+notes -> feature brief -> candidate tasks -> task -> implementation -> verification -> handoff -> optional publish
 ```
 
 When work needs a durable architecture decision, use the optional ADR branch:
@@ -56,7 +56,9 @@ For normal Caniello MVP work, prefer the active Forge skills:
 - `forge-implementer` to implement one task narrowly;
 - `forge-evaluator` to verify task behavior, tests, UI, API, data, and scope;
 - `forge-handoff` to update continuation notes;
-- `forge-roadmap-review` to check roadmap drift and stale priorities.
+- `forge-publisher` to commit, push, and open a draft PR after successful validation or explicit human instruction;
+- `forge-roadmap-review` to check roadmap drift and stale priorities;
+- `forge-weekly-reporter` to create evidence-based weekly reports and ask the human for feedback before finalizing.
 
 Archived Flow Forge skills and agents live under `.codex/flow-forge-reference/`. Older Flow Forge-era spec artifacts live under `spec/archive/flow-forge-history/`. Treat archived material as reference only unless a human maintainer explicitly asks to use a heavier process for a specific architecture, security, release, lifecycle, or large planning need.
 

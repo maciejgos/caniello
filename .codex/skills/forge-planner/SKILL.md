@@ -19,7 +19,7 @@ Turn a short intent into one scoped task file under `spec/tasks/`. The planner p
 - `spec/product-context.md`
 - `spec/roadmap.md`
 - `spec/handoff.md`
-- `spec/features/LIGHTWEIGHT_TEMPLATE.md` and relevant `spec/features/*` files when planning from a shaped feature.
+- `spec/features/TEMPLATE.md` and relevant `spec/features/*` files when planning from a shaped feature.
 - `spec/tasks/TEMPLATE.md`
 - Relevant `spec/architecture-records/*` when the intent touches durable decisions.
 
