@@ -528,13 +528,13 @@ function AppNav({
 }) {
   const items = [
     { label: copy.appNavHome, icon: "home", href: "/app", active: true },
-    { label: copy.appNavPets, icon: "paw", href: "/app", active: false },
-    { label: copy.appNavTimeline, icon: "clock", href: "/app", active: false },
-    { label: copy.appNavDocuments, icon: "document", href: "/app", active: false },
-    { label: copy.appNavReminders, icon: "bell", href: "/app", active: false },
-    { label: copy.appNavAsk, icon: "chat", href: "/app", active: false },
-    { label: copy.appNavSharing, icon: "users", href: "/app", active: false },
-    { label: copy.appNavSettings, icon: "settings", href: "/app", active: false }
+    { label: copy.appNavPets, icon: "paw", href: "/app/pets", active: false },
+    { label: copy.appNavTimeline, icon: "clock", href: "/app/timeline", active: false },
+    { label: copy.appNavDocuments, icon: "document", href: "/app/documents", active: false },
+    { label: copy.appNavReminders, icon: "bell", href: "/app/reminders", active: false },
+    { label: copy.appNavAsk, icon: "chat", href: "/app/ask", active: false },
+    { label: copy.appNavSharing, icon: "users", href: "/app/sharing", active: false },
+    { label: copy.appNavSettings, icon: "settings", href: "/app/settings", active: false }
   ] as const;
 
   return (
