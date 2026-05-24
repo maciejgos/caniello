@@ -37,6 +37,7 @@
 - Review feedback on the first-run onboarding implementation found that the UI work over-concentrated responsibilities in `apps/web/features/account/AccountApp.tsx`.
 - Updated `.codex/skills/forge-implementer/SKILL.md` so future React/Next.js implementation must choose feature-local component boundaries before coding and review touched TSX files for component structure before validation.
 - Updated accepted ADR `spec/architecture-records/0011-use-pragmatic-engineering-practices-from-mvp-start.md` to clarify that KISS does not mean large monolithic TSX files; route/page components should stay thin and distinct UI regions should be extracted into feature-local components.
+- Created `.codex/skills/forge-refactor/` as a new active Forge skill for ADR 0011 codebase review and narrowly scoped behavior-preserving refactors.
 
 ## Changed Files
 
@@ -47,6 +48,8 @@
 - `spec/architecture-records/0011-use-pragmatic-engineering-practices-from-mvp-start.md`
 - `spec/tasks/first-run-onboarding-skeleton.md`
 - `spec/handoff.md`
+- `.codex/skills/forge-refactor/SKILL.md`
+- `.codex/skills/forge-refactor/agents/openai.yaml`
 
 Previous publish note:
 
@@ -56,6 +59,7 @@ Previous publish note:
 
 Current first-run onboarding task:
 
+- Forge refactor skill creation: Ruby YAML frontmatter sanity check passed for `.codex/skills/forge-refactor/SKILL.md`; `quick_validate.py .codex/skills/forge-refactor` could not run because the host Python lacks the `yaml` module.
 - Post-implementation workflow correction: no product tests were run for the implementer-skill and ADR text changes; `git diff --check` passed after the documentation updates.
 - `pnpm install` passed outside the sandbox after the first focused test failed because dependencies were missing and the sandboxed install failed with `[ERROR] fetch failed`.
 - `pnpm --filter web test -- AccountApp.test.tsx` passed; Vitest emitted the existing localStorage experimental warning.
