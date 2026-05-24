@@ -2,9 +2,9 @@
 
 ## Current State
 
-- Active task: None. Last completed product task: `spec/tasks/authenticated-app-shell-navigation.md`.
-- Active branch: `codex/evaluator-validation-artifact`.
-- Current workflow: updating the active `forge-evaluator` skill so every evaluation leaves a durable validation artifact in `spec/validation/`.
+- Active task: None. Last completed product task: `spec/tasks/first-run-onboarding-skeleton.md`.
+- Active branch: `codex/first-run-onboarding-skeleton`.
+- Current workflow: first-run onboarding skeleton implementation completed, followed by a workflow/ADR correction for React component boundaries after review feedback.
 
 ## Latest Notes
 
@@ -29,10 +29,23 @@
 - Published draft PR https://github.com/maciejgos/caniello/pull/13 from `codex/authenticated-app-shell-navigation` to `codex/shape-app-dashboard-skeleton`. The branch includes commit `e32f571` for the app-shell task and intentionally excludes the unrelated local weekly-reporter commit that remained on `codex/shape-app-dashboard-skeleton`.
 - Roadmap review on 2026-05-24 found the active roadmap and candidate dashboard tasks broadly aligned with MVP Foundation. The main stale item was the handoff labeling the completed app-shell task as active. Recommended but unapproved editorial follow-up: tighten `spec/roadmap.md` and `README.md` non-goal wording so it mirrors `spec/product-context.md` more completely for treatment recommendations, veterinary decision-making, broad clinic or partner workflow ownership, advanced household permissions, and advanced analytics/referral/calendar/partner-upload work.
 - Updated `.codex/skills/forge-evaluator/SKILL.md` so evaluations must create or update a focused `spec/validation/<task-slug>-evaluation.md` artifact, link it from task verification notes when applicable, and include the artifact path in the final response. This is a workflow-harness change, not product-scope work.
+- Refined and implemented `spec/tasks/first-run-onboarding-skeleton.md`.
+- Signed-in `/app` now replaces the protected placeholder body with a localized first-run onboarding skeleton inside the existing authenticated shell.
+- The onboarding surface includes a three-step setup path, a non-persistent add-pet form skeleton, disabled first-document upload/scan affordances, and disabled reminder/Ask Caniello preview actions.
+- The implementation intentionally added no pet persistence, Supabase writes, migrations, upload/storage behavior, OCR/extraction, live reminders, AI answers, share links, new section routes, or mobile app work.
+- Browser validation used a Playwright fallback because the in-app browser reported `Browser is not available: iab`.
+- Review feedback on the first-run onboarding implementation found that the UI work over-concentrated responsibilities in `apps/web/features/account/AccountApp.tsx`.
+- Updated `.codex/skills/forge-implementer/SKILL.md` so future React/Next.js implementation must choose feature-local component boundaries before coding and review touched TSX files for component structure before validation.
+- Updated accepted ADR `spec/architecture-records/0011-use-pragmatic-engineering-practices-from-mvp-start.md` to clarify that KISS does not mean large monolithic TSX files; route/page components should stay thin and distinct UI regions should be extracted into feature-local components.
 
 ## Changed Files
 
-- `.codex/skills/forge-evaluator/SKILL.md`
+- `apps/web/features/account/AccountApp.tsx`
+- `apps/web/features/account/AccountApp.test.tsx`
+- `apps/web/features/account/content.ts`
+- `.codex/skills/forge-implementer/SKILL.md`
+- `spec/architecture-records/0011-use-pragmatic-engineering-practices-from-mvp-start.md`
+- `spec/tasks/first-run-onboarding-skeleton.md`
 - `spec/handoff.md`
 
 Previous publish note:
@@ -41,10 +54,18 @@ Previous publish note:
 
 ## Validation Status
 
-Current workflow-harness update:
+Current first-run onboarding task:
 
-- Reviewed the evaluator skill diff and existing `spec/validation/TEMPLATE.md`.
-- No product tests were run because the change only updates local skill instructions and handoff notes.
+- Post-implementation workflow correction: no product tests were run for the implementer-skill and ADR text changes; `git diff --check` passed after the documentation updates.
+- `pnpm install` passed outside the sandbox after the first focused test failed because dependencies were missing and the sandboxed install failed with `[ERROR] fetch failed`.
+- `pnpm --filter web test -- AccountApp.test.tsx` passed; Vitest emitted the existing localStorage experimental warning.
+- `pnpm --filter web lint` passed outside the sandbox after the sandboxed command failed with `[ERROR] fetch failed`.
+- `pnpm --filter web test` passed; 8 test files and 44 tests passed, with existing localStorage experimental warnings.
+- `git diff --check` passed.
+- Local Supabase was started with `./scripts/start.sh` outside the sandbox so the seeded demo account could authenticate for browser validation.
+- Started web app on `http://localhost:3000` after syncing local Supabase env values.
+- Playwright fallback validation passed outside the sandbox and confirmed login with seeded local account `akowalska@example.com`, `/app` onboarding title, accessible add-pet field, disabled upload action, safe medical-boundary copy, and no horizontal document overflow at 1440px desktop and 390px mobile widths.
+- Temporary UI screenshots were captured outside the repo at `/private/tmp/caniello-first-run-desktop.png` and `/private/tmp/caniello-first-run-mobile.png`.
 
 Previous task validation for `spec/tasks/authenticated-app-shell-navigation.md`:
 
@@ -79,8 +100,10 @@ Previous repository validation notes still relevant to the dirty worktree:
 - `node_modules/` was installed locally for validation and should remain ignored.
 - Official skill quick validation is pending until `PyYAML` is available.
 - No `pnpm build` or full `pnpm test:e2e` run was recorded for the app-shell task.
+- No `pnpm build` or full `pnpm test:e2e` run was recorded for the first-run onboarding task; validation used focused account tests, full web Vitest, TypeScript lint, and targeted Playwright smoke checks.
 
 ## Next Recommended Action
 
-- Review draft PR https://github.com/maciejgos/caniello/pull/13. It remains draft and needs human review before any ready-for-review, merge, release, or deployment action.
-- Next product task after this shell work: `spec/tasks/first-run-onboarding-skeleton.md`, because it builds on the new authenticated frame without adding dashboard cards or persistence.
+- Refactor the first-run onboarding UI into feature-local components before evaluation/publish so the implementation itself matches the updated ADR and implementer guidance.
+- Evaluate `spec/tasks/first-run-onboarding-skeleton.md` with `forge-evaluator`.
+- Optional follow-up product task: `spec/tasks/home-dashboard-skeleton.md`, after evaluation confirms the first-run skeleton is acceptable.
