@@ -28,12 +28,14 @@ Implement one approved `spec/tasks/*` task narrowly, verify it, and update task 
 5. Identify the smallest implementation slice that satisfies the acceptance criteria.
 6. Add or update focused behavior tests where practical before or alongside implementation.
 7. Before coding, check whether the task depends on a new or changed architecture decision. If yes, route non-trivial decisions to `forge-architect`; draft only small obvious ADRs yourself, and stop for human approval before implementing dependent code.
-8. Implement the smallest direct change.
-9. Keep shared browser/API contracts in `packages/contracts` and durable SQL vocabularies in database enum/domain types when relevant.
-10. Run relevant validation: lint, typecheck, build, unit, integration, E2E, and manual checks as appropriate to the risk.
-11. Use Playwright/browser validation for UI work.
-12. Update the task verification and handoff sections.
-13. Update `spec/handoff.md` before stopping.
+8. For React or Next.js UI work, choose the smallest feature-local component boundary before coding. Avoid appending multi-section UI, forms, panels, or route-specific dashboard bodies into an already broad route or shell component.
+9. Implement the smallest direct change.
+10. Keep shared browser/API contracts in `packages/contracts` and durable SQL vocabularies in database enum/domain types when relevant.
+11. Before validation, review touched TSX files for React structure. If a file now owns multiple distinct responsibilities, split feature-local presentational components into nearby files before calling the task complete.
+12. Run relevant validation: lint, typecheck, build, unit, integration, E2E, and manual checks as appropriate to the risk.
+13. Use Playwright/browser validation for UI work.
+14. Update the task verification and handoff sections.
+15. Update `spec/handoff.md` before stopping.
 
 ## Engineering Standards
 
@@ -44,9 +46,22 @@ Follow `spec/architecture-records/0011-use-pragmatic-engineering-practices-from-
 - keep TypeScript strict and boundary types explicit;
 - validate untrusted input;
 - use framework-native React, Next.js, React Native, and Expo patterns;
+- keep React route, shell, form, section, card, and panel responsibilities separated with feature-local components when a UI surface has more than one distinct region;
 - add Retry only for transient repeat-safe boundaries;
 - add Factory only when construction is repeated, conditional, environment-specific, or test-heavy;
 - avoid speculative abstractions, unrelated refactors, and broad formatting churn.
+
+## React Implementation Guardrails
+
+For React and Next.js UI tasks:
+
+- Treat KISS as simple responsibilities, not as permission to grow one large TSX file.
+- Keep route components thin. They should compose feature components, not contain an entire authenticated shell, dashboard body, forms, and repeated panels in one place.
+- Prefer feature-local files such as `apps/web/features/<feature>/components/<component-name>.tsx` when adding a new reusable or named UI region.
+- Extract a component when a surface has multiple named regions, repeated cards, a form plus supporting panels, or distinct behavior that can be tested or read independently.
+- Keep copy/content separate from component structure when the feature already has a content module.
+- Do not create generic design-system abstractions unless repetition across features proves the need.
+- After editing TSX, sanity-check whether the touched file is still easy for a fresh implementer to scan. If the answer is no, split before final validation.
 
 ## Architecture Decision Handling
 

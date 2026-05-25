@@ -105,6 +105,24 @@ describe("Caniello account experience", () => {
 
     expect(screen.getByRole("heading", { name: /panel opiekuna/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /witaj w caniello/i })).toBeInTheDocument();
+    expect(screen.getByText(/zacznijmy od kilku prostych kroków/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/dodaj pupila/i)[0]).toBeInTheDocument();
+    expect(screen.getAllByText(/prześlij lub zeskanuj pierwszy dokument/i)[0]).toBeInTheDocument();
+    expect(screen.getByText(/przypomnienia i ask caniello/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/imię pupila/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/gatunek/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/rasa/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/data urodzenia/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/płeć/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/waga/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /dodaj bruno/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /prześlij pierwszy dokument/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /skanuj dokument/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /podgląd pełnego dokumentu/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /dowiedz się więcej o dokumentach/i })).toBeDisabled();
+    expect(screen.getByText(/sprawdź wyciągnięte dane/i)).toBeInTheDocument();
+    expect(screen.getByText(/wskazówka caniello/i)).toBeInTheDocument();
+    expect(screen.getByText(/nie zastępuje lekarza weterynarii/i)).toBeInTheDocument();
     expect(screen.getAllByRole("link", { name: accountCopy.pl.appNavHome })[0]).toHaveAttribute("aria-current", "page");
     expect(screen.getAllByRole("link", { name: accountCopy.pl.appNavPets })[0]).toBeInTheDocument();
     expect(screen.getAllByRole("link", { name: accountCopy.pl.appNavTimeline })[0]).toBeInTheDocument();
@@ -130,6 +148,14 @@ describe("Caniello account experience", () => {
 
     expect(screen.getByRole("heading", { name: /owner dashboard/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /welcome to caniello/i })).toBeInTheDocument();
+    expect(screen.getByText(/let's get started/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/pet name/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/species/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /add bruno/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /upload first document/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /scan document/i })).toBeDisabled();
+    expect(screen.getByText(/review extracted details/i)).toBeInTheDocument();
+    expect(screen.getByText(/caniello tip/i)).toBeInTheDocument();
     expect(screen.getAllByRole("link", { name: /pets/i })[0]).toBeInTheDocument();
     expect(screen.getAllByRole("link", { name: /timeline/i })[0]).toBeInTheDocument();
     expect(screen.getByRole("searchbox", { name: /search caniello/i })).toBeInTheDocument();

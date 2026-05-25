@@ -24,6 +24,7 @@ The default engineering principles are:
 - TypeScript-first correctness with strict types, shared contracts, and runtime validation at trust boundaries.
 - Tests for meaningful behavior, especially shared domain logic, data access, and critical user flows.
 - Framework-native patterns for React, React Native, Expo, and Next.js.
+- Feature-local React component boundaries that keep route, shell, form, section, card, and panel responsibilities readable.
 - Design patterns only when they solve a real problem in the codebase, not as ceremony.
 
 Patterns such as Retry and Factory are approved for MVP, but they must be applied intentionally:
@@ -102,6 +103,9 @@ Factories should stay small, typed, and close to the boundary they create. They 
 React implementation should:
 
 - prefer small, focused components with clear props;
+- keep route and page components thin, with named UI regions extracted into feature-local components;
+- split route shells, dashboard bodies, forms, repeated cards, previews, empty states, and action panels when they represent distinct responsibilities;
+- prefer files under `apps/web/features/<feature>/components/` for feature-specific React components before adding shared UI abstractions;
 - keep data fetching and side effects out of presentational components;
 - use controlled composition rather than prop-heavy components;
 - keep accessibility requirements visible in component design;
@@ -109,6 +113,8 @@ React implementation should:
 - use form libraries such as React Hook Form for non-trivial forms;
 - keep validation schemas close to form and API contracts;
 - add tests for behavior that is easy to regress.
+
+KISS does not mean concentrating unrelated UI responsibilities in a single TSX file. For MVP speed, the preferred default is a small number of feature-local components with explicit names and plain props. Keep a component inline only while it remains a small local detail of its parent. Once a UI task adds multiple named regions, a form plus support panels, repeated cards, or route-level orchestration plus presentational sections, split those pieces before considering the task complete.
 
 ### Next.js practices
 
@@ -160,10 +166,11 @@ React Native / Expo implementation should:
 Implementation should follow this order of preference:
 
 1. Use the simplest direct implementation that satisfies the approved behavior.
-2. Extract shared domain logic only when it is reused or clearly belongs outside a UI/runtime.
-3. Add Retry only at transient, repeat-safe boundaries.
-4. Add Factory only when construction is repeated, conditional, environment-specific, or test-heavy.
-5. Add broader patterns only when an accepted ADR, approved ExecPlan, or clear codebase pressure justifies them.
+2. For UI work, keep the route or page as an orchestrator and extract distinct presentational regions into feature-local components.
+3. Extract shared domain logic only when it is reused or clearly belongs outside a UI/runtime.
+4. Add Retry only at transient, repeat-safe boundaries.
+5. Add Factory only when construction is repeated, conditional, environment-specific, or test-heavy.
+6. Add broader patterns only when an accepted ADR, approved ExecPlan, or clear codebase pressure justifies them.
 
 Validation should include:
 
@@ -173,6 +180,7 @@ Validation should include:
 - tests for retry behavior when Retry is introduced;
 - tests for factories that hide environment-specific construction;
 - React component tests where behavior is meaningful;
+- React structure review for large TSX edits, especially when a task touches route-level authenticated app surfaces;
 - Playwright checks later for critical user flows.
 
 ## Review triggers
@@ -183,5 +191,6 @@ Revisit this decision if:
 - retry behavior needs centralized policy across integrations;
 - background jobs or queues enter scope;
 - React or React Native code starts duplicating domain rules;
+- React route or feature files accumulate multiple unrelated UI responsibilities and become hard to scan;
 - Next.js server/client boundaries become unclear;
 - quality gates need to become mandatory CI/CD checks.
