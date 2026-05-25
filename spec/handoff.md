@@ -4,7 +4,7 @@
 
 - Active task: None. Last completed product task: `spec/tasks/first-run-onboarding-skeleton.md`.
 - Active branch: `codex/first-run-onboarding-skeleton`.
-- Current workflow: first-run onboarding skeleton implementation, refactor, validation artifact, and handoff notes are prepared on a dirty branch; pending human review, optional `pnpm test:e2e`, or optional publish.
+- Current workflow: first-run onboarding skeleton implementation, refactor, validation artifact, handoff notes, and draft PR are prepared; pending human review, optional `pnpm test:e2e`, and eventual PR readiness/merge decision.
 
 ## Latest Notes
 
@@ -44,29 +44,13 @@
 - Updated accepted ADR `spec/architecture-records/0011-use-pragmatic-engineering-practices-from-mvp-start.md` to clarify that KISS does not mean large monolithic TSX files; route/page components should stay thin and distinct UI regions should be extracted into feature-local components.
 - Created `.codex/skills/forge-refactor/` as a new active Forge skill for ADR 0011 codebase review and narrowly scoped behavior-preserving refactors.
 - Handoff refreshed on 2026-05-25 with current branch, dirty worktree, validation status, known gaps, and next recommended actions. No human acceptance, release, merge, or roadmap scope move has been recorded.
+- Published draft PR https://github.com/maciejgos/caniello/pull/18 from `codex/first-run-onboarding-skeleton` to `mvp-implementation`. The branch includes onboarding commit `fd89a9e` plus earlier Forge refactor/component-boundary guidance commits `9577868` and `764b7e5`. The PR is draft only and does not mark the task accepted, approved, merged, released, or complete.
 
 ## Current Dirty Worktree
 
-- `apps/web/features/account/AccountApp.tsx`
-- `apps/web/features/account/AccountApp.test.tsx`
-- `apps/web/features/account/content.ts`
-- `apps/web/features/account/components/AppHomeDashboard.tsx`
-- `apps/web/features/account/components/AppIcon.tsx`
-- `apps/web/features/account/components/AppSidebar.tsx`
-- `apps/web/features/account/components/AppTopBar.tsx`
-- `apps/web/features/account/components/AuthenticatedAppShell.tsx`
-- `apps/web/features/account/components/CanielloTip.tsx`
-- `apps/web/features/account/components/DocumentSetupPanel.tsx`
-- `apps/web/features/account/components/FirstRunOnboarding.tsx`
-- `apps/web/features/account/components/OnboardingField.tsx`
-- `apps/web/features/account/components/OnboardingIcon.tsx`
-- `apps/web/features/account/components/PetSetupPanel.tsx`
-- `apps/web/features/account/components/SetupStepper.tsx`
-- `spec/tasks/first-run-onboarding-skeleton.md`
-- `spec/validation/first-run-onboarding-skeleton-evaluation.md`
 - `spec/handoff.md`
 
-Dirty worktree note: current dirty files belong to the first-run onboarding implementation, feature-local component split, evaluator artifact, task verification notes, and this handoff refresh.
+Dirty worktree note: only this post-publish handoff update is currently dirty before the publish-record commit.
 
 Previous publish note:
 
