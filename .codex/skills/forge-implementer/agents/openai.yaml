@@ -1,4 +1,0 @@
-interface:
-  display_name: "Forge Implementer"
-  short_description: "Implement one scoped Caniello task."
-  default_prompt: "Use $forge-implementer to implement this single scoped task and record focused validation."

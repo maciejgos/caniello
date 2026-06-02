@@ -1,4 +1,0 @@
-interface:
-  display_name: "Forge Weekly Reporter"
-  short_description: "Create evidence-based weekly reports."
-  default_prompt: "Use $forge-weekly-reporter to draft this week's Caniello work report and ask me for feedback before finalizing."

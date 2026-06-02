@@ -1,4 +1,0 @@
-interface:
-  display_name: "Forge Roadmap Review"
-  short_description: "Check roadmap scope and priority drift."
-  default_prompt: "Use $forge-roadmap-review to review roadmap, task, and priority alignment for drift."

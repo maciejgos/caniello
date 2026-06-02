@@ -1,4 +1,0 @@
-interface:
-  display_name: "Forge Handoff"
-  short_description: "Update concise project handoff notes."
-  default_prompt: "Use $forge-handoff to update the project handoff with current state, validation, risks, and next action."

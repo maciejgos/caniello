@@ -1,4 +1,0 @@
-interface:
-  display_name: "Forge Refactor"
-  short_description: "Review and refactor Caniello code against ADR 0011."
-  default_prompt: "Use forge-refactor to review the current Caniello codebase against ADR 0011, identify scoped engineering-practice gaps, implement safe refactors, validate the result, and update handoff notes."
