@@ -104,6 +104,23 @@ describe("Caniello account experience", () => {
     render(<AccountApp route="app-home" />);
 
     expect(screen.getByRole("heading", { name: /panel opiekuna/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /co dziś u bruno/i })).toBeInTheDocument();
+    expect(screen.getByText(/podgląd demo/i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /co dalej/i })).toBeInTheDocument();
+    expect(screen.getByText(/wścieklizna za 18 dni/i)).toBeInTheDocument();
+    expect(screen.getByText(/omegavet dziś o 19:00/i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /podsumowanie zdrowia/i })).toBeInTheDocument();
+    expect(screen.getByText(/dane przykładowe/i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /ostatnie dokumenty/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /przejdź do dokumentów/i })).toBeDisabled();
+    expect(screen.getByRole("heading", { name: /oś czasu opieki/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /zapytaj caniello/i })).toBeInTheDocument();
+    expect(screen.getByText(/nie udziela diagnoz/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /zapytaj na podstawie rekordów/i })).toBeDisabled();
+    expect(screen.getByRole("heading", { name: /udostępnij kartę opieki/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /przygotuj udostępnianie/i })).toBeDisabled();
+    expect(screen.getByText(/nie zastępuje lekarza weterynarii/i)).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: /pierwsze uruchomienie/i }));
     expect(screen.getByRole("heading", { name: /witaj w caniello/i })).toBeInTheDocument();
     expect(screen.getByText(/zacznijmy od kilku prostych kroków/i)).toBeInTheDocument();
     expect(screen.getAllByText(/dodaj pupila/i)[0]).toBeInTheDocument();
@@ -122,7 +139,6 @@ describe("Caniello account experience", () => {
     expect(screen.getByRole("button", { name: /dowiedz się więcej o dokumentach/i })).toBeDisabled();
     expect(screen.getByText(/sprawdź wyciągnięte dane/i)).toBeInTheDocument();
     expect(screen.getByText(/wskazówka caniello/i)).toBeInTheDocument();
-    expect(screen.getByText(/nie zastępuje lekarza weterynarii/i)).toBeInTheDocument();
     expect(screen.getAllByRole("link", { name: accountCopy.pl.appNavHome })[0]).toHaveAttribute("aria-current", "page");
     expect(screen.getAllByRole("link", { name: accountCopy.pl.appNavPets })[0]).toBeInTheDocument();
     expect(screen.getAllByRole("link", { name: accountCopy.pl.appNavTimeline })[0]).toBeInTheDocument();
@@ -147,6 +163,16 @@ describe("Caniello account experience", () => {
     await user.click(screen.getByRole("button", { name: "EN" }));
 
     expect(screen.getByRole("heading", { name: /owner dashboard/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /what needs attention for bruno/i })).toBeInTheDocument();
+    expect(screen.getByText(/demo preview/i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /what's next/i })).toBeInTheDocument();
+    expect(screen.getByText(/rabies due in 18 days/i)).toBeInTheDocument();
+    expect(screen.getByText(/example data/i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /recent documents/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /ask from records/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /prepare sharing/i })).toBeDisabled();
+    expect(screen.getByText(/does not diagnose/i)).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: /first run/i }));
     expect(screen.getByRole("heading", { name: /welcome to caniello/i })).toBeInTheDocument();
     expect(screen.getByText(/let's get started/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/pet name/i)).toBeInTheDocument();

@@ -2,9 +2,9 @@
 
 ## Current State
 
-- Active task: None. Last completed product task: `spec/tasks/first-run-onboarding-skeleton.md`.
-- Active branch: `codex/first-run-onboarding-skeleton`.
-- Current workflow: first-run onboarding skeleton implementation, refactor, validation artifact, handoff notes, and draft PR are prepared; pending human review, optional `pnpm test:e2e`, and eventual PR readiness/merge decision.
+- Active task: None. Last completed product task: `spec/tasks/home-dashboard-skeleton.md`.
+- Active branch: `codex/home-dashboard-skeleton`.
+- Current workflow: home dashboard skeleton implemented, evaluated, committed, pushed, and published as draft PR https://github.com/maciejgos/caniello/pull/19 on 2026-06-02. Fresh evaluator verdict: Pass. Artifact: `spec/validation/home-dashboard-skeleton-evaluation.md`. Pending human review and next task selection. No human acceptance, release, merge, or roadmap scope move has been recorded.
 
 ## Latest Notes
 
@@ -45,18 +45,50 @@
 - Created `.codex/skills/forge-refactor/` as a new active Forge skill for ADR 0011 codebase review and narrowly scoped behavior-preserving refactors.
 - Handoff refreshed on 2026-05-25 with current branch, dirty worktree, validation status, known gaps, and next recommended actions. No human acceptance, release, merge, or roadmap scope move has been recorded.
 - Published draft PR https://github.com/maciejgos/caniello/pull/18 from `codex/first-run-onboarding-skeleton` to `mvp-implementation`. The branch includes onboarding commit `fd89a9e` plus earlier Forge refactor/component-boundary guidance commits `9577868` and `764b7e5`. The PR is draft only and does not mark the task accepted, approved, merged, released, or complete.
+- Roadmap review on 2026-06-01 found `spec/product-context.md`, `spec/roadmap.md`, and root `ROADMAP.md` still broadly aligned around MVP Foundation. The active and candidate dashboard tasks remain acceptable as `Now` work only while they stay skeleton-only and avoid persistence, live uploads, live AI, real sharing, clinic/provider workflow ownership, booking, payments, marketplace mechanics, and official passport replacement claims.
+- Roadmap review drift findings on 2026-06-01:
+  - `README.md` still has a shorter out-of-scope list than `spec/product-context.md`; it omits some stronger boundaries around treatment recommendations, veterinary decision-making, broad clinic or partner workflow ownership, advanced household permissions, advanced analytics/referrals/calendar sync, and partner document-upload flows.
+  - `spec/roadmap.md` also summarizes `Not Now` more narrowly than `spec/product-context.md`, especially for treatment recommendations, veterinary decision-making, broad partner workflow ownership, advanced household permissions, advanced analytics, referral mechanics, duplicate detection, calendar sync, and partner document-upload flows.
+  - `spec/handoff.md` had stale branch and dirty-worktree notes from the first-run onboarding publish record; this review refreshed the current branch and dirty-worktree note.
+  - `spec/tasks/home-dashboard-skeleton.md` includes Ask Caniello preview and sharing prompt in `Now`; this is acceptable only as inert, safety-worded skeleton/demo UI. Any live AI answer, share-link generation, caregiver access model, export behavior, or record-grounded assistant behavior requires a dedicated approved task and likely roadmap/human approval depending on scope.
+  - `spec/tasks/app-section-empty-states.md` includes Ask Caniello and Sharing sections in `Now`; this remains acceptable only for placeholder navigation and empty-state copy with no real AI, sharing permissions, PDF export, caregiver access, or provider workflow.
+- Recommended roadmap/doc updates from the 2026-06-01 review, not approved as product-direction changes: tighten `README.md` and `spec/roadmap.md` non-goal wording so they mirror `spec/product-context.md`; add a short warning to future dashboard tasks that demo data must not imply saved records or backend capability; keep the next implementation task to exactly one pending task file.
+- Refined `spec/tasks/home-dashboard-skeleton.md` before implementation to clarify skeleton-only boundaries, static demo data, disabled unavailable actions, assistant/sharing safety wording, and Polish/English coverage.
+- Implemented `spec/tasks/home-dashboard-skeleton.md` in the authenticated `/app` home. The page now defaults to a returning-owner dashboard skeleton for Bruno with static preview cards, health summary, recent documents, care timeline, Ask Caniello preview, sharing preview, and Caniello tip.
+- Preserved the first-run onboarding surface through a local, non-persistent mode switch in `AppHomeDashboard`. This switch is demo-only and does not read or write Supabase or local storage.
+- Added `ReturningOwnerDashboard` as a feature-local component under `apps/web/features/account/components/` and kept dashboard copy in `apps/web/features/account/content.ts`.
+- Updated `AccountApp` tests to cover returning-owner dashboard copy, demo/preview state, disabled unavailable dashboard actions, Polish/English switching, first-run onboarding preservation, and existing authenticated shell/logout behavior.
+- The implementation intentionally added no pet persistence, demo-state persistence, Supabase writes, migrations, API routes, upload/storage/OCR, live reminders, AI calls, real sharing, PDF export, notification delivery, calendar sync, clinic/provider workflow, marketplace, booking, payment, or official passport replacement behavior.
+- Evaluated `spec/tasks/home-dashboard-skeleton.md` with `forge-evaluator`. Fresh verdict: Pass. Artifact: `spec/validation/home-dashboard-skeleton-evaluation.md`.
+- Authenticated Playwright smoke passed outside the sandbox using seeded local account `akowalska@example.com`; confirmed login flow, returning-owner dashboard content, disabled preview actions, Polish/English switching, first-run onboarding preservation, no console errors, and no horizontal overflow at 1440px desktop and 390px mobile widths.
+- Refreshed this handoff on 2026-06-02 after evaluation. Product/roadmap review still classifies the skeleton-only dashboard work as `Now - MVP Foundation`; live AI, real sharing, persistence, uploads, clinic/provider workflow, booking, payments, marketplace, and official passport replacement behavior remain out of scope without explicit human approval.
+- Published draft PR https://github.com/maciejgos/caniello/pull/19 from `codex/home-dashboard-skeleton` to `mvp-implementation`. The branch includes task commit `2707216` plus publish-record handoff update after the PR was opened. The PR is draft only and does not mark the task accepted, approved, merged, released, or complete.
 
 ## Current Dirty Worktree
 
 - `spec/handoff.md`
 
-Dirty worktree note: only this post-publish handoff update is currently dirty before the publish-record commit.
+Dirty worktree note: only this post-publish handoff update is currently dirty before the publish-record commit. `apps/web/next-env.d.ts` was touched by `pnpm build` during validation and restored to avoid generated build churn.
 
 Previous publish note:
 
 - `git status --short --untracked-files=all` was clean on `codex/authenticated-app-shell-navigation` after the draft PR was opened.
 
 ## Validation Status
+
+Current home dashboard skeleton task:
+
+- Fresh evaluation on 2026-06-02: `spec/validation/home-dashboard-skeleton-evaluation.md` records evaluator verdict Pass.
+- `pnpm --filter web test -- AccountApp.test.tsx` passed; 1 test file and 8 tests passed, with the existing localStorage experimental warning.
+- Sandboxed `pnpm --filter web lint` failed with `[ERROR] fetch failed`; escalated rerun passed.
+- `pnpm --filter web test` passed; 8 test files and 44 tests passed, with existing localStorage experimental warnings.
+- Sandboxed `pnpm build` failed with `[ERROR] fetch failed`; escalated rerun passed.
+- `git diff --check` passed.
+- Attempted local Supabase startup with `./scripts/start.sh`; it failed because Docker Desktop was not reachable. Requested and ran `open -a Docker`, waited, and retried `./scripts/start.sh`; Docker remained unreachable.
+- Evaluator-run `docker ps` showed local Supabase containers were already running.
+- Evaluator-run authenticated Playwright smoke initially failed in the sandbox because Chromium could not launch due to macOS permission errors; escalated rerun with stricter selectors passed.
+- Evaluator-run authenticated Playwright smoke confirmed unauthenticated `/app` redirects to `/login`, seeded local login returns to `/app`, Polish returning-owner dashboard title `Co dziś u Bruno?` renders, demo/preview state renders, document/Ask/sharing preview actions are disabled, English dashboard copy renders after switching language, first-run onboarding remains reachable, returning dashboard can be restored, no console errors occurred, and horizontal overflow was 0 at 1440x1000 and 390x900.
+- Evaluator screenshots were captured outside the repo at `/private/tmp/caniello-home-dashboard-desktop.png` and `/private/tmp/caniello-home-dashboard-mobile.png`.
 
 Current first-run onboarding task:
 
@@ -122,6 +154,8 @@ Previous repository validation notes still relevant to the dirty worktree:
 
 ## Known Gaps
 
+- Home dashboard mode switching is intentionally local React state only. It is demo-only and not persisted.
+- Dashboard CTA buttons for unimplemented document, Ask Caniello, and sharing behavior are intentionally disabled or preview-only until section empty states or real feature tasks are approved and implemented.
 - The app shell task intentionally does not add dashboard cards, onboarding, persistence, live search, notifications, AI, sharing behavior, section routes, or mobile app work.
 - Roadmap-sensitive future dashboard tasks expose Ask Caniello and sharing only as skeleton/navigation surfaces. Keep them inert and safety-worded until a human-approved task explicitly includes AI behavior, share links, caregiver access, or export behavior.
 - `pnpm test` emitted existing Vitest localStorage experimental warnings and Turbo output warnings; tests still passed.
@@ -132,6 +166,5 @@ Previous repository validation notes still relevant to the dirty worktree:
 
 ## Next Recommended Action
 
-- Optional: run full `pnpm test:e2e` if broader route-level confidence is desired before publish.
-- Optional: use `forge-publisher` after human review if the first-run onboarding skeleton scope is accepted.
-- Optional follow-up product task: `spec/tasks/home-dashboard-skeleton.md`, after the first-run skeleton is accepted.
+- Human review of draft PR https://github.com/maciejgos/caniello/pull/19.
+- Optional follow-up product task after human review: `spec/tasks/app-section-empty-states.md`.
