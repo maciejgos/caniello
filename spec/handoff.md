@@ -4,7 +4,7 @@
 
 - Active task: None. Last completed product task: `spec/tasks/home-dashboard-skeleton.md`.
 - Active branch: `codex/home-dashboard-skeleton`.
-- Current workflow: home dashboard skeleton implemented and evaluated on 2026-06-02. Fresh evaluator verdict: Pass. Artifact: `spec/validation/home-dashboard-skeleton-evaluation.md`. Pending human review, optional publish, and next task selection. No human acceptance, release, merge, or roadmap scope move has been recorded.
+- Current workflow: home dashboard skeleton implemented, evaluated, committed, pushed, and published as draft PR https://github.com/maciejgos/caniello/pull/19 on 2026-06-02. Fresh evaluator verdict: Pass. Artifact: `spec/validation/home-dashboard-skeleton-evaluation.md`. Pending human review and next task selection. No human acceptance, release, merge, or roadmap scope move has been recorded.
 
 ## Latest Notes
 
@@ -62,18 +62,13 @@
 - Evaluated `spec/tasks/home-dashboard-skeleton.md` with `forge-evaluator`. Fresh verdict: Pass. Artifact: `spec/validation/home-dashboard-skeleton-evaluation.md`.
 - Authenticated Playwright smoke passed outside the sandbox using seeded local account `akowalska@example.com`; confirmed login flow, returning-owner dashboard content, disabled preview actions, Polish/English switching, first-run onboarding preservation, no console errors, and no horizontal overflow at 1440px desktop and 390px mobile widths.
 - Refreshed this handoff on 2026-06-02 after evaluation. Product/roadmap review still classifies the skeleton-only dashboard work as `Now - MVP Foundation`; live AI, real sharing, persistence, uploads, clinic/provider workflow, booking, payments, marketplace, and official passport replacement behavior remain out of scope without explicit human approval.
+- Published draft PR https://github.com/maciejgos/caniello/pull/19 from `codex/home-dashboard-skeleton` to `mvp-implementation`. The branch includes task commit `2707216` plus publish-record handoff update after the PR was opened. The PR is draft only and does not mark the task accepted, approved, merged, released, or complete.
 
 ## Current Dirty Worktree
 
-- `apps/web/features/account/AccountApp.test.tsx`
-- `apps/web/features/account/components/AppHomeDashboard.tsx`
-- `apps/web/features/account/components/ReturningOwnerDashboard.tsx`
-- `apps/web/features/account/content.ts`
 - `spec/handoff.md`
-- `spec/tasks/home-dashboard-skeleton.md`
-- `spec/validation/home-dashboard-skeleton-evaluation.md`
 
-Dirty worktree note: changes above are intentional for the home dashboard skeleton task, plus the pre-existing handoff/task planning edits carried onto `codex/home-dashboard-skeleton`. `apps/web/next-env.d.ts` was touched by `pnpm build` and restored to avoid generated build churn.
+Dirty worktree note: only this post-publish handoff update is currently dirty before the publish-record commit. `apps/web/next-env.d.ts` was touched by `pnpm build` during validation and restored to avoid generated build churn.
 
 Previous publish note:
 
@@ -171,5 +166,5 @@ Previous repository validation notes still relevant to the dirty worktree:
 
 ## Next Recommended Action
 
-- Optional: use `forge-publisher` after human review if the home dashboard skeleton scope is accepted.
+- Human review of draft PR https://github.com/maciejgos/caniello/pull/19.
 - Optional follow-up product task after human review: `spec/tasks/app-section-empty-states.md`.
