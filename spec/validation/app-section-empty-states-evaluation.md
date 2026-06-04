@@ -151,6 +151,6 @@ Final evaluator verdict: Pass.
 
 ## Human Decision
 
-Pending
+Approved by human on 2026-06-04.
 
-This evaluation does not approve, merge, release, accept, or mark any human checkpoint complete.
+This approval does not merge, release, or deploy the work.

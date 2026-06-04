@@ -95,3 +95,5 @@ Validation notes:
 ## Handoff Notes
 
 Implemented authenticated section empty states as local route-state rendering inside the existing app shell. Navigation now selects Home, Pets, Timeline, Documents, Reminders, Ask Caniello, Sharing, or Settings without adding nested routes, backend calls, persistence, uploads, AI, real sharing, export, notification, calendar, clinic, partner, marketplace, booking, payment, or mobile behavior.
+
+Human approved on 2026-06-04. Draft PR remains open at https://github.com/maciejgos/caniello/pull/20; no merge, release, or deployment has been recorded.

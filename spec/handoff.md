@@ -2,9 +2,9 @@
 
 ## Current State
 
-- Active task: `spec/tasks/app-section-empty-states.md`.
+- Active task: None. Last human-approved product task: `spec/tasks/app-section-empty-states.md`.
 - Active branch: `codex/app-section-empty-states`.
-- Current workflow: app section empty states implemented, evaluated, committed, pushed, and published as draft PR https://github.com/maciejgos/caniello/pull/20 on 2026-06-04. Fresh evaluator verdict: Pass. Artifact: `spec/validation/app-section-empty-states-evaluation.md`. Pending human review. No human acceptance, release, merge, or roadmap scope move has been recorded.
+- Current workflow: app section empty states implemented, evaluated, committed, pushed, published as draft PR https://github.com/maciejgos/caniello/pull/20, and approved by the human on 2026-06-04. Fresh evaluator verdict: Pass. Artifact: `spec/validation/app-section-empty-states-evaluation.md`. No release, merge, deployment, or roadmap scope move has been recorded.
 
 ## Latest Notes
 
@@ -115,6 +115,7 @@ Current app section empty states task:
 - Evaluated `spec/tasks/app-section-empty-states.md` with `forge-evaluator`. Fresh verdict: Pass. Artifact: `spec/validation/app-section-empty-states-evaluation.md`.
 - Evaluator reran focused account tests, TypeScript lint, full web tests, production build, and focused authenticated Playwright smokes on desktop and mobile Chromium.
 - Published draft PR https://github.com/maciejgos/caniello/pull/20 from `codex/app-section-empty-states` to `mvp-implementation`. The branch includes task commit `09e357b`. The PR is draft only and does not mark the task accepted, approved, merged, released, or complete.
+- Human approved `spec/tasks/app-section-empty-states.md` on 2026-06-04. This approval does not merge, release, deploy, or move roadmap scope.
 
 Current first-run onboarding task:
 
@@ -192,7 +193,6 @@ Previous repository validation notes still relevant to the dirty worktree:
 
 ## Next Recommended Action
 
-- Human review of `spec/tasks/app-section-empty-states.md` implementation and evaluation artifact.
-- Human review of draft PR https://github.com/maciejgos/caniello/pull/20.
+- Optional maintainer action: merge draft PR https://github.com/maciejgos/caniello/pull/20 when ready.
 - Human review of draft PR https://github.com/maciejgos/caniello/pull/19 remains pending.
 - Optional editorial follow-up after evaluation: tighten non-goal wording in `README.md` and `spec/roadmap.md` so they mirror `spec/product-context.md`.
