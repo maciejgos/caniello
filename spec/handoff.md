@@ -4,7 +4,7 @@
 
 - Active task: `spec/tasks/app-section-empty-states.md`.
 - Active branch: `codex/app-section-empty-states`.
-- Current workflow: app section empty states implemented and evaluated on 2026-06-04. Fresh evaluator verdict: Pass. Artifact: `spec/validation/app-section-empty-states-evaluation.md`. Pending human review and optional publish. No human acceptance, release, merge, or roadmap scope move has been recorded.
+- Current workflow: app section empty states implemented, evaluated, committed, pushed, and published as draft PR https://github.com/maciejgos/caniello/pull/20 on 2026-06-04. Fresh evaluator verdict: Pass. Artifact: `spec/validation/app-section-empty-states-evaluation.md`. Pending human review. No human acceptance, release, merge, or roadmap scope move has been recorded.
 
 ## Latest Notes
 
@@ -78,15 +78,8 @@
 ## Current Dirty Worktree
 
 - `spec/handoff.md`
-- `spec/tasks/app-section-empty-states.md`
-- `spec/validation/app-section-empty-states-evaluation.md`
-- `apps/web/features/account/AccountApp.test.tsx`
-- `apps/web/features/account/components/AppSidebar.tsx`
-- `apps/web/features/account/components/AuthenticatedAppShell.tsx`
-- `apps/web/features/account/components/AppSectionEmptyState.tsx`
-- `apps/web/features/account/content.ts`
 
-Dirty worktree note: implementation changes for `spec/tasks/app-section-empty-states.md` are currently dirty.
+Dirty worktree note: only this post-publish handoff update is currently dirty.
 
 Previous publish note:
 
@@ -121,6 +114,7 @@ Current app section empty states task:
 - The temporary Playwright smoke spec used for manual validation was removed after the run.
 - Evaluated `spec/tasks/app-section-empty-states.md` with `forge-evaluator`. Fresh verdict: Pass. Artifact: `spec/validation/app-section-empty-states-evaluation.md`.
 - Evaluator reran focused account tests, TypeScript lint, full web tests, production build, and focused authenticated Playwright smokes on desktop and mobile Chromium.
+- Published draft PR https://github.com/maciejgos/caniello/pull/20 from `codex/app-section-empty-states` to `mvp-implementation`. The branch includes task commit `09e357b`. The PR is draft only and does not mark the task accepted, approved, merged, released, or complete.
 
 Current first-run onboarding task:
 
@@ -199,5 +193,6 @@ Previous repository validation notes still relevant to the dirty worktree:
 ## Next Recommended Action
 
 - Human review of `spec/tasks/app-section-empty-states.md` implementation and evaluation artifact.
+- Human review of draft PR https://github.com/maciejgos/caniello/pull/20.
 - Human review of draft PR https://github.com/maciejgos/caniello/pull/19 remains pending.
 - Optional editorial follow-up after evaluation: tighten non-goal wording in `README.md` and `spec/roadmap.md` so they mirror `spec/product-context.md`.
