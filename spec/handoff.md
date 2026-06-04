@@ -2,9 +2,9 @@
 
 ## Current State
 
-- Active task: None. Last completed product task: `spec/tasks/home-dashboard-skeleton.md`.
-- Active branch: `codex/home-dashboard-skeleton`.
-- Current workflow: home dashboard skeleton implemented, evaluated, committed, pushed, and published as draft PR https://github.com/maciejgos/caniello/pull/19 on 2026-06-02. Fresh evaluator verdict: Pass. Artifact: `spec/validation/home-dashboard-skeleton-evaluation.md`. Pending human review and next task selection. No human acceptance, release, merge, or roadmap scope move has been recorded.
+- Active task: None. Last human-approved product task: `spec/tasks/app-section-empty-states.md`.
+- Active branch: `codex/app-section-empty-states`.
+- Current workflow: app section empty states implemented, evaluated, committed, pushed, published as draft PR https://github.com/maciejgos/caniello/pull/20, and approved by the human on 2026-06-04. Fresh evaluator verdict: Pass. Artifact: `spec/validation/app-section-empty-states-evaluation.md`. No release, merge, deployment, or roadmap scope move has been recorded.
 
 ## Latest Notes
 
@@ -63,12 +63,23 @@
 - Authenticated Playwright smoke passed outside the sandbox using seeded local account `akowalska@example.com`; confirmed login flow, returning-owner dashboard content, disabled preview actions, Polish/English switching, first-run onboarding preservation, no console errors, and no horizontal overflow at 1440px desktop and 390px mobile widths.
 - Refreshed this handoff on 2026-06-02 after evaluation. Product/roadmap review still classifies the skeleton-only dashboard work as `Now - MVP Foundation`; live AI, real sharing, persistence, uploads, clinic/provider workflow, booking, payments, marketplace, and official passport replacement behavior remain out of scope without explicit human approval.
 - Published draft PR https://github.com/maciejgos/caniello/pull/19 from `codex/home-dashboard-skeleton` to `mvp-implementation`. The branch includes task commit `2707216` plus publish-record handoff update after the PR was opened. The PR is draft only and does not mark the task accepted, approved, merged, released, or complete.
+- Roadmap review on 2026-06-04 found `spec/product-context.md`, `spec/roadmap.md`, root `ROADMAP.md`, and the current dashboard skeleton task set still aligned around `Now - MVP Foundation`.
+- Roadmap review drift findings on 2026-06-04:
+  - `README.md` and `spec/roadmap.md` still summarize non-goals more narrowly than `spec/product-context.md`, especially treatment recommendations, veterinary decision-making, broad clinic or partner workflow ownership, advanced household permissions, advanced analytics, referral mechanics, duplicate detection, calendar sync, and partner document-upload flows.
+  - `spec/tasks/app-section-empty-states.md` remains acceptable as `Now` work only if implemented as inert section placeholders. Its non-goals should be tightened before implementation to explicitly exclude live AI, generated medical guidance, official passport replacement claims, real sharing/export/caregiver permissions, advanced analytics, referral mechanics, duplicate detection, calendar sync, and partner document-upload flows.
+  - `spec/tasks/dashboard-skeleton-validation.md` is aligned with `Now`; it should remain validation-only and must not become an implementation or release-approval task.
+  - `spec/handoff.md` had stale current branch and dirty-worktree notes from the home-dashboard publish record; this review refreshed them.
+- Recommended roadmap/doc updates from the 2026-06-04 review, not approved as product-direction changes: mirror the fuller `spec/product-context.md` non-goal wording in `README.md`, `spec/roadmap.md`, and the pending `app-section-empty-states` task before implementation; keep the next implementation to exactly one pending task file.
+- Refined and implemented `spec/tasks/app-section-empty-states.md`.
+- Signed-in `/app` navigation now selects local, inert section states for Pets, Timeline, Documents, Reminders, Ask Caniello, Sharing, and Settings while preserving Home dashboard and first-run onboarding behavior.
+- Added `AppSectionEmptyState` as a feature-local component and kept empty-state copy in `apps/web/features/account/content.ts`.
+- Empty-state actions are disabled or preview-only and safety copy explicitly avoids saved-record, upload, OCR, reminder, notification, AI, diagnosis, treatment, emergency, sharing-link, PDF, caregiver-permission, account data-rights, clinic, partner, marketplace, booking, payment, and official passport replacement claims.
 
 ## Current Dirty Worktree
 
 - `spec/handoff.md`
 
-Dirty worktree note: only this post-publish handoff update is currently dirty before the publish-record commit. `apps/web/next-env.d.ts` was touched by `pnpm build` during validation and restored to avoid generated build churn.
+Dirty worktree note: only this post-publish handoff update is currently dirty.
 
 Previous publish note:
 
@@ -89,6 +100,22 @@ Current home dashboard skeleton task:
 - Evaluator-run authenticated Playwright smoke initially failed in the sandbox because Chromium could not launch due to macOS permission errors; escalated rerun with stricter selectors passed.
 - Evaluator-run authenticated Playwright smoke confirmed unauthenticated `/app` redirects to `/login`, seeded local login returns to `/app`, Polish returning-owner dashboard title `Co dziś u Bruno?` renders, demo/preview state renders, document/Ask/sharing preview actions are disabled, English dashboard copy renders after switching language, first-run onboarding remains reachable, returning dashboard can be restored, no console errors occurred, and horizontal overflow was 0 at 1440x1000 and 390x900.
 - Evaluator screenshots were captured outside the repo at `/private/tmp/caniello-home-dashboard-desktop.png` and `/private/tmp/caniello-home-dashboard-mobile.png`.
+
+Current app section empty states task:
+
+- Implemented on 2026-06-04 on branch `codex/app-section-empty-states`.
+- `pnpm --filter web test -- AccountApp.test.tsx` passed; 1 test file and 9 tests passed, with the existing localStorage experimental warning.
+- Sandboxed `pnpm --filter web lint` failed with `[ERROR] fetch failed`; escalated rerun passed.
+- `pnpm --filter web test` passed; 8 test files and 45 tests passed, with existing localStorage experimental warnings.
+- Sandboxed `pnpm build` failed with `[ERROR] fetch failed`; escalated rerun passed.
+- Browser validation through the Node browser tool failed because Chromium could not launch under macOS sandbox permissions.
+- Focused authenticated Playwright smoke initially failed because local Supabase was unreachable. Docker Desktop was launched, `./scripts/start.sh` passed, and the smoke was rerun outside the sandbox.
+- Focused authenticated Playwright smoke passed on desktop Chromium and mobile Chromium using seeded local account `akowalska@example.com`; confirmed login, section selection, disabled unavailable actions, Polish/English safety copy, Home navigation, no console errors, and no horizontal overflow.
+- The temporary Playwright smoke spec used for manual validation was removed after the run.
+- Evaluated `spec/tasks/app-section-empty-states.md` with `forge-evaluator`. Fresh verdict: Pass. Artifact: `spec/validation/app-section-empty-states-evaluation.md`.
+- Evaluator reran focused account tests, TypeScript lint, full web tests, production build, and focused authenticated Playwright smokes on desktop and mobile Chromium.
+- Published draft PR https://github.com/maciejgos/caniello/pull/20 from `codex/app-section-empty-states` to `mvp-implementation`. The branch includes task commit `09e357b`. The PR is draft only and does not mark the task accepted, approved, merged, released, or complete.
+- Human approved `spec/tasks/app-section-empty-states.md` on 2026-06-04. This approval does not merge, release, deploy, or move roadmap scope.
 
 Current first-run onboarding task:
 
@@ -155,7 +182,7 @@ Previous repository validation notes still relevant to the dirty worktree:
 ## Known Gaps
 
 - Home dashboard mode switching is intentionally local React state only. It is demo-only and not persisted.
-- Dashboard CTA buttons for unimplemented document, Ask Caniello, and sharing behavior are intentionally disabled or preview-only until section empty states or real feature tasks are approved and implemented.
+- Dashboard and section CTA buttons for unimplemented document, Ask Caniello, sharing, reminders, pets, timeline, and settings behavior are intentionally disabled or preview-only until real feature tasks are approved and implemented.
 - The app shell task intentionally does not add dashboard cards, onboarding, persistence, live search, notifications, AI, sharing behavior, section routes, or mobile app work.
 - Roadmap-sensitive future dashboard tasks expose Ask Caniello and sharing only as skeleton/navigation surfaces. Keep them inert and safety-worded until a human-approved task explicitly includes AI behavior, share links, caregiver access, or export behavior.
 - `pnpm test` emitted existing Vitest localStorage experimental warnings and Turbo output warnings; tests still passed.
@@ -166,5 +193,6 @@ Previous repository validation notes still relevant to the dirty worktree:
 
 ## Next Recommended Action
 
-- Human review of draft PR https://github.com/maciejgos/caniello/pull/19.
-- Optional follow-up product task after human review: `spec/tasks/app-section-empty-states.md`.
+- Optional maintainer action: merge draft PR https://github.com/maciejgos/caniello/pull/20 when ready.
+- Human review of draft PR https://github.com/maciejgos/caniello/pull/19 remains pending.
+- Optional editorial follow-up after evaluation: tighten non-goal wording in `README.md` and `spec/roadmap.md` so they mirror `spec/product-context.md`.

@@ -1,44 +1,50 @@
 import { BrandWordmark } from "../../marketing/components/BrandWordmark";
 import type { AccountCopy } from "../content";
 import { AppIcon, type AppIconName } from "./AppIcon";
+import type { AppSection } from "./AuthenticatedAppShell";
 
 type NavItem = {
+  section: AppSection;
   label: string;
   icon: AppIconName;
-  href: string;
-  active: boolean;
 };
 
-export function AppSidebar({ copy }: { copy: AccountCopy }) {
+type AppNavProps = {
+  copy: AccountCopy;
+  activeSection: AppSection;
+  onSectionChange: (section: AppSection) => void;
+};
+
+export function AppSidebar({ copy, activeSection, onSectionChange }: AppNavProps) {
   return (
     <aside className="hidden min-h-screen flex-col bg-[#fdfcf9] px-4 py-6 lg:flex">
       <a className="mb-10 block px-2" href="/" aria-label="Caniello">
         <BrandWordmark small />
       </a>
-      <AppNav copy={copy} orientation="vertical" />
+      <AppNav copy={copy} activeSection={activeSection} onSectionChange={onSectionChange} orientation="vertical" />
       <DataSafetyCard copy={copy} />
     </aside>
   );
 }
 
-export function MobileAppNav({ copy }: { copy: AccountCopy }) {
+export function MobileAppNav({ copy, activeSection, onSectionChange }: AppNavProps) {
   return (
     <div className="border-b border-[#e6e9ef] bg-[#fdfcf9] px-4 py-3 lg:hidden">
-      <AppNav copy={copy} orientation="horizontal" />
+      <AppNav copy={copy} activeSection={activeSection} onSectionChange={onSectionChange} orientation="horizontal" />
     </div>
   );
 }
 
-function AppNav({ copy, orientation }: { copy: AccountCopy; orientation: "horizontal" | "vertical" }) {
+function AppNav({ copy, activeSection, onSectionChange, orientation }: AppNavProps & { orientation: "horizontal" | "vertical" }) {
   const items: NavItem[] = [
-    { label: copy.appNavHome, icon: "home", href: "/app", active: true },
-    { label: copy.appNavPets, icon: "paw", href: "/app/pets", active: false },
-    { label: copy.appNavTimeline, icon: "clock", href: "/app/timeline", active: false },
-    { label: copy.appNavDocuments, icon: "document", href: "/app/documents", active: false },
-    { label: copy.appNavReminders, icon: "bell", href: "/app/reminders", active: false },
-    { label: copy.appNavAsk, icon: "chat", href: "/app/ask", active: false },
-    { label: copy.appNavSharing, icon: "users", href: "/app/sharing", active: false },
-    { label: copy.appNavSettings, icon: "settings", href: "/app/settings", active: false }
+    { section: "home", label: copy.appNavHome, icon: "home" },
+    { section: "pets", label: copy.appNavPets, icon: "paw" },
+    { section: "timeline", label: copy.appNavTimeline, icon: "clock" },
+    { section: "documents", label: copy.appNavDocuments, icon: "document" },
+    { section: "reminders", label: copy.appNavReminders, icon: "bell" },
+    { section: "ask", label: copy.appNavAsk, icon: "chat" },
+    { section: "sharing", label: copy.appNavSharing, icon: "users" },
+    { section: "settings", label: copy.appNavSettings, icon: "settings" }
   ];
 
   return (
@@ -46,20 +52,21 @@ function AppNav({ copy, orientation }: { copy: AccountCopy; orientation: "horizo
       <ul className={orientation === "vertical" ? "space-y-2" : "flex gap-2 overflow-x-auto pb-1"}>
         {items.map((item) => (
           <li className={orientation === "horizontal" ? "shrink-0" : undefined} key={item.label}>
-            <a
+            <button
               className={`flex min-h-11 items-center gap-3 rounded-lg px-4 text-sm font-black transition ${
-                item.active
+                activeSection === item.section
                   ? "bg-[#fff1dc] text-navy shadow-[0_8px_24px_rgba(225,164,81,0.14)]"
                   : "text-navy/82 hover:bg-[#f5f7fb] hover:text-navy"
               }`}
-              href={item.href}
-              aria-current={item.active ? "page" : undefined}
+              type="button"
+              aria-current={activeSection === item.section ? "page" : undefined}
+              onClick={() => onSectionChange(item.section)}
             >
               <span className="flex h-5 w-5 shrink-0 items-center justify-center" aria-hidden="true">
                 <AppIcon name={item.icon} />
               </span>
               {item.label}
-            </a>
+            </button>
           </li>
         ))}
       </ul>

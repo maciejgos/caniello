@@ -139,14 +139,14 @@ describe("Caniello account experience", () => {
     expect(screen.getByRole("button", { name: /dowiedz się więcej o dokumentach/i })).toBeDisabled();
     expect(screen.getByText(/sprawdź wyciągnięte dane/i)).toBeInTheDocument();
     expect(screen.getByText(/wskazówka caniello/i)).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: accountCopy.pl.appNavHome })[0]).toHaveAttribute("aria-current", "page");
-    expect(screen.getAllByRole("link", { name: accountCopy.pl.appNavPets })[0]).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: accountCopy.pl.appNavTimeline })[0]).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: accountCopy.pl.appNavDocuments })[0]).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: accountCopy.pl.appNavReminders })[0]).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: accountCopy.pl.appNavAsk })[0]).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: accountCopy.pl.appNavSharing })[0]).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: accountCopy.pl.appNavSettings })[0]).toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: accountCopy.pl.appNavHome })[0]).toHaveAttribute("aria-current", "page");
+    expect(screen.getAllByRole("button", { name: accountCopy.pl.appNavPets })[0]).toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: accountCopy.pl.appNavTimeline })[0]).toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: accountCopy.pl.appNavDocuments })[0]).toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: accountCopy.pl.appNavReminders })[0]).toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: accountCopy.pl.appNavAsk })[0]).toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: accountCopy.pl.appNavSharing })[0]).toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: accountCopy.pl.appNavSettings })[0]).toBeInTheDocument();
     expect(screen.getByRole("searchbox", { name: /szukaj w caniello/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /aktywny pupil/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /powiadomienia/i })).toBeInTheDocument();
@@ -182,10 +182,58 @@ describe("Caniello account experience", () => {
     expect(screen.getByRole("button", { name: /scan document/i })).toBeDisabled();
     expect(screen.getByText(/review extracted details/i)).toBeInTheDocument();
     expect(screen.getByText(/caniello tip/i)).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: /pets/i })[0]).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: /timeline/i })[0]).toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: /pets/i })[0]).toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: /timeline/i })[0]).toBeInTheDocument();
     expect(screen.getByRole("searchbox", { name: /search caniello/i })).toBeInTheDocument();
     expect(screen.getByText(/does not replace a veterinarian/i)).toBeInTheDocument();
+  });
+
+  it("opens inert authenticated section empty states with safe disabled actions", async () => {
+    const user = userEvent.setup();
+    render(<AccountApp route="app-home" />);
+
+    await user.click(screen.getAllByRole("button", { name: accountCopy.pl.appNavPets })[0]);
+    expect(screen.getByRole("heading", { name: /profile pupili/i })).toBeInTheDocument();
+    expect(screen.getByText(/nie zapisaliśmy profilu/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /dodawanie profilu wkrótce/i })).toBeDisabled();
+    expect(screen.getAllByRole("button", { name: accountCopy.pl.appNavPets })[0]).toHaveAttribute("aria-current", "page");
+
+    await user.click(screen.getAllByRole("button", { name: accountCopy.pl.appNavDocuments })[0]);
+    expect(screen.getByRole("heading", { name: /dokumenty/i })).toBeInTheDocument();
+    expect(screen.getByText(/ocr, analiza i weryfikacja dokumentów nie są aktywne/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /przesyłanie dokumentów wkrótce/i })).toBeDisabled();
+
+    await user.click(screen.getAllByRole("button", { name: accountCopy.pl.appNavReminders })[0]);
+    expect(screen.getByRole("heading", { name: /przypomnienia/i })).toBeInTheDocument();
+    expect(screen.getByText(/nie utworzono przypomnienia/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /tworzenie przypomnień wkrótce/i })).toBeDisabled();
+
+    await user.click(screen.getAllByRole("button", { name: accountCopy.pl.appNavAsk })[0]);
+    expect(screen.getByRole("heading", { name: /zapytaj caniello/i })).toBeInTheDocument();
+    expect(screen.getByText(/nie generuje odpowiedzi, diagnoz/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /asystent wkrótce/i })).toBeDisabled();
+
+    await user.click(screen.getAllByRole("button", { name: accountCopy.pl.appNavSharing })[0]);
+    expect(screen.getByRole("heading", { name: /udostępnianie/i })).toBeInTheDocument();
+    expect(screen.getByText(/nie utworzono linku, pdf, zaproszenia/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /udostępnianie wkrótce/i })).toBeDisabled();
+
+    await user.click(screen.getAllByRole("button", { name: accountCopy.pl.appNavSettings })[0]);
+    expect(screen.getByRole("heading", { name: /ustawienia/i })).toBeInTheDocument();
+    expect(screen.getByText(/nie dodaje nowych przepływów usuwania konta/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /ustawienia szczegółowe wkrótce/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /wyloguj się/i })).toBeInTheDocument();
+
+    await user.click(screen.getAllByRole("button", { name: accountCopy.pl.appNavHome })[0]);
+    expect(screen.getByRole("heading", { name: /co dziś u bruno/i })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: /pierwsze uruchomienie/i }));
+    expect(screen.getByRole("heading", { name: /witaj w caniello/i })).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "EN" }));
+    await user.click(screen.getAllByRole("button", { name: accountCopy.en.appNavAsk })[0]);
+    expect(screen.getByRole("heading", { name: /ask caniello/i })).toBeInTheDocument();
+    expect(screen.getByText(/does not generate answers, diagnoses/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /assistant coming soon/i })).toBeDisabled();
   });
 
   it("shows a setup-specific message when Supabase auth is unavailable", async () => {
