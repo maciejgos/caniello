@@ -4,7 +4,7 @@
 
 - Active task: `spec/tasks/pet-profile-foundation.md`.
 - Active branch: `codex/pet-profile-foundation`.
-- Current workflow: pet profile foundation is implemented, evaluated, committed, pushed, and published as draft PR https://github.com/maciejgos/caniello/pull/21. Fresh evaluator verdict after the 2026-06-05 two-owner/RLS follow-up: Pass. Artifact: `spec/validation/pet-profile-foundation-evaluation.md`. The work is not merged, released, deployed, or human-approved as complete.
+- Current workflow: pet profile foundation is implemented, evaluated, committed, pushed, and published as draft PR https://github.com/maciejgos/caniello/pull/21. PR review follow-up fixes for atomic first household creation, real calendar-date validation, and fresh pet `updated_at` updates were implemented on 2026-06-05. Fresh evaluator rerun after merge-conflict cleanup records verdict `Pass with gaps` in `spec/validation/pet-profile-foundation-evaluation.md` because migration readiness needs cleanup. The work is not merged, released, deployed, or human-approved as complete.
 
 ## Latest Notes
 
@@ -87,10 +87,14 @@
 - The live RLS test creates a temporary second owner, proves that owner can manage their own household and pet, proves they cannot read or update Anna/Bruno's pet, proves they cannot insert into Anna's household, verifies Anna/Bruno's pet remains unchanged, and deletes the temporary owner.
 - Fresh evaluator verdict after the RLS follow-up: Pass.
 - Published draft PR https://github.com/maciejgos/caniello/pull/21 from `codex/pet-profile-foundation` to `mvp-implementation`. The branch includes task commit `663e8ea` plus this publish-record handoff update. The PR is draft only and does not mark the task accepted, approved, merged, released, deployed, or complete.
+- Addressed PR review feedback on `codex/pet-profile-foundation`: first-save owner household creation is now atomic at the database boundary. Forward migration `20260605150000_enforce_unique_owner_households.sql` adds `households_owner_user_id_unique` on `public.households(owner_user_id)`, and `findOrCreateOwnerHousehold` recovers from concurrent `23505` unique violations by re-reading the household created by the winning request.
+- Added focused regression coverage for the migration constraint and the concurrent first-save fallback path.
+- Resolved merge-conflict markers in the pet-profile server helper, pet-profile server tests, and handoff notes.
+- Re-evaluated pet profile foundation after conflict cleanup. Verdict: `Pass with gaps`. Core tests, build, TypeScript, and opt-in RLS validation pass; remaining gap is migration readiness because the forward uniqueness migration is untracked and the historical baseline migration is also modified for the same constraint.
 
 ## Current Dirty Worktree
 
-- Clean after publishing the pet profile foundation draft PR.
+- Dirty with uncommitted PR #21 review follow-up work on `codex/pet-profile-foundation`, including merge-conflict resolution, updated validation artifact/task/handoff notes, and the untracked forward owner-household uniqueness migration.
 
 Previous publish note:
 
@@ -100,6 +104,10 @@ Previous publish note:
 
 Current pet profile foundation task:
 
+- PR #21 review follow-up implemented on 2026-06-05: `public.households.owner_user_id` is unique, first household creation refetches after unique-conflict races, pet edits explicitly set `updated_at`, and `birthDate` now rejects impossible calendar dates before Postgres.
+- Focused validation passed before local dependency links were disturbed: `pnpm --filter @caniello/contracts test` and `pnpm --filter web test -- pet-profile.test.ts`.
+- `pnpm install` and `pnpm install --offline` could not restore the full local dependency tree because the registry returned 403 for `@types/react` and the package was missing from the offline store; later package-manager reruns were therefore blocked by incomplete ignored `node_modules` links.
+- `git diff --check` passed after the review follow-up edits.
 - Implemented on 2026-06-04 on branch `codex/pet-profile-foundation`.
 - Published draft PR https://github.com/maciejgos/caniello/pull/21 to `mvp-implementation` on 2026-06-05.
 - Evaluator artifact: `spec/validation/pet-profile-foundation-evaluation.md`.
@@ -115,6 +123,13 @@ Current pet profile foundation task:
 - Default focused test path passed with the opt-in RLS test skipped: `./node_modules/.bin/vitest run AccountApp.test.tsx pet-profile.test.ts pet-profile.rls.test.ts` from `apps/web`; 2 files and 12 tests passed, 1 opt-in RLS test skipped.
 - Default web test suite passed with the opt-in RLS test skipped: `pnpm --filter web test`; 9 files and 51 tests passed, 1 opt-in RLS test skipped.
 - Fresh later 2026-06-05 evaluator rerun passed focused pet profile tests, contract/db tests, web TypeScript check, full web test suite, opt-in live RLS test outside the sandbox, web lint outside the sandbox after sandbox fetch failure, production build outside the sandbox after sandbox fetch failure, and `git diff --check`.
+- PR review fix validation on 2026-06-05 passed: `./node_modules/.bin/vitest run apps/web/features/account/server/pet-profile.test.ts packages/db/src/index.test.ts`; 2 files and 16 tests passed.
+- PR review fix validation on 2026-06-05 passed: `pnpm --filter web test`; 9 files passed and 1 opt-in RLS file skipped, 52 tests passed and 1 skipped, with existing Vitest localStorage experimental warnings.
+- PR review fix validation on 2026-06-05 passed: `./node_modules/.bin/tsc --noEmit --pretty false -p apps/web/tsconfig.json`.
+- PR review fix validation on 2026-06-05 passed: `./node_modules/.bin/tsc --noEmit --pretty false -p packages/db/tsconfig.json`.
+- PR review fix validation on 2026-06-05 passed: `git diff --check`.
+- Conflict-resolution evaluator rerun on 2026-06-05 passed: no merge-conflict markers found; `git diff --check`; focused contract/db/server tests with 3 files and 30 tests passed; `pnpm --filter web test` with 9 files passed, 1 opt-in RLS file skipped, 53 tests passed, and 1 skipped; contracts/db TypeScript checks; `pnpm --filter web lint` outside sandbox after sandbox fetch failure; `pnpm build` outside sandbox after sandbox fetch failure; opt-in live Supabase RLS test outside sandbox after sandbox localhost denial.
+- Conflict-resolution evaluator gap: stage `infra/supabase/migrations/20260605150000_enforce_unique_owner_households.sql` and remove or justify the duplicate historical baseline migration edit before publishing the review follow-up.
 
 Current home dashboard skeleton task:
 

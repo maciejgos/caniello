@@ -172,6 +172,10 @@ describe("Caniello API contracts", () => {
   it("rejects invalid pet profile payloads", () => {
     expect(() => petProfilePayloadSchema.parse({ name: "", weightKg: 12 })).toThrow();
     expect(() => petProfilePayloadSchema.parse({ name: "Bruno", birthDate: "01-05-2021" })).toThrow();
+    expect(() => petProfilePayloadSchema.parse({ name: "Bruno", birthDate: "2021-02-29" })).toThrow();
+    expect(() => petProfilePayloadSchema.parse({ name: "Bruno", birthDate: "2021-02-30" })).toThrow();
+    expect(() => petProfilePayloadSchema.parse({ name: "Bruno", birthDate: "2021-99-99" })).toThrow();
+    expect(petProfilePayloadSchema.parse({ name: "Bruno", birthDate: "2024-02-29" }).birthDate).toBe("2024-02-29");
     expect(() => petProfilePayloadSchema.parse({ name: "Bruno", weightKg: 500 })).toThrow();
     expect(() => petProfilePayloadSchema.parse({ name: "Bruno", documentUpload: true })).toThrow();
   });

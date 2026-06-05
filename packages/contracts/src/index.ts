@@ -214,18 +214,30 @@ const optionalProfileTextSchema = (maxLength: number) =>
       return value.length > 0 ? value : null;
     });
 
+function isRealCalendarDate(value: string): boolean {
+  const [year, month, day] = value.split("-").map(Number);
+  if (year < 1000 || month < 1 || month > 12 || day < 1 || day > 31) return false;
+
+  const date = new Date(Date.UTC(year, month - 1, day));
+
+  return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
+}
+
+const optionalCalendarDateSchema = z
+  .string()
+  .trim()
+  .regex(/^\d{4}-\d{2}-\d{2}$/)
+  .refine(isRealCalendarDate)
+  .optional()
+  .nullable()
+  .transform((value) => value || null);
+
 export const petProfilePayloadSchema = z
   .object({
     name: z.string().trim().min(1).max(80),
     species: optionalProfileTextSchema(60),
     breed: optionalProfileTextSchema(120),
-    birthDate: z
-      .string()
-      .trim()
-      .regex(/^\d{4}-\d{2}-\d{2}$/)
-      .optional()
-      .nullable()
-      .transform((value) => value || null),
+    birthDate: optionalCalendarDateSchema,
     sexOrGender: optionalProfileTextSchema(60),
     weightKg: z.number().min(0).max(250).optional().nullable().transform((value) => value ?? null),
     microchipNumber: optionalProfileTextSchema(64),

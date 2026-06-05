@@ -6,7 +6,7 @@ Ready for human review
 
 Fresh implementer follow-up on 2026-06-05 added and passed the live two-owner/RLS integration test. Current verdict: `Pass`.
 
-Fresh evaluator rerun later on 2026-06-05 confirmed the verdict remains `Pass`.
+Fresh evaluator rerun after merge-conflict resolution on 2026-06-05 found core behavior still validated, but readiness has migration hygiene gaps. Current verdict: `Pass with gaps`.
 
 ## Scope
 
@@ -19,6 +19,7 @@ Evaluate `spec/tasks/pet-profile-foundation.md`: a signed-in owner can create, v
 - `spec/roadmap.md`
 - `spec/handoff.md`
 - `infra/supabase/migrations/20260604090000_extend_pet_profile_fields.sql`
+- `infra/supabase/migrations/20260605150000_enforce_unique_owner_households.sql`
 - `infra/supabase/seed.sql`
 - `packages/contracts/src/index.ts`
 - `packages/contracts/src/index.test.ts`
@@ -59,8 +60,8 @@ Evaluate `spec/tasks/pet-profile-foundation.md`: a signed-in owner can create, v
   Evidence: `petProfilePayloadSchema` validates and normalizes writes. Contract tests cover valid payloads, invalid name, invalid date, invalid weight, and strict rejection of out-of-scope fields.
 
 - Criterion: The implementation creates or reuses an owner household safely and does not expose another owner's household or pet data.
-  Evidence status: Supported
-  Evidence: Server helper reads the authenticated Supabase user, finds or creates only that user's household, then reads or updates the first pet for that household. Browser smoke confirmed unauthenticated API GET returns 401. Live two-owner/RLS integration test creates a temporary second owner, verifies that owner can manage their own household/pet, verifies they cannot read or update Anna/Bruno's pet, verifies they cannot insert into Anna's household, and verifies Anna/Bruno's pet remains unchanged.
+  Evidence status: Partially Supported
+  Evidence: Server helper reads the authenticated Supabase user, finds or creates only that user's household, recovers from `23505` unique-violation races by re-reading the winning household, then reads or updates the first pet for that household. Browser smoke confirmed unauthenticated API GET returns 401. Live two-owner/RLS integration test creates a temporary second owner, verifies that owner can manage their own household/pet, verifies they cannot read or update Anna/Bruno's pet, verifies they cannot insert into Anna's household, and verifies Anna/Bruno's pet remains unchanged. Readiness gap: the forward migration that enforces owner-household uniqueness is currently untracked, and the historical baseline migration is also edited for the same uniqueness behavior.
 
 - Criterion: Supabase RLS remains enabled for owner-owned pet data, and any migration includes policies or policy compatibility checks needed for the new fields.
   Evidence status: Supported
@@ -100,7 +101,7 @@ Evaluate `spec/tasks/pet-profile-foundation.md`: a signed-in owner can create, v
   Type: Automated
   Status: Passed
   Expected result: Existing authenticated app behavior does not regress.
-  Actual result: Fresh evaluator rerun later on 2026-06-05 passed `pnpm --filter web test`; 9 files and 51 tests passed, 1 opt-in RLS test skipped, with existing localStorage experimental warnings.
+  Actual result: Fresh evaluator rerun after conflict resolution on 2026-06-05 passed `pnpm --filter web test`; 9 files passed and 1 opt-in RLS file skipped, 53 tests passed and 1 skipped, with existing localStorage experimental warnings.
 
 - Check: Package web test command
   Type: Automated
@@ -112,7 +113,7 @@ Evaluate `spec/tasks/pet-profile-foundation.md`: a signed-in owner can create, v
   Type: Automated
   Status: Passed
   Expected result: Contracts, db, and web TypeScript compile without emit.
-  Actual result: Fresh evaluator rerun later on 2026-06-05 passed `./node_modules/.bin/tsc --noEmit --pretty false -p apps/web/tsconfig.json`. Previous task validation passed contracts and db TypeScript checks.
+  Actual result: Fresh evaluator rerun after conflict resolution on 2026-06-05 passed `./node_modules/.bin/tsc --noEmit --pretty false -p apps/web/tsconfig.json`, `./node_modules/.bin/tsc --noEmit --pretty false -p packages/contracts/tsconfig.json`, and `./node_modules/.bin/tsc --noEmit --pretty false -p packages/db/tsconfig.json`.
 
 - Check: Web lint gate
   Type: Automated
@@ -130,7 +131,25 @@ Evaluate `spec/tasks/pet-profile-foundation.md`: a signed-in owner can create, v
   Type: Automated
   Status: Passed
   Expected result: No trailing whitespace or patch formatting errors.
-  Actual result: `git diff --check` passed.
+  Actual result: Fresh evaluator rerun after conflict resolution on 2026-06-05 passed `git diff --check`.
+
+- Check: Merge-conflict marker scan
+  Type: Automated
+  Status: Passed
+  Expected result: No unresolved merge-conflict markers remain.
+  Actual result: Fresh evaluator rerun after conflict resolution on 2026-06-05 passed `rg -n "<<<<<<<|=======|>>>>>>>"`; no markers were found.
+
+- Check: Focused contract/db/server tests after conflict resolution
+  Type: Automated
+  Status: Passed
+  Expected result: Pet profile schemas, migration assertions, updated-at helper, and concurrent owner-household fallback tests pass.
+  Actual result: Fresh evaluator rerun after conflict resolution on 2026-06-05 passed `./node_modules/.bin/vitest run apps/web/features/account/server/pet-profile.test.ts packages/db/src/index.test.ts packages/contracts/src/index.test.ts`; 3 files and 30 tests passed.
+
+- Check: Migration readiness
+  Type: Data
+  Status: Failed
+  Expected result: Durable schema changes are represented by tracked forward migrations without conflicting historical-migration edits.
+  Actual result: `git status --short --untracked-files=all` shows `infra/supabase/migrations/20260605150000_enforce_unique_owner_households.sql` is untracked, while `infra/supabase/migrations/20260519000100_mvp_foundation.sql` is also modified to add `unique` to `households.owner_user_id`. The untracked forward migration must be staged before publish, and the historical migration edit should be reviewed or removed so already-applied environments receive the intended forward migration path without redundant baseline churn.
 
 - Check: Apply local Supabase migration
   Type: Data
@@ -148,11 +167,20 @@ Evaluate `spec/tasks/pet-profile-foundation.md`: a signed-in owner can create, v
   Type: Security
   Status: Passed
   Expected result: A second authenticated owner can manage their own household/pet but cannot read, update, or insert into the first owner's household/pet data.
-  Actual result: Fresh evaluator rerun later on 2026-06-05 passed `env CANIELLO_RUN_SUPABASE_RLS_TESTS=1 ./node_modules/.bin/vitest run features/account/server/pet-profile.rls.test.ts` from `apps/web` outside the sandbox after sandbox localhost access failed. The test created a temporary second owner, signed in with the anon client, created that owner's own household and pet, confirmed Anna/Bruno's pet was invisible to the second owner, confirmed an attempted update returned no rows, confirmed an attempted insert into Anna's household failed under RLS, verified Anna/Bruno's pet remained unchanged, and deleted the temporary owner.
+  Actual result: Fresh evaluator rerun after conflict resolution on 2026-06-05 passed `env CANIELLO_RUN_SUPABASE_RLS_TESTS=1 ./node_modules/.bin/vitest run apps/web/features/account/server/pet-profile.rls.test.ts` outside the sandbox after sandbox localhost access failed. The test created a temporary second owner, signed in with the anon client, created that owner's own household and pet, confirmed Anna/Bruno's pet was invisible to the second owner, confirmed an attempted update returned no rows, confirmed an attempted insert into Anna's household failed under RLS, verified Anna/Bruno's pet remained unchanged, and deleted the temporary owner.
 
 ## Evidence
 
 - Automated validation passed:
+  - Fresh conflict-resolution rerun: `rg -n "<<<<<<<|=======|>>>>>>>"`
+  - Fresh conflict-resolution rerun: `git diff --check`
+  - Fresh conflict-resolution rerun: `./node_modules/.bin/vitest run apps/web/features/account/server/pet-profile.test.ts packages/db/src/index.test.ts packages/contracts/src/index.test.ts`; 3 files and 30 tests passed.
+  - Fresh conflict-resolution rerun: `pnpm --filter web test`; 9 files passed and 1 opt-in RLS file skipped, 53 tests passed and 1 skipped.
+  - Fresh conflict-resolution rerun: `pnpm --filter web lint`; sandbox failed with `[ERROR] fetch failed`, escalated rerun passed.
+  - Fresh conflict-resolution rerun: `./node_modules/.bin/tsc --noEmit --pretty false -p packages/contracts/tsconfig.json`.
+  - Fresh conflict-resolution rerun: `./node_modules/.bin/tsc --noEmit --pretty false -p packages/db/tsconfig.json`.
+  - Fresh conflict-resolution rerun: `pnpm build`; sandbox failed with `[ERROR] fetch failed`, escalated rerun passed.
+  - Fresh conflict-resolution rerun: `env CANIELLO_RUN_SUPABASE_RLS_TESTS=1 ./node_modules/.bin/vitest run apps/web/features/account/server/pet-profile.rls.test.ts`; sandbox failed with localhost `EPERM`, escalated rerun passed.
   - Fresh rerun: `./node_modules/.bin/vitest run AccountApp.test.tsx pet-profile.test.ts`
   - Fresh rerun: `./node_modules/.bin/vitest run packages/contracts/src/index.test.ts packages/db/src/index.test.ts`
   - Fresh rerun: `pnpm --filter web test`
@@ -189,6 +217,13 @@ Evaluate `spec/tasks/pet-profile-foundation.md`: a signed-in owner can create, v
 ## Findings
 
 - Severity: Medium
+  Status: Open
+  Finding: Migration readiness is not clean after the owner-household concurrency follow-up. The working tree has an untracked forward migration `infra/supabase/migrations/20260605150000_enforce_unique_owner_households.sql`, while the historical baseline migration `infra/supabase/migrations/20260519000100_mvp_foundation.sql` is also modified to add `unique` to `households.owner_user_id`.
+  Evidence: `git status --short --untracked-files=all` lists the forward migration as `??` and the baseline migration as modified. The db tests assert both baseline uniqueness and the forward migration.
+  Risk: If the forward migration is not staged, existing environments that already applied the baseline migration will not receive the owner-household uniqueness constraint. If both the baseline edit and forward migration remain, fresh databases get redundant uniqueness definitions and the migration history is less clear.
+  Recommended fix: Stage the forward migration before publishing and remove or explicitly justify the historical baseline migration edit. Prefer the forward migration as the durable path for already-applied databases.
+
+- Severity: Medium
   Status: Resolved by follow-up implementation on 2026-06-04.
   Finding: The pet profile form fields are editable while the initial profile load is still in flight. In the first browser smoke, filling immediately after the Pets heading appeared allowed the pending GET response to reset the form back to the existing Bruno values before save, and the PUT returned the unchanged pet. This can discard quick user input.
   Evidence: First escalated Playwright run saw `PUT /api/pets/profile 200` but the response body still contained `name: "Bruno"` instead of the unique entered value. Waiting for the initial field value before editing made the same save/reload flow pass.
@@ -206,6 +241,10 @@ Evaluate `spec/tasks/pet-profile-foundation.md`: a signed-in owner can create, v
   Reason: The evaluator ran a focused authenticated Playwright smoke for this task instead of the full e2e suite.
   Risk: Low to medium; task-specific behavior is covered, but unrelated browser journeys were not exhaustively retested.
 
+- Check: Fresh browser smoke after the merge-conflict cleanup
+  Reason: The conflict cleanup and review follow-up touched server/data/test files, not the Pet profile UI component. Prior task-specific browser smoke evidence remains in this artifact, and fresh automated tests/build/RLS checks passed.
+  Risk: Low; a fresh browser run would still be useful before final publish if the UI or local Supabase state changed.
+
 - Check: Automated cross-owner RLS integration test
   Reason: Previously missing; now implemented as an opt-in live Supabase test so the default unit suite remains stable when local Supabase is not running.
   Risk: Low; the opt-in command must be run when validating pet profile authorization changes.
@@ -222,14 +261,16 @@ Evaluate `spec/tasks/pet-profile-foundation.md`: a signed-in owner can create, v
 
 ## Result
 
-Pass
+Pass with gaps
 
-Core acceptance behavior is implemented and freshly revalidated: authenticated owner save/read/reload works against local Supabase, request validation exists, unauthenticated API access is denied, fields are locked while the initial profile load is pending, automated tests/build pass, and live two-owner RLS isolation is proven.
+Core acceptance behavior is implemented and freshly revalidated: request validation exists, unauthenticated API access is denied, fields are locked while the initial profile load is pending, automated tests/build pass, conflict markers are gone, and live two-owner RLS isolation is proven. Remaining readiness gap: migration hygiene must be cleaned up before publish because the owner-household uniqueness forward migration is untracked and the historical baseline migration is also modified for the same constraint.
 
 ## Follow-Up
 
 - Initial-load race fix implemented: pet profile inputs are disabled until profile loading completes.
 - Two-owner/RLS integration test implemented and passed as an opt-in live Supabase validation.
+- Stage the forward owner-household uniqueness migration before publishing.
+- Remove or explicitly justify the historical baseline migration edit that duplicates the new forward uniqueness migration.
 - Commit only intentional implementation, task, validation, and handoff files after review.
 
 ## Human Decision

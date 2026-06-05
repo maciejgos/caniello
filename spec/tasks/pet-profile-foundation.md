@@ -126,6 +126,15 @@ Actual validation on 2026-06-04:
 - RLS gap fix passed outside sandbox after sandbox localhost access failure: `env CANIELLO_RUN_SUPABASE_RLS_TESTS=1 ./node_modules/.bin/vitest run features/account/server/pet-profile.rls.test.ts` from `apps/web`; 1 file and 1 test passed. The test creates a temporary second owner, proves that owner can create their own household and pet, proves they cannot read or update Anna/Bruno's pet, proves they cannot insert into Anna's household, verifies Anna/Bruno's pet remains unchanged, and deletes the temporary owner.
 - Default test path remains stable: `./node_modules/.bin/vitest run AccountApp.test.tsx pet-profile.test.ts pet-profile.rls.test.ts` from `apps/web`; 2 files and 12 tests passed, 1 opt-in RLS test skipped.
 - Default web test suite remains stable: `pnpm --filter web test`; 9 files and 51 tests passed, 1 opt-in RLS test skipped, with existing Vitest localStorage experimental warnings.
+- Review fix passed on 2026-06-05: added forward migration `20260605150000_enforce_unique_owner_households.sql` with `households_owner_user_id_unique` to make one owner household enforceable at the database boundary, and changed first-save household creation to recover from concurrent unique violations by re-reading the winning row.
+- Review fix passed: `./node_modules/.bin/vitest run apps/web/features/account/server/pet-profile.test.ts packages/db/src/index.test.ts`; 2 files and 16 tests passed.
+- Review fix passed: `pnpm --filter web test`; 9 files passed and 1 opt-in RLS file skipped, 52 tests passed and 1 skipped, with existing Vitest localStorage experimental warnings.
+- Review fix passed: `./node_modules/.bin/tsc --noEmit --pretty false -p apps/web/tsconfig.json`.
+- Review fix passed: `./node_modules/.bin/tsc --noEmit --pretty false -p packages/db/tsconfig.json`.
+- Review fix passed: `git diff --check`.
+- Conflict-resolution evaluator rerun on 2026-06-05: `spec/validation/pet-profile-foundation-evaluation.md` now records verdict `Pass with gaps`.
+- Conflict-resolution evaluator rerun passed: no merge-conflict markers found, `git diff --check`, focused contract/db/server tests, full web tests, contracts/db TypeScript, web lint outside sandbox after sandbox fetch failure, production build outside sandbox after sandbox fetch failure, and opt-in live Supabase RLS test outside sandbox after sandbox localhost denial.
+- Conflict-resolution evaluator gap: owner-household uniqueness migration readiness needs cleanup before publish because `infra/supabase/migrations/20260605150000_enforce_unique_owner_households.sql` is untracked and the historical baseline migration is also modified for the same uniqueness constraint.
 
 Residual validation gaps:
 
@@ -138,6 +147,7 @@ Implemented on branch `codex/pet-profile-foundation`.
 Implementation summary:
 
 - Added a forward Supabase migration extending `public.pets` with sex or gender, weight, microchip number, allergies, medication, and important notes while preserving existing household-owned RLS policies.
+- Added a unique owner-household constraint and concurrent first-save retry path so duplicate owner households cannot make a newly saved pet disappear after reload.
 - Updated local seed data for Bruno with the new profile fields.
 - Added shared pet profile Zod contracts and response shapes in `packages/contracts`.
 - Added a feature-local server helper and `/api/pets/profile` GET/PUT route using the existing Supabase route-client cookie pattern.
@@ -149,3 +159,4 @@ Known gap:
 - Browser persistence validation is complete after local migration approval.
 - Follow-up load/edit race is fixed: pet profile fields are disabled during initial load and save, and the focused browser smoke passed.
 - Two-owner/RLS isolation has a live opt-in Supabase integration test and passed locally.
+- Migration readiness gap remains after review follow-up: stage the forward owner-household uniqueness migration and remove or justify the historical baseline migration edit before publishing.

@@ -22,6 +22,10 @@ type HouseholdRow = {
   id: string;
 };
 
+type DatabaseError = {
+  code?: string;
+};
+
 type PetProfileResult =
   | { ok: true; pet: PetProfileResponse | null }
   | { ok: false; status: number; message: string; issues?: unknown };
@@ -81,7 +85,7 @@ export async function saveOwnerPetProfile(input: unknown, supabase: SupabaseClie
   const query = existingPetResult.pet
     ? supabase
         .from("pets")
-        .update(databasePayload)
+        .update(createPetProfileUpdatePayload(databasePayload))
         .eq("id", existingPetResult.pet.id)
         .select(PET_PROFILE_COLUMNS)
         .single()
@@ -137,6 +141,15 @@ export function createPetProfileDatabasePayload(payload: PetProfilePayload) {
   };
 }
 
+type PetProfileDatabasePayload = ReturnType<typeof createPetProfileDatabasePayload>;
+
+export function createPetProfileUpdatePayload(payload: PetProfileDatabasePayload, now: Date = new Date()) {
+  return {
+    ...payload,
+    updated_at: now.toISOString()
+  };
+}
+
 async function getAuthenticatedUser(
   supabase: SupabaseClient
 ): Promise<{ ok: true; user: User } | { ok: false; status: number; message: string }> {
@@ -182,10 +195,20 @@ async function findOrCreateOwnerHousehold(
     .single();
 
   if (error || !data) {
+    if (isUniqueViolation(error)) {
+      const concurrentHousehold = await findOwnerHousehold(supabase, ownerUserId);
+      if (!concurrentHousehold.ok) return concurrentHousehold;
+      if (concurrentHousehold.household) return { ok: true, household: concurrentHousehold.household };
+    }
+
     return { ok: false, status: 500, message: "Could not create the owner household." };
   }
 
   return { ok: true, household: data as HouseholdRow };
+}
+
+function isUniqueViolation(error: unknown): error is DatabaseError {
+  return typeof error === "object" && error !== null && "code" in error && (error as DatabaseError).code === "23505";
 }
 
 async function findHouseholdPet(

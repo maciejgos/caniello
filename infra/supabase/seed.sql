@@ -97,7 +97,7 @@ values (
   '11111111-1111-4111-8111-111111111111',
   'Demo household'
 )
-on conflict (id) do update
+on conflict (owner_user_id) do update
 set
   name = excluded.name,
   updated_at = now();

@@ -113,6 +113,8 @@ describe("Supabase migration baseline", () => {
       expect(migration).toContain(`create table public.${table}`);
       expect(migration).toContain(`alter table public.${table} enable row level security`);
     }
+
+    expect(migration).toContain("owner_user_id uuid not null unique references auth.users(id) on delete cascade");
   });
 
   it("creates account privacy tables with RLS and owner-scoped policies", () => {
@@ -164,6 +166,15 @@ describe("Supabase migration baseline", () => {
     expect(migration).toContain("weight_kg >= 0");
     expect(migration).toContain("weight_kg <= 250");
     expect(migration).toContain("on public.pets (household_id, created_at)");
+    expect(migration).not.toContain("create policy");
+  });
+
+  it("enforces one default owner household for first-pet creation", () => {
+    const migration = readFileSync(migrationPath("20260605150000_enforce_unique_owner_households.sql"), "utf8");
+
+    expect(migration).toContain("alter table public.households");
+    expect(migration).toContain("constraint households_owner_user_id_unique");
+    expect(migration).toContain("unique (owner_user_id)");
     expect(migration).not.toContain("create policy");
   });
 });
