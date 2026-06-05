@@ -5,6 +5,7 @@ import { AppHomeDashboard } from "./AppHomeDashboard";
 import { AppSidebar, MobileAppNav } from "./AppSidebar";
 import { AppSectionEmptyState } from "./AppSectionEmptyState";
 import { AppTopBar } from "./AppTopBar";
+import { PetProfileSection } from "./PetProfileSection";
 
 export type AppSection = "home" | "pets" | "timeline" | "documents" | "reminders" | "ask" | "sharing" | "settings";
 
@@ -29,7 +30,13 @@ export function AuthenticatedAppShell({ language, onLanguageChange }: Authentica
         <div className="min-w-0 border-l border-[#e6e9ef] bg-white">
           <AppTopBar copy={copy} language={language} onLanguageChange={onLanguageChange} onLogout={logout} />
           <MobileAppNav copy={copy} activeSection={activeSection} onSectionChange={setActiveSection} />
-          {activeSection === "home" ? <AppHomeDashboard copy={copy} /> : <AppSectionEmptyState copy={copy} section={activeSection} />}
+          {activeSection === "home" ? (
+            <AppHomeDashboard copy={copy} />
+          ) : activeSection === "pets" ? (
+            <PetProfileSection copy={copy} />
+          ) : (
+            <AppSectionEmptyState copy={copy} section={activeSection} />
+          )}
         </div>
       </div>
     </main>

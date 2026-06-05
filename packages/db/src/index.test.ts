@@ -12,6 +12,9 @@ import {
   readSupabaseServiceRoleConfig
 } from ".";
 
+const repositoryRoot = process.cwd().endsWith("packages/db") ? join(process.cwd(), "../..") : process.cwd();
+const migrationPath = (filename: string) => join(repositoryRoot, "infra/supabase/migrations", filename);
+
 describe("Supabase configuration helpers", () => {
   it("reads public client configuration from environment variables", () => {
     expect(
@@ -94,10 +97,7 @@ describe("Supabase configuration helpers", () => {
 
 describe("Supabase migration baseline", () => {
   it("creates the core owner data tables with RLS enabled", () => {
-    const migration = readFileSync(
-      join(process.cwd(), "../../infra/supabase/migrations/20260519000100_mvp_foundation.sql"),
-      "utf8"
-    );
+    const migration = readFileSync(migrationPath("20260519000100_mvp_foundation.sql"), "utf8");
 
     for (const table of [
       "households",
@@ -116,10 +116,7 @@ describe("Supabase migration baseline", () => {
   });
 
   it("creates account privacy tables with RLS and owner-scoped policies", () => {
-    const migration = readFileSync(
-      join(process.cwd(), "../../infra/supabase/migrations/20260520150000_owner_account_privacy_foundation.sql"),
-      "utf8"
-    );
+    const migration = readFileSync(migrationPath("20260520150000_owner_account_privacy_foundation.sql"), "utf8");
 
     for (const table of ["account_profiles", "consent_events", "data_export_requests", "account_deletion_requests"]) {
       expect(migration).toContain(`create table public.${table}`);
@@ -139,10 +136,7 @@ describe("Supabase migration baseline", () => {
   });
 
   it("creates account profiles automatically from Supabase Auth users", () => {
-    const migration = readFileSync(
-      join(process.cwd(), "../../infra/supabase/migrations/20260523093000_create_account_profile_on_auth_signup.sql"),
-      "utf8"
-    );
+    const migration = readFileSync(migrationPath("20260523093000_create_account_profile_on_auth_signup.sql"), "utf8");
 
     expect(migration).toContain("create or replace function public.create_account_profile_for_auth_user()");
     expect(migration).toContain("create trigger create_account_profile_after_auth_signup");
@@ -150,5 +144,35 @@ describe("Supabase migration baseline", () => {
     expect(migration).toContain("insert into public.account_profiles");
     expect(migration).toContain("raw_user_meta_data->>'displayName'");
     expect(migration).toContain("where account_profiles.id is null");
+  });
+
+  it("extends owner-scoped pets with MVP profile fields without changing RLS ownership", () => {
+    const migration = readFileSync(migrationPath("20260604090000_extend_pet_profile_fields.sql"), "utf8");
+
+    for (const column of [
+      "sex_or_gender",
+      "weight_kg",
+      "microchip_number",
+      "allergies",
+      "medication",
+      "important_notes"
+    ]) {
+      expect(migration).toContain(`add column ${column}`);
+    }
+
+    expect(migration).toContain("constraint pets_weight_kg_range");
+    expect(migration).toContain("weight_kg >= 0");
+    expect(migration).toContain("weight_kg <= 250");
+    expect(migration).toContain("on public.pets (household_id, created_at)");
+    expect(migration).not.toContain("create policy");
+  });
+
+  it("enforces one default owner household for first-pet creation", () => {
+    const migration = readFileSync(migrationPath("20260605150000_enforce_unique_owner_households.sql"), "utf8");
+
+    expect(migration).toContain("alter table public.households");
+    expect(migration).toContain("constraint households_owner_user_id_unique");
+    expect(migration).toContain("unique (owner_user_id)");
+    expect(migration).not.toContain("create policy");
   });
 });

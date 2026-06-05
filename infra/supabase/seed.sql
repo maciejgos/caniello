@@ -97,7 +97,7 @@ values (
   '11111111-1111-4111-8111-111111111111',
   'Demo household'
 )
-on conflict (id) do update
+on conflict (owner_user_id) do update
 set
   name = excluded.name,
   updated_at = now();
@@ -108,7 +108,13 @@ insert into public.pets (
   name,
   species,
   breed,
-  birth_date
+  birth_date,
+  sex_or_gender,
+  weight_kg,
+  microchip_number,
+  allergies,
+  medication,
+  important_notes
 )
 values (
   '44444444-4444-4444-8444-444444444444',
@@ -116,7 +122,13 @@ values (
   'Bruno',
   'dog',
   'mixed breed',
-  '2021-05-01'
+  '2021-05-01',
+  'male',
+  26.40,
+  '616093900000000',
+  'None saved',
+  'OmegaVet supplement',
+  'Prefers quiet handling during clinic visits.'
 )
 on conflict (id) do update
 set
@@ -124,4 +136,10 @@ set
   species = excluded.species,
   breed = excluded.breed,
   birth_date = excluded.birth_date,
+  sex_or_gender = excluded.sex_or_gender,
+  weight_kg = excluded.weight_kg,
+  microchip_number = excluded.microchip_number,
+  allergies = excluded.allergies,
+  medication = excluded.medication,
+  important_notes = excluded.important_notes,
   updated_at = now();

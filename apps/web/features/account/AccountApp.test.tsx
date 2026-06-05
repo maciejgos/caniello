@@ -188,15 +188,88 @@ describe("Caniello account experience", () => {
     expect(screen.getByText(/does not replace a veterinarian/i)).toBeInTheDocument();
   });
 
-  it("opens inert authenticated section empty states with safe disabled actions", async () => {
+  it("saves the pet profile and keeps the remaining authenticated sections inert", async () => {
+    const savedPet = {
+      id: "44444444-4444-4444-8444-444444444444",
+      householdId: "33333333-3333-4333-8333-333333333333",
+      name: "Luna",
+      species: "kot",
+      breed: "europejski",
+      birthDate: "2022-02-14",
+      sexOrGender: "samica",
+      weightKg: 4.8,
+      microchipNumber: "616093900000001",
+      allergies: "kurczak",
+      medication: "brak",
+      importantNotes: "Nie lubi głośnych miejsc.",
+      createdAt: "2026-06-04T09:00:00.000Z",
+      updatedAt: "2026-06-04T09:30:00.000Z"
+    };
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+        if (String(input) === "/api/pets/profile" && init?.method === "PUT") {
+          return new Response(JSON.stringify({ ok: true, pet: savedPet }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" }
+          });
+        }
+
+        if (String(input) === "/api/pets/profile") {
+          return new Response(JSON.stringify({ ok: true, pet: null }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" }
+          });
+        }
+
+        return new Response(JSON.stringify({ ok: true, status: "ok" }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" }
+        });
+      })
+    );
     const user = userEvent.setup();
     render(<AccountApp route="app-home" />);
 
     await user.click(screen.getAllByRole("button", { name: accountCopy.pl.appNavPets })[0]);
-    expect(screen.getByRole("heading", { name: /profile pupili/i })).toBeInTheDocument();
-    expect(screen.getByText(/nie zapisaliśmy profilu/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /dodawanie profilu wkrótce/i })).toBeDisabled();
+    expect(await screen.findByRole("heading", { name: /zapisz podstawowe dane pupila/i })).toBeInTheDocument();
+    expect(screen.getByText(/nie zapisaliśmy jeszcze profilu pupila/i)).toBeInTheDocument();
     expect(screen.getAllByRole("button", { name: accountCopy.pl.appNavPets })[0]).toHaveAttribute("aria-current", "page");
+
+    await user.type(screen.getByLabelText(/imię pupila/i), "Luna");
+    await user.type(screen.getByLabelText(/^gatunek$/i), "kot");
+    await user.type(screen.getByLabelText(/^rasa$/i), "europejski");
+    await user.type(screen.getByLabelText(/data urodzenia/i), "2022-02-14");
+    await user.type(screen.getByLabelText(/płeć lub opis/i), "samica");
+    await user.type(screen.getByLabelText(/waga w kg/i), "4.8");
+    await user.type(screen.getByLabelText(/numer mikrochipu/i), "616093900000001");
+    await user.type(screen.getByLabelText(/^alergie$/i), "kurczak");
+    await user.type(screen.getByLabelText(/leki i suplementy/i), "brak");
+    await user.type(screen.getByLabelText(/ważne notatki/i), "Nie lubi głośnych miejsc.");
+    await user.click(screen.getByRole("button", { name: /zapisz profil/i }));
+
+    await waitFor(() =>
+      expect(fetch).toHaveBeenCalledWith(
+        "/api/pets/profile",
+        expect.objectContaining({
+          method: "PUT",
+          headers: { "Content-Type": "application/json" }
+        })
+      )
+    );
+    const putCall = (fetch as unknown as { mock: { calls: Array<[string, RequestInit | undefined]> } }).mock.calls.find(
+      ([input, requestInit]) => input === "/api/pets/profile" && requestInit?.method === "PUT"
+    );
+    expect(putCall).toBeDefined();
+    const init = putCall?.[1] as RequestInit;
+    expect(JSON.parse(String(init.body))).toMatchObject({
+      name: "Luna",
+      species: "kot",
+      weightKg: 4.8,
+      microchipNumber: "616093900000001"
+    });
+    expect(screen.getByText(/zapisany profil/i)).toBeInTheDocument();
+    expect(screen.getAllByText("Luna")[0]).toBeInTheDocument();
 
     await user.click(screen.getAllByRole("button", { name: accountCopy.pl.appNavDocuments })[0]);
     expect(screen.getByRole("heading", { name: /dokumenty/i })).toBeInTheDocument();
@@ -234,6 +307,48 @@ describe("Caniello account experience", () => {
     expect(screen.getByRole("heading", { name: /ask caniello/i })).toBeInTheDocument();
     expect(screen.getByText(/does not generate answers, diagnoses/i)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /assistant coming soon/i })).toBeDisabled();
+  });
+
+  it("keeps pet profile fields locked until the initial profile load completes", async () => {
+    let resolveProfileLoad: (response: Response) => void = (_response: Response) => {
+      throw new Error("Pet profile load did not start.");
+    };
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (input: RequestInfo | URL) => {
+        if (String(input) === "/api/pets/profile") {
+          return new Promise<Response>((resolve) => {
+            resolveProfileLoad = resolve;
+          });
+        }
+
+        return new Response(JSON.stringify({ ok: true, status: "ok" }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" }
+        });
+      })
+    );
+    const user = userEvent.setup();
+    render(<AccountApp route="app-home" />);
+
+    await user.click(screen.getAllByRole("button", { name: accountCopy.pl.appNavPets })[0]);
+    expect(await screen.findByRole("heading", { name: /zapisz podstawowe dane pupila/i })).toBeInTheDocument();
+
+    const nameField = screen.getByLabelText(/imię pupila/i);
+    const speciesField = screen.getByLabelText(/^gatunek$/i);
+    expect(nameField).toBeDisabled();
+    expect(speciesField).toBeDisabled();
+    expect(screen.getByRole("button", { name: /zapisz profil/i })).toBeDisabled();
+
+    resolveProfileLoad?.(
+      new Response(JSON.stringify({ ok: true, pet: null }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" }
+      })
+    );
+
+    await waitFor(() => expect(nameField).not.toBeDisabled());
+    expect(speciesField).not.toBeDisabled();
   });
 
   it("shows a setup-specific message when Supabase auth is unavailable", async () => {

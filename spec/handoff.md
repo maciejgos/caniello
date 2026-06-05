@@ -2,9 +2,9 @@
 
 ## Current State
 
-- Active task: None. Last human-approved product task: `spec/tasks/app-section-empty-states.md`.
-- Active branch: `codex/app-section-empty-states`.
-- Current workflow: app section empty states implemented, evaluated, committed, pushed, published as draft PR https://github.com/maciejgos/caniello/pull/20, and approved by the human on 2026-06-04. Fresh evaluator verdict: Pass. Artifact: `spec/validation/app-section-empty-states-evaluation.md`. No release, merge, deployment, or roadmap scope move has been recorded.
+- Active task: `spec/tasks/pet-profile-foundation.md`.
+- Active branch: `codex/pet-profile-foundation`.
+- Current workflow: pet profile foundation is implemented, evaluated, human-approved, committed, pushed, and published in PR https://github.com/maciejgos/caniello/pull/21. PR review follow-up fixes for atomic first household creation, real calendar-date validation, fresh pet `updated_at` updates, and migration-history cleanup were pushed on commit `676420d`. Fresh evaluator rerun after migration-history cleanup records verdict `Pass` in `spec/validation/pet-profile-foundation-evaluation.md`. Human approved the evaluated pet-profile foundation work on 2026-06-05. The work is not merged, released, or deployed.
 
 ## Latest Notes
 
@@ -74,18 +74,69 @@
 - Signed-in `/app` navigation now selects local, inert section states for Pets, Timeline, Documents, Reminders, Ask Caniello, Sharing, and Settings while preserving Home dashboard and first-run onboarding behavior.
 - Added `AppSectionEmptyState` as a feature-local component and kept empty-state copy in `apps/web/features/account/content.ts`.
 - Empty-state actions are disabled or preview-only and safety copy explicitly avoids saved-record, upload, OCR, reminder, notification, AI, diagnosis, treatment, emergency, sharing-link, PDF, caregiver-permission, account data-rights, clinic, partner, marketplace, booking, payment, and official passport replacement claims.
+- Implemented `spec/tasks/pet-profile-foundation.md` on branch `codex/pet-profile-foundation`.
+- Added forward migration `infra/supabase/migrations/20260604090000_extend_pet_profile_fields.sql` extending `public.pets` with sex or gender, weight, microchip number, allergies, medication, and important notes while preserving existing household-owned RLS policies.
+- Added shared pet profile Zod contracts and response shapes in `packages/contracts`.
+- Added `/api/pets/profile` GET/PUT route and feature-local server helper using the existing Supabase route-client cookie pattern.
+- Replaced the inert Pets section with an authenticated first-pet profile form and summary surface that reads, saves, and reloads saved pet profile values.
+- Evaluated pet profile foundation with `forge-evaluator`. Fresh verdict: Pass with gaps. Artifact: `spec/validation/pet-profile-foundation-evaluation.md`.
+- Implemented the evaluator-recommended follow-up: pet profile inputs and textareas are now disabled while the initial profile GET is loading or a save is in flight, preventing quick user input from being overwritten by the load response.
+- Added a focused regression test that holds `/api/pets/profile` open and verifies pet profile fields plus the save button stay disabled until the load completes.
+- Reran focused Playwright load-lock smoke outside the sandbox; it delayed the initial profile GET, confirmed fields were disabled during the pending load, then confirmed save/reload persistence, fresh mobile visibility, no console/page errors, and zero desktop/mobile horizontal overflow.
+- Implemented the remaining two-owner/RLS gap as opt-in live Supabase test `apps/web/features/account/server/pet-profile.rls.test.ts`.
+- The live RLS test creates a temporary second owner, proves that owner can manage their own household and pet, proves they cannot read or update Anna/Bruno's pet, proves they cannot insert into Anna's household, verifies Anna/Bruno's pet remains unchanged, and deletes the temporary owner.
+- Fresh evaluator verdict after the RLS follow-up: Pass.
+- Published draft PR https://github.com/maciejgos/caniello/pull/21 from `codex/pet-profile-foundation` to `mvp-implementation`. The branch includes task commit `663e8ea` plus this publish-record handoff update. The PR is draft only and does not mark the task accepted, approved, merged, released, deployed, or complete.
+- Addressed PR review feedback on `codex/pet-profile-foundation`: first-save owner household creation is now atomic at the database boundary. Forward migration `20260605150000_enforce_unique_owner_households.sql` adds `households_owner_user_id_unique` on `public.households(owner_user_id)`, and `findOrCreateOwnerHousehold` recovers from concurrent `23505` unique violations by re-reading the household created by the winning request.
+- Added focused regression coverage for the migration constraint and the concurrent first-save fallback path.
+- Resolved merge-conflict markers in the pet-profile server helper, pet-profile server tests, and handoff notes.
+- Re-evaluated pet profile foundation after conflict cleanup. Initial verdict: `Pass with gaps` because migration readiness needed cleanup.
+- Migration-history cleanup resolved the evaluator gap: the forward owner-household uniqueness migration is tracked, the duplicate historical baseline uniqueness edit was removed, and the baseline uniqueness assertion was removed from `packages/db/src/index.test.ts`. Focused contract/db/server tests and `git diff --check` passed after cleanup. Current evaluator verdict: `Pass`.
+- Human approved the evaluated pet-profile foundation work on 2026-06-05. This approval does not merge, release, deploy, or move roadmap scope.
+- Published PR #21 follow-up commit `676420d` (`Clean up pet profile migration follow-up`) to `origin/codex/pet-profile-foundation` and refreshed the PR body with the latest evaluator verdict, validation evidence, and scope notes. PR #21 is currently open and ready-for-review, not draft.
 
 ## Current Dirty Worktree
 
-- `spec/handoff.md`
-
-Dirty worktree note: only this post-publish handoff update is currently dirty.
+- Clean after publishing PR #21 follow-up commit `676420d` and this handoff record commit.
 
 Previous publish note:
 
 - `git status --short --untracked-files=all` was clean on `codex/authenticated-app-shell-navigation` after the draft PR was opened.
 
 ## Validation Status
+
+Current pet profile foundation task:
+
+- PR #21 review follow-up implemented on 2026-06-05: `public.households.owner_user_id` is unique, first household creation refetches after unique-conflict races, pet edits explicitly set `updated_at`, and `birthDate` now rejects impossible calendar dates before Postgres.
+- Focused validation passed before local dependency links were disturbed: `pnpm --filter @caniello/contracts test` and `pnpm --filter web test -- pet-profile.test.ts`.
+- `pnpm install` and `pnpm install --offline` could not restore the full local dependency tree because the registry returned 403 for `@types/react` and the package was missing from the offline store; later package-manager reruns were therefore blocked by incomplete ignored `node_modules` links.
+- `git diff --check` passed after the review follow-up edits.
+- Implemented on 2026-06-04 on branch `codex/pet-profile-foundation`.
+- Published draft PR https://github.com/maciejgos/caniello/pull/21 to `mvp-implementation` on 2026-06-05.
+- Evaluator artifact: `spec/validation/pet-profile-foundation-evaluation.md`.
+- Fresh evaluator rerun after the 2026-06-05 two-owner/RLS follow-up: Pass. No remaining task-specific validation gap is recorded.
+- Fresh evaluator rerun later on 2026-06-05 confirmed the verdict remains Pass.
+- Follow-up validation passed: `./node_modules/.bin/vitest run AccountApp.test.tsx pet-profile.test.ts` from `apps/web`; 2 files and 12 tests passed.
+- Follow-up validation passed: `./node_modules/.bin/tsc --noEmit --pretty false -p apps/web/tsconfig.json`.
+- Follow-up validation passed: `pnpm --filter web test`; 9 files and 51 tests passed, with existing localStorage experimental warnings.
+- Follow-up validation passed outside sandbox after sandbox fetch failures: `pnpm --filter web lint` and `pnpm build`.
+- Local Supabase was started with `./scripts/start.sh`; startup applied `20260604090000_extend_pet_profile_fields.sql` to the local database.
+- Fresh focused Playwright load-lock smoke passed outside the sandbox; it delayed the initial profile GET, confirmed fields were disabled while loading, saved pet profile `Bruno Eval Fresh 1780593954304`, verified reload persistence, verified fresh mobile visibility, checked no console/page errors, and confirmed zero desktop/mobile horizontal overflow.
+- Live two-owner/RLS integration test passed outside the sandbox after sandbox localhost access failure: `env CANIELLO_RUN_SUPABASE_RLS_TESTS=1 ./node_modules/.bin/vitest run features/account/server/pet-profile.rls.test.ts` from `apps/web`; 1 file and 1 test passed.
+- Default focused test path passed with the opt-in RLS test skipped: `./node_modules/.bin/vitest run AccountApp.test.tsx pet-profile.test.ts pet-profile.rls.test.ts` from `apps/web`; 2 files and 12 tests passed, 1 opt-in RLS test skipped.
+- Default web test suite passed with the opt-in RLS test skipped: `pnpm --filter web test`; 9 files and 51 tests passed, 1 opt-in RLS test skipped.
+- Fresh later 2026-06-05 evaluator rerun passed focused pet profile tests, contract/db tests, web TypeScript check, full web test suite, opt-in live RLS test outside the sandbox, web lint outside the sandbox after sandbox fetch failure, production build outside the sandbox after sandbox fetch failure, and `git diff --check`.
+- PR review fix validation on 2026-06-05 passed: `./node_modules/.bin/vitest run apps/web/features/account/server/pet-profile.test.ts packages/db/src/index.test.ts`; 2 files and 16 tests passed.
+- PR review fix validation on 2026-06-05 passed: `pnpm --filter web test`; 9 files passed and 1 opt-in RLS file skipped, 52 tests passed and 1 skipped, with existing Vitest localStorage experimental warnings.
+- PR review fix validation on 2026-06-05 passed: `./node_modules/.bin/tsc --noEmit --pretty false -p apps/web/tsconfig.json`.
+- PR review fix validation on 2026-06-05 passed: `./node_modules/.bin/tsc --noEmit --pretty false -p packages/db/tsconfig.json`.
+- PR review fix validation on 2026-06-05 passed: `git diff --check`.
+- Conflict-resolution evaluator rerun on 2026-06-05 passed: no merge-conflict markers found; `git diff --check`; focused contract/db/server tests with 3 files and 30 tests passed; `pnpm --filter web test` with 9 files passed, 1 opt-in RLS file skipped, 53 tests passed, and 1 skipped; contracts/db TypeScript checks; `pnpm --filter web lint` outside sandbox after sandbox fetch failure; `pnpm build` outside sandbox after sandbox fetch failure; opt-in live Supabase RLS test outside sandbox after sandbox localhost denial.
+- Migration-history cleanup validation on 2026-06-05 passed: `./node_modules/.bin/vitest run apps/web/features/account/server/pet-profile.test.ts packages/db/src/index.test.ts packages/contracts/src/index.test.ts`; 3 files and 30 tests passed.
+- Migration-history cleanup validation on 2026-06-05 passed: `git diff --check`.
+- Fresh final evaluator rerun after migration cleanup on 2026-06-05 confirms verdict `Pass`: no conflict markers, `git diff --check`, focused contract/db/server tests, full web tests, contracts/db TypeScript checks, web lint outside sandbox after sandbox fetch failure, production build outside sandbox after sandbox fetch failure, and opt-in live Supabase RLS test outside sandbox after sandbox localhost denial all passed.
+- Human approval recorded on 2026-06-05 after the final evaluator verdict `Pass`.
+- Publish validation passed: staged diff was inspected before commit, commit `676420d` was pushed to `origin/codex/pet-profile-foundation`, and PR https://github.com/maciejgos/caniello/pull/21 was refreshed with the latest summary and validation body.
 
 Current home dashboard skeleton task:
 
@@ -193,6 +244,7 @@ Previous repository validation notes still relevant to the dirty worktree:
 
 ## Next Recommended Action
 
+- Optional maintainer action: review and merge PR https://github.com/maciejgos/caniello/pull/21 when ready.
 - Optional maintainer action: merge draft PR https://github.com/maciejgos/caniello/pull/20 when ready.
 - Human review of draft PR https://github.com/maciejgos/caniello/pull/19 remains pending.
 - Optional editorial follow-up after evaluation: tighten non-goal wording in `README.md` and `spec/roadmap.md` so they mirror `spec/product-context.md`.
