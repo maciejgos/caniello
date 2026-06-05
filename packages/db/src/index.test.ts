@@ -113,8 +113,6 @@ describe("Supabase migration baseline", () => {
       expect(migration).toContain(`create table public.${table}`);
       expect(migration).toContain(`alter table public.${table} enable row level security`);
     }
-
-    expect(migration).toContain("owner_user_id uuid not null unique references auth.users(id) on delete cascade");
   });
 
   it("creates account privacy tables with RLS and owner-scoped policies", () => {

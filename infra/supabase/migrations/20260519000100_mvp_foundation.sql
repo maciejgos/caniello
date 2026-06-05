@@ -6,7 +6,7 @@ create extension if not exists "pgcrypto";
 
 create table public.households (
   id uuid primary key default gen_random_uuid(),
-  owner_user_id uuid not null unique references auth.users(id) on delete cascade,
+  owner_user_id uuid not null references auth.users(id) on delete cascade,
   name text not null,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()

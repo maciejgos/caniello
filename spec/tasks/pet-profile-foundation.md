@@ -132,9 +132,14 @@ Actual validation on 2026-06-04:
 - Review fix passed: `./node_modules/.bin/tsc --noEmit --pretty false -p apps/web/tsconfig.json`.
 - Review fix passed: `./node_modules/.bin/tsc --noEmit --pretty false -p packages/db/tsconfig.json`.
 - Review fix passed: `git diff --check`.
-- Conflict-resolution evaluator rerun on 2026-06-05: `spec/validation/pet-profile-foundation-evaluation.md` now records verdict `Pass with gaps`.
+- Conflict-resolution evaluator rerun on 2026-06-05 initially recorded verdict `Pass with gaps`.
 - Conflict-resolution evaluator rerun passed: no merge-conflict markers found, `git diff --check`, focused contract/db/server tests, full web tests, contracts/db TypeScript, web lint outside sandbox after sandbox fetch failure, production build outside sandbox after sandbox fetch failure, and opt-in live Supabase RLS test outside sandbox after sandbox localhost denial.
-- Conflict-resolution evaluator gap: owner-household uniqueness migration readiness needs cleanup before publish because `infra/supabase/migrations/20260605150000_enforce_unique_owner_households.sql` is untracked and the historical baseline migration is also modified for the same uniqueness constraint.
+- Conflict-resolution evaluator gap was owner-household uniqueness migration readiness before publish.
+- Migration-history cleanup on 2026-06-05 resolved the evaluator gap: the forward owner-household uniqueness migration is tracked, the duplicate historical baseline uniqueness edit was removed, and the baseline uniqueness assertion was removed from `packages/db/src/index.test.ts`.
+- Migration-history cleanup passed: `./node_modules/.bin/vitest run apps/web/features/account/server/pet-profile.test.ts packages/db/src/index.test.ts packages/contracts/src/index.test.ts`; 3 files and 30 tests passed.
+- Migration-history cleanup passed: `git diff --check`.
+- Migration-history cleanup evaluator update: `spec/validation/pet-profile-foundation-evaluation.md` now records verdict `Pass`.
+- Fresh final evaluator rerun after migration cleanup on 2026-06-05 confirms verdict `Pass`; no conflict markers, `git diff --check`, focused contract/db/server tests, full web tests, contracts/db TypeScript checks, web lint outside sandbox after sandbox fetch failure, production build outside sandbox after sandbox fetch failure, and opt-in live Supabase RLS test outside sandbox after sandbox localhost denial all passed.
 
 Residual validation gaps:
 
@@ -159,4 +164,4 @@ Known gap:
 - Browser persistence validation is complete after local migration approval.
 - Follow-up load/edit race is fixed: pet profile fields are disabled during initial load and save, and the focused browser smoke passed.
 - Two-owner/RLS isolation has a live opt-in Supabase integration test and passed locally.
-- Migration readiness gap remains after review follow-up: stage the forward owner-household uniqueness migration and remove or justify the historical baseline migration edit before publishing.
+- Migration readiness gap resolved after review follow-up: the tracked forward migration is the durable uniqueness path, with no duplicate historical baseline edit in the cleanup diff.

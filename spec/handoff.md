@@ -4,7 +4,7 @@
 
 - Active task: `spec/tasks/pet-profile-foundation.md`.
 - Active branch: `codex/pet-profile-foundation`.
-- Current workflow: pet profile foundation is implemented, evaluated, committed, pushed, and published as draft PR https://github.com/maciejgos/caniello/pull/21. PR review follow-up fixes for atomic first household creation, real calendar-date validation, and fresh pet `updated_at` updates were implemented on 2026-06-05. Fresh evaluator rerun after merge-conflict cleanup records verdict `Pass with gaps` in `spec/validation/pet-profile-foundation-evaluation.md` because migration readiness needs cleanup. The work is not merged, released, deployed, or human-approved as complete.
+- Current workflow: pet profile foundation is implemented, evaluated, human-approved, and already published as draft PR https://github.com/maciejgos/caniello/pull/21. PR review follow-up fixes for atomic first household creation, real calendar-date validation, and fresh pet `updated_at` updates were implemented on 2026-06-05. Fresh evaluator rerun after migration-history cleanup records verdict `Pass` in `spec/validation/pet-profile-foundation-evaluation.md`. Human approved the evaluated pet-profile foundation work on 2026-06-05. The work is not merged, released, or deployed.
 
 ## Latest Notes
 
@@ -90,11 +90,13 @@
 - Addressed PR review feedback on `codex/pet-profile-foundation`: first-save owner household creation is now atomic at the database boundary. Forward migration `20260605150000_enforce_unique_owner_households.sql` adds `households_owner_user_id_unique` on `public.households(owner_user_id)`, and `findOrCreateOwnerHousehold` recovers from concurrent `23505` unique violations by re-reading the household created by the winning request.
 - Added focused regression coverage for the migration constraint and the concurrent first-save fallback path.
 - Resolved merge-conflict markers in the pet-profile server helper, pet-profile server tests, and handoff notes.
-- Re-evaluated pet profile foundation after conflict cleanup. Verdict: `Pass with gaps`. Core tests, build, TypeScript, and opt-in RLS validation pass; remaining gap is migration readiness because the forward uniqueness migration is untracked and the historical baseline migration is also modified for the same constraint.
+- Re-evaluated pet profile foundation after conflict cleanup. Initial verdict: `Pass with gaps` because migration readiness needed cleanup.
+- Migration-history cleanup resolved the evaluator gap: the forward owner-household uniqueness migration is tracked, the duplicate historical baseline uniqueness edit was removed, and the baseline uniqueness assertion was removed from `packages/db/src/index.test.ts`. Focused contract/db/server tests and `git diff --check` passed after cleanup. Current evaluator verdict: `Pass`.
+- Human approved the evaluated pet-profile foundation work on 2026-06-05. This approval does not merge, release, deploy, or move roadmap scope.
 
 ## Current Dirty Worktree
 
-- Dirty with uncommitted PR #21 review follow-up work on `codex/pet-profile-foundation`, including merge-conflict resolution, updated validation artifact/task/handoff notes, and the untracked forward owner-household uniqueness migration.
+- Dirty with uncommitted PR #21 review follow-up work on `codex/pet-profile-foundation`, including migration-history cleanup, updated validation artifact, task notes, and handoff notes. Current dirty files: `infra/supabase/migrations/20260519000100_mvp_foundation.sql`, `packages/db/src/index.test.ts`, `spec/handoff.md`, `spec/tasks/pet-profile-foundation.md`, and `spec/validation/pet-profile-foundation-evaluation.md`.
 
 Previous publish note:
 
@@ -129,7 +131,10 @@ Current pet profile foundation task:
 - PR review fix validation on 2026-06-05 passed: `./node_modules/.bin/tsc --noEmit --pretty false -p packages/db/tsconfig.json`.
 - PR review fix validation on 2026-06-05 passed: `git diff --check`.
 - Conflict-resolution evaluator rerun on 2026-06-05 passed: no merge-conflict markers found; `git diff --check`; focused contract/db/server tests with 3 files and 30 tests passed; `pnpm --filter web test` with 9 files passed, 1 opt-in RLS file skipped, 53 tests passed, and 1 skipped; contracts/db TypeScript checks; `pnpm --filter web lint` outside sandbox after sandbox fetch failure; `pnpm build` outside sandbox after sandbox fetch failure; opt-in live Supabase RLS test outside sandbox after sandbox localhost denial.
-- Conflict-resolution evaluator gap: stage `infra/supabase/migrations/20260605150000_enforce_unique_owner_households.sql` and remove or justify the duplicate historical baseline migration edit before publishing the review follow-up.
+- Migration-history cleanup validation on 2026-06-05 passed: `./node_modules/.bin/vitest run apps/web/features/account/server/pet-profile.test.ts packages/db/src/index.test.ts packages/contracts/src/index.test.ts`; 3 files and 30 tests passed.
+- Migration-history cleanup validation on 2026-06-05 passed: `git diff --check`.
+- Fresh final evaluator rerun after migration cleanup on 2026-06-05 confirms verdict `Pass`: no conflict markers, `git diff --check`, focused contract/db/server tests, full web tests, contracts/db TypeScript checks, web lint outside sandbox after sandbox fetch failure, production build outside sandbox after sandbox fetch failure, and opt-in live Supabase RLS test outside sandbox after sandbox localhost denial all passed.
+- Human approval recorded on 2026-06-05 after the final evaluator verdict `Pass`.
 
 Current home dashboard skeleton task:
 
@@ -237,6 +242,7 @@ Previous repository validation notes still relevant to the dirty worktree:
 
 ## Next Recommended Action
 
+- Publish the approved PR #21 follow-up: inspect the final diff, stage only intentional files, commit, push `codex/pet-profile-foundation`, and ensure draft PR https://github.com/maciejgos/caniello/pull/21 reflects the latest commit.
 - Optional maintainer action: merge draft PR https://github.com/maciejgos/caniello/pull/20 when ready.
 - Human review of draft PR https://github.com/maciejgos/caniello/pull/19 remains pending.
 - Optional editorial follow-up after evaluation: tighten non-goal wording in `README.md` and `spec/roadmap.md` so they mirror `spec/product-context.md`.
