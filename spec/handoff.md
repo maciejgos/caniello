@@ -4,7 +4,7 @@
 
 - Active task: `spec/tasks/pet-profile-foundation.md`.
 - Active branch: `codex/pet-profile-foundation`.
-- Current workflow: pet profile foundation is implemented locally and evaluated. Fresh evaluator verdict after the 2026-06-05 two-owner/RLS follow-up: Pass. Artifact: `spec/validation/pet-profile-foundation-evaluation.md`. The work is not committed, pushed, published, merged, released, deployed, or human-approved as complete.
+- Current workflow: pet profile foundation is implemented, evaluated, committed, pushed, and published as draft PR https://github.com/maciejgos/caniello/pull/21. Fresh evaluator verdict after the 2026-06-05 two-owner/RLS follow-up: Pass. Artifact: `spec/validation/pet-profile-foundation-evaluation.md`. The work is not merged, released, deployed, or human-approved as complete.
 
 ## Latest Notes
 
@@ -86,26 +86,11 @@
 - Implemented the remaining two-owner/RLS gap as opt-in live Supabase test `apps/web/features/account/server/pet-profile.rls.test.ts`.
 - The live RLS test creates a temporary second owner, proves that owner can manage their own household and pet, proves they cannot read or update Anna/Bruno's pet, proves they cannot insert into Anna's household, verifies Anna/Bruno's pet remains unchanged, and deletes the temporary owner.
 - Fresh evaluator verdict after the RLS follow-up: Pass.
+- Published draft PR https://github.com/maciejgos/caniello/pull/21 from `codex/pet-profile-foundation` to `mvp-implementation`. The branch includes task commit `663e8ea` plus this publish-record handoff update. The PR is draft only and does not mark the task accepted, approved, merged, released, deployed, or complete.
 
 ## Current Dirty Worktree
 
-- `apps/web/features/account/AccountApp.test.tsx`
-- `apps/web/features/account/components/AuthenticatedAppShell.tsx`
-- `apps/web/features/account/content.ts`
-- `apps/web/app/api/pets/profile/route.ts`
-- `apps/web/features/account/components/PetProfileSection.tsx`
-- `apps/web/features/account/server/pet-profile.ts`
-- `apps/web/features/account/server/pet-profile.test.ts`
-- `apps/web/features/account/server/pet-profile.rls.test.ts`
-- `infra/supabase/migrations/20260604090000_extend_pet_profile_fields.sql`
-- `infra/supabase/seed.sql`
-- `packages/contracts/src/index.ts`
-- `packages/contracts/src/index.test.ts`
-- `packages/db/src/index.test.ts`
-- `spec/tasks/pet-profile-foundation.md`
-- `spec/validation/pet-profile-foundation-evaluation.md`
-
-Dirty worktree note: current dirty worktree is the local pet profile foundation implementation plus its task/evaluation/handoff updates.
+- Clean after publishing the pet profile foundation draft PR.
 
 Previous publish note:
 
@@ -115,7 +100,8 @@ Previous publish note:
 
 Current pet profile foundation task:
 
-- Implemented locally on 2026-06-04 on branch `codex/pet-profile-foundation`.
+- Implemented on 2026-06-04 on branch `codex/pet-profile-foundation`.
+- Published draft PR https://github.com/maciejgos/caniello/pull/21 to `mvp-implementation` on 2026-06-05.
 - Evaluator artifact: `spec/validation/pet-profile-foundation-evaluation.md`.
 - Fresh evaluator rerun after the 2026-06-05 two-owner/RLS follow-up: Pass. No remaining task-specific validation gap is recorded.
 - Fresh evaluator rerun later on 2026-06-05 confirmed the verdict remains Pass.
