@@ -10,6 +10,8 @@ import {
   healthPayloadSchema,
   landingLeadPayloadSchema,
   passwordResetRequestPayloadSchema,
+  petProfilePayloadSchema,
+  petProfileResponseSchema,
   validationEventPayloadSchema,
   versionPayloadSchema
 } from ".";
@@ -137,5 +139,61 @@ describe("Caniello API contracts", () => {
         language: "pl"
       })
     ).toEqual({ confirmation: "DELETE", language: "pl" });
+  });
+
+  it("validates owner pet profile payloads and normalizes optional blanks", () => {
+    expect(
+      petProfilePayloadSchema.parse({
+        name: " Bruno ",
+        species: "dog",
+        breed: "",
+        birthDate: "2021-05-01",
+        sexOrGender: "male",
+        weightKg: 26.4,
+        microchipNumber: " 616093900000000 ",
+        allergies: "",
+        medication: null,
+        importantNotes: "Needs quiet handling at the clinic."
+      })
+    ).toEqual({
+      name: "Bruno",
+      species: "dog",
+      breed: null,
+      birthDate: "2021-05-01",
+      sexOrGender: "male",
+      weightKg: 26.4,
+      microchipNumber: "616093900000000",
+      allergies: null,
+      medication: null,
+      importantNotes: "Needs quiet handling at the clinic."
+    });
+  });
+
+  it("rejects invalid pet profile payloads", () => {
+    expect(() => petProfilePayloadSchema.parse({ name: "", weightKg: 12 })).toThrow();
+    expect(() => petProfilePayloadSchema.parse({ name: "Bruno", birthDate: "01-05-2021" })).toThrow();
+    expect(() => petProfilePayloadSchema.parse({ name: "Bruno", weightKg: 500 })).toThrow();
+    expect(() => petProfilePayloadSchema.parse({ name: "Bruno", documentUpload: true })).toThrow();
+  });
+
+  it("accepts pet profile API responses without out-of-scope data", () => {
+    expect(
+      petProfileResponseSchema.parse({
+        id: "44444444-4444-4444-8444-444444444444",
+        householdId: "33333333-3333-4333-8333-333333333333",
+        name: "Bruno",
+        species: "dog",
+        breed: "mixed breed",
+        birthDate: "2021-05-01",
+        sexOrGender: "male",
+        weightKg: 26.4,
+        microchipNumber: null,
+        allergies: null,
+        medication: null,
+        importantNotes: null,
+        createdAt: "2026-06-04T09:00:00.000Z",
+        updatedAt: "2026-06-04T09:00:00.000Z"
+      })
+    ).toMatchObject({ name: "Bruno", weightKg: 26.4 });
   });
 });

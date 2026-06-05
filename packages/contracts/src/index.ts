@@ -201,3 +201,70 @@ export const accountPrivacyAuditActionNames = [
 
 export const accountPrivacyAuditActionSchema = z.enum(accountPrivacyAuditActionNames);
 export type AccountPrivacyAuditAction = z.infer<typeof accountPrivacyAuditActionSchema>;
+
+const optionalProfileTextSchema = (maxLength: number) =>
+  z
+    .string()
+    .trim()
+    .max(maxLength)
+    .optional()
+    .nullable()
+    .transform((value) => {
+      if (!value) return null;
+      return value.length > 0 ? value : null;
+    });
+
+export const petProfilePayloadSchema = z
+  .object({
+    name: z.string().trim().min(1).max(80),
+    species: optionalProfileTextSchema(60),
+    breed: optionalProfileTextSchema(120),
+    birthDate: z
+      .string()
+      .trim()
+      .regex(/^\d{4}-\d{2}-\d{2}$/)
+      .optional()
+      .nullable()
+      .transform((value) => value || null),
+    sexOrGender: optionalProfileTextSchema(60),
+    weightKg: z.number().min(0).max(250).optional().nullable().transform((value) => value ?? null),
+    microchipNumber: optionalProfileTextSchema(64),
+    allergies: optionalProfileTextSchema(2000),
+    medication: optionalProfileTextSchema(2000),
+    importantNotes: optionalProfileTextSchema(4000)
+  })
+  .strict();
+
+export type PetProfilePayload = z.infer<typeof petProfilePayloadSchema>;
+
+export const petProfileResponseSchema = z
+  .object({
+    id: z.string().uuid(),
+    householdId: z.string().uuid(),
+    name: z.string(),
+    species: z.string().nullable(),
+    breed: z.string().nullable(),
+    birthDate: z.string().nullable(),
+    sexOrGender: z.string().nullable(),
+    weightKg: z.number().nullable(),
+    microchipNumber: z.string().nullable(),
+    allergies: z.string().nullable(),
+    medication: z.string().nullable(),
+    importantNotes: z.string().nullable(),
+    createdAt: z.string().datetime(),
+    updatedAt: z.string().datetime()
+  })
+  .strict();
+
+export type PetProfileResponse = z.infer<typeof petProfileResponseSchema>;
+
+export const petProfileApiResponseSchema = z
+  .object({
+    ok: z.boolean(),
+    pet: petProfileResponseSchema.nullable().optional(),
+    message: z.string().optional(),
+    issues: z.unknown().optional()
+  })
+  .strict();
+
+export type PetProfileApiResponse = z.infer<typeof petProfileApiResponseSchema>;

@@ -2,9 +2,9 @@
 
 ## Current State
 
-- Active task: None. Last human-approved product task: `spec/tasks/app-section-empty-states.md`.
-- Active branch: `codex/app-section-empty-states`.
-- Current workflow: app section empty states implemented, evaluated, committed, pushed, published as draft PR https://github.com/maciejgos/caniello/pull/20, and approved by the human on 2026-06-04. Fresh evaluator verdict: Pass. Artifact: `spec/validation/app-section-empty-states-evaluation.md`. No release, merge, deployment, or roadmap scope move has been recorded.
+- Active task: `spec/tasks/pet-profile-foundation.md`.
+- Active branch: `codex/pet-profile-foundation`.
+- Current workflow: pet profile foundation is implemented locally and evaluated. Fresh evaluator verdict after the 2026-06-05 two-owner/RLS follow-up: Pass. Artifact: `spec/validation/pet-profile-foundation-evaluation.md`. The work is not committed, pushed, published, merged, released, deployed, or human-approved as complete.
 
 ## Latest Notes
 
@@ -74,18 +74,61 @@
 - Signed-in `/app` navigation now selects local, inert section states for Pets, Timeline, Documents, Reminders, Ask Caniello, Sharing, and Settings while preserving Home dashboard and first-run onboarding behavior.
 - Added `AppSectionEmptyState` as a feature-local component and kept empty-state copy in `apps/web/features/account/content.ts`.
 - Empty-state actions are disabled or preview-only and safety copy explicitly avoids saved-record, upload, OCR, reminder, notification, AI, diagnosis, treatment, emergency, sharing-link, PDF, caregiver-permission, account data-rights, clinic, partner, marketplace, booking, payment, and official passport replacement claims.
+- Implemented `spec/tasks/pet-profile-foundation.md` on branch `codex/pet-profile-foundation`.
+- Added forward migration `infra/supabase/migrations/20260604090000_extend_pet_profile_fields.sql` extending `public.pets` with sex or gender, weight, microchip number, allergies, medication, and important notes while preserving existing household-owned RLS policies.
+- Added shared pet profile Zod contracts and response shapes in `packages/contracts`.
+- Added `/api/pets/profile` GET/PUT route and feature-local server helper using the existing Supabase route-client cookie pattern.
+- Replaced the inert Pets section with an authenticated first-pet profile form and summary surface that reads, saves, and reloads saved pet profile values.
+- Evaluated pet profile foundation with `forge-evaluator`. Fresh verdict: Pass with gaps. Artifact: `spec/validation/pet-profile-foundation-evaluation.md`.
+- Implemented the evaluator-recommended follow-up: pet profile inputs and textareas are now disabled while the initial profile GET is loading or a save is in flight, preventing quick user input from being overwritten by the load response.
+- Added a focused regression test that holds `/api/pets/profile` open and verifies pet profile fields plus the save button stay disabled until the load completes.
+- Reran focused Playwright load-lock smoke outside the sandbox; it delayed the initial profile GET, confirmed fields were disabled during the pending load, then confirmed save/reload persistence, fresh mobile visibility, no console/page errors, and zero desktop/mobile horizontal overflow.
+- Implemented the remaining two-owner/RLS gap as opt-in live Supabase test `apps/web/features/account/server/pet-profile.rls.test.ts`.
+- The live RLS test creates a temporary second owner, proves that owner can manage their own household and pet, proves they cannot read or update Anna/Bruno's pet, proves they cannot insert into Anna's household, verifies Anna/Bruno's pet remains unchanged, and deletes the temporary owner.
+- Fresh evaluator verdict after the RLS follow-up: Pass.
 
 ## Current Dirty Worktree
 
-- `spec/handoff.md`
+- `apps/web/features/account/AccountApp.test.tsx`
+- `apps/web/features/account/components/AuthenticatedAppShell.tsx`
+- `apps/web/features/account/content.ts`
+- `apps/web/app/api/pets/profile/route.ts`
+- `apps/web/features/account/components/PetProfileSection.tsx`
+- `apps/web/features/account/server/pet-profile.ts`
+- `apps/web/features/account/server/pet-profile.test.ts`
+- `apps/web/features/account/server/pet-profile.rls.test.ts`
+- `infra/supabase/migrations/20260604090000_extend_pet_profile_fields.sql`
+- `infra/supabase/seed.sql`
+- `packages/contracts/src/index.ts`
+- `packages/contracts/src/index.test.ts`
+- `packages/db/src/index.test.ts`
+- `spec/tasks/pet-profile-foundation.md`
+- `spec/validation/pet-profile-foundation-evaluation.md`
 
-Dirty worktree note: only this post-publish handoff update is currently dirty.
+Dirty worktree note: current dirty worktree is the local pet profile foundation implementation plus its task/evaluation/handoff updates.
 
 Previous publish note:
 
 - `git status --short --untracked-files=all` was clean on `codex/authenticated-app-shell-navigation` after the draft PR was opened.
 
 ## Validation Status
+
+Current pet profile foundation task:
+
+- Implemented locally on 2026-06-04 on branch `codex/pet-profile-foundation`.
+- Evaluator artifact: `spec/validation/pet-profile-foundation-evaluation.md`.
+- Fresh evaluator rerun after the 2026-06-05 two-owner/RLS follow-up: Pass. No remaining task-specific validation gap is recorded.
+- Fresh evaluator rerun later on 2026-06-05 confirmed the verdict remains Pass.
+- Follow-up validation passed: `./node_modules/.bin/vitest run AccountApp.test.tsx pet-profile.test.ts` from `apps/web`; 2 files and 12 tests passed.
+- Follow-up validation passed: `./node_modules/.bin/tsc --noEmit --pretty false -p apps/web/tsconfig.json`.
+- Follow-up validation passed: `pnpm --filter web test`; 9 files and 51 tests passed, with existing localStorage experimental warnings.
+- Follow-up validation passed outside sandbox after sandbox fetch failures: `pnpm --filter web lint` and `pnpm build`.
+- Local Supabase was started with `./scripts/start.sh`; startup applied `20260604090000_extend_pet_profile_fields.sql` to the local database.
+- Fresh focused Playwright load-lock smoke passed outside the sandbox; it delayed the initial profile GET, confirmed fields were disabled while loading, saved pet profile `Bruno Eval Fresh 1780593954304`, verified reload persistence, verified fresh mobile visibility, checked no console/page errors, and confirmed zero desktop/mobile horizontal overflow.
+- Live two-owner/RLS integration test passed outside the sandbox after sandbox localhost access failure: `env CANIELLO_RUN_SUPABASE_RLS_TESTS=1 ./node_modules/.bin/vitest run features/account/server/pet-profile.rls.test.ts` from `apps/web`; 1 file and 1 test passed.
+- Default focused test path passed with the opt-in RLS test skipped: `./node_modules/.bin/vitest run AccountApp.test.tsx pet-profile.test.ts pet-profile.rls.test.ts` from `apps/web`; 2 files and 12 tests passed, 1 opt-in RLS test skipped.
+- Default web test suite passed with the opt-in RLS test skipped: `pnpm --filter web test`; 9 files and 51 tests passed, 1 opt-in RLS test skipped.
+- Fresh later 2026-06-05 evaluator rerun passed focused pet profile tests, contract/db tests, web TypeScript check, full web test suite, opt-in live RLS test outside the sandbox, web lint outside the sandbox after sandbox fetch failure, production build outside the sandbox after sandbox fetch failure, and `git diff --check`.
 
 Current home dashboard skeleton task:
 
