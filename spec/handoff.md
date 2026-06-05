@@ -4,7 +4,7 @@
 
 - Active task: `spec/tasks/pet-profile-foundation.md`.
 - Active branch: `codex/pet-profile-foundation`.
-- Current workflow: pet profile foundation is implemented, evaluated, human-approved, and already published as draft PR https://github.com/maciejgos/caniello/pull/21. PR review follow-up fixes for atomic first household creation, real calendar-date validation, and fresh pet `updated_at` updates were implemented on 2026-06-05. Fresh evaluator rerun after migration-history cleanup records verdict `Pass` in `spec/validation/pet-profile-foundation-evaluation.md`. Human approved the evaluated pet-profile foundation work on 2026-06-05. The work is not merged, released, or deployed.
+- Current workflow: pet profile foundation is implemented, evaluated, human-approved, committed, pushed, and published in PR https://github.com/maciejgos/caniello/pull/21. PR review follow-up fixes for atomic first household creation, real calendar-date validation, fresh pet `updated_at` updates, and migration-history cleanup were pushed on commit `676420d`. Fresh evaluator rerun after migration-history cleanup records verdict `Pass` in `spec/validation/pet-profile-foundation-evaluation.md`. Human approved the evaluated pet-profile foundation work on 2026-06-05. The work is not merged, released, or deployed.
 
 ## Latest Notes
 
@@ -93,10 +93,11 @@
 - Re-evaluated pet profile foundation after conflict cleanup. Initial verdict: `Pass with gaps` because migration readiness needed cleanup.
 - Migration-history cleanup resolved the evaluator gap: the forward owner-household uniqueness migration is tracked, the duplicate historical baseline uniqueness edit was removed, and the baseline uniqueness assertion was removed from `packages/db/src/index.test.ts`. Focused contract/db/server tests and `git diff --check` passed after cleanup. Current evaluator verdict: `Pass`.
 - Human approved the evaluated pet-profile foundation work on 2026-06-05. This approval does not merge, release, deploy, or move roadmap scope.
+- Published PR #21 follow-up commit `676420d` (`Clean up pet profile migration follow-up`) to `origin/codex/pet-profile-foundation` and refreshed the PR body with the latest evaluator verdict, validation evidence, and scope notes. PR #21 is currently open and ready-for-review, not draft.
 
 ## Current Dirty Worktree
 
-- Dirty with uncommitted PR #21 review follow-up work on `codex/pet-profile-foundation`, including migration-history cleanup, updated validation artifact, task notes, and handoff notes. Current dirty files: `infra/supabase/migrations/20260519000100_mvp_foundation.sql`, `packages/db/src/index.test.ts`, `spec/handoff.md`, `spec/tasks/pet-profile-foundation.md`, and `spec/validation/pet-profile-foundation-evaluation.md`.
+- Clean after publishing PR #21 follow-up commit `676420d` and this handoff record commit.
 
 Previous publish note:
 
@@ -135,6 +136,7 @@ Current pet profile foundation task:
 - Migration-history cleanup validation on 2026-06-05 passed: `git diff --check`.
 - Fresh final evaluator rerun after migration cleanup on 2026-06-05 confirms verdict `Pass`: no conflict markers, `git diff --check`, focused contract/db/server tests, full web tests, contracts/db TypeScript checks, web lint outside sandbox after sandbox fetch failure, production build outside sandbox after sandbox fetch failure, and opt-in live Supabase RLS test outside sandbox after sandbox localhost denial all passed.
 - Human approval recorded on 2026-06-05 after the final evaluator verdict `Pass`.
+- Publish validation passed: staged diff was inspected before commit, commit `676420d` was pushed to `origin/codex/pet-profile-foundation`, and PR https://github.com/maciejgos/caniello/pull/21 was refreshed with the latest summary and validation body.
 
 Current home dashboard skeleton task:
 
@@ -242,7 +244,7 @@ Previous repository validation notes still relevant to the dirty worktree:
 
 ## Next Recommended Action
 
-- Publish the approved PR #21 follow-up: inspect the final diff, stage only intentional files, commit, push `codex/pet-profile-foundation`, and ensure draft PR https://github.com/maciejgos/caniello/pull/21 reflects the latest commit.
+- Optional maintainer action: review and merge PR https://github.com/maciejgos/caniello/pull/21 when ready.
 - Optional maintainer action: merge draft PR https://github.com/maciejgos/caniello/pull/20 when ready.
 - Human review of draft PR https://github.com/maciejgos/caniello/pull/19 remains pending.
 - Optional editorial follow-up after evaluation: tighten non-goal wording in `README.md` and `spec/roadmap.md` so they mirror `spec/product-context.md`.
