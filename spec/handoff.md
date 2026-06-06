@@ -2,9 +2,9 @@
 
 ## Current State
 
-- Active task: `spec/tasks/pet-profile-foundation.md`.
-- Active branch: `codex/pet-profile-foundation`.
-- Current workflow: pet profile foundation is implemented, evaluated, human-approved, committed, pushed, and published in PR https://github.com/maciejgos/caniello/pull/21. PR review follow-up fixes for atomic first household creation, real calendar-date validation, fresh pet `updated_at` updates, and migration-history cleanup were pushed on commit `676420d`. Fresh evaluator rerun after migration-history cleanup records verdict `Pass` in `spec/validation/pet-profile-foundation-evaluation.md`. Human approved the evaluated pet-profile foundation work on 2026-06-05. The work is not merged, released, or deployed.
+- Active task: none currently in implementation.
+- Active branch: `codex/dashboard-skeleton-validation`.
+- Current workflow: dashboard skeleton validation is implemented, evaluated, and human-accepted as documentation on 2026-06-06. All previously pending PRs referenced in this handoff have been merged per human update on 2026-06-06. No active task is awaiting approval, merge, release, deployment, or roadmap scope movement.
 
 ## Latest Notes
 
@@ -93,17 +93,48 @@
 - Re-evaluated pet profile foundation after conflict cleanup. Initial verdict: `Pass with gaps` because migration readiness needed cleanup.
 - Migration-history cleanup resolved the evaluator gap: the forward owner-household uniqueness migration is tracked, the duplicate historical baseline uniqueness edit was removed, and the baseline uniqueness assertion was removed from `packages/db/src/index.test.ts`. Focused contract/db/server tests and `git diff --check` passed after cleanup. Current evaluator verdict: `Pass`.
 - Human approved the evaluated pet-profile foundation work on 2026-06-05. This approval does not merge, release, deploy, or move roadmap scope.
-- Published PR #21 follow-up commit `676420d` (`Clean up pet profile migration follow-up`) to `origin/codex/pet-profile-foundation` and refreshed the PR body with the latest evaluator verdict, validation evidence, and scope notes. PR #21 is currently open and ready-for-review, not draft.
+- Published PR #21 follow-up commit `676420d` (`Clean up pet profile migration follow-up`) to `origin/codex/pet-profile-foundation` and refreshed the PR body with the latest evaluator verdict, validation evidence, and scope notes. Human reported on 2026-06-06 that PR #21 has been merged.
+- Roadmap review on 2026-06-05 found `spec/product-context.md`, `spec/roadmap.md`, root `ROADMAP.md`, and active task files still aligned around `Now - MVP Foundation`. Implemented skeleton tasks remain in scope because their AI, sharing, document, reminder, and settings surfaces are inert or preview-only. `spec/tasks/pet-profile-foundation.md` remains aligned with `Now` because it implements the durable first pet profile while explicitly excluding documents, reminders, AI, sharing, caregiver permissions, provider workflows, booking, payments, marketplace mechanics, and official passport replacement claims.
+- Roadmap review drift findings on 2026-06-05:
+  - `README.md` and `spec/roadmap.md` still summarize non-goals more narrowly than `spec/product-context.md`, especially treatment recommendations, veterinary decision-making, broad clinic or partner workflow ownership, advanced household permissions, advanced analytics, referral mechanics, duplicate detection, calendar sync, and partner document-upload flows.
+  - `spec/tasks/dashboard-skeleton-validation.md` remains aligned with `Now` as validation-only work; it should not become implementation, release approval, or roadmap acceptance.
+  - `spec/handoff.md` had stale current task and branch notes from the pet-profile publish record; this review refreshed them.
+- Recommended roadmap/doc updates from the 2026-06-05 review, not approved as product-direction changes: mirror the fuller `spec/product-context.md` non-goal wording in `README.md` and `spec/roadmap.md`; keep the next implementation to exactly one pending task file unless a human maintainer explicitly requests broader planning.
+- Implemented `spec/tasks/dashboard-skeleton-validation.md` on branch `codex/dashboard-skeleton-validation`.
+- Created validation artifact `spec/validation/dashboard-skeleton-validation-evaluation.md` with verdict `Pass`.
+- Validation confirmed focused account/pet tests, contracts/db tests, full web Vitest, web lint, production build, authenticated desktop/mobile browser smoke, pet profile save/reload persistence, Polish/English switching, disabled preview actions, safety copy, no console/page errors, and no horizontal overflow.
+- Forge evaluator rerun on 2026-06-06 confirmed verdict `Pass` after reviewing source artifacts, changed files, roadmap scope, and focused reruns. It added source-artifact, changed-file, findings, and approval-caveat sections to the validation artifact.
+- The validation intentionally added no product behavior, migrations, route handlers, shared contracts, packages, release approval, merge approval, deployment approval, or roadmap scope movement.
+- Human accepted the dashboard skeleton validation documentation on 2026-06-06. This acceptance does not create a release, deployment, or roadmap scope change.
+- Human reported on 2026-06-06 that all previously pending PRs are merged.
 
 ## Current Dirty Worktree
 
-- Clean after publishing PR #21 follow-up commit `676420d` and this handoff record commit.
+- Dirty with intentional accepted validation documentation changes for `spec/tasks/dashboard-skeleton-validation.md`, `spec/validation/dashboard-skeleton-validation-evaluation.md`, and this handoff update.
 
 Previous publish note:
 
 - `git status --short --untracked-files=all` was clean on `codex/authenticated-app-shell-navigation` after the draft PR was opened.
 
 ## Validation Status
+
+Current dashboard skeleton validation task:
+
+- Fresh validation on 2026-06-06: `spec/validation/dashboard-skeleton-validation-evaluation.md` records verdict Pass.
+- Passed: `./node_modules/.bin/vitest run packages/contracts/src/index.test.ts packages/db/src/index.test.ts` from repository root; 2 files and 26 tests passed.
+- Initial focused root Vitest command failed for `AccountApp.test.tsx` because the root invocation did not use the web app JSX/Vite config; rerunning from `apps/web` was the correct path.
+- Passed: `./node_modules/.bin/vitest run AccountApp.test.tsx pet-profile.test.ts` from `apps/web`; 2 files and 14 tests passed.
+- Passed: `pnpm --filter web test`; 9 files passed and 1 opt-in RLS file skipped, 53 tests passed and 1 skipped.
+- Sandboxed `pnpm --filter web lint` failed with `[ERROR] fetch failed`; approved rerun outside the sandbox passed.
+- Sandboxed `pnpm build` failed with `[ERROR] fetch failed`; approved rerun outside the sandbox passed.
+- Passed: `git diff --check`.
+- Sandboxed `supabase status --workdir infra` failed because the Supabase CLI attempted to write telemetry under `/Users/macg/.supabase`, which the sandbox blocks. Approved `./scripts/start.sh` outside the sandbox passed and synced local env values.
+- Started local web app with `pnpm --filter web dev` on `http://localhost:3000`.
+- Sandboxed Playwright smoke failed because Chromium could not launch under the macOS sandbox. Approved Playwright smoke outside the sandbox passed after temporary-script selector hardening.
+- Authenticated desktop/mobile Playwright smoke confirmed seeded login, Home dashboard, first-run onboarding preservation, disabled preview actions, section safety copy, Pets profile save/reload persistence for `Bruno Validation 1780732729692`, Polish/English switching, no console/page errors, and zero horizontal document overflow.
+- Screenshots captured outside the repo at `/private/tmp/caniello-dashboard-validation-desktop.png` and `/private/tmp/caniello-dashboard-validation-mobile.png`.
+- `pnpm test:e2e` was not run; focused authenticated Playwright browser validation covered the task acceptance criteria.
+- Forge evaluator rerun on 2026-06-06 passed `git diff --check`, focused account/pet tests from `apps/web`, and focused contracts/db tests from the repository root. The evaluator did not rerun browser automation because no product code changed after the implementation browser pass.
 
 Current pet profile foundation task:
 
@@ -241,10 +272,9 @@ Previous repository validation notes still relevant to the dirty worktree:
 - Official skill quick validation is pending until `PyYAML` is available.
 - No `pnpm build` or full `pnpm test:e2e` run was recorded for the app-shell task.
 - No full `pnpm test:e2e` run was recorded for the first-run onboarding task; validation used focused account tests, full web Vitest, TypeScript lint, a prior production build, and targeted authenticated Playwright smoke checks. The earlier evaluator browser gap was resolved by starting local Supabase and using the seed password from `infra/supabase/seed.sql`.
+- No full `pnpm test:e2e` run was recorded for the dashboard skeleton validation task; focused authenticated Playwright browser validation covered the task acceptance criteria.
 
 ## Next Recommended Action
 
-- Optional maintainer action: review and merge PR https://github.com/maciejgos/caniello/pull/21 when ready.
-- Optional maintainer action: merge draft PR https://github.com/maciejgos/caniello/pull/20 when ready.
-- Human review of draft PR https://github.com/maciejgos/caniello/pull/19 remains pending.
+- Plan exactly one next MVP Foundation implementation slice with `forge-planner`; strongest candidates are reminders foundation or document vault foundation.
 - Optional editorial follow-up after evaluation: tighten non-goal wording in `README.md` and `spec/roadmap.md` so they mirror `spec/product-context.md`.
