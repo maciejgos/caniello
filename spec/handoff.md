@@ -107,10 +107,11 @@
 - The validation intentionally added no product behavior, migrations, route handlers, shared contracts, packages, release approval, merge approval, deployment approval, or roadmap scope movement.
 - Human accepted the dashboard skeleton validation documentation on 2026-06-06. This acceptance does not create a release, deployment, or roadmap scope change.
 - Human reported on 2026-06-06 that all previously pending PRs are merged.
+- Published draft PR https://github.com/maciejgos/caniello/pull/22 from `codex/dashboard-skeleton-validation` to `mvp-implementation` on 2026-06-06. The branch includes documentation commit `57f79fb` plus this publish-record handoff update. The PR is draft only and does not mark release, deployment, or roadmap scope movement.
 
 ## Current Dirty Worktree
 
-- Dirty with intentional accepted validation documentation changes for `spec/tasks/dashboard-skeleton-validation.md`, `spec/validation/dashboard-skeleton-validation-evaluation.md`, and this handoff update.
+- Dirty with this publish-record handoff update after opening draft PR #22.
 
 Previous publish note:
 
