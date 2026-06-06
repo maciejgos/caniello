@@ -222,6 +222,13 @@ describe("Caniello account experience", () => {
           });
         }
 
+        if (String(input) === "/api/reminders") {
+          return new Response(JSON.stringify({ ok: true, pet: savedPet, reminders: [] }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" }
+          });
+        }
+
         return new Response(JSON.stringify({ ok: true, status: "ok" }), {
           status: 200,
           headers: { "Content-Type": "application/json" }
@@ -278,8 +285,9 @@ describe("Caniello account experience", () => {
 
     await user.click(screen.getAllByRole("button", { name: accountCopy.pl.appNavReminders })[0]);
     expect(screen.getByRole("heading", { name: /przypomnienia/i })).toBeInTheDocument();
-    expect(screen.getByText(/nie utworzono przypomnienia/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /tworzenie przypomnień wkrótce/i })).toBeDisabled();
+    expect(await screen.findByRole("heading", { name: /utwórz przypomnienie/i })).toBeInTheDocument();
+    expect(screen.getByText(/brak przypomnień w tym widoku/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /powiadomienia wkrótce/i })).toBeDisabled();
 
     await user.click(screen.getAllByRole("button", { name: accountCopy.pl.appNavAsk })[0]);
     expect(screen.getByRole("heading", { name: /zapytaj caniello/i })).toBeInTheDocument();
@@ -307,6 +315,119 @@ describe("Caniello account experience", () => {
     expect(screen.getByRole("heading", { name: /ask caniello/i })).toBeInTheDocument();
     expect(screen.getByText(/does not generate answers, diagnoses/i)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /assistant coming soon/i })).toBeDisabled();
+  });
+
+  it("creates and completes an owner care reminder without enabling notifications", async () => {
+    const savedPet = {
+      id: "44444444-4444-4444-8444-444444444444",
+      householdId: "33333333-3333-4333-8333-333333333333",
+      name: "Luna",
+      species: "dog",
+      breed: "mixed breed",
+      birthDate: "2021-05-01",
+      sexOrGender: "male",
+      weightKg: 26.4,
+      microchipNumber: "616093900000000",
+      allergies: null,
+      medication: null,
+      importantNotes: null,
+      createdAt: "2026-06-04T09:00:00.000Z",
+      updatedAt: "2026-06-04T09:30:00.000Z"
+    };
+    const createdReminder = {
+      id: "55555555-5555-4555-8555-555555555555",
+      petId: savedPet.id,
+      title: "Szczepienie przeciw wściekliźnie",
+      reminderType: "vaccination",
+      dueDate: "2026-07-12",
+      notes: "Zabierz poprzedni dokument.",
+      status: "active",
+      createdAt: "2026-06-06T09:00:00.000Z",
+      updatedAt: "2026-06-06T09:00:00.000Z"
+    };
+    const completedReminder = {
+      ...createdReminder,
+      status: "completed",
+      updatedAt: "2026-06-06T10:00:00.000Z"
+    };
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+        if (String(input) === "/api/reminders" && init?.method === "POST") {
+          return new Response(JSON.stringify({ ok: true, pet: savedPet, reminder: createdReminder }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" }
+          });
+        }
+
+        if (String(input) === "/api/reminders" && init?.method === "PUT") {
+          return new Response(JSON.stringify({ ok: true, pet: savedPet, reminder: completedReminder }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" }
+          });
+        }
+
+        if (String(input) === "/api/reminders") {
+          return new Response(JSON.stringify({ ok: true, pet: savedPet, reminders: [] }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" }
+          });
+        }
+
+        return new Response(JSON.stringify({ ok: true, status: "ok" }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" }
+        });
+      })
+    );
+    const user = userEvent.setup();
+    render(<AccountApp route="app-home" />);
+
+    await user.click(screen.getAllByRole("button", { name: accountCopy.pl.appNavReminders })[0]);
+    expect(await screen.findByRole("heading", { name: /utwórz przypomnienie/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /przypomnienia: luna/i })).toBeInTheDocument();
+    expect(screen.getByText(/powiadomienia oraz cykliczność nie są jeszcze aktywne/i)).toBeInTheDocument();
+    expect(screen.getByText(/najbliższe zadania Luna/i)).toBeInTheDocument();
+
+    await user.type(screen.getByLabelText(/^tytuł$/i), "Szczepienie przeciw wściekliźnie");
+    await user.selectOptions(screen.getByLabelText(/^typ$/i), "vaccination");
+    await user.type(screen.getByLabelText(/termin/i), "2026-07-12");
+    await user.type(screen.getByLabelText(/notatki/i), "Zabierz poprzedni dokument.");
+    await user.click(screen.getByRole("button", { name: /zapisz przypomnienie/i }));
+
+    await waitFor(() =>
+      expect(fetch).toHaveBeenCalledWith(
+        "/api/reminders",
+        expect.objectContaining({
+          method: "POST",
+          headers: { "Content-Type": "application/json" }
+        })
+      )
+    );
+    const postCall = (fetch as unknown as { mock: { calls: Array<[string, RequestInit | undefined]> } }).mock.calls.find(
+      ([input, requestInit]) => input === "/api/reminders" && requestInit?.method === "POST"
+    );
+    expect(postCall).toBeDefined();
+    expect(JSON.parse(String(postCall?.[1]?.body))).toMatchObject({
+      title: "Szczepienie przeciw wściekliźnie",
+      reminderType: "vaccination",
+      dueDate: "2026-07-12",
+      notes: "Zabierz poprzedni dokument."
+    });
+    expect(screen.getByText("Szczepienie przeciw wściekliźnie")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /powiadomienia wkrótce/i })).toBeDisabled();
+
+    await user.click(screen.getByRole("button", { name: /oznacz jako wykonane/i }));
+    await waitFor(() =>
+      expect(fetch).toHaveBeenCalledWith(
+        "/api/reminders",
+        expect.objectContaining({
+          method: "PUT",
+          headers: { "Content-Type": "application/json" }
+        })
+      )
+    );
+    expect(screen.getAllByText(/^Wykonane$/i).length).toBeGreaterThan(0);
   });
 
   it("keeps pet profile fields locked until the initial profile load completes", async () => {

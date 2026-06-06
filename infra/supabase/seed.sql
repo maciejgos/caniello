@@ -143,3 +143,40 @@ set
   medication = excluded.medication,
   important_notes = excluded.important_notes,
   updated_at = now();
+
+insert into public.reminders (
+  id,
+  pet_id,
+  title,
+  reminder_type,
+  due_date,
+  notes,
+  status
+)
+values
+  (
+    '55555555-5555-4555-8555-555555555555',
+    '44444444-4444-4444-8444-444444444444',
+    'Rabies vaccine',
+    'vaccination',
+    '2026-07-12',
+    'Bring the previous vaccination record.',
+    'active'
+  ),
+  (
+    '66666666-6666-4666-8666-666666666666',
+    '44444444-4444-4444-8444-444444444444',
+    'OmegaVet supplement',
+    'medication',
+    '2026-06-20',
+    'Confirm the dose with the saved profile notes.',
+    'active'
+  )
+on conflict (id) do update
+set
+  title = excluded.title,
+  reminder_type = excluded.reminder_type,
+  due_date = excluded.due_date,
+  notes = excluded.notes,
+  status = excluded.status,
+  updated_at = now();

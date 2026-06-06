@@ -12,6 +12,8 @@ import {
   passwordResetRequestPayloadSchema,
   petProfilePayloadSchema,
   petProfileResponseSchema,
+  reminderPayloadSchema,
+  reminderResponseSchema,
   validationEventPayloadSchema,
   versionPayloadSchema
 } from ".";
@@ -199,5 +201,46 @@ describe("Caniello API contracts", () => {
         updatedAt: "2026-06-04T09:00:00.000Z"
       })
     ).toMatchObject({ name: "Bruno", weightKg: 26.4 });
+  });
+
+  it("validates owner care reminder payloads and normalizes optional blanks", () => {
+    expect(
+      reminderPayloadSchema.parse({
+        title: " Rabies vaccine ",
+        reminderType: "vaccination",
+        dueDate: "2026-07-12",
+        notes: "  Bring previous record. "
+      })
+    ).toEqual({
+      title: "Rabies vaccine",
+      reminderType: "vaccination",
+      dueDate: "2026-07-12",
+      notes: "Bring previous record."
+    });
+
+    expect(reminderPayloadSchema.parse({ title: "Vet visit", reminderType: "visit", dueDate: "2026-08-01", notes: "" }).notes).toBeNull();
+  });
+
+  it("rejects invalid care reminder payloads", () => {
+    expect(() => reminderPayloadSchema.parse({ title: "", reminderType: "visit", dueDate: "2026-08-01" })).toThrow();
+    expect(() => reminderPayloadSchema.parse({ title: "Dose", reminderType: "medication", dueDate: "2026-02-30" })).toThrow();
+    expect(() => reminderPayloadSchema.parse({ title: "Dose", reminderType: "calendar", dueDate: "2026-08-01" })).toThrow();
+    expect(() => reminderPayloadSchema.parse({ title: "Dose", reminderType: "medication", dueDate: "2026-08-01", notifyByEmail: true })).toThrow();
+  });
+
+  it("accepts reminder API responses without notification or AI fields", () => {
+    expect(
+      reminderResponseSchema.parse({
+        id: "55555555-5555-4555-8555-555555555555",
+        petId: "44444444-4444-4444-8444-444444444444",
+        title: "Rabies vaccine",
+        reminderType: "vaccination",
+        dueDate: "2026-07-12",
+        notes: null,
+        status: "active",
+        createdAt: "2026-06-06T09:00:00.000Z",
+        updatedAt: "2026-06-06T09:00:00.000Z"
+      })
+    ).toMatchObject({ title: "Rabies vaccine", reminderType: "vaccination", status: "active" });
   });
 });

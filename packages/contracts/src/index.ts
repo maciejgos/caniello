@@ -280,3 +280,70 @@ export const petProfileApiResponseSchema = z
   .strict();
 
 export type PetProfileApiResponse = z.infer<typeof petProfileApiResponseSchema>;
+
+export const reminderTypes = ["vaccination", "medication", "deworming", "visit", "other"] as const;
+export const reminderTypeSchema = z.enum(reminderTypes);
+export type ReminderType = z.infer<typeof reminderTypeSchema>;
+
+export const reminderStatuses = ["suggested", "active", "completed", "dismissed"] as const;
+export const reminderStatusSchema = z.enum(reminderStatuses);
+export type ReminderStatus = z.infer<typeof reminderStatusSchema>;
+
+const optionalReminderTextSchema = (maxLength: number) =>
+  z
+    .string()
+    .trim()
+    .max(maxLength)
+    .optional()
+    .nullable()
+    .transform((value) => {
+      if (!value) return null;
+      return value.length > 0 ? value : null;
+    });
+
+const requiredCalendarDateSchema = z
+  .string()
+  .trim()
+  .regex(/^\d{4}-\d{2}-\d{2}$/)
+  .refine(isRealCalendarDate);
+
+export const reminderPayloadSchema = z
+  .object({
+    title: z.string().trim().min(1).max(120),
+    reminderType: reminderTypeSchema,
+    dueDate: requiredCalendarDateSchema,
+    notes: optionalReminderTextSchema(1000),
+    status: reminderStatusSchema.optional()
+  })
+  .strict();
+
+export type ReminderPayload = z.infer<typeof reminderPayloadSchema>;
+
+export const reminderResponseSchema = z
+  .object({
+    id: z.string().uuid(),
+    petId: z.string().uuid(),
+    title: z.string(),
+    reminderType: reminderTypeSchema,
+    dueDate: z.string(),
+    notes: z.string().nullable(),
+    status: reminderStatusSchema,
+    createdAt: z.string().datetime(),
+    updatedAt: z.string().datetime()
+  })
+  .strict();
+
+export type ReminderResponse = z.infer<typeof reminderResponseSchema>;
+
+export const remindersApiResponseSchema = z
+  .object({
+    ok: z.boolean(),
+    pet: petProfileResponseSchema.nullable().optional(),
+    reminders: z.array(reminderResponseSchema).optional(),
+    reminder: reminderResponseSchema.optional(),
+    message: z.string().optional(),
+    issues: z.unknown().optional()
+  })
+  .strict();
+
+export type RemindersApiResponse = z.infer<typeof remindersApiResponseSchema>;
