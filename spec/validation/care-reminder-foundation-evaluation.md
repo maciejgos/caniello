@@ -22,6 +22,7 @@ The evaluation checks whether a signed-in owner can create, view, edit, complete
 - Server helper reviewed: `apps/web/features/account/server/reminders.ts`
 - UI reviewed: `apps/web/features/account/components/CareRemindersSection.tsx`
 - Tests reviewed: `packages/contracts/src/index.test.ts`, `packages/db/src/index.test.ts`, `apps/web/features/account/server/reminders.test.ts`, `apps/web/features/account/AccountApp.test.tsx`
+- Review follow-up reviewed: `apps/web/features/account/components/CareRemindersSection.tsx`, `apps/web/features/account/content.ts`, `apps/web/features/account/AccountApp.test.tsx`, `spec/tasks/care-reminder-foundation.md`, `spec/handoff.md`
 - Handoff: `spec/handoff.md`
 
 ## Preconditions
@@ -64,7 +65,7 @@ The evaluation checks whether a signed-in owner can create, view, edit, complete
 
 - Criterion: Reminders copy remains clear in Polish and English and does not imply notifications, recurrence, calendar sync, AI suggestions, documents, sharing, or veterinary advice have shipped.
   Evidence status: Supported
-  Evidence: Polish/English copy explicitly says notifications and recurrence are not active, notification preferences are deferred, reminders are private, and Caniello does not replace a veterinarian or official pet passport. Scope scan found no live notification/AI/sharing behavior in the reminder implementation.
+  Evidence: Polish/English copy explicitly says notifications and recurrence are not active, notification preferences are deferred, reminders are private, and Caniello does not replace a veterinarian or official pet passport. Review follow-up replaced hardcoded Bruno reminder title and empty-state text with `{petName}` templates backed by the pet returned from `/api/reminders`, with localized neutral fallback copy. Scope scan found no live notification/AI/sharing behavior in the reminder implementation.
 
 - Criterion: Existing Home dashboard, first-run onboarding, Pets profile, section navigation, language switching, auth gating, and logout behavior do not regress.
   Evidence status: Supported
@@ -152,6 +153,36 @@ The evaluation checks whether a signed-in owner can create, view, edit, complete
   Expected result: A second signed-in owner can manage their own reminder but cannot read, update, or insert reminders for owner A's pet.
   Actual result: Sandboxed run failed with `connect EPERM 127.0.0.1:55321`; approved outside-sandbox run passed: `env CANIELLO_RUN_SUPABASE_RLS_TESTS=1 ./node_modules/.bin/vitest run features/account/server/reminders.rls.test.ts`.
 
+- Check: Review follow-up pet-name copy regression
+  Type: Automated
+  Status: Passed
+  Expected result: Reminder title and empty-state copy use the pet returned by `/api/reminders`, not hardcoded Bruno text.
+  Actual result: `./node_modules/.bin/vitest run AccountApp.test.tsx` from `apps/web` passed 1 file and 11 tests. The reminder test uses returned pet `Luna` and asserts the rendered heading and empty-state copy include Luna.
+
+- Check: Review follow-up web TypeScript
+  Type: Automated
+  Status: Passed
+  Expected result: Web TypeScript still compiles after reminder copy interpolation changes.
+  Actual result: `./node_modules/.bin/tsc --noEmit --pretty false -p apps/web/tsconfig.json` passed.
+
+- Check: Review follow-up web suite
+  Type: Automated
+  Status: Passed
+  Expected result: Existing web behavior remains stable after the review follow-up.
+  Actual result: `pnpm --filter web test` passed 11 files, skipped 2 opt-in RLS files, and passed 65 tests with 2 skipped tests. Existing localStorage experimental warnings were emitted.
+
+- Check: Review follow-up lint
+  Type: Automated
+  Status: Passed
+  Expected result: Web lint/type validation passes after the review follow-up.
+  Actual result: Sandboxed `pnpm --filter web lint` failed with `[ERROR] fetch failed`; approved outside-sandbox rerun passed.
+
+- Check: Review follow-up browser smoke
+  Type: UI
+  Status: Passed
+  Expected result: Reminders page renders after the copy interpolation change with no console/page errors and no mobile overflow.
+  Actual result: Sandboxed Chromium launch failed with a macOS `MachPortRendezvousServer` permission denial; approved outside-sandbox Playwright smoke passed against `http://127.0.0.1:3000`, confirming Reminders rendered, no console/page errors occurred, and horizontal overflow was `0`.
+
 ## Evidence
 
 - `pnpm --filter web lint`: passed outside sandbox.
@@ -166,6 +197,13 @@ The evaluation checks whether a signed-in owner can create, view, edit, complete
   - `./node_modules/.bin/vitest run packages/contracts/src/index.test.ts packages/db/src/index.test.ts apps/web/features/account/server/reminders.test.ts`: 3 files and 35 tests passed.
   - `git diff --check`: passed.
   - `env CANIELLO_RUN_SUPABASE_RLS_TESTS=1 ./node_modules/.bin/vitest run features/account/server/reminders.rls.test.ts` from `apps/web` outside sandbox: 1 file and 1 test passed.
+- Review follow-up evaluator rerun on 2026-06-06:
+  - `./node_modules/.bin/vitest run AccountApp.test.tsx` from `apps/web`: 1 file and 11 tests passed.
+  - `./node_modules/.bin/tsc --noEmit --pretty false -p apps/web/tsconfig.json`: passed.
+  - `pnpm --filter web test`: 11 files passed, 2 opt-in RLS files skipped; 65 tests passed, 2 skipped.
+  - `pnpm --filter web lint`: sandboxed run failed with `[ERROR] fetch failed`; approved outside-sandbox rerun passed.
+  - `git diff --check`: passed.
+  - Approved outside-sandbox Playwright smoke against `http://127.0.0.1:3000`: Reminders rendered, no console/page errors, horizontal overflow `0`.
 
 ## Missing, Skipped, or Unavailable Checks
 
@@ -193,10 +231,12 @@ The core user outcome works, roadmap scope is preserved, and validation is adequ
 
 Fresh final evaluator rerun on 2026-06-06 confirms the verdict remains `Pass`.
 
+Review follow-up evaluator rerun on 2026-06-06 confirms the verdict remains `Pass`. The hardcoded Bruno copy issue is fixed and covered by a focused regression test using returned pet `Luna`.
+
 ## Follow-Up
 
 - Optional: run the full `pnpm test:e2e` suite before publish if broader browser route coverage is desired.
-- Next workflow step can be human review or `forge-publisher` if the human wants to publish this evaluated work.
+- Next workflow step can be `forge-handoff` and `forge-publisher` for the review follow-up because the evaluator verdict remains Pass.
 
 ## Human Decision
 

@@ -321,7 +321,7 @@ describe("Caniello account experience", () => {
     const savedPet = {
       id: "44444444-4444-4444-8444-444444444444",
       householdId: "33333333-3333-4333-8333-333333333333",
-      name: "Bruno",
+      name: "Luna",
       species: "dog",
       breed: "mixed breed",
       birthDate: "2021-05-01",
@@ -385,7 +385,9 @@ describe("Caniello account experience", () => {
 
     await user.click(screen.getAllByRole("button", { name: accountCopy.pl.appNavReminders })[0]);
     expect(await screen.findByRole("heading", { name: /utwórz przypomnienie/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /przypomnienia: luna/i })).toBeInTheDocument();
     expect(screen.getByText(/powiadomienia oraz cykliczność nie są jeszcze aktywne/i)).toBeInTheDocument();
+    expect(screen.getByText(/najbliższe zadania Luna/i)).toBeInTheDocument();
 
     await user.type(screen.getByLabelText(/^tytuł$/i), "Szczepienie przeciw wściekliźnie");
     await user.selectOptions(screen.getByLabelText(/^typ$/i), "vaccination");

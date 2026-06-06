@@ -4,7 +4,7 @@
 
 - Active task: `spec/tasks/care-reminder-foundation.md` is implemented, evaluated, and human accepted.
 - Active branch: `codex/care-reminder-foundation`.
-- Current workflow: care reminder foundation was implemented after human approval on 2026-06-06, evaluated with `forge-evaluator`, human accepted for publishing on 2026-06-06, and published as draft PR https://github.com/maciejgos/caniello/pull/23. Fresh evaluator verdict after gap follow-up: Pass. Artifact: `spec/validation/care-reminder-foundation-evaluation.md`. Automated tests, TypeScript checks, lint, production build, local Supabase migration/status validation, focused authenticated desktop/mobile Playwright smoke, unauthenticated `/api/reminders` route tests, and opt-in live two-owner reminder RLS test passed. No merge, release, deployment, or roadmap scope movement has started.
+- Current workflow: care reminder foundation was implemented after human approval on 2026-06-06, evaluated with `forge-evaluator`, human accepted for publishing on 2026-06-06, and published as draft PR https://github.com/maciejgos/caniello/pull/23. A review follow-up fixed hardcoded Bruno copy in the Reminders screen by interpolating the returned first-pet name. Fresh evaluator verdict after the review follow-up: Pass. Artifact: `spec/validation/care-reminder-foundation-evaluation.md`. Automated tests, TypeScript checks, lint, production build, local Supabase migration/status validation, focused authenticated desktop/mobile Playwright smoke, unauthenticated `/api/reminders` route tests, opt-in live two-owner reminder RLS test, and review-follow-up pet-name regression validation passed. No merge, release, deployment, or roadmap scope movement has started.
 
 ## Latest Notes
 
@@ -24,6 +24,7 @@
 - Fresh final evaluator rerun on 2026-06-06 confirmed verdict remains Pass: focused route/server/RLS default tests, full web test suite, web TypeScript check, focused contracts/db/server tests, `git diff --check`, and opt-in live reminder RLS test outside sandbox all passed.
 - Human accepted the evaluated care reminder foundation work on 2026-06-06 and requested `forge-handoff` followed by `forge-publisher`. This acceptance does not merge, release, deploy, or move roadmap scope.
 - Published draft PR https://github.com/maciejgos/caniello/pull/23 from `codex/care-reminder-foundation` to `mvp-implementation` on 2026-06-06. The branch includes task commit `29f53cf` plus this publish-record handoff update. The PR is draft only and does not mark the task merged, released, deployed, or roadmap scope moved.
+- Review follow-up on 2026-06-06 fixed the Reminders screen to use the actual returned first-pet name in the page title and empty-state copy instead of hardcoded Bruno text. `forge-evaluator` rerun verdict: Pass. Validation passed: focused `AccountApp.test.tsx`, web TypeScript check, full web test suite, web lint outside sandbox after sandbox fetch failure, `git diff --check`, and approved outside-sandbox Playwright smoke for Reminders rendering with no console/page errors or horizontal overflow.
 - Historical Flow Forge material is archived under `.codex/flow-forge-reference/` and remains available as reference.
 - Durable product context now lives in `spec/product-context.md`.
 - Old Flow Forge-era spec artifacts were archived under `spec/archive/flow-forge-history/` instead of deleted.
@@ -126,7 +127,7 @@
 
 ## Current Dirty Worktree
 
-- Dirty with this publish-record handoff update after opening draft PR #23.
+- Dirty with evaluated review follow-up edits for draft PR #23: pet-name interpolation in Reminders UI/copy, focused AccountApp regression test, task notes, validation artifact update, and handoff notes. Next action: publish the follow-up commit to PR #23.
 
 Previous publish note:
 

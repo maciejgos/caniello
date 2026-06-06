@@ -131,6 +131,15 @@ Evaluator validation update on 2026-06-06:
 - Gap follow-up passed: `./node_modules/.bin/vitest run packages/contracts/src/index.test.ts packages/db/src/index.test.ts apps/web/features/account/server/reminders.test.ts`; 3 files and 35 tests passed.
 - Gap follow-up passed: `git diff --check`.
 
+Review follow-up on 2026-06-06:
+
+- Fixed review issue: the Reminders screen now uses the pet name returned by `/api/reminders` for the page title and empty-state copy instead of hardcoded Bruno copy, with localized neutral fallback copy while pet data is unavailable.
+- Passed: `./node_modules/.bin/vitest run AccountApp.test.tsx` from `apps/web`; 1 file and 11 tests passed.
+- Passed: `./node_modules/.bin/tsc --noEmit --pretty false -p apps/web/tsconfig.json`.
+- Passed: `pnpm --filter web test`; 11 files passed, 2 opt-in RLS files skipped, 65 tests passed, 2 skipped.
+- Passed: `git diff --check`.
+- Browser smoke: sandboxed Chromium launch failed with a macOS `MachPortRendezvousServer` permission denial; approved outside-sandbox Playwright smoke passed against `http://127.0.0.1:3000`, confirming the Reminders page rendered, had no console/page errors, and had zero horizontal overflow.
+
 Residual validation gaps:
 
 - None for this task. Full `pnpm test:e2e` was not run; task-specific authenticated Playwright smoke covered the acceptance criteria.
@@ -145,6 +154,7 @@ Implementation summary:
 - Added shared reminder contracts in `packages/contracts` for reminder type, status, payloads, responses, and API response shape.
 - Added feature-local reminder server helper and `/api/reminders` route for listing, creating, updating, and marking reminders completed for the signed-in owner's first pet.
 - Added a real Reminders section in the authenticated app with localized list filters, create/edit form, completion flow, first-pet-required state, and disabled/deferred notification preferences.
+- Review follow-up changed Reminders copy to interpolate the actual returned first-pet name instead of hardcoded Bruno text.
 - Added local seed reminders for Bruno to support future browser validation after local migrations are applied.
 - Preserved Home dashboard, first-run onboarding, Pets profile, section navigation, language switching, auth gating, logout behavior, medical boundaries, and out-of-scope notification/AI/sharing/document behavior.
 

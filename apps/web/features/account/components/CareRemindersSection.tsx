@@ -38,6 +38,7 @@ export function CareRemindersSection({ copy, onPetsRequest }: CareRemindersSecti
   const [completeError, setCompleteError] = useState<string | null>(null);
   const [validationError, setValidationError] = useState<string | null>(null);
   const [hasPetProfile, setHasPetProfile] = useState(false);
+  const [petName, setPetName] = useState("");
   const [reminders, setReminders] = useState<ReminderResponse[]>([]);
 
   useEffect(() => {
@@ -57,6 +58,7 @@ export function CareRemindersSection({ copy, onPetsRequest }: CareRemindersSecti
 
         if (!isMounted) return;
         setHasPetProfile(Boolean(body.pet));
+        setPetName(body.pet?.name?.trim() || "");
         setReminders(body.reminders ?? []);
       } catch {
         if (isMounted) setLoadError(copy.remindersLoadError);
@@ -74,6 +76,7 @@ export function CareRemindersSection({ copy, onPetsRequest }: CareRemindersSecti
 
   const filteredReminders = useMemo(() => filterReminders(reminders, filter), [filter, reminders]);
   const isFormLocked = isLoading || isSaving || !hasPetProfile;
+  const displayPetName = petName || copy.remindersPetNameFallback;
 
   function updateField(field: keyof ReminderFormState, value: string) {
     setForm((current) => ({ ...current, [field]: value }));
@@ -178,7 +181,7 @@ export function CareRemindersSection({ copy, onPetsRequest }: CareRemindersSecti
             <div className="min-w-0">
               <p className="text-sm font-black uppercase tracking-[0.08em] text-navy/54">{copy.remindersEyebrow}</p>
               <h1 id="care-reminders-title" className="mt-2 font-serif text-[clamp(2rem,3vw,3rem)] font-black leading-tight tracking-[0] text-navy">
-                {copy.remindersTitle}
+                {formatPetCopy(copy.remindersTitle, displayPetName)}
               </h1>
               <p className="mt-4 max-w-3xl text-base font-semibold leading-7 text-navy/78">{copy.remindersIntro}</p>
             </div>
@@ -222,7 +225,7 @@ export function CareRemindersSection({ copy, onPetsRequest }: CareRemindersSecti
               ) : (
                 <div className="rounded-lg border border-dashed border-[#dce2ec] bg-[#f8fafc] p-5">
                   <h2 className="font-serif text-xl font-black tracking-[0] text-navy">{copy.remindersEmptyTitle}</h2>
-                  <p className="mt-2 text-sm font-semibold leading-6 text-navy/66">{copy.remindersEmptyBody}</p>
+                  <p className="mt-2 text-sm font-semibold leading-6 text-navy/66">{formatPetCopy(copy.remindersEmptyBody, displayPetName)}</p>
                 </div>
               )}
             </div>
@@ -515,4 +518,8 @@ function getReminderStatusLabel(copy: AccountCopy, status: ReminderResponse["sta
   if (status === "suggested") return copy.remindersSuggestedBadge;
   if (status === "dismissed") return copy.remindersDismissedBadge;
   return copy.remindersActiveBadge;
+}
+
+function formatPetCopy(value: string, petName: string) {
+  return value.replaceAll("{petName}", petName);
 }
