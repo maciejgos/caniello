@@ -175,4 +175,19 @@ describe("Supabase migration baseline", () => {
     expect(migration).toContain("unique (owner_user_id)");
     expect(migration).not.toContain("create policy");
   });
+
+  it("extends owner-scoped reminders with MVP reminder fields without changing RLS ownership", () => {
+    const migration = readFileSync(migrationPath("20260606110000_extend_care_reminder_fields.sql"), "utf8");
+
+    expect(migration).toContain("alter table public.reminders");
+    expect(migration).toContain("add column reminder_type");
+    expect(migration).toContain("add column notes");
+    expect(migration).toContain("reminders_reminder_type_check");
+    expect(migration).toContain("'vaccination'");
+    expect(migration).toContain("'medication'");
+    expect(migration).toContain("'deworming'");
+    expect(migration).toContain("'visit'");
+    expect(migration).toContain("on public.reminders (pet_id, due_date)");
+    expect(migration).not.toContain("create policy");
+  });
 });

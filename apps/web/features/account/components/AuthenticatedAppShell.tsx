@@ -5,6 +5,7 @@ import { AppHomeDashboard } from "./AppHomeDashboard";
 import { AppSidebar, MobileAppNav } from "./AppSidebar";
 import { AppSectionEmptyState } from "./AppSectionEmptyState";
 import { AppTopBar } from "./AppTopBar";
+import { CareRemindersSection } from "./CareRemindersSection";
 import { PetProfileSection } from "./PetProfileSection";
 
 export type AppSection = "home" | "pets" | "timeline" | "documents" | "reminders" | "ask" | "sharing" | "settings";
@@ -34,6 +35,8 @@ export function AuthenticatedAppShell({ language, onLanguageChange }: Authentica
             <AppHomeDashboard copy={copy} />
           ) : activeSection === "pets" ? (
             <PetProfileSection copy={copy} />
+          ) : activeSection === "reminders" ? (
+            <CareRemindersSection copy={copy} onPetsRequest={() => setActiveSection("pets")} />
           ) : (
             <AppSectionEmptyState copy={copy} section={activeSection} />
           )}

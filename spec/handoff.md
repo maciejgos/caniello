@@ -2,13 +2,27 @@
 
 ## Current State
 
-- Active task: none currently in implementation.
-- Active branch: `codex/dashboard-skeleton-validation`.
-- Current workflow: dashboard skeleton validation is implemented, evaluated, and human-accepted as documentation on 2026-06-06. All previously pending PRs referenced in this handoff have been merged per human update on 2026-06-06. No active task is awaiting approval, merge, release, deployment, or roadmap scope movement.
+- Active task: `spec/tasks/care-reminder-foundation.md` is implemented, evaluated, and human accepted.
+- Active branch: `codex/care-reminder-foundation`.
+- Current workflow: care reminder foundation was implemented after human approval on 2026-06-06, evaluated with `forge-evaluator`, and human accepted for publishing on 2026-06-06. Fresh evaluator verdict after gap follow-up: Pass. Artifact: `spec/validation/care-reminder-foundation-evaluation.md`. Automated tests, TypeScript checks, lint, production build, local Supabase migration/status validation, focused authenticated desktop/mobile Playwright smoke, unauthenticated `/api/reminders` route tests, and opt-in live two-owner reminder RLS test passed. No merge, release, deployment, or roadmap scope movement has started.
 
 ## Latest Notes
 
 - The active harness is being simplified around `spec/roadmap.md`, `spec/features/`, `spec/tasks/`, and the Forge skills.
+- Planned `spec/tasks/care-reminder-foundation.md` with `forge-planner` on 2026-06-06 using `spec/design/visual-artifacts/mvp/image 9.png` as the reminder-screen visual reference. The task is scoped to real owner-owned reminder list/create/edit/complete behavior for the first pet, with notification delivery, recurrence, snooze, preferences, document automation, AI, sharing, and calendar sync explicitly out of scope.
+- Implemented `spec/tasks/care-reminder-foundation.md` on branch `codex/care-reminder-foundation` after human approval on 2026-06-06.
+- Added forward migration `infra/supabase/migrations/20260606110000_extend_care_reminder_fields.sql` to extend `public.reminders` with `reminder_type`, `notes`, and a pet/due-date index without changing existing household-owned RLS policies.
+- Added shared reminder contracts in `packages/contracts`, feature-local reminder server helpers under `apps/web/features/account/server/reminders.ts`, `/api/reminders`, and a real authenticated Reminders section with localized list filters, create/edit form, completion flow, first-pet-required state, and disabled/deferred notification preferences.
+- Added local seed reminders for Bruno in `infra/supabase/seed.sql`.
+- Reminder implementation intentionally added no email, push, SMS, in-app notification delivery, digest, test notification, recurrence engine, snooze behavior, calendar sync, automatic document/AI/timeline reminder creation, document upload/OCR, AI answers, sharing, clinic/provider workflow, booking, payment, marketplace, mobile app work, release, deployment, or roadmap movement.
+- Evaluated `spec/tasks/care-reminder-foundation.md` with `forge-evaluator` on 2026-06-06. Initial verdict: Pass with gaps. Artifact: `spec/validation/care-reminder-foundation-evaluation.md`.
+- Evaluator reran focused contract/db/server tests, focused account UI tests, full web tests, contracts/db/web TypeScript checks, web lint outside sandbox after sandbox fetch failure, production build outside sandbox after sandbox fetch failure, local Supabase migration push/status outside sandbox after Docker socket sandbox denial, and focused authenticated desktop/mobile Playwright smoke.
+- Focused Playwright smoke used seeded local owner `akowalska@example.com` and confirmed login, Reminders navigation, disabled notification controls, create reminder, edit reminder, mark complete, reload persistence after navigating back to Reminders, no console/page errors, and zero horizontal overflow.
+- Implemented evaluator gap follow-up: added unauthenticated `/api/reminders` route tests for GET, POST, and PUT 401 responses before data access, and added opt-in live reminder RLS test proving a second owner can manage their own reminder but cannot read, update, or insert reminders for Anna/Bruno.
+- Gap follow-up validation passed: default focused route/server/RLS test path, web TypeScript check, full web test suite, focused contracts/db/server tests, `git diff --check`, and opt-in live reminder RLS test outside sandbox after sandbox localhost denial.
+- Updated evaluator artifact verdict to Pass after the gap follow-up.
+- Fresh final evaluator rerun on 2026-06-06 confirmed verdict remains Pass: focused route/server/RLS default tests, full web test suite, web TypeScript check, focused contracts/db/server tests, `git diff --check`, and opt-in live reminder RLS test outside sandbox all passed.
+- Human accepted the evaluated care reminder foundation work on 2026-06-06 and requested `forge-handoff` followed by `forge-publisher`. This acceptance does not merge, release, deploy, or move roadmap scope.
 - Historical Flow Forge material is archived under `.codex/flow-forge-reference/` and remains available as reference.
 - Durable product context now lives in `spec/product-context.md`.
 - Old Flow Forge-era spec artifacts were archived under `spec/archive/flow-forge-history/` instead of deleted.
@@ -277,5 +291,5 @@ Previous repository validation notes still relevant to the dirty worktree:
 
 ## Next Recommended Action
 
-- Plan exactly one next MVP Foundation implementation slice with `forge-planner`; strongest candidates are reminders foundation or document vault foundation.
+- Care reminder foundation is ready for human review or optional `forge-publisher`. Optional broader gate: run full `pnpm test:e2e` before publish if desired.
 - Optional editorial follow-up after evaluation: tighten non-goal wording in `README.md` and `spec/roadmap.md` so they mirror `spec/product-context.md`.
