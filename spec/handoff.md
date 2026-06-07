@@ -4,7 +4,7 @@
 
 - Active task: `spec/tasks/document-vault-foundation.md` is implemented and evaluated.
 - Active branch: `codex/document-vault-foundation`.
-- Current workflow: document vault foundation was planned, implemented, evaluated with `forge-evaluator`, refreshed in handoff, committed as `af6ed29`, pushed to `origin/codex/document-vault-foundation`, and published as draft PR https://github.com/maciejgos/caniello/pull/24 on 2026-06-07. Fresh evaluator verdict: Pass. Artifact: `spec/validation/document-vault-foundation-evaluation.md`. Automated tests, TypeScript checks, lint, production build, local Supabase migration/status validation, opt-in live document RLS validation, and authenticated desktop/mobile in-app Browser smoke passed. No merge, release, deployment, human acceptance, or roadmap scope movement has started.
+- Current workflow: document vault foundation was planned, implemented, evaluated with `forge-evaluator`, refreshed in handoff, committed as `af6ed29`, pushed to `origin/codex/document-vault-foundation`, published as draft PR https://github.com/maciejgos/caniello/pull/24 on 2026-06-07, and human accepted on 2026-06-07. Fresh evaluator verdict: Pass. Artifact: `spec/validation/document-vault-foundation-evaluation.md`. Automated tests, TypeScript checks, lint, production build, local Supabase migration/status validation, opt-in live document RLS validation, and authenticated desktop/mobile in-app Browser smoke passed. No merge, release, deployment, or roadmap scope movement has started.
 
 ## Latest Notes
 
@@ -17,6 +17,7 @@
 - Evaluated `spec/tasks/document-vault-foundation.md` with `forge-evaluator` on 2026-06-07. Verdict: Pass. Artifact: `spec/validation/document-vault-foundation-evaluation.md`.
 - Browser smoke used seeded local owner `akowalska@example.com` and confirmed login, Documents navigation, metadata create, metadata edit, reload persistence, disabled upload placeholder, metadata-only and medical-boundary copy, no console errors, and zero horizontal overflow at 1440x1000 desktop and 390x900 mobile.
 - Published draft PR https://github.com/maciejgos/caniello/pull/24 from `codex/document-vault-foundation` to `mvp-implementation` on 2026-06-07. The branch includes commit `af6ed29` plus this publish-record handoff update. The PR is draft only and does not mark the task accepted, approved, merged, released, deployed, or roadmap scope moved.
+- Human accepted the evaluated document vault foundation work on 2026-06-07. This acceptance does not merge, release, deploy, or move roadmap scope.
 - The active harness is being simplified around `spec/roadmap.md`, `spec/features/`, `spec/tasks/`, and the Forge skills.
 - Planned `spec/tasks/care-reminder-foundation.md` with `forge-planner` on 2026-06-06 using `spec/design/visual-artifacts/mvp/image 9.png` as the reminder-screen visual reference. The task is scoped to real owner-owned reminder list/create/edit/complete behavior for the first pet, with notification delivery, recurrence, snooze, preferences, document automation, AI, sharing, and calendar sync explicitly out of scope.
 - Implemented `spec/tasks/care-reminder-foundation.md` on branch `codex/care-reminder-foundation` after human approval on 2026-06-06.
@@ -136,7 +137,7 @@
 
 ## Current Dirty Worktree
 
-- Dirty only with this publish-record handoff update for draft PR #24. Next action: commit and push the handoff note to the existing draft PR branch.
+- Dirty only with human-acceptance documentation updates for draft PR #24. Next action: commit and push the acceptance note to the existing draft PR branch.
 
 Previous publish note:
 

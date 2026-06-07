@@ -76,7 +76,7 @@ Related roadmap item:
 
 ## Approval Notes
 
-Implementation may proceed under the user's request for the full planner-to-publisher chain. This does not approve release, production deployment, merge, or any expansion into real uploads, OCR, AI extraction, sharing, caregiver permissions, or official passport replacement behavior.
+Implementation proceeded under the user's request for the full planner-to-publisher chain. Human accepted the evaluated work on 2026-06-07. This does not approve release, production deployment, merge, or any expansion into real uploads, OCR, AI extraction, sharing, caregiver permissions, or official passport replacement behavior.
 
 ## Verification
 
@@ -133,3 +133,4 @@ Implementation summary:
 Known gaps:
 
 - None for this task. Full `pnpm test:e2e` was not run; task-specific Browser validation passed.
+- Human accepted the evaluated work on 2026-06-07. This acceptance does not merge, release, deploy, or move roadmap scope.

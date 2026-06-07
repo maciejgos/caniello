@@ -177,6 +177,6 @@ Recommended next action: publish the validated document-vault foundation work as
 
 ## Human Decision
 
-Pending
+Accepted by human on 2026-06-07.
 
 This evaluator does not approve, merge, release, deploy, or mark human checkpoints complete.
