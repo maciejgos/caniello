@@ -205,6 +205,20 @@ describe("Caniello account experience", () => {
       createdAt: "2026-06-04T09:00:00.000Z",
       updatedAt: "2026-06-04T09:30:00.000Z"
     };
+    const createdDocument = {
+      id: "77777777-7777-4777-8777-777777777777",
+      petId: savedPet.id,
+      title: "Karta szczepień",
+      documentType: "vaccination",
+      documentDate: "2026-05-20",
+      providerName: "Riverside Animal Hospital",
+      notes: "Zabierz na kolejną wizytę.",
+      originalFilename: "karta-szczepien.pdf",
+      mimeType: "application/pdf",
+      status: "metadata_only",
+      createdAt: "2026-06-07T10:00:00.000Z",
+      updatedAt: "2026-06-07T10:00:00.000Z"
+    };
     vi.stubGlobal(
       "fetch",
       vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
@@ -224,6 +238,20 @@ describe("Caniello account experience", () => {
 
         if (String(input) === "/api/reminders") {
           return new Response(JSON.stringify({ ok: true, pet: savedPet, reminders: [] }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" }
+          });
+        }
+
+        if (String(input) === "/api/documents" && init?.method === "POST") {
+          return new Response(JSON.stringify({ ok: true, pet: savedPet, document: createdDocument }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" }
+          });
+        }
+
+        if (String(input) === "/api/documents") {
+          return new Response(JSON.stringify({ ok: true, pet: savedPet, documents: [] }), {
             status: 200,
             headers: { "Content-Type": "application/json" }
           });
@@ -279,9 +307,40 @@ describe("Caniello account experience", () => {
     expect(screen.getAllByText("Luna")[0]).toBeInTheDocument();
 
     await user.click(screen.getAllByRole("button", { name: accountCopy.pl.appNavDocuments })[0]);
-    expect(screen.getByRole("heading", { name: /dokumenty/i })).toBeInTheDocument();
-    expect(screen.getByText(/ocr, analiza i weryfikacja dokumentów nie są aktywne/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /przesyłanie dokumentów wkrótce/i })).toBeDisabled();
+    expect(await screen.findByRole("heading", { name: /sejf dokumentów: luna/i })).toBeInTheDocument();
+    expect(screen.getByText(/przesyłanie plików, skanowanie, ocr i analiza nie są jeszcze aktywne/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /przesyłanie wkrótce/i })).toBeDisabled();
+
+    await user.type(screen.getByLabelText(/^tytuł dokumentu$/i), "Karta szczepień");
+    await user.selectOptions(screen.getByLabelText(/^typ dokumentu$/i), "vaccination");
+    await user.type(screen.getByLabelText(/^data dokumentu$/i), "2026-05-20");
+    await user.type(screen.getByLabelText(/^placówka lub lekarz$/i), "Riverside Animal Hospital");
+    await user.type(screen.getByLabelText(/^nazwa pliku$/i), "karta-szczepien.pdf");
+    await user.type(screen.getByLabelText(/^typ pliku$/i), "application/pdf");
+    await user.type(screen.getByLabelText(/^notatki$/i), "Zabierz na kolejną wizytę.");
+    await user.click(screen.getByRole("button", { name: /zapisz dokument/i }));
+
+    await waitFor(() =>
+      expect(fetch).toHaveBeenCalledWith(
+        "/api/documents",
+        expect.objectContaining({
+          method: "POST",
+          headers: { "Content-Type": "application/json" }
+        })
+      )
+    );
+    const documentPostCall = (fetch as unknown as { mock: { calls: Array<[string, RequestInit | undefined]> } }).mock.calls.find(
+      ([input, requestInit]) => input === "/api/documents" && requestInit?.method === "POST"
+    );
+    expect(documentPostCall).toBeDefined();
+    expect(JSON.parse(String(documentPostCall?.[1]?.body))).toMatchObject({
+      title: "Karta szczepień",
+      documentType: "vaccination",
+      documentDate: "2026-05-20",
+      originalFilename: "karta-szczepien.pdf"
+    });
+    expect(screen.getByText("Karta szczepień")).toBeInTheDocument();
+    expect(screen.getAllByText(/tylko metadane/i).length).toBeGreaterThan(0);
 
     await user.click(screen.getAllByRole("button", { name: accountCopy.pl.appNavReminders })[0]);
     expect(screen.getByRole("heading", { name: /przypomnienia/i })).toBeInTheDocument();

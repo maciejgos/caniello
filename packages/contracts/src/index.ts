@@ -347,3 +347,69 @@ export const remindersApiResponseSchema = z
   .strict();
 
 export type RemindersApiResponse = z.infer<typeof remindersApiResponseSchema>;
+
+export const documentTypes = ["vaccination", "lab_result", "visit_summary", "prescription", "insurance", "travel", "other"] as const;
+export const documentTypeSchema = z.enum(documentTypes);
+export type DocumentType = z.infer<typeof documentTypeSchema>;
+
+export const documentStatuses = ["metadata_only", "uploaded", "processing", "extracted", "needs_review", "confirmed", "failed", "archived"] as const;
+export const documentStatusSchema = z.enum(documentStatuses);
+export type DocumentStatus = z.infer<typeof documentStatusSchema>;
+
+const optionalDocumentTextSchema = (maxLength: number) =>
+  z
+    .string()
+    .trim()
+    .max(maxLength)
+    .optional()
+    .nullable()
+    .transform((value) => {
+      if (!value) return null;
+      return value.length > 0 ? value : null;
+    });
+
+export const documentPayloadSchema = z
+  .object({
+    title: z.string().trim().min(1).max(160),
+    documentType: documentTypeSchema,
+    documentDate: requiredCalendarDateSchema,
+    providerName: optionalDocumentTextSchema(160),
+    notes: optionalDocumentTextSchema(2000),
+    originalFilename: optionalDocumentTextSchema(240),
+    mimeType: optionalDocumentTextSchema(120)
+  })
+  .strict();
+
+export type DocumentPayload = z.infer<typeof documentPayloadSchema>;
+
+export const documentResponseSchema = z
+  .object({
+    id: z.string().uuid(),
+    petId: z.string().uuid(),
+    title: z.string(),
+    documentType: documentTypeSchema,
+    documentDate: z.string(),
+    providerName: z.string().nullable(),
+    notes: z.string().nullable(),
+    originalFilename: z.string().nullable(),
+    mimeType: z.string().nullable(),
+    status: documentStatusSchema,
+    createdAt: z.string().datetime(),
+    updatedAt: z.string().datetime()
+  })
+  .strict();
+
+export type DocumentResponse = z.infer<typeof documentResponseSchema>;
+
+export const documentsApiResponseSchema = z
+  .object({
+    ok: z.boolean(),
+    pet: petProfileResponseSchema.nullable().optional(),
+    documents: z.array(documentResponseSchema).optional(),
+    document: documentResponseSchema.optional(),
+    message: z.string().optional(),
+    issues: z.unknown().optional()
+  })
+  .strict();
+
+export type DocumentsApiResponse = z.infer<typeof documentsApiResponseSchema>;

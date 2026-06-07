@@ -2,12 +2,20 @@
 
 ## Current State
 
-- Active task: `spec/tasks/care-reminder-foundation.md` is implemented, evaluated, and human accepted.
-- Active branch: `codex/care-reminder-foundation`.
-- Current workflow: care reminder foundation was implemented after human approval on 2026-06-06, evaluated with `forge-evaluator`, human accepted for publishing on 2026-06-06, and published as draft PR https://github.com/maciejgos/caniello/pull/23. A review follow-up fixed hardcoded Bruno copy in the Reminders screen by interpolating the returned first-pet name. Fresh evaluator verdict after the review follow-up: Pass. Artifact: `spec/validation/care-reminder-foundation-evaluation.md`. Automated tests, TypeScript checks, lint, production build, local Supabase migration/status validation, focused authenticated desktop/mobile Playwright smoke, unauthenticated `/api/reminders` route tests, opt-in live two-owner reminder RLS test, and review-follow-up pet-name regression validation passed. No merge, release, deployment, or roadmap scope movement has started.
+- Active task: `spec/tasks/document-vault-foundation.md` is implemented and evaluated.
+- Active branch: `codex/document-vault-foundation`.
+- Current workflow: document vault foundation was planned, implemented, evaluated with `forge-evaluator`, and refreshed in handoff on 2026-06-07. Fresh evaluator verdict: Pass. Artifact: `spec/validation/document-vault-foundation-evaluation.md`. Automated tests, TypeScript checks, lint, production build, local Supabase migration/status validation, opt-in live document RLS validation, and authenticated desktop/mobile in-app Browser smoke passed. No merge, release, deployment, human acceptance, or roadmap scope movement has started.
 
 ## Latest Notes
 
+- Planned and implemented `spec/tasks/document-vault-foundation.md` on branch `codex/document-vault-foundation`.
+- Added forward migration `infra/supabase/migrations/20260607100000_extend_document_metadata_fields.sql` extending `public.documents` with metadata columns, `metadata_only` status, document type constraint, and pet/date index while preserving existing owner-owned RLS policy behavior.
+- Added shared document metadata contracts in `packages/contracts`, feature-local document server helpers under `apps/web/features/account/server/documents.ts`, `/api/documents`, and a real authenticated Documents section with localized list/form behavior, edit flow, no-pet state, disabled upload/OCR placeholder, metadata-only copy, and medical-boundary copy.
+- Added focused contract, API unauthenticated, server helper, UI, and opt-in live RLS tests for document metadata.
+- Added local seed document metadata for Bruno in `infra/supabase/seed.sql`.
+- Document implementation intentionally added no file upload, scan, camera capture, storage bucket writes, signed URLs, file preview, file download, file deletion, OCR, extraction, classification, AI processing, generated summaries, document-processing jobs, extracted-field review, automatic timeline events, automatic reminders, sharing links, PDF export, caregiver permissions, clinic/provider workflow, booking, payments, marketplace, mobile app work, release, deployment, or roadmap movement.
+- Evaluated `spec/tasks/document-vault-foundation.md` with `forge-evaluator` on 2026-06-07. Verdict: Pass. Artifact: `spec/validation/document-vault-foundation-evaluation.md`.
+- Browser smoke used seeded local owner `akowalska@example.com` and confirmed login, Documents navigation, metadata create, metadata edit, reload persistence, disabled upload placeholder, metadata-only and medical-boundary copy, no console errors, and zero horizontal overflow at 1440x1000 desktop and 390x900 mobile.
 - The active harness is being simplified around `spec/roadmap.md`, `spec/features/`, `spec/tasks/`, and the Forge skills.
 - Planned `spec/tasks/care-reminder-foundation.md` with `forge-planner` on 2026-06-06 using `spec/design/visual-artifacts/mvp/image 9.png` as the reminder-screen visual reference. The task is scoped to real owner-owned reminder list/create/edit/complete behavior for the first pet, with notification delivery, recurrence, snooze, preferences, document automation, AI, sharing, and calendar sync explicitly out of scope.
 - Implemented `spec/tasks/care-reminder-foundation.md` on branch `codex/care-reminder-foundation` after human approval on 2026-06-06.
@@ -127,13 +135,32 @@
 
 ## Current Dirty Worktree
 
-- Dirty with evaluated review follow-up edits for draft PR #23: pet-name interpolation in Reminders UI/copy, focused AccountApp regression test, task notes, validation artifact update, and handoff notes. Next action: publish the follow-up commit to PR #23.
+- Dirty with evaluated document vault foundation edits on `codex/document-vault-foundation`: task file, validation artifact, handoff update, forward Supabase migration, seed data, shared contracts, `/api/documents`, feature-local document server helpers/tests, live RLS test, Documents UI component, authenticated shell wiring, localized copy, and focused account UI tests. Next action: publish the validated task as a draft PR.
 
 Previous publish note:
 
 - `git status --short --untracked-files=all` was clean on `codex/authenticated-app-shell-navigation` after the draft PR was opened.
 
 ## Validation Status
+
+Current document vault foundation task:
+
+- Fresh validation on 2026-06-07: `spec/validation/document-vault-foundation-evaluation.md` records evaluator verdict Pass.
+- Passed: `./node_modules/.bin/vitest run packages/contracts/src/index.test.ts apps/web/features/account/server/documents.test.ts apps/web/app/api/documents/route.test.ts`; 3 files and 27 tests passed.
+- Passed: `./node_modules/.bin/vitest run AccountApp.test.tsx documents.test.ts app/api/documents/route.test.ts` from `apps/web`; 3 files and 19 tests passed, with existing localStorage experimental warnings.
+- Passed: `./node_modules/.bin/vitest run packages/contracts/src/index.test.ts packages/db/src/index.test.ts apps/web/features/account/server/documents.test.ts apps/web/app/api/documents/route.test.ts`; 4 files and 41 tests passed.
+- Passed: `pnpm --filter web test`; 13 files passed, 3 opt-in files skipped, 76 tests passed, 3 skipped, with existing localStorage experimental warnings.
+- Passed: `./node_modules/.bin/tsc --noEmit --pretty false -p packages/contracts/tsconfig.json`.
+- Passed: `./node_modules/.bin/tsc --noEmit --pretty false -p packages/db/tsconfig.json`.
+- Passed: `./node_modules/.bin/tsc --noEmit --pretty false -p apps/web/tsconfig.json`.
+- Passed: `git diff --check`.
+- Sandboxed `pnpm --filter web lint` failed with `[ERROR] fetch failed`; approved outside-sandbox rerun passed.
+- Sandboxed `pnpm build` failed with `[ERROR] fetch failed`; approved outside-sandbox rerun passed and listed `/api/documents`.
+- Sandboxed `supabase db push --local --workdir infra` and `supabase status --workdir infra` failed on Supabase CLI telemetry writes under `/Users/macg/.supabase`; approved outside-sandbox reruns applied `20260607100000_extend_document_metadata_fields.sql` and confirmed local Supabase is running.
+- Sandboxed opt-in live document RLS test failed on localhost `EPERM`; approved outside-sandbox rerun passed: `env CANIELLO_RUN_SUPABASE_RLS_TESTS=1 ./node_modules/.bin/vitest run features/account/server/documents.rls.test.ts`.
+- Started local web app with `pnpm --filter web dev` on `http://localhost:3000`.
+- In-app Browser smoke passed using seeded local owner `akowalska@example.com`: login, Documents navigation, metadata create, metadata edit, reload persistence, disabled upload placeholder, metadata-only and medical-boundary copy, no console errors, and zero horizontal overflow at 1440x1000 desktop and 390x900 mobile.
+- `pnpm test:e2e` was not run; focused authenticated Browser validation covered the task acceptance criteria.
 
 Current dashboard skeleton validation task:
 
