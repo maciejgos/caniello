@@ -180,3 +180,44 @@ set
   notes = excluded.notes,
   status = excluded.status,
   updated_at = now();
+
+insert into public.documents (
+  id,
+  pet_id,
+  storage_bucket,
+  storage_path,
+  document_title,
+  document_type,
+  document_date,
+  provider_name,
+  notes,
+  original_filename,
+  mime_type,
+  status
+)
+values
+  (
+    '77777777-7777-4777-8777-777777777777',
+    '44444444-4444-4444-8444-444444444444',
+    'metadata-only',
+    'metadata-only/rabies-certificate',
+    'Rabies certificate',
+    'vaccination',
+    '2026-05-20',
+    'Riverside Animal Hospital',
+    'Metadata-only local demo record; no file upload is attached.',
+    'rabies-certificate.pdf',
+    'application/pdf',
+    'metadata_only'
+  )
+on conflict (id) do update
+set
+  document_title = excluded.document_title,
+  document_type = excluded.document_type,
+  document_date = excluded.document_date,
+  provider_name = excluded.provider_name,
+  notes = excluded.notes,
+  original_filename = excluded.original_filename,
+  mime_type = excluded.mime_type,
+  status = excluded.status,
+  updated_at = now();

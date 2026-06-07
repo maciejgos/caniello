@@ -7,6 +7,8 @@ import {
   createHealthPayload,
   createVersionPayload,
   dataExportRequestPayloadSchema,
+  documentPayloadSchema,
+  documentResponseSchema,
   healthPayloadSchema,
   landingLeadPayloadSchema,
   passwordResetRequestPayloadSchema,
@@ -242,5 +244,60 @@ describe("Caniello API contracts", () => {
         updatedAt: "2026-06-06T09:00:00.000Z"
       })
     ).toMatchObject({ title: "Rabies vaccine", reminderType: "vaccination", status: "active" });
+  });
+
+  it("validates owner document metadata payloads and normalizes optional blanks", () => {
+    expect(
+      documentPayloadSchema.parse({
+        title: " Rabies certificate ",
+        documentType: "vaccination",
+        documentDate: "2026-05-20",
+        providerName: "  Riverside Animal Hospital ",
+        notes: "",
+        originalFilename: " rabies.pdf ",
+        mimeType: " application/pdf "
+      })
+    ).toEqual({
+      title: "Rabies certificate",
+      documentType: "vaccination",
+      documentDate: "2026-05-20",
+      providerName: "Riverside Animal Hospital",
+      notes: null,
+      originalFilename: "rabies.pdf",
+      mimeType: "application/pdf"
+    });
+  });
+
+  it("rejects document metadata payloads that imply unsupported behavior", () => {
+    expect(() => documentPayloadSchema.parse({ title: "", documentType: "vaccination", documentDate: "2026-05-20" })).toThrow();
+    expect(() => documentPayloadSchema.parse({ title: "Lab", documentType: "lab", documentDate: "2026-05-20" })).toThrow();
+    expect(() => documentPayloadSchema.parse({ title: "Lab", documentType: "lab_result", documentDate: "2026-02-30" })).toThrow();
+    expect(() =>
+      documentPayloadSchema.parse({
+        title: "Lab",
+        documentType: "lab_result",
+        documentDate: "2026-05-20",
+        storagePath: "owner/upload.pdf"
+      })
+    ).toThrow();
+  });
+
+  it("accepts document metadata API responses without upload or AI fields", () => {
+    expect(
+      documentResponseSchema.parse({
+        id: "77777777-7777-4777-8777-777777777777",
+        petId: "44444444-4444-4444-8444-444444444444",
+        title: "Rabies certificate",
+        documentType: "vaccination",
+        documentDate: "2026-05-20",
+        providerName: "Riverside Animal Hospital",
+        notes: null,
+        originalFilename: "rabies.pdf",
+        mimeType: "application/pdf",
+        status: "metadata_only",
+        createdAt: "2026-06-07T10:00:00.000Z",
+        updatedAt: "2026-06-07T10:00:00.000Z"
+      })
+    ).toMatchObject({ title: "Rabies certificate", documentType: "vaccination", status: "metadata_only" });
   });
 });
