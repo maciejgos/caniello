@@ -4,7 +4,7 @@
 
 - Active task: `spec/tasks/care-card-preview-foundation.md` is implemented and evaluated.
 - Active branch: `codex/care-card-preview-foundation`.
-- Current workflow: care card preview foundation was planned with `forge-planner`, implemented with `forge-implementer`, evaluated with `forge-evaluator`, and refreshed in handoff on 2026-06-11. Fresh evaluator verdict: Pass. Artifact: `spec/validation/care-card-preview-foundation-evaluation.md`. Focused account tests, full web tests, web TypeScript/lint, production build, `git diff --check`, local Supabase startup, and authenticated desktop/mobile Playwright smoke passed. No commit, push, PR, merge, release, deployment, human acceptance, or roadmap scope movement has started for this task yet.
+- Current workflow: care card preview foundation was planned with `forge-planner`, implemented with `forge-implementer`, evaluated with `forge-evaluator`, refreshed in handoff, committed as `407727e`, pushed to `origin/codex/care-card-preview-foundation`, and published as draft PR https://github.com/maciejgos/caniello/pull/25 on 2026-06-11. Fresh evaluator verdict: Pass. Artifact: `spec/validation/care-card-preview-foundation-evaluation.md`. Focused account tests, full web tests, web TypeScript/lint, production build, `git diff --check`, local Supabase startup, and authenticated desktop/mobile Playwright smoke passed. No merge, release, deployment, human acceptance, or roadmap scope movement has started for this task yet.
 
 ## Latest Notes
 
@@ -15,6 +15,7 @@
 - The implementation intentionally added no public share route, share token, revocation, expiry, access logging, invitation, caregiver permission, PDF export, storage write, migration, new API route, AI, notification delivery, clinic/provider workflow, booking, payment, marketplace, mobile work, release, deployment, or roadmap movement.
 - Evaluated `spec/tasks/care-card-preview-foundation.md` with `forge-evaluator` on 2026-06-11. Verdict: Pass. Artifact: `spec/validation/care-card-preview-foundation-evaluation.md`.
 - Authenticated Playwright smoke used seeded local owner `akowalska@example.com` and confirmed login, Sharing navigation, care card preview, disabled share-link and PDF actions, Polish/English safety and official-passport boundary copy, no console/page errors, and zero horizontal overflow at 1440x1000 desktop and 390x900 mobile.
+- Published draft PR https://github.com/maciejgos/caniello/pull/25 from `codex/care-card-preview-foundation` to `mvp-implementation` on 2026-06-11. The branch includes task commit `407727e` plus this publish-record handoff update. The PR is draft only and does not mark the task accepted, approved, merged, released, deployed, or roadmap scope moved.
 - Planned and implemented `spec/tasks/document-vault-foundation.md` on branch `codex/document-vault-foundation`.
 - Added forward migration `infra/supabase/migrations/20260607100000_extend_document_metadata_fields.sql` extending `public.documents` with metadata columns, `metadata_only` status, document type constraint, and pet/date index while preserving existing owner-owned RLS policy behavior.
 - Added shared document metadata contracts in `packages/contracts`, feature-local document server helpers under `apps/web/features/account/server/documents.ts`, `/api/documents`, and a real authenticated Documents section with localized list/form behavior, edit flow, no-pet state, disabled upload/OCR placeholder, metadata-only copy, and medical-boundary copy.
@@ -144,14 +145,7 @@
 
 ## Current Dirty Worktree
 
-- Dirty with intentional care card preview foundation task work on `codex/care-card-preview-foundation`:
-  - `apps/web/features/account/AccountApp.test.tsx`
-  - `apps/web/features/account/components/AuthenticatedAppShell.tsx`
-  - `apps/web/features/account/components/CareCardPreviewSection.tsx`
-  - `apps/web/features/account/content.ts`
-  - `spec/tasks/care-card-preview-foundation.md`
-  - `spec/validation/care-card-preview-foundation-evaluation.md`
-  - `spec/handoff.md`
+- Dirty only with this publish-record handoff update for draft PR #25. Next action: commit and push the handoff update to `origin/codex/care-card-preview-foundation`.
 
 Previous publish note:
 
@@ -352,5 +346,5 @@ Previous repository validation notes still relevant to the dirty worktree:
 
 ## Next Recommended Action
 
-- Publish `spec/tasks/care-card-preview-foundation.md` as a draft PR with `forge-publisher`.
+- Human review of draft PR https://github.com/maciejgos/caniello/pull/25.
 - Optional editorial follow-up after evaluation: tighten non-goal wording in `README.md` and `spec/roadmap.md` so they mirror `spec/product-context.md`.
