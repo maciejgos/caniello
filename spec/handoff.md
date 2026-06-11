@@ -4,7 +4,7 @@
 
 - Active task: `spec/tasks/care-card-share-link-foundation.md` is implemented and evaluated.
 - Active branch: `codex/care-card-share-link-foundation`.
-- Current workflow: care card share link foundation was planned with `forge-planner`, implemented with `forge-implementer`, evaluated with `forge-evaluator`, and refreshed in handoff on 2026-06-11. Fresh evaluator verdict: Pass. Artifact: `spec/validation/care-card-share-link-foundation-evaluation.md`. Focused share-link server and route tests, focused AccountApp UI tests, full web Vitest, full monorepo tests, web/contracts/db TypeScript checks, web lint, production build, `git diff --check`, and desktop/mobile Playwright smoke for the public invalid share page passed. Seeded local Supabase authenticated browser smoke was unavailable because local Supabase startup hung and no Supabase containers were running. No commit, push, draft PR, merge, release, deployment, human acceptance, or roadmap scope movement has started for this task yet.
+- Current workflow: care card share link foundation was planned with `forge-planner`, implemented with `forge-implementer`, evaluated with `forge-evaluator`, refreshed in handoff, committed as `02b07c9`, pushed to `origin/codex/care-card-share-link-foundation`, and published as draft PR https://github.com/maciejgos/caniello/pull/26 on 2026-06-11. Fresh evaluator verdict: Pass. Artifact: `spec/validation/care-card-share-link-foundation-evaluation.md`. Focused share-link server and route tests, focused AccountApp UI tests, full web Vitest, full monorepo tests, web/contracts/db TypeScript checks, web lint, production build, `git diff --check`, and desktop/mobile Playwright smoke for the public invalid share page passed. Seeded local Supabase authenticated browser smoke was unavailable because local Supabase startup hung and no Supabase containers were running. No merge, release, deployment, human acceptance, or roadmap scope movement has started for this task yet.
 
 ## Latest Notes
 
@@ -15,6 +15,7 @@
 - Updated the authenticated Sharing care-card preview to create an expiring share link, show the raw URL only immediately after creation, show active-link status on reload without recovering the token, revoke the active link, and keep PDF export disabled.
 - Added focused server, route, and AccountApp coverage for token hashing, public resolution, unauthenticated API rejection, UI create/revoke states, and preserved shell behavior.
 - Evaluated `spec/tasks/care-card-share-link-foundation.md` with `forge-evaluator` on 2026-06-11. Verdict: Pass. Artifact: `spec/validation/care-card-share-link-foundation-evaluation.md`.
+- Published draft PR https://github.com/maciejgos/caniello/pull/26 from `codex/care-card-share-link-foundation` to `mvp-implementation` on 2026-06-11. The branch includes task commit `02b07c9`; this handoff publish-record update follows as a separate metadata commit. The PR is draft only and does not mark the task accepted, approved, merged, released, deployed, or roadmap scope moved.
 - Validation passed: `./node_modules/.bin/vitest run apps/web/features/account/server/share-links.test.ts apps/web/app/api/share-links/route.test.ts`; `./node_modules/.bin/vitest run AccountApp.test.tsx` from `apps/web`; `pnpm --filter web test`; `pnpm test` outside sandbox after sandbox fetch failure; web/contracts/db TypeScript checks; `pnpm --filter web lint` outside sandbox after sandbox fetch failure; `pnpm build` outside sandbox after sandbox fetch failure; `git diff --check`; and outside-sandbox Playwright desktop/mobile smoke for `/share/not-a-real-token` and protected `/app` redirect.
 - Seeded local Supabase authenticated browser smoke for login, create/open/revoke was unavailable: sandboxed `./scripts/start.sh` could not reach Docker; approved outside-sandbox startup hung while starting Supabase and was stopped; `docker ps` showed no Supabase containers; `supabase status --workdir infra` reported the local database container was missing.
 - The implementation intentionally added no PDF generation, file downloads, Supabase Storage writes, caregiver accounts, invitations, household permission changes, role management, document file sharing, OCR, AI, provider workflows, booking, payments, marketplace, mobile app work, release, deployment, merge, or roadmap movement.
@@ -155,7 +156,7 @@
 
 ## Current Dirty Worktree
 
-- Dirty with intentional care-card share-link foundation implementation, task, validation artifact, and this handoff update. Next action: publish the evaluated task with `forge-publisher` by staging only the share-link task files, committing, pushing `codex/care-card-share-link-foundation`, and opening a draft PR to `mvp-implementation`.
+- Dirty only with this publish-record handoff update for draft PR #26. Next action: commit and push the handoff update to `origin/codex/care-card-share-link-foundation`.
 
 Previous publish note:
 
