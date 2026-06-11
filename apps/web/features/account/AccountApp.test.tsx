@@ -356,8 +356,8 @@ describe("Caniello account experience", () => {
     await user.click(screen.getAllByRole("button", { name: accountCopy.pl.appNavSharing })[0]);
     expect(await screen.findByRole("heading", { name: /podgląd karty opieki/i })).toBeInTheDocument();
     expect(screen.getByText(/tylko właściciel/i)).toBeInTheDocument();
-    expect(screen.getByText(/nie tworzy linku/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /link udostępniania wkrótce/i })).toBeDisabled();
+    expect(screen.getByText(/kontrolowany link tylko do odczytu/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /utwórz link/i })).toBeEnabled();
     expect(screen.getByRole("button", { name: /eksport pdf wkrótce/i })).toBeDisabled();
 
     await user.click(screen.getAllByRole("button", { name: accountCopy.pl.appNavSettings })[0]);
@@ -481,15 +481,120 @@ describe("Caniello account experience", () => {
     expect(screen.queryByText("Completed visit")).not.toBeInTheDocument();
     expect(screen.getByText("Vaccination card")).toBeInTheDocument();
     expect(screen.getByText("Riverside Animal Hospital")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /link udostępniania wkrótce/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /utwórz link/i })).toBeEnabled();
     expect(screen.getByRole("button", { name: /eksport pdf wkrótce/i })).toBeDisabled();
     expect(screen.getByText(/nie jest diagnozą/i)).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "EN" }));
     expect(screen.getByRole("heading", { name: /care card preview/i })).toBeInTheDocument();
     expect(screen.getByText(/owner only/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /share link coming soon/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /create link/i })).toBeEnabled();
     expect(screen.getAllByText(/official pet passport/i).length).toBeGreaterThan(0);
+  });
+
+  it("creates and revokes a care card share link without enabling PDF export", async () => {
+    const savedPet = {
+      id: "44444444-4444-4444-8444-444444444444",
+      householdId: "33333333-3333-4333-8333-333333333333",
+      name: "Luna",
+      species: "dog",
+      breed: "mixed breed",
+      birthDate: "2021-05-01",
+      sexOrGender: "female",
+      weightKg: 24.2,
+      microchipNumber: "616093900000222",
+      allergies: null,
+      medication: null,
+      importantNotes: null,
+      createdAt: "2026-06-04T09:00:00.000Z",
+      updatedAt: "2026-06-04T09:30:00.000Z"
+    };
+    const shareLink = {
+      id: "88888888-8888-4888-8888-888888888888",
+      petId: savedPet.id,
+      url: "http://localhost/share/raw-token",
+      expiresAt: "2026-06-25T12:00:00.000Z",
+      revokedAt: null,
+      createdAt: "2026-06-11T12:00:00.000Z"
+    };
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+        if (String(input) === "/api/pets/profile") {
+          return new Response(JSON.stringify({ ok: true, pet: savedPet }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" }
+          });
+        }
+
+        if (String(input) === "/api/reminders") {
+          return new Response(JSON.stringify({ ok: true, pet: savedPet, reminders: [] }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" }
+          });
+        }
+
+        if (String(input) === "/api/documents") {
+          return new Response(JSON.stringify({ ok: true, pet: savedPet, documents: [] }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" }
+          });
+        }
+
+        if (String(input) === "/api/share-links" && init?.method === "POST") {
+          return new Response(JSON.stringify({ ok: true, pet: savedPet, shareLink }), {
+            status: 201,
+            headers: { "Content-Type": "application/json" }
+          });
+        }
+
+        if (String(input) === "/api/share-links" && init?.method === "PUT") {
+          return new Response(
+            JSON.stringify({ ok: true, pet: savedPet, shareLink: { ...shareLink, url: undefined, revokedAt: "2026-06-11T12:05:00.000Z" } }),
+            {
+              status: 200,
+              headers: { "Content-Type": "application/json" }
+            }
+          );
+        }
+
+        if (String(input) === "/api/share-links") {
+          return new Response(JSON.stringify({ ok: true, pet: savedPet, shareLinks: [] }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" }
+          });
+        }
+
+        return new Response(JSON.stringify({ ok: true, status: "ok" }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" }
+        });
+      })
+    );
+    const user = userEvent.setup();
+    render(<AccountApp route="app-home" />);
+
+    await user.click(screen.getAllByRole("button", { name: accountCopy.pl.appNavSharing })[0]);
+    await user.click(await screen.findByRole("button", { name: /utwórz link/i }));
+
+    expect(await screen.findByText("http://localhost/share/raw-token")).toBeInTheDocument();
+    expect(screen.getByText(/skopiuj ten adres teraz/i)).toBeInTheDocument();
+    expect(screen.getByText(/wygasa: 2026-06-25/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /eksport pdf wkrótce/i })).toBeDisabled();
+
+    expect(screen.getByRole("button", { name: /kopiuj link/i })).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: /odwołaj link/i }));
+    await waitFor(() =>
+      expect(fetch).toHaveBeenCalledWith(
+        "/api/share-links",
+        expect.objectContaining({
+          method: "PUT",
+          body: JSON.stringify({ id: shareLink.id, action: "revoke" })
+        })
+      )
+    );
+    expect(screen.getByRole("button", { name: /utwórz link/i })).toBeInTheDocument();
   });
 
   it("routes the care card no-pet state back to the pet profile section", async () => {

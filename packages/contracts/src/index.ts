@@ -413,3 +413,29 @@ export const documentsApiResponseSchema = z
   .strict();
 
 export type DocumentsApiResponse = z.infer<typeof documentsApiResponseSchema>;
+
+export const shareLinkResponseSchema = z
+  .object({
+    id: z.string().uuid(),
+    petId: z.string().uuid(),
+    url: z.string().url().optional(),
+    expiresAt: z.string().datetime().nullable(),
+    revokedAt: z.string().datetime().nullable(),
+    createdAt: z.string().datetime()
+  })
+  .strict();
+
+export type ShareLinkResponse = z.infer<typeof shareLinkResponseSchema>;
+
+export const shareLinksApiResponseSchema = z
+  .object({
+    ok: z.boolean(),
+    pet: petProfileResponseSchema.nullable().optional(),
+    shareLinks: z.array(shareLinkResponseSchema).optional(),
+    shareLink: shareLinkResponseSchema.optional(),
+    message: z.string().optional(),
+    issues: z.unknown().optional()
+  })
+  .strict();
+
+export type ShareLinksApiResponse = z.infer<typeof shareLinksApiResponseSchema>;
