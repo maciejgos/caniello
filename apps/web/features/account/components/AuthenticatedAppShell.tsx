@@ -5,6 +5,7 @@ import { AppHomeDashboard } from "./AppHomeDashboard";
 import { AppSidebar, MobileAppNav } from "./AppSidebar";
 import { AppSectionEmptyState } from "./AppSectionEmptyState";
 import { AppTopBar } from "./AppTopBar";
+import { CareCardPreviewSection } from "./CareCardPreviewSection";
 import { CareRemindersSection } from "./CareRemindersSection";
 import { DocumentVaultSection } from "./DocumentVaultSection";
 import { PetProfileSection } from "./PetProfileSection";
@@ -40,6 +41,8 @@ export function AuthenticatedAppShell({ language, onLanguageChange }: Authentica
             <DocumentVaultSection copy={copy} onPetsRequest={() => setActiveSection("pets")} />
           ) : activeSection === "reminders" ? (
             <CareRemindersSection copy={copy} onPetsRequest={() => setActiveSection("pets")} />
+          ) : activeSection === "sharing" ? (
+            <CareCardPreviewSection copy={copy} onPetsRequest={() => setActiveSection("pets")} />
           ) : (
             <AppSectionEmptyState copy={copy} section={activeSection} />
           )}

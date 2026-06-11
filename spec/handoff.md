@@ -2,12 +2,20 @@
 
 ## Current State
 
-- Active task: `spec/tasks/document-vault-foundation.md` is implemented and evaluated.
-- Active branch: `codex/document-vault-foundation`.
-- Current workflow: document vault foundation was planned, implemented, evaluated with `forge-evaluator`, refreshed in handoff, committed as `af6ed29`, pushed to `origin/codex/document-vault-foundation`, published as draft PR https://github.com/maciejgos/caniello/pull/24 on 2026-06-07, and human accepted on 2026-06-07. Fresh evaluator verdict: Pass. Artifact: `spec/validation/document-vault-foundation-evaluation.md`. Automated tests, TypeScript checks, lint, production build, local Supabase migration/status validation, opt-in live document RLS validation, and authenticated desktop/mobile in-app Browser smoke passed. No merge, release, deployment, or roadmap scope movement has started.
+- Active task: `spec/tasks/care-card-preview-foundation.md` is implemented and evaluated.
+- Active branch: `codex/care-card-preview-foundation`.
+- Current workflow: care card preview foundation was planned with `forge-planner`, implemented with `forge-implementer`, evaluated with `forge-evaluator`, refreshed in handoff, committed as `407727e`, pushed to `origin/codex/care-card-preview-foundation`, and published as draft PR https://github.com/maciejgos/caniello/pull/25 on 2026-06-11. Fresh evaluator verdict: Pass. Artifact: `spec/validation/care-card-preview-foundation-evaluation.md`. Focused account tests, full web tests, web TypeScript/lint, production build, `git diff --check`, local Supabase startup, and authenticated desktop/mobile Playwright smoke passed. No merge, release, deployment, human acceptance, or roadmap scope movement has started for this task yet.
 
 ## Latest Notes
 
+- Planned and implemented `spec/tasks/care-card-preview-foundation.md` on branch `codex/care-card-preview-foundation`.
+- Replaced the inert Sharing placeholder with `CareCardPreviewSection`, an authenticated owner-only care card preview that reads existing `/api/pets/profile`, `/api/reminders`, and `/api/documents` data and shows pet identity, microchip, allergies, medication, important notes, active upcoming reminders, and recent document metadata.
+- Added Polish and English care card copy for owner-only/private preview, missing values, no-pet state, disabled share-link/PDF actions, and medical/official-passport boundaries.
+- Added focused `AccountApp` coverage for API-backed care card display, no-pet routing back to Pets, disabled unavailable actions, language switching, and preserved shell behavior.
+- The implementation intentionally added no public share route, share token, revocation, expiry, access logging, invitation, caregiver permission, PDF export, storage write, migration, new API route, AI, notification delivery, clinic/provider workflow, booking, payment, marketplace, mobile work, release, deployment, or roadmap movement.
+- Evaluated `spec/tasks/care-card-preview-foundation.md` with `forge-evaluator` on 2026-06-11. Verdict: Pass. Artifact: `spec/validation/care-card-preview-foundation-evaluation.md`.
+- Authenticated Playwright smoke used seeded local owner `akowalska@example.com` and confirmed login, Sharing navigation, care card preview, disabled share-link and PDF actions, Polish/English safety and official-passport boundary copy, no console/page errors, and zero horizontal overflow at 1440x1000 desktop and 390x900 mobile.
+- Published draft PR https://github.com/maciejgos/caniello/pull/25 from `codex/care-card-preview-foundation` to `mvp-implementation` on 2026-06-11. The branch includes task commit `407727e` plus this publish-record handoff update. The PR is draft only and does not mark the task accepted, approved, merged, released, deployed, or roadmap scope moved.
 - Planned and implemented `spec/tasks/document-vault-foundation.md` on branch `codex/document-vault-foundation`.
 - Added forward migration `infra/supabase/migrations/20260607100000_extend_document_metadata_fields.sql` extending `public.documents` with metadata columns, `metadata_only` status, document type constraint, and pet/date index while preserving existing owner-owned RLS policy behavior.
 - Added shared document metadata contracts in `packages/contracts`, feature-local document server helpers under `apps/web/features/account/server/documents.ts`, `/api/documents`, and a real authenticated Documents section with localized list/form behavior, edit flow, no-pet state, disabled upload/OCR placeholder, metadata-only copy, and medical-boundary copy.
@@ -137,13 +145,27 @@
 
 ## Current Dirty Worktree
 
-- Dirty only with human-acceptance documentation updates for draft PR #24. Next action: commit and push the acceptance note to the existing draft PR branch.
+- Dirty only with this publish-record handoff update for draft PR #25. Next action: commit and push the handoff update to `origin/codex/care-card-preview-foundation`.
 
 Previous publish note:
 
 - `git status --short --untracked-files=all` was clean on `codex/authenticated-app-shell-navigation` after the draft PR was opened.
 
 ## Validation Status
+
+Current care card preview foundation task:
+
+- Fresh validation on 2026-06-11: `spec/validation/care-card-preview-foundation-evaluation.md` records evaluator verdict Pass.
+- Passed: `pnpm --filter web test -- AccountApp.test.tsx`; 1 file and 13 tests passed, with the existing localStorage experimental warning.
+- Passed: `pnpm --filter web test`; 13 files passed, 3 opt-in files skipped, 78 tests passed, 3 skipped, with existing localStorage experimental warnings.
+- Passed: `./node_modules/.bin/tsc --noEmit --pretty false -p apps/web/tsconfig.json`.
+- Passed: `git diff --check`.
+- Sandboxed `pnpm --filter web lint` failed with `[ERROR] fetch failed`; approved outside-sandbox rerun passed.
+- Sandboxed `pnpm build` failed with `[ERROR] fetch failed`; approved outside-sandbox rerun passed.
+- Sandboxed `./scripts/start.sh` could not access Docker; approved outside-sandbox rerun passed, applied migrations, seeded data, and synced env files.
+- In-process Playwright browser smoke failed under the macOS sandbox with Mach-port permission denial; approved outside-sandbox Playwright smoke passed on desktop 1440x1000 and mobile 390x900 using seeded owner `akowalska@example.com`.
+- Browser smoke confirmed login, Sharing navigation, care card preview, disabled share-link and PDF actions, Polish/English safety and official-passport boundary copy, no console/page errors, and zero horizontal overflow.
+- `pnpm test:e2e` was not run; focused authenticated Playwright validation covered the task acceptance criteria.
 
 Current document vault foundation task:
 
@@ -309,6 +331,8 @@ Previous repository validation notes still relevant to the dirty worktree:
 
 ## Known Gaps
 
+- Current care card preview foundation task has no evaluator gaps. Full `pnpm test:e2e` was not run; focused authenticated Playwright smoke covered the task-specific user path.
+- Public share links, scoped share tokens, revocation, expiry, access logging, invitations, caregiver permissions, and PDF export remain intentionally deferred to separate approved tasks aligned with ADR 0017.
 - Home dashboard mode switching is intentionally local React state only. It is demo-only and not persisted.
 - Dashboard and section CTA buttons for unimplemented document, Ask Caniello, sharing, reminders, pets, timeline, and settings behavior are intentionally disabled or preview-only until real feature tasks are approved and implemented.
 - The app shell task intentionally does not add dashboard cards, onboarding, persistence, live search, notifications, AI, sharing behavior, section routes, or mobile app work.
@@ -322,5 +346,5 @@ Previous repository validation notes still relevant to the dirty worktree:
 
 ## Next Recommended Action
 
-- Care reminder foundation is ready for human review or optional `forge-publisher`. Optional broader gate: run full `pnpm test:e2e` before publish if desired.
+- Human review of draft PR https://github.com/maciejgos/caniello/pull/25.
 - Optional editorial follow-up after evaluation: tighten non-goal wording in `README.md` and `spec/roadmap.md` so they mirror `spec/product-context.md`.
