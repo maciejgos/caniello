@@ -1,4 +1,4 @@
-import { FormEvent, useId, useState } from "react";
+import { FormEvent, useEffect, useId, useState } from "react";
 import Link from "next/link";
 import type { Language, LeadSource } from "../content";
 import { copy } from "../content";
@@ -35,7 +35,12 @@ export function WaitlistForm({
   const [hasLeadConsent, setHasLeadConsent] = useState(false);
   const [error, setError] = useState<FormError | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -120,7 +125,7 @@ export function WaitlistForm({
         <button
           className={`m-1 h-11 w-[calc(100%-0.5rem)] rounded-md bg-navy px-7 text-sm font-bold text-white shadow-sm transition hover:bg-navySoft focus:outline-none focus:ring-4 focus:ring-navy/20 disabled:cursor-not-allowed disabled:bg-navy/45 sm:h-auto sm:w-auto sm:min-w-[136px] ${buttonClassName}`}
           type="submit"
-          disabled={isSubmitting}
+          disabled={!isHydrated || isSubmitting}
         >
           {isSubmitting ? text.pending : submitLabel ?? text.primaryCta}
         </button>
