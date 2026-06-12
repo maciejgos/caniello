@@ -2,12 +2,24 @@
 
 ## Current State
 
-- Active task: `spec/tasks/care-card-preview-foundation.md` is implemented and evaluated.
-- Active branch: `codex/care-card-preview-foundation`.
-- Current workflow: care card preview foundation was planned with `forge-planner`, implemented with `forge-implementer`, evaluated with `forge-evaluator`, refreshed in handoff, committed as `407727e`, pushed to `origin/codex/care-card-preview-foundation`, and published as draft PR https://github.com/maciejgos/caniello/pull/25 on 2026-06-11. Fresh evaluator verdict: Pass. Artifact: `spec/validation/care-card-preview-foundation-evaluation.md`. Focused account tests, full web tests, web TypeScript/lint, production build, `git diff --check`, local Supabase startup, and authenticated desktop/mobile Playwright smoke passed. No merge, release, deployment, human acceptance, or roadmap scope movement has started for this task yet.
+- Active task: `spec/tasks/care-card-share-link-foundation.md` is implemented and evaluated.
+- Active branch: `codex/care-card-share-link-foundation`.
+- Current workflow: care card share link foundation was planned with `forge-planner`, implemented with `forge-implementer`, evaluated with `forge-evaluator`, refreshed in handoff, committed as `02b07c9`, pushed to `origin/codex/care-card-share-link-foundation`, and published as draft PR https://github.com/maciejgos/caniello/pull/26 on 2026-06-11. Fresh evaluator verdict: Pass. Artifact: `spec/validation/care-card-share-link-foundation-evaluation.md`. Focused share-link server and route tests, focused AccountApp UI tests, full web Vitest, full monorepo tests, web/contracts/db TypeScript checks, web lint, production build, `git diff --check`, desktop/mobile Playwright smoke for the public invalid share page, and 2026-06-12 seeded local Supabase authenticated create/open/revoke smoke passed. No merge, release, deployment, human acceptance, or roadmap scope movement has started for this task yet.
 
 ## Latest Notes
 
+- Planned and implemented `spec/tasks/care-card-share-link-foundation.md` on branch `codex/care-card-share-link-foundation`.
+- Added shared share-link API response contracts in `packages/contracts`.
+- Added server-only share-link helpers under `apps/web/features/account/server/share-links.ts` using opaque random tokens, SHA-256 token hashes, owner-scoped create/list/revoke behavior through existing RLS, and service-role public token resolution for read-only shared care cards.
+- Added `/api/share-links` for authenticated owner create/list/revoke, and public `/share/[token]` for bounded read-only pet profile, active upcoming reminders, and recent document metadata.
+- Updated the authenticated Sharing care-card preview to create an expiring share link, show the raw URL only immediately after creation, show active-link status on reload without recovering the token, revoke the active link, and keep PDF export disabled.
+- Added focused server, route, and AccountApp coverage for token hashing, public resolution, unauthenticated API rejection, UI create/revoke states, and preserved shell behavior.
+- Evaluated `spec/tasks/care-card-share-link-foundation.md` with `forge-evaluator` on 2026-06-11. Verdict: Pass. Artifact: `spec/validation/care-card-share-link-foundation-evaluation.md`.
+- Published draft PR https://github.com/maciejgos/caniello/pull/26 from `codex/care-card-share-link-foundation` to `mvp-implementation` on 2026-06-11. The branch includes task commit `02b07c9`; this handoff publish-record update follows as a separate metadata commit. The PR is draft only and does not mark the task accepted, approved, merged, released, deployed, or roadmap scope moved.
+- Validation passed: `./node_modules/.bin/vitest run apps/web/features/account/server/share-links.test.ts apps/web/app/api/share-links/route.test.ts`; `./node_modules/.bin/vitest run AccountApp.test.tsx` from `apps/web`; `pnpm --filter web test`; `pnpm test` outside sandbox after sandbox fetch failure; web/contracts/db TypeScript checks; `pnpm --filter web lint` outside sandbox after sandbox fetch failure; `pnpm build` outside sandbox after sandbox fetch failure; `git diff --check`; outside-sandbox Playwright desktop/mobile smoke for `/share/not-a-real-token` and protected `/app` redirect; and 2026-06-12 outside-sandbox authenticated local Supabase smoke using seeded owner `akowalska@example.com`.
+- Local Supabase retest on 2026-06-12 found and fixed two live-only issues: public `/share/[token]` now awaits Next.js 16 route params before reading `token`, and `/api/share-links` now uses the request `Origin` header when building owner-visible share URLs so local creation returns `http://localhost:3000/share/...` instead of `http://0.0.0.0:3000/share/...`.
+- Seeded local Supabase authenticated browser smoke now passes: login, Sharing navigation, create localhost share URL, public page renders Bruno with Rabies vaccine and Rabies certificate, revoke link, same public URL becomes unavailable, no console/page errors, and zero app/public horizontal overflow.
+- The implementation intentionally added no PDF generation, file downloads, Supabase Storage writes, caregiver accounts, invitations, household permission changes, role management, document file sharing, OCR, AI, provider workflows, booking, payments, marketplace, mobile app work, release, deployment, merge, or roadmap movement.
 - Planned and implemented `spec/tasks/care-card-preview-foundation.md` on branch `codex/care-card-preview-foundation`.
 - Replaced the inert Sharing placeholder with `CareCardPreviewSection`, an authenticated owner-only care card preview that reads existing `/api/pets/profile`, `/api/reminders`, and `/api/documents` data and shows pet identity, microchip, allergies, medication, important notes, active upcoming reminders, and recent document metadata.
 - Added Polish and English care card copy for owner-only/private preview, missing values, no-pet state, disabled share-link/PDF actions, and medical/official-passport boundaries.
@@ -145,13 +157,30 @@
 
 ## Current Dirty Worktree
 
-- Dirty only with this publish-record handoff update for draft PR #25. Next action: commit and push the handoff update to `origin/codex/care-card-preview-foundation`.
+- Dirty only with this publish-record handoff update for draft PR #26. Next action: commit and push the handoff update to `origin/codex/care-card-share-link-foundation`.
 
 Previous publish note:
 
 - `git status --short --untracked-files=all` was clean on `codex/authenticated-app-shell-navigation` after the draft PR was opened.
 
 ## Validation Status
+
+Current care card share link foundation task:
+
+- Fresh validation on 2026-06-11: `spec/validation/care-card-share-link-foundation-evaluation.md` records evaluator verdict Pass.
+- Passed: `./node_modules/.bin/vitest run apps/web/features/account/server/share-links.test.ts apps/web/app/api/share-links/route.test.ts`; 2 files and 7 tests passed.
+- Passed: `./node_modules/.bin/vitest run AccountApp.test.tsx` from `apps/web`; 1 file and 14 tests passed, with the existing localStorage experimental warning.
+- Passed: `pnpm --filter web test`; 15 files passed, 3 opt-in files skipped, 86 tests passed, 3 skipped, with existing localStorage experimental warnings.
+- Passed outside sandbox after sandbox fetch failure: `pnpm test`; 10 turbo tasks successful.
+- Passed: `./node_modules/.bin/tsc --noEmit --pretty false -p apps/web/tsconfig.json`.
+- Passed: `./node_modules/.bin/tsc --noEmit --pretty false -p packages/contracts/tsconfig.json`.
+- Passed: `./node_modules/.bin/tsc --noEmit --pretty false -p packages/db/tsconfig.json`.
+- Passed outside sandbox after sandbox fetch failure: `pnpm --filter web lint`.
+- Passed outside sandbox after sandbox fetch failure: `pnpm build`; production build listed `/api/share-links` and `/share/[token]`.
+- Passed: `git diff --check`.
+- Playwright browser smoke failed in the sandbox due to macOS Mach-port permissions; outside-sandbox desktop smoke passed for `/share/not-a-real-token` and protected `/app` redirect at 1440x1000 with no console/page errors and zero horizontal overflow.
+- Outside-sandbox mobile Playwright smoke passed for `/share/not-a-real-token` at 390x900 with no console/page errors and zero horizontal overflow.
+- Passed on 2026-06-12: seeded local Supabase authenticated browser smoke using `akowalska@example.com` created a localhost share URL, confirmed public Bruno care card content, revoked the link, confirmed the same URL became unavailable, found no console/page errors, and measured zero app/public horizontal overflow.
 
 Current care card preview foundation task:
 

@@ -1,6 +1,15 @@
 "use client";
 
-import type { DocumentResponse, DocumentsApiResponse, PetProfileApiResponse, PetProfileResponse, ReminderResponse, RemindersApiResponse } from "@caniello/contracts";
+import type {
+  DocumentResponse,
+  DocumentsApiResponse,
+  PetProfileApiResponse,
+  PetProfileResponse,
+  ReminderResponse,
+  RemindersApiResponse,
+  ShareLinkResponse,
+  ShareLinksApiResponse
+} from "@caniello/contracts";
 import type { ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
 import type { AccountCopy } from "../content";
@@ -25,6 +34,12 @@ const emptyCareCardState: CareCardState = {
 
 export function CareCardPreviewSection({ copy, onPetsRequest }: CareCardPreviewSectionProps) {
   const [careCard, setCareCard] = useState<CareCardState>(emptyCareCardState);
+  const [shareLink, setShareLink] = useState<ShareLinkResponse | null>(null);
+  const [isShareLinkLoading, setIsShareLinkLoading] = useState(true);
+  const [shareLinkError, setShareLinkError] = useState<string | null>(null);
+  const [shareLinkCopied, setShareLinkCopied] = useState(false);
+  const [isCreatingShareLink, setIsCreatingShareLink] = useState(false);
+  const [isRevokingShareLink, setIsRevokingShareLink] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
 
@@ -36,16 +51,27 @@ export function CareCardPreviewSection({ copy, onPetsRequest }: CareCardPreviewS
       setLoadError(null);
 
       try {
-        const [petResponse, remindersResponse, documentsResponse] = await Promise.all([
+        const [petResponse, remindersResponse, documentsResponse, shareLinksResponse] = await Promise.all([
           fetch("/api/pets/profile"),
           fetch("/api/reminders"),
-          fetch("/api/documents")
+          fetch("/api/documents"),
+          fetch("/api/share-links")
         ]);
         const petBody = (await petResponse.json()) as PetProfileApiResponse;
         const remindersBody = (await remindersResponse.json()) as RemindersApiResponse;
         const documentsBody = (await documentsResponse.json()) as DocumentsApiResponse;
+        const shareLinksBody = (await shareLinksResponse.json()) as ShareLinksApiResponse;
 
-        if (!petResponse.ok || !petBody.ok || !remindersResponse.ok || !remindersBody.ok || !documentsResponse.ok || !documentsBody.ok) {
+        if (
+          !petResponse.ok ||
+          !petBody.ok ||
+          !remindersResponse.ok ||
+          !remindersBody.ok ||
+          !documentsResponse.ok ||
+          !documentsBody.ok ||
+          !shareLinksResponse.ok ||
+          !shareLinksBody.ok
+        ) {
           throw new Error("Care card load failed.");
         }
 
@@ -55,10 +81,14 @@ export function CareCardPreviewSection({ copy, onPetsRequest }: CareCardPreviewS
           reminders: remindersBody.reminders ?? [],
           documents: documentsBody.documents ?? []
         });
+        setShareLink(shareLinksBody.shareLinks?.[0] ?? null);
       } catch {
         if (isMounted) setLoadError(copy.careCardLoadError);
       } finally {
-        if (isMounted) setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+          setIsShareLinkLoading(false);
+        }
       }
     }
 
@@ -68,6 +98,59 @@ export function CareCardPreviewSection({ copy, onPetsRequest }: CareCardPreviewS
       isMounted = false;
     };
   }, [copy.careCardLoadError]);
+
+  async function createShareLink() {
+    setIsCreatingShareLink(true);
+    setShareLinkError(null);
+    setShareLinkCopied(false);
+
+    try {
+      const response = await fetch("/api/share-links", { method: "POST" });
+      const body = (await response.json()) as ShareLinksApiResponse;
+      if (!response.ok || !body.ok || !body.shareLink) {
+        throw new Error("Share link create failed.");
+      }
+      setShareLink(body.shareLink);
+    } catch {
+      setShareLinkError(copy.careCardShareLinkCreateError);
+    } finally {
+      setIsCreatingShareLink(false);
+    }
+  }
+
+  async function revokeShareLink() {
+    if (!shareLink) return;
+    setIsRevokingShareLink(true);
+    setShareLinkError(null);
+    setShareLinkCopied(false);
+
+    try {
+      const response = await fetch("/api/share-links", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: shareLink.id, action: "revoke" })
+      });
+      const body = (await response.json()) as ShareLinksApiResponse;
+      if (!response.ok || !body.ok) {
+        throw new Error("Share link revoke failed.");
+      }
+      setShareLink(null);
+    } catch {
+      setShareLinkError(copy.careCardShareLinkRevokeError);
+    } finally {
+      setIsRevokingShareLink(false);
+    }
+  }
+
+  async function copyShareLink() {
+    if (!shareLink?.url) return;
+    try {
+      await navigator.clipboard?.writeText(shareLink.url);
+      setShareLinkCopied(true);
+    } catch {
+      setShareLinkCopied(false);
+    }
+  }
 
   const upcomingReminders = useMemo(
     () =>
@@ -170,10 +253,52 @@ export function CareCardPreviewSection({ copy, onPetsRequest }: CareCardPreviewS
               <div className="rounded-lg border border-[#e6e9ef] bg-white p-5 shadow-[0_14px_40px_rgba(15,23,42,0.05)]">
                 <h2 className="font-serif text-2xl font-black tracking-[0] text-navy">{copy.careCardUnavailableTitle}</h2>
                 <p className="mt-3 text-sm font-semibold leading-6 text-navy/66">{copy.careCardUnavailableBody}</p>
-                <div className="mt-5 grid gap-3">
-                  <button className="inline-flex min-h-11 items-center justify-center rounded-md border border-[#dce2ec] bg-[#f8fafc] px-5 text-sm font-black text-navy/54" disabled type="button">
-                    {copy.careCardShareLinkAction}
+                {isShareLinkLoading ? (
+                  <p className="mt-4 text-sm font-bold text-navy/66" role="status">
+                    {copy.careCardShareLinkLoading}
+                  </p>
+                ) : null}
+                {shareLinkError ? <p className="mt-4 text-sm font-bold text-[#b42318]">{shareLinkError}</p> : null}
+                {!isShareLinkLoading && shareLink ? (
+                  <div className="mt-5 rounded-md border border-[#dbe7dc] bg-[#fbfffb] p-4">
+                    <h3 className="text-sm font-black text-navy">{shareLink.url ? copy.careCardShareLinkCreatedTitle : copy.careCardShareLinkActiveTitle}</h3>
+                    <p className="mt-2 text-sm font-semibold leading-6 text-navy/66">
+                      {shareLink.url ? copy.careCardShareLinkCreatedBody : copy.careCardShareLinkActiveBody}
+                    </p>
+                    <p className="mt-3 text-xs font-black uppercase tracking-[0.08em] text-navy/54">
+                      {copy.careCardShareLinkExpires}: {shareLink.expiresAt ? shareLink.expiresAt.slice(0, 10) : copy.careCardMissingValue}
+                    </p>
+                    {shareLink.url ? (
+                      <div className="mt-3 rounded-md border border-[#e6e9ef] bg-white p-3">
+                        <p className="break-all text-xs font-semibold leading-5 text-navy/70">{shareLink.url}</p>
+                        <button className="mt-3 inline-flex min-h-10 items-center justify-center rounded-md bg-[#0f172a] px-4 text-sm font-black text-white" type="button" onClick={copyShareLink}>
+                          {shareLinkCopied ? copy.careCardShareLinkCopied : copy.careCardShareLinkCopy}
+                        </button>
+                      </div>
+                    ) : (
+                      <p className="mt-3 text-xs font-semibold leading-5 text-navy/54">{copy.careCardShareLinkNoRecovery}</p>
+                    )}
+                    <button
+                      className="mt-4 inline-flex min-h-10 items-center justify-center rounded-md border border-[#f3b7b1] bg-white px-4 text-sm font-black text-[#b42318]"
+                      type="button"
+                      onClick={revokeShareLink}
+                      disabled={isRevokingShareLink}
+                    >
+                      {isRevokingShareLink ? copy.careCardShareLinkRevoking : copy.careCardShareLinkRevoke}
+                    </button>
+                  </div>
+                ) : null}
+                {!isShareLinkLoading && !shareLink ? (
+                  <button
+                    className="mt-5 inline-flex min-h-11 w-full items-center justify-center rounded-md bg-[#0f172a] px-5 text-sm font-black text-white disabled:cursor-not-allowed disabled:bg-navy/30"
+                    type="button"
+                    onClick={createShareLink}
+                    disabled={isCreatingShareLink}
+                  >
+                    {isCreatingShareLink ? copy.careCardShareLinkLoading : copy.careCardShareLinkAction}
                   </button>
+                ) : null}
+                <div className="mt-3 grid gap-3">
                   <button className="inline-flex min-h-11 items-center justify-center rounded-md border border-[#dce2ec] bg-[#f8fafc] px-5 text-sm font-black text-navy/54" disabled type="button">
                     {copy.careCardPdfAction}
                   </button>
