@@ -494,6 +494,142 @@ describe("Caniello account experience", () => {
     expect(screen.getAllByText(/official pet passport/i).length).toBeGreaterThan(0);
   });
 
+  it("creates and edits a manual care timeline event without enabling automation", async () => {
+    const savedPet = {
+      id: "44444444-4444-4444-8444-444444444444",
+      householdId: "33333333-3333-4333-8333-333333333333",
+      name: "Luna",
+      species: "dog",
+      breed: "mixed breed",
+      birthDate: "2021-05-01",
+      sexOrGender: "female",
+      weightKg: 24.2,
+      microchipNumber: "616093900000222",
+      allergies: null,
+      medication: null,
+      importantNotes: null,
+      createdAt: "2026-06-04T09:00:00.000Z",
+      updatedAt: "2026-06-04T09:30:00.000Z"
+    };
+    const createdEvent = {
+      id: "66666666-6666-4666-8666-666666666666",
+      petId: savedPet.id,
+      title: "Wizyta kontrolna",
+      eventType: "visit",
+      eventDate: "2026-06-12",
+      notes: "Kontrola wagi.",
+      createdAt: "2026-06-12T09:00:00.000Z",
+      updatedAt: "2026-06-12T09:00:00.000Z"
+    };
+    const updatedEvent = {
+      ...createdEvent,
+      title: "Wizyta i szczepienie",
+      eventDate: "2026-06-13",
+      notes: "Kontrola wagi i plan szczepień.",
+      updatedAt: "2026-06-12T10:00:00.000Z"
+    };
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+        if (String(input) === "/api/timeline-events" && init?.method === "POST") {
+          return new Response(JSON.stringify({ ok: true, pet: savedPet, event: createdEvent }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" }
+          });
+        }
+
+        if (String(input) === "/api/timeline-events" && init?.method === "PUT") {
+          return new Response(JSON.stringify({ ok: true, pet: savedPet, event: updatedEvent }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" }
+          });
+        }
+
+        if (String(input) === "/api/timeline-events") {
+          return new Response(JSON.stringify({ ok: true, pet: savedPet, events: [] }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" }
+          });
+        }
+
+        return new Response(JSON.stringify({ ok: true, status: "ok" }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" }
+        });
+      })
+    );
+    const user = userEvent.setup();
+    render(<AccountApp route="app-home" />);
+
+    await user.click(screen.getAllByRole("button", { name: accountCopy.pl.appNavTimeline })[0]);
+    expect(await screen.findByRole("heading", { name: /historia opieki: luna/i })).toBeInTheDocument();
+    expect(screen.getByText(/brak wydarzeń na osi czasu/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /automatyzacje wkrótce/i })).toBeDisabled();
+    expect(screen.getByText(/automatyczne wpisy z dokumentów, ocr, ai/i)).toBeInTheDocument();
+
+    await user.type(screen.getByLabelText(/^tytuł wydarzenia$/i), "Wizyta kontrolna");
+    await user.selectOptions(screen.getByLabelText(/^typ wydarzenia$/i), "visit");
+    await user.type(screen.getByLabelText(/^data wydarzenia$/i), "2026-06-12");
+    await user.type(screen.getByLabelText(/^notatki$/i), "Kontrola wagi.");
+    await user.click(screen.getByRole("button", { name: /zapisz wydarzenie/i }));
+
+    await waitFor(() =>
+      expect(fetch).toHaveBeenCalledWith(
+        "/api/timeline-events",
+        expect.objectContaining({
+          method: "POST",
+          headers: { "Content-Type": "application/json" }
+        })
+      )
+    );
+    const timelinePostCall = (fetch as unknown as { mock: { calls: Array<[string, RequestInit | undefined]> } }).mock.calls.find(
+      ([input, requestInit]) => input === "/api/timeline-events" && requestInit?.method === "POST"
+    );
+    expect(timelinePostCall).toBeDefined();
+    expect(JSON.parse(String(timelinePostCall?.[1]?.body))).toMatchObject({
+      title: "Wizyta kontrolna",
+      eventType: "visit",
+      eventDate: "2026-06-12",
+      notes: "Kontrola wagi."
+    });
+    expect(screen.getByText("Wizyta kontrolna")).toBeInTheDocument();
+    expect(screen.getByText(/wpis ręczny/i)).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: /^edytuj$/i }));
+    await user.clear(screen.getByLabelText(/^tytuł wydarzenia$/i));
+    await user.type(screen.getByLabelText(/^tytuł wydarzenia$/i), "Wizyta i szczepienie");
+    await user.clear(screen.getByLabelText(/^data wydarzenia$/i));
+    await user.type(screen.getByLabelText(/^data wydarzenia$/i), "2026-06-13");
+    await user.clear(screen.getByLabelText(/^notatki$/i));
+    await user.type(screen.getByLabelText(/^notatki$/i), "Kontrola wagi i plan szczepień.");
+    await user.click(screen.getByRole("button", { name: /zapisz zmiany/i }));
+
+    await waitFor(() =>
+      expect(fetch).toHaveBeenCalledWith(
+        "/api/timeline-events",
+        expect.objectContaining({
+          method: "PUT",
+          headers: { "Content-Type": "application/json" }
+        })
+      )
+    );
+    const timelinePutCall = (fetch as unknown as { mock: { calls: Array<[string, RequestInit | undefined]> } }).mock.calls.find(
+      ([input, requestInit]) => input === "/api/timeline-events" && requestInit?.method === "PUT"
+    );
+    expect(timelinePutCall).toBeDefined();
+    expect(JSON.parse(String(timelinePutCall?.[1]?.body))).toMatchObject({
+      id: createdEvent.id,
+      title: "Wizyta i szczepienie",
+      eventDate: "2026-06-13"
+    });
+    expect(screen.getByText("Wizyta i szczepienie")).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "EN" }));
+    expect(screen.getByRole("heading", { name: /care history: luna/i })).toBeInTheDocument();
+    expect(screen.getByText(/does not generate diagnoses/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /automation coming soon/i })).toBeDisabled();
+  });
+
   it("creates and revokes a care card share link without enabling PDF export", async () => {
     const savedPet = {
       id: "44444444-4444-4444-8444-444444444444",

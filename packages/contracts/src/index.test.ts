@@ -17,6 +17,8 @@ import {
   petProfileResponseSchema,
   reminderPayloadSchema,
   reminderResponseSchema,
+  timelineEventPayloadSchema,
+  timelineEventResponseSchema,
   validationEventPayloadSchema,
   versionPayloadSchema
 } from ".";
@@ -284,6 +286,66 @@ describe("Caniello API contracts", () => {
         updatedAt: "2026-06-06T09:00:00.000Z"
       })
     ).toMatchObject({ title: "Rabies vaccine", reminderType: "vaccination", status: "active" });
+  });
+
+  it("validates owner timeline event payloads and normalizes optional blanks", () => {
+    expect(
+      timelineEventPayloadSchema.parse({
+        title: " Annual visit ",
+        eventType: "visit",
+        eventDate: "2026-06-12",
+        notes: "  Weight check and vaccine plan. "
+      })
+    ).toEqual({
+      title: "Annual visit",
+      eventType: "visit",
+      eventDate: "2026-06-12",
+      notes: "Weight check and vaccine plan."
+    });
+
+    expect(timelineEventPayloadSchema.parse({ title: "Rabies vaccine", eventType: "vaccination", eventDate: "2026-05-20", notes: "" }).notes).toBeNull();
+  });
+
+  it("rejects timeline event payloads that imply automation or unsupported links", () => {
+    expect(() => timelineEventPayloadSchema.parse({ title: "", eventType: "visit", eventDate: "2026-06-12" })).toThrow();
+    expect(() => timelineEventPayloadSchema.parse({ title: "Visit", eventType: "clinic_upload", eventDate: "2026-06-12" })).toThrow();
+    expect(() => timelineEventPayloadSchema.parse({ title: "Visit", eventType: "visit", eventDate: "2026-02-30" })).toThrow();
+    expect(() =>
+      timelineEventPayloadSchema.parse({
+        title: "Generated note",
+        eventType: "document",
+        eventDate: "2026-06-12",
+        sourceDocumentId: "77777777-7777-4777-8777-777777777777"
+      })
+    ).toThrow();
+  });
+
+  it("accepts timeline API responses without generated medical guidance", () => {
+    expect(
+      timelineEventResponseSchema.parse({
+        id: "66666666-6666-4666-8666-666666666666",
+        petId: "44444444-4444-4444-8444-444444444444",
+        title: "Annual visit",
+        eventType: "visit",
+        eventDate: "2026-06-12",
+        notes: null,
+        createdAt: "2026-06-12T09:00:00.000Z",
+        updatedAt: "2026-06-12T09:00:00.000Z"
+      })
+    ).toMatchObject({ title: "Annual visit", eventType: "visit" });
+
+    expect(() =>
+      timelineEventResponseSchema.parse({
+        id: "66666666-6666-4666-8666-666666666666",
+        petId: "44444444-4444-4444-8444-444444444444",
+        title: "Annual visit",
+        eventType: "visit",
+        eventDate: "2026-06-12",
+        diagnosis: "AI-generated diagnosis",
+        createdAt: "2026-06-12T09:00:00.000Z",
+        updatedAt: "2026-06-12T09:00:00.000Z"
+      })
+    ).toThrow();
   });
 
   it("validates owner document metadata payloads and normalizes optional blanks", () => {
