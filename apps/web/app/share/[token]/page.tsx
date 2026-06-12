@@ -4,15 +4,16 @@ import { readSharedCareCard } from "../../../features/account/server/share-links
 import { BrandWordmark } from "../../../features/marketing/components/BrandWordmark";
 
 type SharePageProps = {
-  params: {
+  params: Promise<{
     token: string;
-  };
+  }>;
 };
 
 export default async function Page({ params }: SharePageProps) {
+  const { token } = await params;
   const config = readSupabaseServiceRoleConfig();
   const result = config
-    ? await readSharedCareCard(params.token, createSupabaseServiceRoleClient(config))
+    ? await readSharedCareCard(token, createSupabaseServiceRoleClient(config))
     : { ok: false as const, status: 503, message: "This care card link is unavailable." };
 
   return (

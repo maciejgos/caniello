@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     return jsonWithSupabaseCookies(response, { ok: false, message: "Supabase is not configured." }, { status: 503 });
   }
 
-  const result = await listOwnerShareLinks(supabase, request.nextUrl.origin);
+  const result = await listOwnerShareLinks(supabase, getRequestOrigin(request));
   return jsonWithSupabaseCookies(response, result, { status: result.ok ? 200 : result.status });
 }
 
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     return jsonWithSupabaseCookies(response, { ok: false, message: "Supabase is not configured." }, { status: 503 });
   }
 
-  const result = await createOwnerShareLink(supabase, request.nextUrl.origin);
+  const result = await createOwnerShareLink(supabase, getRequestOrigin(request));
   return jsonWithSupabaseCookies(response, result, { status: result.ok ? 201 : result.status });
 }
 
@@ -45,6 +45,10 @@ export async function PUT(request: NextRequest) {
     return jsonWithSupabaseCookies(response, { ok: false, message: "Share link id and revoke action are required." }, { status: 400 });
   }
 
-  const result = await revokeOwnerShareLink(shareLinkId, supabase, request.nextUrl.origin);
+  const result = await revokeOwnerShareLink(shareLinkId, supabase, getRequestOrigin(request));
   return jsonWithSupabaseCookies(response, result, { status: result.ok ? 200 : result.status });
+}
+
+function getRequestOrigin(request: NextRequest): string {
+  return request.headers.get("origin") ?? request.nextUrl.origin;
 }

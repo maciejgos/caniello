@@ -48,7 +48,7 @@ Evaluate `spec/tasks/care-card-share-link-foundation.md`: owner-authenticated cr
   Evidence: `share-links.ts` uses `randomBytes(32).toString("base64url")` and SHA-256 hashing; `share-links.test.ts` asserts stored token hash format and that client result does not contain the stored hash.
 - Criterion: `/share/[token]` displays a read-only care card for active unexpired tokens and does not expose owner account, household, hidden documents, or raw token hashes.
   Evidence status: Supported
-  Evidence: `readSharedCareCard` resolves active unrevoked unexpired tokens server-side with service-role client, maps bounded pet/reminder/document metadata, and tests assert no token hash or owner id in the public result.
+  Evidence: `readSharedCareCard` resolves active unrevoked unexpired tokens server-side with service-role client, maps bounded pet/reminder/document metadata, and tests assert no token hash or owner id in the public result. The 2026-06-12 local Supabase authenticated browser smoke confirmed the public page renders Bruno, Rabies vaccine, and Rabies certificate from the generated token URL.
 - Criterion: Invalid, expired, or revoked tokens show a safe unavailable state without leaking whether a pet or owner exists.
   Evidence status: Supported
   Evidence: `readSharedCareCard` returns the same unavailable 404 for missing token or missing pet; desktop and mobile Playwright smoke confirmed `/share/not-a-real-token` renders the unavailable page with no console or page errors.
@@ -121,6 +121,11 @@ Evaluate `spec/tasks/care-card-share-link-foundation.md`: owner-authenticated cr
   Status: Passed
   Expected result: Public unavailable page renders on mobile, no console/page errors, no horizontal overflow.
   Actual result: Outside-sandbox Playwright passed at 390x900: unavailable page visible, overflow 0, no console/page errors.
+- Check: Seeded local Supabase authenticated browser smoke for login, create link, open active public link, revoke link, and confirm revoked link unavailable.
+  Type: UI
+  Status: Passed
+  Expected result: Seeded owner can create a localhost share URL, the public URL renders Bruno's read-only care card with bounded reminder and document metadata, revocation makes the same URL unavailable, and there are no console/page errors or horizontal overflow.
+  Actual result: Rerun on 2026-06-12 passed using seeded owner `akowalska@example.com`: generated URL used `http://localhost:3000/share/...`, public page showed Bruno, Rabies vaccine, and Rabies certificate, revoked URL rendered `Link jest niedostepny`, desktop app/public overflow was 0, and console/page errors were empty.
 - Check: Roadmap and non-goal review.
   Type: Manual
   Status: Passed
@@ -134,16 +139,16 @@ Evaluate `spec/tasks/care-card-share-link-foundation.md`: owner-authenticated cr
 - Full monorepo tests passed outside the sandbox after sandbox fetch failure.
 - Production build passed outside the sandbox and listed new dynamic public and API routes.
 - Browser validation passed for public unavailable state and protected app redirect on desktop and mobile.
+- Local Supabase authenticated browser validation passed on 2026-06-12 after fixing the public token route and request-origin URL generation.
 
 ## Findings
 
-- None.
+- Fixed on 2026-06-12: Next.js 16 route params for `apps/web/app/share/[token]/page.tsx` must be awaited before reading `token`; the live public route previously rendered a 500 because the token was undefined.
+- Fixed on 2026-06-12: `/api/share-links` should build owner-visible URLs from the request `Origin` header when present; live local creation previously returned `http://0.0.0.0:3000/share/...` from `request.nextUrl.origin`.
 
 ## Missing, Skipped, or Unavailable Checks
 
-- Check: Seeded local Supabase authenticated browser smoke for login, create link, open active public link, revoke link, and confirm revoked link unavailable.
-  Reason: `./scripts/start.sh` could not reach Docker in the sandbox; approved outside-sandbox startup began pulling/starting Supabase services but hung without completion. The hung startup processes were stopped, `docker ps` showed no Supabase containers, and `supabase status --workdir infra` reported the local Supabase database container was missing.
-  Risk: Low to moderate. Database-backed behavior is covered by focused helper, route, API-auth, UI, TypeScript, build, and public-page browser checks, but a live end-to-end Supabase smoke should still be valuable before human acceptance or merge.
+- None for the scoped task after the 2026-06-12 local Supabase retest.
 
 ## Future CI/CD or Lifecycle Gates
 
@@ -160,8 +165,8 @@ Pass
 
 ## Follow-Up
 
-- Recommended next action: publish this task as a draft PR for human review.
-- Add live Supabase share-link integration/E2E coverage when local Supabase startup is healthy, but no implementation blocker remains for this scoped task.
+- Recommended next action: continue human review on draft PR #26.
+- Consider promoting the successful local Supabase create/open/revoke smoke into a committed Playwright E2E once the project has a stable local Supabase E2E harness.
 
 ## Human Decision
 
