@@ -4,7 +4,7 @@
 
 - Active task: `spec/tasks/account-privacy-settings-foundation.md` is implemented and evaluated.
 - Active branch: `codex/account-privacy-settings-foundation`.
-- Current workflow: account privacy settings foundation was planned with `forge-planner`, implemented with `forge-implementer`, evaluated with `forge-evaluator`, and refreshed in handoff on 2026-06-12. Evaluator verdict: Pass. Artifact: `spec/validation/account-privacy-settings-foundation-evaluation.md`. Validation passed: focused contract/server/route tests, focused AccountApp UI tests, full web Vitest, monorepo tests, web/contracts TypeScript checks, web lint, production build, `git diff --check`, opt-in live account settings RLS, and in-app Browser desktop/mobile smoke for the Settings surface. No merge, release, deployment, human acceptance, or roadmap scope movement has started for this task yet. Next workflow step requested by the human: publish with `forge-publisher`.
+- Current workflow: account privacy settings foundation was planned with `forge-planner`, implemented with `forge-implementer`, evaluated with `forge-evaluator`, refreshed in handoff, committed as `0c73267`, pushed to `origin/codex/account-privacy-settings-foundation`, and published as draft PR https://github.com/maciejgos/caniello/pull/27 on 2026-06-12. Evaluator verdict: Pass. Artifact: `spec/validation/account-privacy-settings-foundation-evaluation.md`. Validation passed: focused contract/server/route tests, focused AccountApp UI tests, full web Vitest, monorepo tests, web/contracts TypeScript checks, web lint, production build, `git diff --check`, opt-in live account settings RLS, and in-app Browser desktop/mobile smoke for the Settings surface. No merge, release, deployment, human acceptance, or roadmap scope movement has started for this task yet.
 
 ## Latest Notes
 
@@ -15,6 +15,7 @@
 - Account deletion request UI requires `DELETE` before enabling the request action. Export and deletion copy explicitly says requests are recorded for follow-up and do not generate files, download links, emails, automatic account deletion, or cascade cleanup.
 - Added focused contract/server/route/UI tests and an opt-in live RLS test proving a second owner can manage their own account privacy records but cannot read, update, or insert records for Anna's owner account.
 - Evaluated `spec/tasks/account-privacy-settings-foundation.md` with `forge-evaluator` on 2026-06-12. Verdict: Pass. Artifact: `spec/validation/account-privacy-settings-foundation-evaluation.md`.
+- Published draft PR https://github.com/maciejgos/caniello/pull/27 from `codex/account-privacy-settings-foundation` to `mvp-implementation` on 2026-06-12. The branch includes task commit `0c73267`; this publish-record handoff update follows as a separate metadata commit. The PR is draft only and does not mark the task accepted, approved, merged, released, deployed, or roadmap scope moved.
 - Validation passed: `./node_modules/.bin/vitest run packages/contracts/src/index.test.ts apps/web/features/account/server/account-settings.test.ts apps/web/app/api/account/settings/route.test.ts`; `./node_modules/.bin/vitest run AccountApp.test.tsx` from `apps/web`; `pnpm --filter web test`; `./node_modules/.bin/tsc --noEmit --pretty false -p packages/contracts/tsconfig.json`; `./node_modules/.bin/tsc --noEmit --pretty false -p apps/web/tsconfig.json`; `git diff --check`; approved outside-sandbox `pnpm test`; approved outside-sandbox `pnpm --filter web lint`; approved outside-sandbox `pnpm build`; approved outside-sandbox opt-in live account settings RLS test; and in-app Browser desktop/mobile smoke.
 - Sandbox notes: sandboxed `pnpm test`, `pnpm --filter web lint`, and `pnpm build` failed with `fetch failed`; approved outside-sandbox reruns passed. Sandboxed live RLS failed on localhost `EPERM`; approved outside-sandbox rerun passed.
 - Browser smoke used seeded local owner `akowalska@example.com` and confirmed login, Settings navigation, visible `Konto, zgody i dane` heading, disabled account deletion request button before `DELETE`, zero console errors, and zero horizontal overflow at default desktop width and 390x900 mobile.
@@ -168,7 +169,7 @@
 
 ## Current Dirty Worktree
 
-- Dirty with the intentional account privacy settings foundation task files, validation artifact, and this handoff update on branch `codex/account-privacy-settings-foundation`.
+- Dirty only with this publish-record handoff update for draft PR #27. Next action: commit and push the handoff update to `origin/codex/account-privacy-settings-foundation`.
 - No unrelated user edits were present when the task started; `git status --short` was clean before planning.
 - Dev server `pnpm --filter web dev` is running on `http://localhost:3000` for browser validation in this session.
 
@@ -406,5 +407,5 @@ Previous repository validation notes still relevant to the dirty worktree:
 
 ## Next Recommended Action
 
-- Run `forge-publisher` for `spec/tasks/account-privacy-settings-foundation.md`: inspect the worktree, stage only intentional task files, commit, push `codex/account-privacy-settings-foundation`, and open a draft PR to `mvp-implementation`.
+- Human review of draft PR https://github.com/maciejgos/caniello/pull/27.
 - Optional editorial follow-up after publishing: tighten non-goal wording in `README.md` and `spec/roadmap.md` so they mirror `spec/product-context.md`.
