@@ -185,6 +185,44 @@ export const accountDeletionRequestResponseSchema = z
 
 export type AccountDeletionRequestResponse = z.infer<typeof accountDeletionRequestResponseSchema>;
 
+export const accountProfileResponseSchema = z
+  .object({
+    id: z.string().uuid(),
+    displayName: z.string().nullable(),
+    language: accountLanguageSchema,
+    createdAt: z.string().datetime(),
+    updatedAt: z.string().datetime()
+  })
+  .strict();
+
+export type AccountProfileResponse = z.infer<typeof accountProfileResponseSchema>;
+
+export const consentEventResponseSchema = z
+  .object({
+    id: z.string().uuid(),
+    analyticsConsent: z.boolean(),
+    marketingConsent: z.boolean().nullable(),
+    language: accountLanguageSchema,
+    createdAt: z.string().datetime()
+  })
+  .strict();
+
+export type ConsentEventResponse = z.infer<typeof consentEventResponseSchema>;
+
+export const accountSettingsApiResponseSchema = z
+  .object({
+    ok: z.boolean(),
+    profile: accountProfileResponseSchema.nullable().optional(),
+    latestConsent: consentEventResponseSchema.nullable().optional(),
+    latestDataExportRequest: dataExportRequestResponseSchema.nullable().optional(),
+    latestDeletionRequest: accountDeletionRequestResponseSchema.nullable().optional(),
+    message: z.string().optional(),
+    issues: z.unknown().optional()
+  })
+  .strict();
+
+export type AccountSettingsApiResponse = z.infer<typeof accountSettingsApiResponseSchema>;
+
 export const accountPrivacyAuditActions = {
   profileUpdated: "account.profile_updated",
   consentUpdated: "account.consent_updated",

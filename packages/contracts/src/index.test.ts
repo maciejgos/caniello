@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   accountDeletionRequestPayloadSchema,
   accountLoginPayloadSchema,
+  accountSettingsApiResponseSchema,
   accountSignupPayloadSchema,
   consentPreferencePayloadSchema,
   createHealthPayload,
@@ -143,6 +144,45 @@ describe("Caniello API contracts", () => {
         language: "pl"
       })
     ).toEqual({ confirmation: "DELETE", language: "pl" });
+  });
+
+  it("validates account settings API responses without completed export or deletion files", () => {
+    expect(
+      accountSettingsApiResponseSchema.parse({
+        ok: true,
+        profile: {
+          id: "11111111-1111-4111-8111-111111111111",
+          displayName: "Anna Kowalska",
+          language: "pl",
+          createdAt: "2026-06-12T08:00:00.000Z",
+          updatedAt: "2026-06-12T08:00:00.000Z"
+        },
+        latestConsent: {
+          id: "22222222-2222-4222-8222-222222222222",
+          analyticsConsent: true,
+          marketingConsent: false,
+          language: "pl",
+          createdAt: "2026-06-12T08:05:00.000Z"
+        },
+        latestDataExportRequest: {
+          id: "33333333-3333-4333-8333-333333333333",
+          status: "requested",
+          requestedAt: "2026-06-12T08:10:00.000Z"
+        },
+        latestDeletionRequest: null
+      })
+    ).toMatchObject({
+      ok: true,
+      profile: { displayName: "Anna Kowalska" },
+      latestDataExportRequest: { status: "requested" }
+    });
+
+    expect(() =>
+      accountSettingsApiResponseSchema.parse({
+        ok: true,
+        exportDownloadUrl: "https://example.com/private.zip"
+      })
+    ).toThrow();
   });
 
   it("validates owner pet profile payloads and normalizes optional blanks", () => {

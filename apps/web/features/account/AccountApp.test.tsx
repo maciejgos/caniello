@@ -361,9 +361,11 @@ describe("Caniello account experience", () => {
     expect(screen.getByRole("button", { name: /eksport pdf wkrótce/i })).toBeDisabled();
 
     await user.click(screen.getAllByRole("button", { name: accountCopy.pl.appNavSettings })[0]);
-    expect(screen.getByRole("heading", { name: /ustawienia/i })).toBeInTheDocument();
-    expect(screen.getByText(/nie dodaje nowych przepływów usuwania konta/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /ustawienia szczegółowe wkrótce/i })).toBeDisabled();
+    expect(screen.getByRole("heading", { name: /konto, zgody i dane/i })).toBeInTheDocument();
+    expect(screen.getByText(/eksport danych i usunięcie konta są rejestrowane jako prośby/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /zapisz profil konta/i })).toBeEnabled();
+    expect(screen.getByRole("button", { name: /poproś o eksport danych/i })).toBeEnabled();
+    expect(screen.getByRole("button", { name: /poproś o usunięcie konta/i })).toBeDisabled();
     expect(screen.getByRole("button", { name: /wyloguj się/i })).toBeInTheDocument();
 
     await user.click(screen.getAllByRole("button", { name: accountCopy.pl.appNavHome })[0]);
@@ -792,6 +794,144 @@ describe("Caniello account experience", () => {
 
     await waitFor(() => expect(nameField).not.toBeDisabled());
     expect(speciesField).not.toBeDisabled();
+  });
+
+  it("records owner account privacy settings and data-rights requests", async () => {
+    const profile = {
+      id: "11111111-1111-4111-8111-111111111111",
+      displayName: "Anna Kowalska",
+      language: "pl",
+      createdAt: "2026-06-12T08:00:00.000Z",
+      updatedAt: "2026-06-12T08:00:00.000Z"
+    };
+    const consent = {
+      id: "22222222-2222-4222-8222-222222222222",
+      analyticsConsent: true,
+      marketingConsent: false,
+      language: "pl",
+      createdAt: "2026-06-12T08:05:00.000Z"
+    };
+    const dataExportRequest = {
+      id: "33333333-3333-4333-8333-333333333333",
+      status: "requested",
+      requestedAt: "2026-06-12T08:10:00.000Z"
+    };
+    const deletionRequest = {
+      id: "44444444-4444-4444-8444-444444444444",
+      status: "requested",
+      requestedAt: "2026-06-12T08:15:00.000Z"
+    };
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+        if (String(input) === "/api/account/settings" && init?.method === "PUT") {
+          return new Response(JSON.stringify({ ok: true, profile: { ...profile, displayName: "Anna Nowak" } }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" }
+          });
+        }
+
+        if (String(input) === "/api/account/settings" && init?.method === "POST") {
+          const body = JSON.parse(String(init.body));
+          const responseBody = body.action === "consent"
+            ? { ok: true, latestConsent: consent }
+            : body.action === "data_export"
+              ? { ok: true, latestDataExportRequest: dataExportRequest }
+              : { ok: true, latestDeletionRequest: deletionRequest };
+
+          return new Response(JSON.stringify(responseBody), {
+            status: 201,
+            headers: { "Content-Type": "application/json" }
+          });
+        }
+
+        if (String(input) === "/api/account/settings") {
+          return new Response(
+            JSON.stringify({
+              ok: true,
+              profile,
+              latestConsent: null,
+              latestDataExportRequest: null,
+              latestDeletionRequest: null
+            }),
+            {
+              status: 200,
+              headers: { "Content-Type": "application/json" }
+            }
+          );
+        }
+
+        return new Response(JSON.stringify({ ok: true, status: "ok" }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" }
+        });
+      })
+    );
+    const user = userEvent.setup();
+    render(<AccountApp route="app-home" />);
+
+    await user.click(screen.getAllByRole("button", { name: accountCopy.pl.appNavSettings })[0]);
+
+    expect(await screen.findByRole("heading", { name: /konto, zgody i dane/i })).toBeInTheDocument();
+    const displayNameField = await screen.findByLabelText(/nazwa opiekuna/i);
+    expect(displayNameField).toHaveValue("Anna Kowalska");
+    expect(screen.getAllByText(/brak prośby/i).length).toBe(2);
+
+    await user.clear(displayNameField);
+    await user.type(displayNameField, "Anna Nowak");
+    await user.click(screen.getByRole("button", { name: /zapisz profil konta/i }));
+
+    await waitFor(() =>
+      expect(fetch).toHaveBeenCalledWith(
+        "/api/account/settings",
+        expect.objectContaining({
+          method: "PUT",
+          body: JSON.stringify({ displayName: "Anna Nowak", language: "pl" })
+        })
+      )
+    );
+
+    await user.click(screen.getByLabelText(/zgadzam się na analitykę/i));
+    await user.click(screen.getByRole("button", { name: /zapisz zgody/i }));
+
+    await waitFor(() =>
+      expect(fetch).toHaveBeenCalledWith(
+        "/api/account/settings",
+        expect.objectContaining({
+          method: "POST",
+          body: JSON.stringify({ action: "consent", payload: { analyticsConsent: true, marketingConsent: false, language: "pl" } })
+        })
+      )
+    );
+    expect(await screen.findByText(/ostatnia zgoda: 2026-06-12/i)).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: /poproś o eksport danych/i }));
+    await waitFor(() =>
+      expect(fetch).toHaveBeenCalledWith(
+        "/api/account/settings",
+        expect.objectContaining({
+          method: "POST",
+          body: JSON.stringify({ action: "data_export", payload: { language: "pl" } })
+        })
+      )
+    );
+    expect(screen.getAllByText(/status prośby: requested/i).length).toBeGreaterThan(0);
+
+    const deletionButton = screen.getByRole("button", { name: /poproś o usunięcie konta/i });
+    expect(deletionButton).toBeDisabled();
+    await user.type(screen.getByLabelText(/wpisz DELETE/i), "DELETE");
+    expect(deletionButton).toBeEnabled();
+    await user.click(deletionButton);
+
+    await waitFor(() =>
+      expect(fetch).toHaveBeenCalledWith(
+        "/api/account/settings",
+        expect.objectContaining({
+          method: "POST",
+          body: JSON.stringify({ action: "account_deletion", payload: { confirmation: "DELETE", language: "pl" } })
+        })
+      )
+    );
   });
 
   it("shows a setup-specific message when Supabase auth is unavailable", async () => {
