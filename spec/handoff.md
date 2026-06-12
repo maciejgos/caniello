@@ -4,7 +4,7 @@
 
 - Active task: `spec/tasks/care-timeline-foundation.md` is implemented and evaluated.
 - Active branch: `codex/care-timeline-foundation`.
-- Current workflow: care timeline foundation was planned with `forge-planner`, implemented with `forge-implementer`, evaluated with `forge-evaluator`, and refreshed in handoff on 2026-06-12. Evaluator verdict: Pass. Artifact: `spec/validation/care-timeline-foundation-evaluation.md`. Validation passed: focused contract/server/route tests, focused AccountApp UI tests, full web Vitest, monorepo tests, web/contracts TypeScript checks, web lint, production build, `git diff --check`, opt-in live timeline RLS, and in-app Browser desktop/mobile smoke for the Timeline surface. Publish is pending. No merge, release, deployment, human acceptance, or roadmap scope movement has started for this task.
+- Current workflow: care timeline foundation was planned with `forge-planner`, implemented with `forge-implementer`, evaluated with `forge-evaluator`, refreshed in handoff, committed as `be67361`, pushed to `origin/codex/care-timeline-foundation`, and published as draft PR https://github.com/maciejgos/caniello/pull/28 on 2026-06-12. Evaluator verdict: Pass. Artifact: `spec/validation/care-timeline-foundation-evaluation.md`. Validation passed: focused contract/server/route tests, focused AccountApp UI tests, full web Vitest, monorepo tests, web/contracts TypeScript checks, web lint, production build, `git diff --check`, opt-in live timeline RLS, and in-app Browser desktop/mobile smoke for the Timeline surface. No merge, release, deployment, human acceptance, or roadmap scope movement has started for this task.
 
 ## Latest Notes
 
@@ -14,6 +14,7 @@
 - Replaced the inert Timeline placeholder with `CareTimelineSection`, a localized owner-only Timeline surface for manual event list/create/edit behavior, no-pet state, empty state, validation errors, disabled automation controls, and medical/privacy boundary copy.
 - Added focused contract/server/route/UI tests and an opt-in live RLS test proving a second owner can manage their own timeline event but cannot read, update, or insert timeline events for Anna/Bruno.
 - Evaluated `spec/tasks/care-timeline-foundation.md` with `forge-evaluator` on 2026-06-12. Verdict: Pass. Artifact: `spec/validation/care-timeline-foundation-evaluation.md`.
+- Published draft PR https://github.com/maciejgos/caniello/pull/28 from `codex/care-timeline-foundation` to `mvp-implementation` on 2026-06-12. The branch includes task commit `be67361`; this publish-record handoff update follows as a separate metadata commit. The PR is draft only and does not mark the task accepted, approved, merged, released, deployed, or roadmap scope moved.
 - Validation passed: `./node_modules/.bin/vitest run packages/contracts/src/index.test.ts apps/web/features/account/server/timeline-events.test.ts apps/web/app/api/timeline-events/route.test.ts`; `./node_modules/.bin/vitest run AccountApp.test.tsx` from `apps/web`; `pnpm --filter web test`; web/contracts TypeScript checks; `git diff --check`; approved outside-sandbox `pnpm test`; approved outside-sandbox `pnpm --filter web lint`; approved outside-sandbox `pnpm build`; approved outside-sandbox opt-in live timeline RLS test; and in-app Browser desktop/mobile smoke.
 - Sandbox notes: sandboxed `pnpm test`, `pnpm --filter web lint`, and `pnpm build` failed with `fetch failed`; approved outside-sandbox reruns passed. Sandboxed live RLS failed on localhost `EPERM`; approved outside-sandbox rerun passed.
 - Browser smoke used seeded local owner `akowalska@example.com` and confirmed login, Timeline navigation, manual event create, manual event edit, disabled automation control, zero console errors, and zero horizontal overflow at default desktop width and 390x900 mobile.
@@ -179,7 +180,7 @@
 
 ## Current Dirty Worktree
 
-- Dirty with implemented and evaluated care timeline foundation files plus this handoff update. Next action: run `forge-publisher` to stage only the care timeline task files, commit, push `codex/care-timeline-foundation`, and open a draft PR.
+- Dirty only with this publish-record handoff update for draft PR #28. Next action: commit and push the handoff update to `origin/codex/care-timeline-foundation`.
 - No unrelated user edits were present when the task started; `git status --short` was clean before planning.
 - Dev server `pnpm --filter web dev` is running on `http://localhost:3000` for browser validation in this session.
 
@@ -434,6 +435,5 @@ Previous repository validation notes still relevant to the dirty worktree:
 
 ## Next Recommended Action
 
-- Run `forge-publisher` for `spec/tasks/care-timeline-foundation.md`: stage only current timeline task files, commit, push `codex/care-timeline-foundation`, and open a draft PR.
-- Human review of the resulting draft PR.
+- Human review of draft PR https://github.com/maciejgos/caniello/pull/28.
 - Optional editorial follow-up after publishing: tighten non-goal wording in `README.md` and `spec/roadmap.md` so they mirror `spec/product-context.md`.
