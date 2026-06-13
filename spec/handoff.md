@@ -14,6 +14,7 @@
 - Linked the validation script from `spec/features/mvp-validation-readiness-recovery.md` and updated the task verification notes.
 - Evaluated `spec/tasks/mvp-readiness-baseline-and-script.md` with `forge-evaluator` on 2026-06-13. Verdict: Pass. Artifact: `spec/validation/mvp-readiness-baseline-and-script-evaluation.md`.
 - Validation passed: `git diff --check`; manual review confirmed the script references the historical readiness artifact, recovery feature brief, seven recovery tasks, and MVP mockups without adding product behavior, release approval, deployment approval, merge approval, or roadmap movement.
+- Published draft PR https://github.com/maciejgos/caniello/pull/30 from `codex/mvp-readiness-baseline-script` to `mvp-implementation` on 2026-06-13. The branch includes task commit `9f59760` plus this publish-record handoff update. The PR is draft only and does not mark the task accepted, approved, merged, released, deployed, or roadmap scope moved.
 - Evaluated Caniello MVP validation readiness on 2026-06-13 from clean `mvp-implementation` at `539c483`, matching `origin/mvp-implementation`.
 - GitHub state checked outside the sandbox after sandbox network failure: no open PRs target `mvp-implementation`; PRs #21 through #29 are merged into `mvp-implementation`; `git fetch --all --prune` refreshed refs and pruned the merged feature branches from `origin`.
 - Automated validation passed: `pnpm --filter web test`; approved outside-sandbox reruns of `pnpm --filter web lint`, `pnpm test`, `pnpm build`, and `pnpm test:e2e` after sandbox `fetch failed`; `pnpm test:e2e` passed 18/18 across desktop and mobile Chromium.
@@ -206,8 +207,8 @@
 
 ## Current Dirty Worktree
 
-- Intentional dirty files for active task before publication: `spec/features/mvp-validation-readiness-recovery.md`, `spec/tasks/mvp-readiness-baseline-and-script.md`, `spec/validation/mvp-next-pass-validation-script.md`, `spec/validation/mvp-readiness-baseline-and-script-evaluation.md`, and `spec/handoff.md`.
-- No unrelated dirty files were present before implementation.
+- Intentional dirty file after draft PR creation: `spec/handoff.md` publish-record update.
+- No unrelated dirty files were present before implementation or publication.
 
 Previous publish note:
 
