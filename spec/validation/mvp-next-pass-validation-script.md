@@ -183,4 +183,6 @@ This result does not approve launch, release, deployment, merge, production use,
 
 ## Human Decision
 
-Pending.
+Accepted by human on 2026-06-13 with the instruction "Accept all artifacts."
+
+This acceptance applies to this validation-script artifact only. It does not approve launch, release, deployment, merge, production use, roadmap movement, or the future broader MVP readiness decision.
