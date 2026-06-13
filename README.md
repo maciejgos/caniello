@@ -55,13 +55,17 @@ Initial product scope:
 
 ## Out of Scope for the Initial Product
 
-Do not build these in the first product phase:
+Do not build these in the first product phase without explicit human approval and a roadmap update:
 
-- full booking and payments
-- clinic PIMS or EHR integrations
-- AI symptom checking or diagnosis
 - full marketplace mechanics
+- full booking and payments
+- payments-first monetization flows
+- clinic SaaS, PIMS, or EHR integrations
+- broad clinic portals or partner workflow ownership
+- AI symptom checking, AI diagnosis, treatment recommendations, or veterinary decision-making
 - claims that Caniello replaces an official EU pet passport
+- advanced multi-role care teams, family plans, or complex household permissions beyond private owner data and controlled sharing
+- advanced analytics, referral mechanics, duplicate detection, calendar sync, or partner document-upload flows unless approved for a specific validation task
 
 Official EU pet passports remain documents issued by authorized veterinarians. Caniello may support a digital health record or travel-ready care record, but it must not imply official passport replacement.
 
@@ -79,7 +83,7 @@ Target signals:
 - D30 retention above 25%
 - weekly active owners above 20% among activated users
 
-If retention is weak, do not expand into marketplace or clinic tooling.
+If retention is weak, do not expand into marketplace, clinic tooling, or broad partner systems.
 
 ## Repository Structure
 
@@ -183,7 +187,7 @@ The active Forge skills under `.codex/skills/` support this flow:
 - `forge-roadmap-review`: priority and scope drift review.
 - `forge-weekly-reporter`: weekly work report with human feedback before finalizing.
 
-Implementation should stay task-sized, roadmap-aligned, and focused on the smallest validated product slice. Do not expand into marketplace, clinic SaaS, booking, payments-first flows, AI diagnosis, or official passport replacement claims without explicit human approval.
+Implementation should stay task-sized, roadmap-aligned, and focused on the smallest validated product slice. Do not expand into marketplace, clinic SaaS, broad partner workflow ownership, booking, payments-first flows, AI diagnosis, treatment recommendations, veterinary decision-making, advanced household permissions, advanced analytics, referral mechanics, duplicate detection, calendar sync, partner document-upload flows, or official passport replacement claims without explicit human approval.
 
 ## Relationship to The Future Thinker World
 

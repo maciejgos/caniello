@@ -2,12 +2,19 @@
 
 ## Current State
 
-- Active task: `spec/tasks/care-timeline-foundation.md` is implemented and evaluated.
-- Active branch: `codex/care-timeline-foundation`.
-- Current workflow: care timeline foundation was planned with `forge-planner`, implemented with `forge-implementer`, evaluated with `forge-evaluator`, refreshed in handoff, committed as `be67361`, pushed to `origin/codex/care-timeline-foundation`, and published as draft PR https://github.com/maciejgos/caniello/pull/28 on 2026-06-12. Evaluator verdict: Pass. Artifact: `spec/validation/care-timeline-foundation-evaluation.md`. Validation passed: focused contract/server/route tests, focused AccountApp UI tests, full web Vitest, monorepo tests, web/contracts TypeScript checks, web lint, production build, `git diff --check`, opt-in live timeline RLS, and in-app Browser desktop/mobile smoke for the Timeline surface. No merge, release, deployment, human acceptance, or roadmap scope movement has started for this task.
+- Active task: `spec/tasks/align-mvp-non-goals.md` is implemented and evaluated.
+- Active branch: `codex/align-mvp-non-goals`.
+- Current workflow: MVP non-goal documentation alignment was planned with `forge-planner`, implemented with `forge-implementer`, evaluated with `forge-evaluator`, refreshed in handoff, committed as `99bf632`, pushed to `origin/codex/align-mvp-non-goals`, and published as draft PR https://github.com/maciejgos/caniello/pull/29 on 2026-06-13. Evaluator verdict: Pass. Artifact: `spec/validation/align-mvp-non-goals-evaluation.md`. Validation passed: `git diff --check`, targeted `rg` review across `README.md`, `spec/roadmap.md`, and `spec/product-context.md`, and manual diff/scope review. UI/browser validation and full application tests were not applicable because this is documentation-only. No merge, release, deployment, human acceptance, or roadmap scope movement has started for this task.
 
 ## Latest Notes
 
+- Planned and implemented `spec/tasks/align-mvp-non-goals.md` on branch `codex/align-mvp-non-goals`.
+- Updated `README.md` so the initial-product non-goals and workflow guardrails mirror the fuller exclusions in `spec/product-context.md`, including payments-first monetization, broad clinic or partner workflow ownership, treatment recommendations, veterinary decision-making, advanced household permissions, advanced analytics, referral mechanics, duplicate detection, calendar sync, and partner document-upload boundaries.
+- Updated `spec/roadmap.md` `Not Now` scope with the same fuller exclusions while preserving existing Now/Next/Later headings, outcomes, success signals, and allowed scope.
+- Evaluated `spec/tasks/align-mvp-non-goals.md` with `forge-evaluator` on 2026-06-13. Verdict: Pass. Artifact: `spec/validation/align-mvp-non-goals-evaluation.md`.
+- Published draft PR https://github.com/maciejgos/caniello/pull/29 from `codex/align-mvp-non-goals` to `mvp-implementation` on 2026-06-13. The branch includes task commit `99bf632` plus this publish-record handoff update as a separate metadata commit. The PR is draft only and does not mark the task accepted, approved, merged, released, deployed, or roadmap scope moved.
+- Validation passed: `git diff --check`; targeted non-goal vocabulary review across `README.md`, `spec/roadmap.md`, and `spec/product-context.md`; manual diff review confirmed no product behavior, phase movement, ADR, release, deployment, merge, or human approval state changes.
+- The implementation intentionally added no product feature behavior, migrations, route handlers, shared contracts, UI changes, database changes, external service changes, ADR, release, deployment, merge, human acceptance, or roadmap movement.
 - Planned and implemented `spec/tasks/care-timeline-foundation.md` on branch `codex/care-timeline-foundation`.
 - Added shared timeline event contracts in `packages/contracts` for manual owner-provided timeline payloads and API responses.
 - Added authenticated `/api/timeline-events` plus feature-local server helpers under `apps/web/features/account/server/timeline-events.ts` for reading, creating, and updating timeline events for the current owner's first saved pet.
@@ -180,9 +187,9 @@
 
 ## Current Dirty Worktree
 
-- Dirty only with this publish-record handoff update for draft PR #28. Next action: commit and push the handoff update to `origin/codex/care-timeline-foundation`.
-- No unrelated user edits were present when the task started; `git status --short` was clean before planning.
-- Dev server `pnpm --filter web dev` is running on `http://localhost:3000` for browser validation in this session.
+- Expected clean after this publish-record handoff update is committed and pushed to `origin/codex/align-mvp-non-goals`.
+- No unrelated user edits were present when the task started; `git status --short --branch` was clean on `mvp-implementation` before creating `codex/align-mvp-non-goals`.
+- No dev server is needed for this documentation-only validation.
 
 Previous publish note:
 
@@ -190,7 +197,16 @@ Previous publish note:
 
 ## Validation Status
 
-Current care timeline foundation task:
+Current MVP non-goal alignment task:
+
+- Fresh validation on 2026-06-13: `spec/validation/align-mvp-non-goals-evaluation.md` records evaluator verdict Pass.
+- Passed: `git diff --check`.
+- Passed: targeted `rg` review across `README.md`, `spec/roadmap.md`, and `spec/product-context.md` confirmed the aligned non-goal vocabulary.
+- Passed: manual diff review confirmed no product behavior, roadmap phase movement, ADR status change, release state, deployment state, merge state, or human approval state changed.
+- UI/browser validation was not applicable because this task changes only Markdown documentation.
+- Full application tests were not run because no executable code, schemas, routes, UI, migrations, or package configuration changed.
+
+Previous care timeline foundation task:
 
 - Fresh validation on 2026-06-12: `spec/validation/care-timeline-foundation-evaluation.md` records evaluator verdict Pass.
 - Passed: `./node_modules/.bin/vitest run packages/contracts/src/index.test.ts apps/web/features/account/server/timeline-events.test.ts apps/web/app/api/timeline-events/route.test.ts`; 3 files and 31 tests passed.
@@ -417,7 +433,8 @@ Previous repository validation notes still relevant to the dirty worktree:
 
 ## Known Gaps
 
-- Current care timeline foundation task has no evaluator gaps. Full `pnpm test:e2e` was not run; focused component/API/security tests, opt-in live RLS, production build, and authenticated browser smoke covered the task-specific user path.
+- Current MVP non-goal alignment task has no evaluator gaps. Full application tests and UI/browser validation were not run because the task changes only Markdown documentation; `git diff --check`, targeted vocabulary review, and manual diff/scope review covered the changed surface.
+- Previous care timeline foundation task has no evaluator gaps. Full `pnpm test:e2e` was not run; focused component/API/security tests, opt-in live RLS, production build, and authenticated browser smoke covered the task-specific user path.
 - Timeline automation from documents, OCR, AI, reminders, uploads, sharing, or account activity remains intentionally deferred. Timeline deletion, attachment picker, document linking UI, reminder generation, notification delivery, calendar sync, and provider workflows are also deferred.
 - Actual account deletion execution, user deletion, cascade cleanup, export file generation, download links, email delivery, background jobs, notification preferences, billing, family roles, caregiver permissions, advanced household permissions, and external privacy tooling remain intentionally deferred from the previous settings task.
 - Previous care card preview foundation task has no evaluator gaps. Full `pnpm test:e2e` was not run; focused authenticated Playwright smoke covered the task-specific user path.
@@ -435,5 +452,5 @@ Previous repository validation notes still relevant to the dirty worktree:
 
 ## Next Recommended Action
 
-- Human review of draft PR https://github.com/maciejgos/caniello/pull/28.
-- Optional editorial follow-up after publishing: tighten non-goal wording in `README.md` and `spec/roadmap.md` so they mirror `spec/product-context.md`.
+- Human review of draft PR https://github.com/maciejgos/caniello/pull/29.
+- Human review of existing draft PR https://github.com/maciejgos/caniello/pull/28 remains pending separately.
