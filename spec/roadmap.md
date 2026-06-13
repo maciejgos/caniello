@@ -69,14 +69,16 @@ AI and partner work must preserve medical-safety, privacy, and owner-control bou
 Do not implement without explicit human approval and a roadmap update:
 
 - marketplace mechanics;
-- clinic SaaS;
-- booking;
-- payments-first monetization flow;
-- clinic PIMS or EHR integrations;
-- AI symptom checking or diagnosis;
-- veterinary replacement claims;
+- full booking and payments;
+- payments-first monetization flows;
+- clinic SaaS, PIMS, or EHR integrations;
+- broad clinic portals or partner workflow ownership;
+- AI symptom checking, AI diagnosis, treatment recommendations, or veterinary decision-making;
+- veterinary replacement claims, including claims that Caniello replaces an authorized veterinarian;
 - official EU pet passport replacement claims;
 - complex partner integrations;
+- advanced multi-role care teams, family plans, or complex household permissions beyond private owner data and controlled sharing;
+- advanced analytics, referral mechanics, duplicate detection, calendar sync, or partner document-upload flows unless approved for a specific validation task;
 - broad back-office systems beyond approved MVP support needs.
 
 ## Governance
