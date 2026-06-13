@@ -2,12 +2,18 @@
 
 ## Current State
 
-- Active task: `spec/tasks/mvp-readiness-baseline-and-script.md`.
-- Active branch: `codex/mvp-readiness-baseline-script`.
-- Current workflow: implementation/evaluation for the MVP readiness baseline and next-pass validation script. The 2026-06-13 readiness artifact remains historical evidence for seeded-owner internal validation only: `spec/validation/mvp-validation-readiness-2026-06-13.md`. Broader new-owner and mockup-fidelity MVP validation still depends on the recovery task set or explicit human waivers. This does not approve release, deployment, merge, production use, or roadmap movement.
+- Active task: none; architecture assessment requested with `forge-architect`.
+- Active branch: `codex/architecture-gap-assessment`.
+- Current workflow: architecture review/handoff. The 2026-06-13 readiness artifact remains historical evidence for seeded-owner internal validation only: `spec/validation/mvp-validation-readiness-2026-06-13.md`. Broader new-owner and mockup-fidelity MVP validation still depends on the recovery task set or explicit human waivers. This does not approve release, deployment, merge, production use, or roadmap movement.
 
 ## Latest Notes
 
+- Used `forge-architect` on 2026-06-13 to review the current repo architecture against `spec/product-context.md`, `spec/roadmap.md`, existing ADRs, `spec/architecture/mvp-target-architecture.md`, current tasks, package boundaries, web feature server helpers, and Supabase migrations.
+- Added exploratory architecture note `spec/architecture/current-architecture-gap-assessment-2026-06-13.md`.
+- Assessment finding: the accepted stack/platform ADRs remain sufficient; missing architecture is mainly operational and lifecycle detail around document upload/storage authorization, account export/deletion lifecycle, current-pet versus multi-pet semantics, feature-local helper graduation rules, audit coverage, share-link access logging/abuse posture, authenticated product-event instrumentation, local auth/OAuth validation strategy, live RLS fixture isolation, future mobile API boundary, background job triggers, and production readiness playbooks.
+- Recommended next architecture actions: decide document upload scope first; define account export/deletion lifecycle before broader health-record validation; clarify one-pet versus active-pet semantics; reconcile audit/product-event coverage against ADRs 0014 and 0019; record shared-package graduation rules before feature-local server logic drifts.
+- Validation passed: `git diff --check`. No tests were run because this was documentation/architecture assessment only.
+- Approval state: no ADR was created or accepted; no product scope, roadmap phase, implementation behavior, release, deployment, merge, or production-readiness state changed.
 - Planned and implemented `spec/tasks/mvp-readiness-baseline-and-script.md` on branch `codex/mvp-readiness-baseline-script`.
 - Added reusable next-pass validation checklist `spec/validation/mvp-next-pass-validation-script.md`.
 - The script separates seeded-owner baseline checks from new-owner activation checks, references `spec/design/visual-artifacts/mvp/*.png` for mockup-fidelity review, and lists the seven recovery task gates that must be resolved or waived before broader MVP readiness can be claimed.
@@ -208,8 +214,8 @@
 
 ## Current Dirty Worktree
 
-- Intentional dirty file after draft PR creation: `spec/handoff.md` publish-record update.
-- No unrelated dirty files were present before implementation or publication.
+- Intentional dirty files for architecture assessment: `spec/architecture/current-architecture-gap-assessment-2026-06-13.md` and `spec/handoff.md`.
+- No unrelated dirty files were present before the architecture assessment.
 
 Previous publish note:
 
