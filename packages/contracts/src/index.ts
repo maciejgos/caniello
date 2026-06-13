@@ -386,6 +386,49 @@ export const remindersApiResponseSchema = z
 
 export type RemindersApiResponse = z.infer<typeof remindersApiResponseSchema>;
 
+export const timelineEventTypes = ["vaccination", "medication", "deworming", "visit", "document", "note", "other"] as const;
+export const timelineEventTypeSchema = z.enum(timelineEventTypes);
+export type TimelineEventType = z.infer<typeof timelineEventTypeSchema>;
+
+export const timelineEventPayloadSchema = z
+  .object({
+    title: z.string().trim().min(1).max(160),
+    eventType: timelineEventTypeSchema,
+    eventDate: requiredCalendarDateSchema,
+    notes: optionalReminderTextSchema(2000)
+  })
+  .strict();
+
+export type TimelineEventPayload = z.infer<typeof timelineEventPayloadSchema>;
+
+export const timelineEventResponseSchema = z
+  .object({
+    id: z.string().uuid(),
+    petId: z.string().uuid(),
+    eventType: timelineEventTypeSchema,
+    eventDate: z.string(),
+    title: z.string(),
+    notes: z.string().nullable(),
+    createdAt: z.string().datetime(),
+    updatedAt: z.string().datetime()
+  })
+  .strict();
+
+export type TimelineEventResponse = z.infer<typeof timelineEventResponseSchema>;
+
+export const timelineEventsApiResponseSchema = z
+  .object({
+    ok: z.boolean(),
+    pet: petProfileResponseSchema.nullable().optional(),
+    events: z.array(timelineEventResponseSchema).optional(),
+    event: timelineEventResponseSchema.optional(),
+    message: z.string().optional(),
+    issues: z.unknown().optional()
+  })
+  .strict();
+
+export type TimelineEventsApiResponse = z.infer<typeof timelineEventsApiResponseSchema>;
+
 export const documentTypes = ["vaccination", "lab_result", "visit_summary", "prescription", "insurance", "travel", "other"] as const;
 export const documentTypeSchema = z.enum(documentTypes);
 export type DocumentType = z.infer<typeof documentTypeSchema>;

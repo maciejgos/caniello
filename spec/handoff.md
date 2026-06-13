@@ -2,12 +2,23 @@
 
 ## Current State
 
-- Active task: `spec/tasks/account-privacy-settings-foundation.md` is implemented and evaluated.
-- Active branch: `codex/account-privacy-settings-foundation`.
-- Current workflow: account privacy settings foundation was planned with `forge-planner`, implemented with `forge-implementer`, evaluated with `forge-evaluator`, refreshed in handoff, committed as `0c73267`, pushed to `origin/codex/account-privacy-settings-foundation`, and published as draft PR https://github.com/maciejgos/caniello/pull/27 on 2026-06-12. Evaluator verdict: Pass. Artifact: `spec/validation/account-privacy-settings-foundation-evaluation.md`. Validation passed: focused contract/server/route tests, focused AccountApp UI tests, full web Vitest, monorepo tests, web/contracts TypeScript checks, web lint, production build, `git diff --check`, opt-in live account settings RLS, and in-app Browser desktop/mobile smoke for the Settings surface. No merge, release, deployment, human acceptance, or roadmap scope movement has started for this task yet.
+- Active task: `spec/tasks/care-timeline-foundation.md` is implemented and evaluated.
+- Active branch: `codex/care-timeline-foundation`.
+- Current workflow: care timeline foundation was planned with `forge-planner`, implemented with `forge-implementer`, evaluated with `forge-evaluator`, refreshed in handoff, committed as `be67361`, pushed to `origin/codex/care-timeline-foundation`, and published as draft PR https://github.com/maciejgos/caniello/pull/28 on 2026-06-12. Evaluator verdict: Pass. Artifact: `spec/validation/care-timeline-foundation-evaluation.md`. Validation passed: focused contract/server/route tests, focused AccountApp UI tests, full web Vitest, monorepo tests, web/contracts TypeScript checks, web lint, production build, `git diff --check`, opt-in live timeline RLS, and in-app Browser desktop/mobile smoke for the Timeline surface. No merge, release, deployment, human acceptance, or roadmap scope movement has started for this task.
 
 ## Latest Notes
 
+- Planned and implemented `spec/tasks/care-timeline-foundation.md` on branch `codex/care-timeline-foundation`.
+- Added shared timeline event contracts in `packages/contracts` for manual owner-provided timeline payloads and API responses.
+- Added authenticated `/api/timeline-events` plus feature-local server helpers under `apps/web/features/account/server/timeline-events.ts` for reading, creating, and updating timeline events for the current owner's first saved pet.
+- Replaced the inert Timeline placeholder with `CareTimelineSection`, a localized owner-only Timeline surface for manual event list/create/edit behavior, no-pet state, empty state, validation errors, disabled automation controls, and medical/privacy boundary copy.
+- Added focused contract/server/route/UI tests and an opt-in live RLS test proving a second owner can manage their own timeline event but cannot read, update, or insert timeline events for Anna/Bruno.
+- Evaluated `spec/tasks/care-timeline-foundation.md` with `forge-evaluator` on 2026-06-12. Verdict: Pass. Artifact: `spec/validation/care-timeline-foundation-evaluation.md`.
+- Published draft PR https://github.com/maciejgos/caniello/pull/28 from `codex/care-timeline-foundation` to `mvp-implementation` on 2026-06-12. The branch includes task commit `be67361`; this publish-record handoff update follows as a separate metadata commit. The PR is draft only and does not mark the task accepted, approved, merged, released, deployed, or roadmap scope moved.
+- Validation passed: `./node_modules/.bin/vitest run packages/contracts/src/index.test.ts apps/web/features/account/server/timeline-events.test.ts apps/web/app/api/timeline-events/route.test.ts`; `./node_modules/.bin/vitest run AccountApp.test.tsx` from `apps/web`; `pnpm --filter web test`; web/contracts TypeScript checks; `git diff --check`; approved outside-sandbox `pnpm test`; approved outside-sandbox `pnpm --filter web lint`; approved outside-sandbox `pnpm build`; approved outside-sandbox opt-in live timeline RLS test; and in-app Browser desktop/mobile smoke.
+- Sandbox notes: sandboxed `pnpm test`, `pnpm --filter web lint`, and `pnpm build` failed with `fetch failed`; approved outside-sandbox reruns passed. Sandboxed live RLS failed on localhost `EPERM`; approved outside-sandbox rerun passed.
+- Browser smoke used seeded local owner `akowalska@example.com` and confirmed login, Timeline navigation, manual event create, manual event edit, disabled automation control, zero console errors, and zero horizontal overflow at default desktop width and 390x900 mobile.
+- The implementation intentionally added no migrations, automatic document/reminder/AI timeline events, deletion, attachment picker, document linking UI, reminder generation, notification delivery, calendar sync, sharing changes, PDF export, clinic/provider workflow, marketplace, booking, payments, mobile app work, release, deployment, merge, acceptance, or roadmap movement.
 - Planned and implemented `spec/tasks/account-privacy-settings-foundation.md` on branch `codex/account-privacy-settings-foundation`.
 - Added shared account settings API response contracts in `packages/contracts` for account profile, latest consent event, latest data export request, and latest account deletion request snapshots.
 - Added authenticated `/api/account/settings` plus feature-local server helpers under `apps/web/features/account/server/account-settings.ts` for reading owner settings, updating account profile language/display name, recording consent events, and creating queued data export/account deletion request records.
@@ -169,7 +180,7 @@
 
 ## Current Dirty Worktree
 
-- Dirty only with this publish-record handoff update for draft PR #27. Next action: commit and push the handoff update to `origin/codex/account-privacy-settings-foundation`.
+- Dirty only with this publish-record handoff update for draft PR #28. Next action: commit and push the handoff update to `origin/codex/care-timeline-foundation`.
 - No unrelated user edits were present when the task started; `git status --short` was clean before planning.
 - Dev server `pnpm --filter web dev` is running on `http://localhost:3000` for browser validation in this session.
 
@@ -179,7 +190,23 @@ Previous publish note:
 
 ## Validation Status
 
-Current account privacy settings foundation task:
+Current care timeline foundation task:
+
+- Fresh validation on 2026-06-12: `spec/validation/care-timeline-foundation-evaluation.md` records evaluator verdict Pass.
+- Passed: `./node_modules/.bin/vitest run packages/contracts/src/index.test.ts apps/web/features/account/server/timeline-events.test.ts apps/web/app/api/timeline-events/route.test.ts`; 3 files and 31 tests passed.
+- Passed: `./node_modules/.bin/vitest run AccountApp.test.tsx` from `apps/web`; 1 file and 16 tests passed, with the existing localStorage experimental warning.
+- Passed: `pnpm --filter web test`; 19 files passed, 5 opt-in files skipped, 105 tests passed, 5 skipped, with existing localStorage experimental warnings.
+- Passed: `./node_modules/.bin/tsc --noEmit --pretty false -p packages/contracts/tsconfig.json`.
+- Passed: `./node_modules/.bin/tsc --noEmit --pretty false -p apps/web/tsconfig.json`.
+- Passed: `git diff --check`.
+- Passed outside sandbox after sandbox fetch failure: `pnpm test`; 10 turbo tasks successful.
+- Passed outside sandbox after sandbox fetch failure: `pnpm --filter web lint`.
+- Passed outside sandbox after sandbox fetch failure: `pnpm build`; production build listed `/api/timeline-events`.
+- Passed outside sandbox after sandbox localhost `EPERM`: `env CANIELLO_RUN_SUPABASE_RLS_TESTS=1 ./node_modules/.bin/vitest run features/account/server/timeline-events.rls.test.ts` from `apps/web`; 1 file and 1 test passed.
+- In-app Browser smoke passed using seeded local owner `akowalska@example.com`: login, Timeline navigation, manual event create, manual event edit, disabled automation control, no console errors, and zero horizontal overflow at default desktop width and 390x900 mobile.
+- `pnpm test:e2e` was not run; focused component/API/security tests and authenticated browser smoke covered the task acceptance criteria.
+
+Previous account privacy settings foundation task:
 
 - Fresh validation on 2026-06-12: `spec/validation/account-privacy-settings-foundation-evaluation.md` records evaluator verdict Pass.
 - Passed: `./node_modules/.bin/vitest run packages/contracts/src/index.test.ts apps/web/features/account/server/account-settings.test.ts apps/web/app/api/account/settings/route.test.ts`; 3 files and 25 tests passed.
@@ -390,8 +417,9 @@ Previous repository validation notes still relevant to the dirty worktree:
 
 ## Known Gaps
 
-- Current account privacy settings foundation task has no evaluator gaps. Full `pnpm test:e2e` was not run; focused component/API/security tests and authenticated browser smoke covered the task-specific user path.
-- Actual account deletion execution, user deletion, cascade cleanup, export file generation, download links, email delivery, background jobs, notification preferences, billing, family roles, caregiver permissions, advanced household permissions, and external privacy tooling remain intentionally deferred.
+- Current care timeline foundation task has no evaluator gaps. Full `pnpm test:e2e` was not run; focused component/API/security tests, opt-in live RLS, production build, and authenticated browser smoke covered the task-specific user path.
+- Timeline automation from documents, OCR, AI, reminders, uploads, sharing, or account activity remains intentionally deferred. Timeline deletion, attachment picker, document linking UI, reminder generation, notification delivery, calendar sync, and provider workflows are also deferred.
+- Actual account deletion execution, user deletion, cascade cleanup, export file generation, download links, email delivery, background jobs, notification preferences, billing, family roles, caregiver permissions, advanced household permissions, and external privacy tooling remain intentionally deferred from the previous settings task.
 - Previous care card preview foundation task has no evaluator gaps. Full `pnpm test:e2e` was not run; focused authenticated Playwright smoke covered the task-specific user path.
 - Public share links, scoped share tokens, revocation, expiry, access logging, invitations, caregiver permissions, and PDF export remain intentionally deferred to separate approved tasks aligned with ADR 0017.
 - Home dashboard mode switching is intentionally local React state only. It is demo-only and not persisted.
@@ -407,5 +435,5 @@ Previous repository validation notes still relevant to the dirty worktree:
 
 ## Next Recommended Action
 
-- Human review of draft PR https://github.com/maciejgos/caniello/pull/27.
+- Human review of draft PR https://github.com/maciejgos/caniello/pull/28.
 - Optional editorial follow-up after publishing: tighten non-goal wording in `README.md` and `spec/roadmap.md` so they mirror `spec/product-context.md`.
