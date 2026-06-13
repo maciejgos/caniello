@@ -2,12 +2,18 @@
 
 ## Current State
 
-- Active task: MVP validation readiness evaluation.
-- Active branch: `mvp-implementation`.
-- Current workflow: end-to-end MVP readiness was evaluated on 2026-06-13 with `forge-evaluator` plus GitHub PR/merge-state inspection, automated gates, local Supabase status/migration checks, opt-in live RLS tests, and in-app Browser validation of the signed-in owner flows. Artifact: `spec/validation/mvp-validation-readiness-2026-06-13.md`. Initial readiness decision was accepted, then narrowed after human manual findings on 2026-06-13: YES only for seeded-owner internal MVP validation; NO for broader new-owner or mockup-fidelity MVP validation until the P1/P2 gaps are resolved or explicitly waived. This does not approve release, deployment, merge, or roadmap movement.
+- Active task: `spec/tasks/mvp-readiness-baseline-and-script.md`.
+- Active branch: `codex/mvp-readiness-baseline-script`.
+- Current workflow: implementation/evaluation for the MVP readiness baseline and next-pass validation script. The 2026-06-13 readiness artifact remains historical evidence for seeded-owner internal validation only: `spec/validation/mvp-validation-readiness-2026-06-13.md`. Broader new-owner and mockup-fidelity MVP validation still depends on the recovery task set or explicit human waivers. This does not approve release, deployment, merge, production use, or roadmap movement.
 
 ## Latest Notes
 
+- Planned and implemented `spec/tasks/mvp-readiness-baseline-and-script.md` on branch `codex/mvp-readiness-baseline-script`.
+- Added reusable next-pass validation checklist `spec/validation/mvp-next-pass-validation-script.md`.
+- The script separates seeded-owner baseline checks from new-owner activation checks, references `spec/design/visual-artifacts/mvp/*.png` for mockup-fidelity review, and lists the seven recovery task gates that must be resolved or waived before broader MVP readiness can be claimed.
+- Linked the validation script from `spec/features/mvp-validation-readiness-recovery.md` and updated the task verification notes.
+- Evaluated `spec/tasks/mvp-readiness-baseline-and-script.md` with `forge-evaluator` on 2026-06-13. Verdict: Pass. Artifact: `spec/validation/mvp-readiness-baseline-and-script-evaluation.md`.
+- Validation passed: `git diff --check`; manual review confirmed the script references the historical readiness artifact, recovery feature brief, seven recovery tasks, and MVP mockups without adding product behavior, release approval, deployment approval, merge approval, or roadmap movement.
 - Evaluated Caniello MVP validation readiness on 2026-06-13 from clean `mvp-implementation` at `539c483`, matching `origin/mvp-implementation`.
 - GitHub state checked outside the sandbox after sandbox network failure: no open PRs target `mvp-implementation`; PRs #21 through #29 are merged into `mvp-implementation`; `git fetch --all --prune` refreshed refs and pruned the merged feature branches from `origin`.
 - Automated validation passed: `pnpm --filter web test`; approved outside-sandbox reruns of `pnpm --filter web lint`, `pnpm test`, `pnpm build`, and `pnpm test:e2e` after sandbox `fetch failed`; `pnpm test:e2e` passed 18/18 across desktop and mobile Chromium.
@@ -200,10 +206,8 @@
 
 ## Current Dirty Worktree
 
-- Dirty from this readiness evaluation and manual-finding update: `spec/validation/mvp-validation-readiness-2026-06-13.md` added and `spec/handoff.md` updated.
-- Added planning artifacts for MVP validation recovery: `spec/features/mvp-validation-readiness-recovery.md`; `spec/tasks/mvp-readiness-baseline-and-script.md`; `spec/tasks/new-owner-access-validation.md`; `spec/tasks/dashboard-mockup-and-active-pet-alignment.md`; `spec/tasks/pet-profile-ia-and-controls.md`; `spec/tasks/document-upload-scope-decision.md`; `spec/tasks/timeline-upcoming-reminders-alignment.md`; `spec/tasks/account-deletion-persistence-verification.md`; and roadmap evidence in `spec/roadmap.md`.
-- Generated Playwright screenshot output from `pnpm test:e2e` was removed from `spec/validation/screenshots/` after the run so generated artifacts are not left as untracked files.
-- The local dev server was started with `pnpm --filter web dev` for browser validation and was stopped before ending the session.
+- Intentional dirty files for active task before publication: `spec/features/mvp-validation-readiness-recovery.md`, `spec/tasks/mvp-readiness-baseline-and-script.md`, `spec/validation/mvp-next-pass-validation-script.md`, `spec/validation/mvp-readiness-baseline-and-script-evaluation.md`, and `spec/handoff.md`.
+- No unrelated dirty files were present before implementation.
 
 Previous publish note:
 
