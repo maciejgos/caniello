@@ -33,6 +33,20 @@ Allowed scope:
 - owner account, privacy, consent, and localization foundations;
 - local development, CI, validation, and platform reliability needed to build and verify the MVP.
 
+Current MVP validation recovery evidence:
+
+The 2026-06-13 readiness pass supports seeded-owner internal validation, but manual validation narrowed broader readiness until the following `Now` tasks are resolved or explicitly waived. These tasks do not approve release, deployment, merge, or scope expansion; they make the next validation pass executable.
+
+Implementation for visible MVP surfaces should follow `spec/design/visual-artifacts/mvp/*.png` 1:1. Intentional deviations require an explicit note and human approval before the affected task can count as readiness evidence.
+
+- Preserve the readiness baseline and next-pass script: `spec/tasks/mvp-readiness-baseline-and-script.md`.
+- Make new-owner local signup/login validation possible and stop advertising broken OAuth actions: `spec/tasks/new-owner-access-validation.md`.
+- Align dashboard and app shell behavior with live pet state and MVP mockups: `spec/tasks/dashboard-mockup-and-active-pet-alignment.md`.
+- Clarify pet/profile IA, first-pet versus multi-pet expectations, and species/sex-or-gender controls: `spec/tasks/pet-profile-ia-and-controls.md`.
+- Decide document upload scope before promising or implementing file upload: `spec/tasks/document-upload-scope-decision.md`.
+- Align Timeline with `spec/design/visual-artifacts/mvp/image 10.png` by showing history in the main timeline and upcoming reminders/actions in the right-side panel: `spec/tasks/timeline-upcoming-reminders-alignment.md`.
+- Verify account deletion request persistence against the intended table: `spec/tasks/account-deletion-persistence-verification.md`.
+
 ## Next - Retention and Sharing
 
 Goal: prove repeat usage and trusted sharing after the owner-side foundation works.

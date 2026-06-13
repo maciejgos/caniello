@@ -210,8 +210,8 @@ Human acceptance applies to the original readiness artifact and MVP validation r
   Impact: If MVP validation requires actual medical-file upload, current document-vault readiness is insufficient. If metadata-only is the intended validation scope, the UI must set expectations more clearly.
 
 - P2: Timeline and reminder relationship is unclear.
-  Evidence: Human manual finding on 2026-06-13. Current implementation treats reminders and timeline events as separate manual records and intentionally excludes automatic timeline entries from reminders/documents.
-  Impact: Users may not understand whether completed reminders should appear in timeline history. This needs product clarification before broader validation.
+  Evidence: Human manual finding on 2026-06-13. The MVP mockup at `spec/design/visual-artifacts/mvp/image 10.png` shows the Timeline page as a historical care timeline with a right-side `Next Upcoming` panel for upcoming reminder/action context. Current implementation treats reminders and timeline events as separate manual records and intentionally excludes automatic timeline entries from reminders/documents.
+  Impact: Users may not understand whether completed reminders should appear in timeline history. The implementation should align the Timeline surface to the mockup: historical/completed events in the main timeline, upcoming reminder/action context in the right rail, and clear navigation from that upcoming block to the reminder flow.
 
 - P2: Account deletion request persistence needs verification against the intended table.
   Evidence: Human manual finding on 2026-06-13: account deletion request is not saved in the proper table. Code inspection shows intended writes to `account_deletion_requests`, and automated tests cover the route/helper path, but this specific manual failure was not reproduced in this update.
@@ -239,7 +239,7 @@ Human reported the following manual findings on 2026-06-13 after accepting the r
 - The pet menu/profile flow suggests adding and editing only one pet.
 - Species and gender/sex selection is not presented as expected dropdown choices.
 - The document safe is missing real upload.
-- The relationship between timeline and reminders is unclear.
+- The relationship between timeline and reminders is unclear; `spec/design/visual-artifacts/mvp/image 10.png` indicates upcoming reminders/actions should appear on the right side of the Timeline page while historical events remain in the main timeline.
 - The panel implementation does not comply with `spec/design/visual-artifacts/mvp/*.png`.
 - Apple and Google sign-in buttons do not work.
 - Account deletion request is not saved in the proper table.
@@ -279,29 +279,25 @@ These findings revise the readiness interpretation: current implementation is su
   Trigger: Before security checks are included in a broader validation script.
   Blocks: Validation-environment readiness if seeded product-demo rows are mutated without cleanup.
 
-## Follow-Up Tasks
+## Planned Recovery Tasks
 
-1. Fix local new-account validation by configuring local email confirmation through Mailpit/Inbucket or providing a documented local confirmation bypass for validation accounts.
+Feature brief: `spec/features/mvp-validation-readiness-recovery.md`.
 
-2. Disable, hide, or implement Apple and Google sign-in buttons so the login UI no longer advertises non-working auth methods.
+1. Preserve the current readiness baseline and prepare the next validation script: `spec/tasks/mvp-readiness-baseline-and-script.md`.
 
-3. Shape a dashboard/app-shell alignment task covering active pet state, removal of hardcoded Bruno copy where live data exists, a consistent first-run versus returning-owner flow, and design-fidelity review against `spec/design/visual-artifacts/mvp/*.png`.
+2. Fix local new-owner validation and broken OAuth expectations: `spec/tasks/new-owner-access-validation.md`.
 
-4. Shape a profile UX task for first-pet versus multi-pet expectations, active-pet selector behavior, and species/sex-or-gender controls.
+3. Align dashboard/app-shell behavior with live pet state and MVP mockups: `spec/tasks/dashboard-mockup-and-active-pet-alignment.md`.
 
-5. Decide whether document upload is required for MVP validation. If yes, plan a real upload/storage task; if no, revise document-vault copy and validation scripts to state metadata-only clearly.
+4. Clarify pet/profile IA, first-pet versus multi-pet expectations, and species/sex-or-gender controls: `spec/tasks/pet-profile-ia-and-controls.md`.
 
-6. Clarify the product relationship between reminders and timeline events, especially whether completed reminders should create timeline entries or remain separate manual records.
+5. Decide document upload scope before promising or implementing real file upload: `spec/tasks/document-upload-scope-decision.md`.
 
-7. Re-verify account deletion requests live against `account_deletion_requests` and related audit behavior, then fix route/helper/UI behavior if the manual failure reproduces.
+6. Implement the Timeline page relationship shown in `spec/design/visual-artifacts/mvp/image 10.png`: history in the main timeline, upcoming reminders/actions in the right-side panel, and navigation into Reminders: `spec/tasks/timeline-upcoming-reminders-alignment.md`.
 
-8. Fix public share page Polish diacritics in `apps/web/app/share/[token]/page.tsx` and add focused coverage for recipient-facing copy, unavailable state, and medical/passport boundary text.
+7. Re-verify account deletion requests live against `account_deletion_requests` and related audit behavior: `spec/tasks/account-deletion-persistence-verification.md`.
 
-9. Add a committed signed-in Playwright e2e flow for the owner MVP path: seeded login, profile read/save, reminder create/complete, document metadata create, timeline create/edit, share link create/public view/revoke, settings data export request, mobile no-overflow check, and console-error capture.
-
-10. Harden opt-in RLS tests so they create isolated owner-owned records or restore seeded Anna/Bruno demo records after mutation.
-
-11. Document or adjust local-dev startup checks for Codex sandbox runs so `./scripts/start.sh` does not look like a Docker failure when the containers are already healthy but `docker info` is blocked.
+Additional validation hygiene remains recorded above: public share Polish diacritics, committed signed-in Playwright coverage, RLS fixture cleanup, and local-dev startup messaging.
 
 ## Result
 
