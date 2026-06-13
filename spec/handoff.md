@@ -2,12 +2,22 @@
 
 ## Current State
 
-- Active task: `spec/tasks/align-mvp-non-goals.md` is implemented and evaluated.
-- Active branch: `codex/align-mvp-non-goals`.
-- Current workflow: MVP non-goal documentation alignment was planned with `forge-planner`, implemented with `forge-implementer`, evaluated with `forge-evaluator`, refreshed in handoff, committed as `99bf632`, pushed to `origin/codex/align-mvp-non-goals`, and published as draft PR https://github.com/maciejgos/caniello/pull/29 on 2026-06-13. Evaluator verdict: Pass. Artifact: `spec/validation/align-mvp-non-goals-evaluation.md`. Validation passed: `git diff --check`, targeted `rg` review across `README.md`, `spec/roadmap.md`, and `spec/product-context.md`, and manual diff/scope review. UI/browser validation and full application tests were not applicable because this is documentation-only. No merge, release, deployment, human acceptance, or roadmap scope movement has started for this task.
+- Active task: MVP validation readiness evaluation.
+- Active branch: `mvp-implementation`.
+- Current workflow: end-to-end MVP readiness was evaluated on 2026-06-13 with `forge-evaluator` plus GitHub PR/merge-state inspection, automated gates, local Supabase status/migration checks, opt-in live RLS tests, and in-app Browser validation of the signed-in owner flows. Artifact: `spec/validation/mvp-validation-readiness-2026-06-13.md`. Initial readiness decision was accepted, then narrowed after human manual findings on 2026-06-13: YES only for seeded-owner internal MVP validation; NO for broader new-owner or mockup-fidelity MVP validation until the P1/P2 gaps are resolved or explicitly waived. This does not approve release, deployment, merge, or roadmap movement.
 
 ## Latest Notes
 
+- Evaluated Caniello MVP validation readiness on 2026-06-13 from clean `mvp-implementation` at `539c483`, matching `origin/mvp-implementation`.
+- GitHub state checked outside the sandbox after sandbox network failure: no open PRs target `mvp-implementation`; PRs #21 through #29 are merged into `mvp-implementation`; `git fetch --all --prune` refreshed refs and pruned the merged feature branches from `origin`.
+- Automated validation passed: `pnpm --filter web test`; approved outside-sandbox reruns of `pnpm --filter web lint`, `pnpm test`, `pnpm build`, and `pnpm test:e2e` after sandbox `fetch failed`; `pnpm test:e2e` passed 18/18 across desktop and mobile Chromium.
+- Local Supabase validation passed: `docker ps` showed the Caniello Supabase stack healthy; approved outside-sandbox `SUPABASE_TELEMETRY_DISABLED=1 supabase status --workdir infra` passed; approved outside-sandbox `SUPABASE_TELEMETRY_DISABLED=1 supabase db push --local --workdir infra` reported the local database is up to date; approved outside-sandbox opt-in live RLS tests passed 5/5 for profile, reminders, documents, timeline events, and account settings.
+- Live in-app Browser validation used seeded owner `akowalska@example.com` and confirmed login, app shell, saved Bruno profile read/save, reminder create/complete, document metadata create, timeline event create/edit, care card preview, share link create/public view/revoke, account settings profile save and data export request, mobile 390x900 no-overflow smoke, zero browser console errors, and dev-server 200/201 responses through the flow.
+- Readiness artifact findings: no P0/P1 blockers; P2 public share page Polish copy lacks diacritics in `apps/web/app/share/[token]/page.tsx`; P3 committed e2e lacks a full signed-in owner-flow test; P3 live RLS tests mutate seeded Anna/Bruno demo rows; P3 `./scripts/start.sh` can report Docker unreachable inside the sandbox even when containers are healthy.
+- Recommended follow-up tasks: fix public share page Polish diacritics and add coverage; add committed signed-in Playwright e2e for the core owner path; harden RLS tests to avoid or clean seeded demo-row mutations; document or adjust local-dev startup checks for Codex sandbox runs.
+- Human accepted `spec/validation/mvp-validation-readiness-2026-06-13.md` on 2026-06-13 by replying "Accepted". This acceptance applies to the MVP validation readiness artifact and yes/no decision only; it does not approve release, deployment, merge, production launch, roadmap movement, or implementation of follow-up tasks.
+- Human then reported manual validation findings on 2026-06-13: dashboard remains Bruno-specific and does not change with pet; `Panel Bruno` versus first-launch flow is confusing; active-pet menu is static; profile flow suggests one-pet only; species/gender choices are not clear dropdowns; document safe lacks upload; timeline/reminder relationship is unclear; panel does not match `spec/design/visual-artifacts/mvp/*.png`; Apple/Google sign-in buttons do not work; account deletion request may not persist to the intended table; local confirmation email is not sent so new-account login cannot be completed.
+- The readiness artifact was amended with these manual findings. Current interpretation: seeded-owner internal validation is supported, but broader new-owner/OAuth/upload/multi-pet/mockup-fidelity validation is not ready without follow-up work or explicit scope waivers.
 - Planned and implemented `spec/tasks/align-mvp-non-goals.md` on branch `codex/align-mvp-non-goals`.
 - Updated `README.md` so the initial-product non-goals and workflow guardrails mirror the fuller exclusions in `spec/product-context.md`, including payments-first monetization, broad clinic or partner workflow ownership, treatment recommendations, veterinary decision-making, advanced household permissions, advanced analytics, referral mechanics, duplicate detection, calendar sync, and partner document-upload boundaries.
 - Updated `spec/roadmap.md` `Not Now` scope with the same fuller exclusions while preserving existing Now/Next/Later headings, outcomes, success signals, and allowed scope.
@@ -187,9 +197,9 @@
 
 ## Current Dirty Worktree
 
-- Expected clean after this publish-record handoff update is committed and pushed to `origin/codex/align-mvp-non-goals`.
-- No unrelated user edits were present when the task started; `git status --short --branch` was clean on `mvp-implementation` before creating `codex/align-mvp-non-goals`.
-- No dev server is needed for this documentation-only validation.
+- Dirty from this readiness evaluation and manual-finding update: `spec/validation/mvp-validation-readiness-2026-06-13.md` added and `spec/handoff.md` updated.
+- Generated Playwright screenshot output from `pnpm test:e2e` was removed from `spec/validation/screenshots/` after the run so generated artifacts are not left as untracked files.
+- The local dev server was started with `pnpm --filter web dev` for browser validation and was stopped before ending the session.
 
 Previous publish note:
 
@@ -197,7 +207,22 @@ Previous publish note:
 
 ## Validation Status
 
-Current MVP non-goal alignment task:
+Current MVP validation readiness evaluation:
+
+- Fresh readiness artifact on 2026-06-13: `spec/validation/mvp-validation-readiness-2026-06-13.md`.
+- Readiness decision: revised after manual validation. YES only for seeded-owner internal MVP validation; NO for broader new-owner or mockup-fidelity MVP validation until the P1/P2 manual gaps are resolved or explicitly waived.
+- Evaluator verdict: Pass with gaps.
+- Human decision: Accepted on 2026-06-13.
+- Passed: clean branch/worktree check before artifact edits; `mvp-implementation` matched `origin/mvp-implementation` at `539c483`.
+- Passed outside sandbox after network restriction: GitHub open PR check returned `[]`; merged PR check showed PRs #21 through #29 merged into `mvp-implementation`.
+- Passed: `pnpm --filter web test`; 19 files passed, 5 opt-in files skipped, 105 tests passed, 5 skipped.
+- Passed outside sandbox after sandbox `fetch failed`: `pnpm --filter web lint`, `pnpm test`, `pnpm build`, and `pnpm test:e2e`; e2e passed 18/18 desktop/mobile Chromium tests.
+- Passed outside sandbox after sandbox Docker/localhost restrictions: Supabase status, local migration push, and opt-in live RLS suite; 5/5 RLS tests passed.
+- Passed live in-app Browser smoke: seeded login, profile read/save, reminder create/complete, document metadata create, timeline create/edit, share link create/public view/revoke, settings profile save and data export request, mobile 390x900 no overflow, zero browser console errors, and dev-server 200/201 responses.
+- Known gaps: local confirmation email missing blocks new-account login; Google/Apple sign-in buttons do not work; dashboard/app shell is Bruno-specific and unclear around first-run versus returning-owner flow; active-pet selector is static; first-pet versus multi-pet behavior is unclear; species/sex-or-gender controls are not expected dropdowns; document upload is missing; timeline/reminder relationship is unclear; app panel does not match MVP mockup images; account deletion persistence needs live table verification; public share page Polish copy missing diacritics; committed e2e lacks full signed-in owner-flow automation; live RLS tests mutate seeded demo rows; `./scripts/start.sh` can falsely report Docker unreachable in the sandbox.
+- Not validated: production deployment, PDF export, caregiver accounts/invitations/role changes, file upload/OCR, AI, notifications/recurrence, calendar sync, marketplace, booking, payments, clinic/provider workflows. These are out of scope unless a human-approved task changes scope.
+
+Previous MVP non-goal alignment task:
 
 - Fresh validation on 2026-06-13: `spec/validation/align-mvp-non-goals-evaluation.md` records evaluator verdict Pass.
 - Passed: `git diff --check`.
