@@ -4,7 +4,7 @@
 
 - Active task: `spec/tasks/align-mvp-non-goals.md` is implemented and evaluated.
 - Active branch: `codex/align-mvp-non-goals`.
-- Current workflow: MVP non-goal documentation alignment was planned with `forge-planner`, implemented with `forge-implementer`, evaluated with `forge-evaluator`, and refreshed in handoff on 2026-06-13. Evaluator verdict: Pass. Artifact: `spec/validation/align-mvp-non-goals-evaluation.md`. Validation passed: `git diff --check`, targeted `rg` review across `README.md`, `spec/roadmap.md`, and `spec/product-context.md`, and manual diff/scope review. UI/browser validation and full application tests were not applicable because this is documentation-only. No merge, release, deployment, human acceptance, or roadmap scope movement has started for this task.
+- Current workflow: MVP non-goal documentation alignment was planned with `forge-planner`, implemented with `forge-implementer`, evaluated with `forge-evaluator`, refreshed in handoff, committed as `99bf632`, pushed to `origin/codex/align-mvp-non-goals`, and published as draft PR https://github.com/maciejgos/caniello/pull/29 on 2026-06-13. Evaluator verdict: Pass. Artifact: `spec/validation/align-mvp-non-goals-evaluation.md`. Validation passed: `git diff --check`, targeted `rg` review across `README.md`, `spec/roadmap.md`, and `spec/product-context.md`, and manual diff/scope review. UI/browser validation and full application tests were not applicable because this is documentation-only. No merge, release, deployment, human acceptance, or roadmap scope movement has started for this task.
 
 ## Latest Notes
 
@@ -12,6 +12,7 @@
 - Updated `README.md` so the initial-product non-goals and workflow guardrails mirror the fuller exclusions in `spec/product-context.md`, including payments-first monetization, broad clinic or partner workflow ownership, treatment recommendations, veterinary decision-making, advanced household permissions, advanced analytics, referral mechanics, duplicate detection, calendar sync, and partner document-upload boundaries.
 - Updated `spec/roadmap.md` `Not Now` scope with the same fuller exclusions while preserving existing Now/Next/Later headings, outcomes, success signals, and allowed scope.
 - Evaluated `spec/tasks/align-mvp-non-goals.md` with `forge-evaluator` on 2026-06-13. Verdict: Pass. Artifact: `spec/validation/align-mvp-non-goals-evaluation.md`.
+- Published draft PR https://github.com/maciejgos/caniello/pull/29 from `codex/align-mvp-non-goals` to `mvp-implementation` on 2026-06-13. The branch includes task commit `99bf632` plus this publish-record handoff update as a separate metadata commit. The PR is draft only and does not mark the task accepted, approved, merged, released, deployed, or roadmap scope moved.
 - Validation passed: `git diff --check`; targeted non-goal vocabulary review across `README.md`, `spec/roadmap.md`, and `spec/product-context.md`; manual diff review confirmed no product behavior, phase movement, ADR, release, deployment, merge, or human approval state changes.
 - The implementation intentionally added no product feature behavior, migrations, route handlers, shared contracts, UI changes, database changes, external service changes, ADR, release, deployment, merge, human acceptance, or roadmap movement.
 - Planned and implemented `spec/tasks/care-timeline-foundation.md` on branch `codex/care-timeline-foundation`.
@@ -186,7 +187,7 @@
 
 ## Current Dirty Worktree
 
-- Dirty with planned documentation task files only: `README.md`, `spec/roadmap.md`, `spec/tasks/align-mvp-non-goals.md`, `spec/validation/align-mvp-non-goals-evaluation.md`, and this handoff update.
+- Expected clean after this publish-record handoff update is committed and pushed to `origin/codex/align-mvp-non-goals`.
 - No unrelated user edits were present when the task started; `git status --short --branch` was clean on `mvp-implementation` before creating `codex/align-mvp-non-goals`.
 - No dev server is needed for this documentation-only validation.
 
@@ -451,5 +452,5 @@ Previous repository validation notes still relevant to the dirty worktree:
 
 ## Next Recommended Action
 
-- Publish `codex/align-mvp-non-goals` as a draft PR for human review.
+- Human review of draft PR https://github.com/maciejgos/caniello/pull/29.
 - Human review of existing draft PR https://github.com/maciejgos/caniello/pull/28 remains pending separately.
