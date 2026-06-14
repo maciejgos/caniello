@@ -535,5 +535,14 @@ Previous repository validation notes still relevant to the dirty worktree:
 
 ## Next Recommended Action
 
+- Human review of draft PR https://github.com/maciejgos/caniello/pull/31.
 - Human review of draft PR https://github.com/maciejgos/caniello/pull/29.
 - Human review of existing draft PR https://github.com/maciejgos/caniello/pull/28 remains pending separately.
+
+Latest publish record:
+
+- Branch `codex/audit-product-events-architecture` was pushed to `origin`.
+- Draft PR opened: https://github.com/maciejgos/caniello/pull/31.
+- Published commit `3061ddd` (`Plan accepted MVP architecture backlog`) accepts ADRs 0024-0032, adds the accepted architecture implementation feature brief and task backlog, and updates the MVP roadmap.
+- Publish validation before commit: `git diff --check` passed; `git diff --cached --check` passed. No automated product tests were run because this was documentation and planning work only.
+- Scope caveat: this PR does not implement migrations, storage upload, UI/API behavior, release, deploy, public health-record upload, or approval of older draft ADRs 0022 and 0023.
