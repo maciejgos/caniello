@@ -43,14 +43,16 @@ Related roadmap item:
 
 - Relevant areas likely include `apps/web/features/account/`, auth routes, local Supabase config under `infra/supabase/`, and setup scripts or docs.
 - Preserve Polish-first localization and existing medical/privacy boundaries.
-- Check ADR `0023-use-config-toml-for-local-supabase-auth-providers.md` before changing local auth provider configuration.
+- Follow accepted ADR `0032-use-email-first-owner-auth-and-defer-oauth-rollout.md`: email/password is the MVP validation path, and OAuth buttons must not imply working provider support before rollout.
+- Check draft ADR `0023-use-config-toml-for-local-supabase-auth-providers.md` before changing local auth provider configuration.
 
 ## Architecture Decisions
 
-- Existing ADRs: `spec/architecture-records/0014-use-supabase-auth-minimal-rbac-and-audit.md`, `spec/architecture-records/0023-use-config-toml-for-local-supabase-auth-providers.md`.
+- Existing ADRs: `spec/architecture-records/0014-use-supabase-auth-minimal-rbac-and-audit.md`, `spec/architecture-records/0032-use-email-first-owner-auth-and-defer-oauth-rollout.md`.
+- Draft boundary to check before local provider config changes: `spec/architecture-records/0023-use-config-toml-for-local-supabase-auth-providers.md`.
 - New ADR needed: No for hiding/disabling unavailable buttons or documenting local email confirmation; yes if changing auth provider strategy.
 - ADR draft: None.
-- Approval state: Not needed unless provider strategy changes.
+- Approval state: ADR 0032 accepted by human on 2026-06-14; provider strategy changes still need explicit architecture approval.
 
 ## Verification
 

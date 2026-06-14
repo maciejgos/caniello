@@ -535,9 +535,19 @@ Previous repository validation notes still relevant to the dirty worktree:
 
 ## Next Recommended Action
 
+- Review the cleaned MVP readiness implementation list in `spec/roadmap.md`, then start one remaining task at a time. The roadmap now separates resolved checkpoints from remaining implementation tasks and includes ADR references inline.
 - Human review of draft PR https://github.com/maciejgos/caniello/pull/31.
 - Human review of draft PR https://github.com/maciejgos/caniello/pull/29.
 - Human review of existing draft PR https://github.com/maciejgos/caniello/pull/28 remains pending separately.
+
+Latest roadmap/ADR traceability update:
+
+- Cleaned the MVP readiness task list in `spec/roadmap.md` so resolved checkpoints are separate from remaining implementation work.
+- Marked the document upload scope decision as resolved by accepted ADR 0025 and pointed remaining work to `spec/tasks/document-upload-storage-implementation.md`.
+- Added ADR references to the remaining recovery tasks for new-owner auth, dashboard/active-pet alignment, pet profile IA, timeline/reminders alignment, and account deletion persistence.
+- Added an accepted MVP implementation traceability table to `spec/architecture-records/README.md` mapping ADRs 0024-0032 to task files.
+- Updated `spec/features/accepted-architecture-implementation-backlog.md` so candidate tasks name the ADRs they implement or are constrained by.
+- Validation: all referenced task paths exist; `git diff --check` passed. No product tests were run because this was documentation/roadmap hygiene only.
 
 Latest publish record:
 

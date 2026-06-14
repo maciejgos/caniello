@@ -36,16 +36,17 @@ The work protects the current MVP foundation: owner onboarding, pet records, rem
 
 ## Candidate Tasks
 
-- `spec/tasks/document-upload-storage-implementation.md`
-- `spec/tasks/audit-product-event-foundation.md`
-- `spec/tasks/data-rights-manual-runbook.md`
-- `spec/tasks/share-link-lifecycle-hardening.md`
-- `spec/tasks/live-rls-fixture-isolation.md`
-- `spec/tasks/public-health-upload-release-readiness-playbook.md`
-- `spec/tasks/feature-boundary-dependency-guardrails.md`
-- Existing: `spec/tasks/new-owner-access-validation.md`
-- Existing: `spec/tasks/pet-profile-ia-and-controls.md`
-- Existing: `spec/tasks/dashboard-mockup-and-active-pet-alignment.md`
+- `spec/tasks/document-upload-storage-implementation.md` - implements ADR 0025, constrained by ADRs 0024, 0028, 0030, and 0031.
+- `spec/tasks/audit-product-event-foundation.md` - implements ADR 0024, constrained by ADRs 0014, 0019, and 0028.
+- `spec/tasks/data-rights-manual-runbook.md` - implements ADR 0026, constrained by ADRs 0015, 0024, 0025, and 0031.
+- `spec/tasks/share-link-lifecycle-hardening.md` - implements ADR 0029, constrained by ADRs 0017, 0024, and 0025.
+- `spec/tasks/live-rls-fixture-isolation.md` - implements ADR 0030, constrained by ADRs 0015 and 0028.
+- `spec/tasks/public-health-upload-release-readiness-playbook.md` - implements ADR 0031, constrained by ADRs 0019, 0024, 0025, 0026, 0029, and 0032.
+- `spec/tasks/feature-boundary-dependency-guardrails.md` - implements ADR 0028, constrained by ADR 0011.
+- Existing recovery task: `spec/tasks/new-owner-access-validation.md` - implements ADR 0032 for email-first MVP auth and unavailable OAuth affordances.
+- Existing recovery task: `spec/tasks/pet-profile-ia-and-controls.md` - implements ADR 0027 for first-pet MVP scope and is constrained by ADR 0028.
+- Existing recovery task: `spec/tasks/dashboard-mockup-and-active-pet-alignment.md` - implements ADR 0027 in the dashboard/app shell and is constrained by ADR 0028.
+- Existing recovery task: `spec/tasks/account-deletion-persistence-verification.md` - supports ADR 0026 by verifying deletion-request persistence before manual data-rights operations.
 
 ## Open Questions
 

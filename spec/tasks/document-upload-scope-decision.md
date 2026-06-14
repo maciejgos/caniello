@@ -2,7 +2,7 @@
 
 ## Goal
 
-Decide whether real document file upload is required for the next MVP validation pass, and make the document vault UI and validation script match that decision.
+Record the accepted decision that real document file upload is required for the next MVP validation pass, and keep the document vault UI and validation script aligned with that decision.
 
 Decision accepted on 2026-06-14: real document upload is required for the next MVP validation pass, with Supabase Storage and conservative free-tier-friendly limits. Implementation should follow accepted ADR `spec/architecture-records/0025-use-supabase-storage-for-mvp-document-upload.md`.
 
@@ -49,8 +49,8 @@ Related roadmap item:
 
 ## Architecture Decisions
 
-- Existing ADRs: `spec/architecture-records/0004-use-supabase-for-mvp-data-auth-storage-and-rls.md`, `spec/architecture-records/0016-use-staged-ai-document-intake-pipeline.md`.
-- New ADR needed: Yes, because real upload introduces a durable storage, quota, access-control, and cost boundary.
+- Existing ADRs: `spec/architecture-records/0004-use-supabase-for-mvp-data-auth-storage-and-rls.md`, `spec/architecture-records/0016-use-staged-ai-document-intake-pipeline.md`, `spec/architecture-records/0025-use-supabase-storage-for-mvp-document-upload.md`.
+- New ADR needed: No; the storage, quota, access-control, and cost boundary decision is accepted in ADR 0025.
 - ADR draft: None.
 - Approval state: ADR 0025 accepted by human on 2026-06-14.
 
@@ -63,4 +63,4 @@ Related roadmap item:
 
 ## Handoff Notes
 
-Real upload architecture was accepted on 2026-06-14 in ADR 0025. Follow-up implementation task: `spec/tasks/document-upload-storage-implementation.md`. This decision task does not implement upload behavior, migrations, bucket creation, route changes, UI changes, release, deployment, or roadmap movement.
+Decision checkpoint is resolved. Real upload architecture was accepted on 2026-06-14 in ADR 0025. Follow-up implementation task: `spec/tasks/document-upload-storage-implementation.md`. This decision task does not implement upload behavior, migrations, bucket creation, route changes, UI changes, release, deployment, or roadmap movement.

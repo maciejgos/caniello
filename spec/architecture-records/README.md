@@ -50,3 +50,19 @@ Keep superseded records in this directory when they explain important history, b
 | [0030](./0030-use-disposable-validation-fixtures-for-live-rls-tests.md) | Accepted | Use disposable validation fixtures for live RLS tests |
 | [0031](./0031-require-release-readiness-playbook-before-public-health-record-upload.md) | Accepted | Require release-readiness playbook before public health-record upload |
 | [0032](./0032-use-email-first-owner-auth-and-defer-oauth-rollout.md) | Accepted | Use email-first owner auth and defer OAuth rollout |
+
+## Accepted MVP Implementation Traceability
+
+Use this table to find the active task or resolved checkpoint that carries each accepted architecture decision into MVP readiness work.
+
+| ADR | Implementation task or checkpoint |
+| --- | --- |
+| [0024](./0024-separate-audit-logs-from-product-events.md) | `spec/tasks/audit-product-event-foundation.md`; also constrains `spec/tasks/document-upload-storage-implementation.md`, `spec/tasks/share-link-lifecycle-hardening.md`, `spec/tasks/account-deletion-persistence-verification.md`, and `spec/tasks/timeline-upcoming-reminders-alignment.md` when product events are emitted. |
+| [0025](./0025-use-supabase-storage-for-mvp-document-upload.md) | `spec/tasks/document-upload-storage-implementation.md`; decision checkpoint resolved in `spec/tasks/document-upload-scope-decision.md`. |
+| [0026](./0026-use-manual-data-rights-runbook-before-automated-account-lifecycle.md) | `spec/tasks/data-rights-manual-runbook.md`; supported by `spec/tasks/account-deletion-persistence-verification.md`. |
+| [0027](./0027-use-first-pet-mvp-scope-and-defer-multi-pet-management.md) | `spec/tasks/pet-profile-ia-and-controls.md`; also constrains `spec/tasks/dashboard-mockup-and-active-pet-alignment.md`. |
+| [0028](./0028-use-feature-local-vertical-slices-with-explicit-shared-package-graduation.md) | `spec/tasks/feature-boundary-dependency-guardrails.md`; also constrains sensitive feature implementation tasks listed in `spec/roadmap.md`. |
+| [0029](./0029-strengthen-scoped-share-link-lifecycle-before-caregiver-accounts.md) | `spec/tasks/share-link-lifecycle-hardening.md`. |
+| [0030](./0030-use-disposable-validation-fixtures-for-live-rls-tests.md) | `spec/tasks/live-rls-fixture-isolation.md`; also constrains live validation for document upload. |
+| [0031](./0031-require-release-readiness-playbook-before-public-health-record-upload.md) | `spec/tasks/public-health-upload-release-readiness-playbook.md`; release remains blocked until explicit human approval. |
+| [0032](./0032-use-email-first-owner-auth-and-defer-oauth-rollout.md) | `spec/tasks/new-owner-access-validation.md`; also constrains the release-readiness playbook. |

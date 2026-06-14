@@ -44,13 +44,15 @@ Related roadmap item:
 - Relevant implementation likely touches `PetProfileSection`, account-shell active-pet UI, content strings, and account tests.
 - Keep field naming compatible with existing contracts unless a schema change is explicitly approved.
 - Any database migration or contract change needs focused verification and human awareness.
+- Follow ADR 0027: the default MVP path is one active first pet, and true multi-pet management remains deferred unless explicitly approved.
+- Follow ADR 0028 for feature-local implementation boundaries and explicit shared-package graduation if contracts or shared helpers change.
 
 ## Architecture Decisions
 
-- Existing ADRs: `spec/architecture-records/0014-use-supabase-auth-minimal-rbac-and-audit.md`, `spec/architecture-records/0015-use-supabase-data-lifecycle-and-rls.md`.
+- Existing ADRs: `spec/architecture-records/0014-use-supabase-auth-minimal-rbac-and-audit.md`, `spec/architecture-records/0015-use-supabase-data-lifecycle-and-rls.md`, `spec/architecture-records/0027-use-first-pet-mvp-scope-and-defer-multi-pet-management.md`, `spec/architecture-records/0028-use-feature-local-vertical-slices-with-explicit-shared-package-graduation.md`.
 - New ADR needed: No unless this becomes true multi-pet management with durable selection state.
 - ADR draft: None.
-- Approval state: Not needed for UI/copy/control cleanup.
+- Approval state: ADRs accepted; true multi-pet management still needs explicit approval.
 
 ## Verification
 

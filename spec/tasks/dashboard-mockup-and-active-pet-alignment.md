@@ -44,13 +44,15 @@ Related roadmap item:
 - Likely files: `apps/web/features/account/content.ts`, `apps/web/features/account/AccountApp.tsx`, dashboard components, and tests.
 - Use the mockups in `spec/design/visual-artifacts/mvp/` as visual references, especially app-shell and dashboard images.
 - Keep unavailable capabilities disabled or clearly preview-only.
+- Follow ADR 0027 by keeping the dashboard oriented around the first active pet for MVP validation instead of introducing broad multi-pet management.
+- Follow ADR 0028 by keeping cross-cutting access behind explicit helpers/providers and avoiding new broad service layers for dashboard alignment.
 
 ## Architecture Decisions
 
-- Existing ADRs: `spec/architecture-records/0011-use-pragmatic-engineering-practices-from-mvp-start.md`, `spec/architecture-records/0012-polish-first-mvp-localization.md`.
+- Existing ADRs: `spec/architecture-records/0011-use-pragmatic-engineering-practices-from-mvp-start.md`, `spec/architecture-records/0012-polish-first-mvp-localization.md`, `spec/architecture-records/0027-use-first-pet-mvp-scope-and-defer-multi-pet-management.md`, `spec/architecture-records/0028-use-feature-local-vertical-slices-with-explicit-shared-package-graduation.md`.
 - New ADR needed: No.
 - ADR draft: None.
-- Approval state: Not needed.
+- Approval state: ADRs accepted; human approval is still required for intentional mockup deviations before readiness.
 
 ## Verification
 
