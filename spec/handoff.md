@@ -2,12 +2,54 @@
 
 ## Current State
 
-- Active task: none; architecture assessment requested with `forge-architect`.
-- Active branch: `codex/architecture-gap-assessment`.
-- Current workflow: architecture review/handoff. The 2026-06-13 readiness artifact remains historical evidence for seeded-owner internal validation only: `spec/validation/mvp-validation-readiness-2026-06-13.md`. Broader new-owner and mockup-fidelity MVP validation still depends on the recovery task set or explicit human waivers. This does not approve release, deployment, merge, production use, or roadmap movement.
+- Active task: none; accepted architecture implementation backlog shaped/planned.
+- Active branch: `codex/audit-product-events-architecture`.
+- Current workflow: shaping/planning/handoff. The 2026-06-13 readiness artifact remains historical evidence for seeded-owner internal validation only: `spec/validation/mvp-validation-readiness-2026-06-13.md`. Broader new-owner and mockup-fidelity MVP validation still depends on the recovery task set or explicit human waivers. This does not approve release, deployment, merge, production use, or roadmap movement.
 
 ## Latest Notes
 
+- Human accepted ADRs 0024 through 0032 on 2026-06-14 by saying "Accept all ADRs." ADR files and `spec/architecture-records/README.md` were updated from `Draft` to `Accepted`. Older draft ADRs 0022 and 0023 were not changed by this acceptance.
+- Used `forge-shaper` on 2026-06-14 to create feature brief `spec/features/accepted-architecture-implementation-backlog.md`.
+- Used `forge-planner` on 2026-06-14 to create implementation task files from the accepted architecture backlog:
+  - `spec/tasks/document-upload-storage-implementation.md`
+  - `spec/tasks/audit-product-event-foundation.md`
+  - `spec/tasks/data-rights-manual-runbook.md`
+  - `spec/tasks/share-link-lifecycle-hardening.md`
+  - `spec/tasks/live-rls-fixture-isolation.md`
+  - `spec/tasks/public-health-upload-release-readiness-playbook.md`
+  - `spec/tasks/feature-boundary-dependency-guardrails.md`
+- Existing implementation tasks also cover accepted architecture decisions: `spec/tasks/new-owner-access-validation.md`, `spec/tasks/pet-profile-ia-and-controls.md`, and `spec/tasks/dashboard-mockup-and-active-pet-alignment.md`.
+- Updated `spec/roadmap.md` with an `Accepted architecture implementation backlog` under `Now - MVP Foundation`.
+- Updated `spec/tasks/document-upload-scope-decision.md` so ADR 0025 is recorded as accepted and links to the new implementation task.
+- Updated `spec/architecture/architecture-review-bundle-2026-06-14.md` so it reflects accepted, not draft, ADRs.
+- Validation passed: `git diff --check`. No tests were run because this shaping/planning update changed documentation only. No implementation code has been changed.
+- Used `forge-architect` on 2026-06-14 to design the remaining MVP architecture documents for a single human review iteration.
+- Added review index `spec/architecture/architecture-review-bundle-2026-06-14.md`.
+- Added draft ADRs:
+  - `spec/architecture-records/0026-use-manual-data-rights-runbook-before-automated-account-lifecycle.md`
+  - `spec/architecture-records/0027-use-first-pet-mvp-scope-and-defer-multi-pet-management.md`
+  - `spec/architecture-records/0028-use-feature-local-vertical-slices-with-explicit-shared-package-graduation.md`
+  - `spec/architecture-records/0029-strengthen-scoped-share-link-lifecycle-before-caregiver-accounts.md`
+  - `spec/architecture-records/0030-use-disposable-validation-fixtures-for-live-rls-tests.md`
+  - `spec/architecture-records/0031-require-release-readiness-playbook-before-public-health-record-upload.md`
+  - `spec/architecture-records/0032-use-email-first-owner-auth-and-defer-oauth-rollout.md`
+- Updated `spec/architecture-records/README.md` so ADRs 0023 through 0032 are discoverable from the ADR index.
+- Full architecture review bundle includes ADRs 0024 through 0032. They were accepted by the human on 2026-06-14.
+- Validation passed: `git diff --check`. No tests were run because this was documentation/architecture work only.
+- Approval state: implementation tasks may now depend on accepted ADRs 0024 through 0032. No product behavior, database migration, route behavior, UI behavior, release, deployment, merge, production-readiness state, or roadmap phase changed.
+- Used `forge-architect` on 2026-06-13 to define the real document upload architecture for Supabase Storage with free-tier-friendly MVP limits.
+- Added draft ADR `spec/architecture-records/0025-use-supabase-storage-for-mvp-document-upload.md`.
+- Draft decision: implement real document upload with a private `pet-documents` Supabase Storage bucket, server-mediated upload, short-lived owner-only signed read URLs, 5 MB max file size, PDF/JPEG/PNG/WebP allowlist, one file per document, 20 files per owner, 100 MB stored bytes per owner, and no OCR/AI/public file sharing in the upload slice.
+- Updated `spec/tasks/document-upload-scope-decision.md` to record that real upload is required for the next MVP validation pass, but implementation must wait for human approval of ADR 0025.
+- External reference checked from official Supabase docs on 2026-06-13: Free plan storage size is 1 GB, egress quota is 5 GB, Free project max file size is 50 MB, bucket-level MIME and file-size restrictions are supported, Storage uses RLS policies on `storage.objects`, and standard uploads are recommended for small files below 6 MB.
+- Validation passed: `git diff --check`. No tests were run because this was documentation/ADR/task planning work only.
+- Approval state: ADR 0025 was accepted by the human on 2026-06-14. No database migration, bucket creation, route behavior, UI behavior, release, deployment, merge, production-readiness state, or roadmap phase changed.
+- Used `forge-architect` on 2026-06-13 to define the audit-log versus product-event boundary for the current MVP.
+- Added draft ADR `spec/architecture-records/0024-separate-audit-logs-from-product-events.md`.
+- Draft decision: keep `public.audit_logs` as the source of truth for sensitive-action evidence and do not overload it as an analytics stream; keep product events as a separate server-side instrumentation concept and add a future `product_events` table or external analytics sink only when validation traffic requires durable product analytics.
+- The draft ADR names initial audit actions and product-event names, records consent boundaries, forbids raw medical notes/document contents/tokens/secrets in event metadata, and requires focused validation for audit writes, authorization, payload safety, consent gating, and RLS preservation.
+- Validation passed: `git diff --check`. No tests were run because this was a documentation/ADR draft only.
+- Approval state: ADR 0024 was accepted by the human on 2026-06-14. No product scope, roadmap phase, database schema, route behavior, release, deployment, merge, or production-readiness state changed.
 - Used `forge-architect` on 2026-06-13 to review the current repo architecture against `spec/product-context.md`, `spec/roadmap.md`, existing ADRs, `spec/architecture/mvp-target-architecture.md`, current tasks, package boundaries, web feature server helpers, and Supabase migrations.
 - Added exploratory architecture note `spec/architecture/current-architecture-gap-assessment-2026-06-13.md`.
 - Assessment finding: the accepted stack/platform ADRs remain sufficient; missing architecture is mainly operational and lifecycle detail around document upload/storage authorization, account export/deletion lifecycle, current-pet versus multi-pet semantics, feature-local helper graduation rules, audit coverage, share-link access logging/abuse posture, authenticated product-event instrumentation, local auth/OAuth validation strategy, live RLS fixture isolation, future mobile API boundary, background job triggers, and production readiness playbooks.
@@ -214,8 +256,8 @@
 
 ## Current Dirty Worktree
 
-- Intentional dirty files for architecture assessment: `spec/architecture/current-architecture-gap-assessment-2026-06-13.md` and `spec/handoff.md`.
-- No unrelated dirty files were present before the architecture assessment.
+- Intentional dirty files for accepted architecture planning: `spec/architecture/architecture-review-bundle-2026-06-14.md`, `spec/architecture-records/README.md`, ADRs `0024` through `0032`, `spec/features/accepted-architecture-implementation-backlog.md`, new architecture implementation task files, `spec/roadmap.md`, `spec/tasks/document-upload-scope-decision.md`, and `spec/handoff.md`.
+- No unrelated dirty files were present before the architecture planning pass; audit/product-event and document-upload drafts were already uncommitted on this branch.
 
 Previous publish note:
 

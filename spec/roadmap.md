@@ -47,6 +47,18 @@ Implementation for visible MVP surfaces should follow `spec/design/visual-artifa
 - Align Timeline with `spec/design/visual-artifacts/mvp/image 10.png` by showing history in the main timeline and upcoming reminders/actions in the right-side panel: `spec/tasks/timeline-upcoming-reminders-alignment.md`.
 - Verify account deletion request persistence against the intended table: `spec/tasks/account-deletion-persistence-verification.md`.
 
+Accepted architecture implementation backlog:
+
+The 2026-06-14 architecture review accepted ADRs 0024 through 0032. The following `Now` tasks implement those decisions without approving release, deployment, public health-record upload, or scope expansion:
+
+- Implement real Supabase Storage document upload within MVP limits: `spec/tasks/document-upload-storage-implementation.md`.
+- Add the audit-log and product-event foundation for sensitive MVP actions: `spec/tasks/audit-product-event-foundation.md`.
+- Create the manual data-rights operations runbook for export and deletion requests: `spec/tasks/data-rights-manual-runbook.md`.
+- Harden share-link lifecycle with access logging and operational revocation notes: `spec/tasks/share-link-lifecycle-hardening.md`.
+- Make live RLS tests use disposable validation fixtures instead of seeded demo rows: `spec/tasks/live-rls-fixture-isolation.md`.
+- Create the release-readiness playbook required before public health-record upload: `spec/tasks/public-health-upload-release-readiness-playbook.md`.
+- Add lightweight dependency guardrails for sensitive feature boundaries: `spec/tasks/feature-boundary-dependency-guardrails.md`.
+
 ## Next - Retention and Sharing
 
 Goal: prove repeat usage and trusted sharing after the owner-side foundation works.

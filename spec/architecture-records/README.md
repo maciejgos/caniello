@@ -40,3 +40,13 @@ Keep superseded records in this directory when they explain important history, b
 | [0020](./0020-defer-stripe-payments-until-paid-plan-stories.md) | Accepted | Defer Stripe payments until paid-plan stories are approved |
 | [0021](./0021-use-vercel-ai-gateway-for-ai-provider-routing.md) | Accepted | Use Vercel AI Gateway for AI provider routing in MVP |
 | [0022](./0022-use-host-first-local-development-setup.md) | Draft | Use host-first local development setup |
+| [0023](./0023-use-config-toml-for-local-supabase-auth-providers.md) | Draft | Use config.toml for local Supabase Auth providers |
+| [0024](./0024-separate-audit-logs-from-product-events.md) | Accepted | Separate audit logs from product events |
+| [0025](./0025-use-supabase-storage-for-mvp-document-upload.md) | Accepted | Use Supabase Storage for MVP document upload |
+| [0026](./0026-use-manual-data-rights-runbook-before-automated-account-lifecycle.md) | Accepted | Use manual data-rights runbook before automated account lifecycle |
+| [0027](./0027-use-first-pet-mvp-scope-and-defer-multi-pet-management.md) | Accepted | Use first-pet MVP scope and defer multi-pet management |
+| [0028](./0028-use-feature-local-vertical-slices-with-explicit-shared-package-graduation.md) | Accepted | Use feature-local vertical slices with explicit shared-package graduation |
+| [0029](./0029-strengthen-scoped-share-link-lifecycle-before-caregiver-accounts.md) | Accepted | Strengthen scoped share-link lifecycle before caregiver accounts |
+| [0030](./0030-use-disposable-validation-fixtures-for-live-rls-tests.md) | Accepted | Use disposable validation fixtures for live RLS tests |
+| [0031](./0031-require-release-readiness-playbook-before-public-health-record-upload.md) | Accepted | Require release-readiness playbook before public health-record upload |
+| [0032](./0032-use-email-first-owner-auth-and-defer-oauth-rollout.md) | Accepted | Use email-first owner auth and defer OAuth rollout |
