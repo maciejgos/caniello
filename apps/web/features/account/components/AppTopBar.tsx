@@ -1,5 +1,6 @@
 import { BrandWordmark } from "../../marketing/components/BrandWordmark";
 import { LanguageToggle } from "../../marketing/components/LanguageToggle";
+import brunoImage from "../../marketing/assets/caniello-bruno-app-hero.png";
 import type { AccountCopy, AccountLanguage } from "../content";
 import { AppIcon } from "./AppIcon";
 
@@ -43,7 +44,11 @@ function AppSearch({ copy }: { copy: AccountCopy }) {
 function PetSelector({ copy }: { copy: AccountCopy }) {
   return (
     <button className="flex min-h-11 items-center gap-3 rounded-lg border border-[#dce2ec] bg-white px-3 text-sm font-black text-navy" type="button" aria-label={copy.appPetSelectorLabel}>
-      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#ffe4bd] text-lg" aria-hidden="true">B</span>
+      <img
+        className="h-8 w-8 rounded-full border border-[#ffe4bd] bg-[#ffe4bd] object-cover object-[82%_32%]"
+        src={typeof brunoImage === "string" ? brunoImage : brunoImage.src}
+        alt=""
+      />
       <span className="hidden sm:inline">{copy.appPetSelectorValue}</span>
       <span className="text-navy/62" aria-hidden="true"><AppIcon name="chevronDown" /></span>
     </button>
