@@ -2,7 +2,7 @@
 
 Week: 2026-06-08 to 2026-06-14
 Prepared for: The Future Thinker World
-Status: Draft - awaiting human feedback
+Status: Final
 
 ## Summary
 
@@ -40,10 +40,11 @@ The active roadmap phase remains `Now - MVP Foundation`. This week’s work supp
   - document upload scope decision.
 - Recorded the MVP validation recovery notes and next-pass validation script so the current gap state is explicit.
 - Added an architecture gap assessment and handoff notes to capture the remaining readiness blockers without treating them as approved scope changes.
+- Committed the traceability update that records the architecture backlog and weekly report artifact in git history.
 
 ## Work In Progress
 
-- The current worktree still has uncommitted edits in `spec/roadmap.md` and several task files, so this week is not fully wrapped up yet.
+- The current worktree is clean after the traceability commit, so the documentation changes from this reporting period are now fully recorded.
 - The implementation backlog is ready, but the actual product behavior changes are still pending.
 - Validation readiness still depends on resolving or explicitly waiving the recovery tasks rather than assuming the app is broadly ready.
 - No release, deployment, or roadmap movement has been approved.
@@ -111,6 +112,7 @@ Known validation gaps:
 - `spec/tasks/document-upload-scope-decision.md`
 - `spec/architecture-records/README.md`
 - `spec/architecture/architecture-review-bundle-2026-06-14.md`
-- Git commits dated 2026-06-11 through 2026-06-14, including the care-card, account-settings, care-timeline, MVP non-goal, validation-script, architecture-gap, and accepted-backlog updates.
+- Git commits dated 2026-06-11 through 2026-06-14, including the care-card, account-settings, care-timeline, MVP non-goal, validation-script, architecture-gap, accepted-backlog, and traceability updates.
 - Current branch: `codex/audit-product-events-architecture`.
-- Current worktree: dirty, with in-progress edits to roadmap and task files.
+- Current worktree: clean.
+- Human feedback incorporated: report draft accepted without further edits.
