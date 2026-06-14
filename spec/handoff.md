@@ -2,12 +2,20 @@
 
 ## Current State
 
-- Active task: none; accepted architecture implementation backlog shaped/planned.
-- Active branch: `codex/audit-product-events-architecture`.
-- Current workflow: shaping/planning/handoff. The 2026-06-13 readiness artifact remains historical evidence for seeded-owner internal validation only: `spec/validation/mvp-validation-readiness-2026-06-13.md`. Broader new-owner and mockup-fidelity MVP validation still depends on the recovery task set or explicit human waivers. This does not approve release, deployment, merge, production use, or roadmap movement.
+- Active task: `spec/tasks/account-deletion-persistence-verification.md`.
+- Active branch: `codex/account-deletion-persistence-verification`.
+- Current workflow: publication complete; draft PR opened for human review. The implementation is evidence-only: no runtime account deletion behavior changed. The 2026-06-13 readiness artifact remains historical evidence for seeded-owner internal validation only: `spec/validation/mvp-validation-readiness-2026-06-13.md`. Broader new-owner and mockup-fidelity MVP validation still depends on the recovery task set or explicit human waivers. This does not approve release, deployment, merge, production use, or roadmap movement.
 
 ## Latest Notes
 
+- Planned, implemented, and evaluated `spec/tasks/account-deletion-persistence-verification.md` on 2026-06-14.
+- Added focused server-helper tests proving `requestOwnerAccountDeletion` rejects non-`DELETE` confirmation before auth/table access and inserts authenticated-owner rows into `account_deletion_requests`.
+- Extended the opt-in live Supabase RLS test so account deletion request persistence also verifies `audit_logs` evidence for `account.deletion_requested` with entity type `account_deletion_request`, the deletion request id, and bounded status/language metadata.
+- Evaluator verdict: Pass. Validation artifact: `spec/validation/account-deletion-persistence-verification-evaluation.md`.
+- Validation passed: focused account settings Vitest outside sandbox; `pnpm --filter web test`; `pnpm --filter web lint` outside sandbox; `CANIELLO_RUN_SUPABASE_RLS_TESTS=1 pnpm --filter web exec vitest run features/account/server/account-settings.rls.test.ts` outside sandbox after `./scripts/start.sh`; `git diff --check`.
+- Skipped browser UI smoke because no UI behavior, copy, CSS, route, or component logic changed. Existing `AccountApp.test.tsx` coverage still verifies the Settings deletion request sends the queued account-deletion API payload.
+- Published draft PR https://github.com/maciejgos/caniello/pull/32 from `codex/account-deletion-persistence-verification` to `mvp-implementation` on 2026-06-14. The branch includes task commit `6e44c6a`; this publish-record handoff update follows as a separate metadata commit. The PR is draft only and does not mark the task accepted, approved, merged, released, deployed, production-ready, or roadmap scope moved.
+- Approval state: no human acceptance, release, deployment, merge, production-readiness state, or roadmap phase movement. Recommended next action: human review of draft PR #32.
 - Human accepted ADRs 0024 through 0032 on 2026-06-14 by saying "Accept all ADRs." ADR files and `spec/architecture-records/README.md` were updated from `Draft` to `Accepted`. Older draft ADRs 0022 and 0023 were not changed by this acceptance.
 - Used `forge-shaper` on 2026-06-14 to create feature brief `spec/features/accepted-architecture-implementation-backlog.md`.
 - Used `forge-planner` on 2026-06-14 to create implementation task files from the accepted architecture backlog:
@@ -256,8 +264,8 @@
 
 ## Current Dirty Worktree
 
-- Intentional dirty files for accepted architecture planning: `spec/architecture/architecture-review-bundle-2026-06-14.md`, `spec/architecture-records/README.md`, ADRs `0024` through `0032`, `spec/features/accepted-architecture-implementation-backlog.md`, new architecture implementation task files, `spec/roadmap.md`, `spec/tasks/document-upload-scope-decision.md`, and `spec/handoff.md`.
-- No unrelated dirty files were present before the architecture planning pass; audit/product-event and document-upload drafts were already uncommitted on this branch.
+- Clean after publish-record commit is pushed.
+- No unrelated dirty files are currently known.
 
 Previous publish note:
 

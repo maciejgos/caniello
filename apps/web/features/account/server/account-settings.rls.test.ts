@@ -131,6 +131,21 @@ describeRls("account settings Supabase RLS integration", () => {
       expect(ownDeletionError).toBeNull();
       expect(ownDeletion).toMatchObject({ status: "requested" });
 
+      const { data: ownDeletionAudit, error: ownDeletionAuditError } = await service
+        .from("audit_logs")
+        .select("action,entity_type,entity_id,metadata")
+        .eq("actor_user_id", ownerBUserId)
+        .eq("action", "account.deletion_requested")
+        .eq("entity_id", ownDeletion?.id)
+        .single();
+      expect(ownDeletionAuditError).toBeNull();
+      expect(ownDeletionAudit).toMatchObject({
+        action: "account.deletion_requested",
+        entity_type: "account_deletion_request",
+        entity_id: ownDeletion?.id,
+        metadata: { status: "requested", language: "en" }
+      });
+
       const { data: forbiddenProfileRead, error: forbiddenProfileReadError } = await ownerB
         .from("account_profiles")
         .select("id,display_name")
