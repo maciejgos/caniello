@@ -55,12 +55,26 @@ Related roadmap item:
 
 ## Verification
 
-- [ ] Focused account settings tests.
-- [ ] Live local UI plus database verification.
-- [ ] RLS/security check if persistence behavior changes.
-- [ ] No actual account deletion behavior added.
-- [ ] Handoff updated.
+- [x] Focused account settings tests.
+- [x] Database verification through opt-in live local Supabase RLS test.
+- [x] RLS/security check preserved and extended for account deletion request audit evidence.
+- [x] No actual account deletion behavior added.
+- [x] Handoff updated.
 
 ## Handoff Notes
 
-Update after implementation or evaluation.
+Implemented on branch `codex/account-deletion-persistence-verification`.
+
+Evidence-only implementation: no runtime account settings behavior changed. Added focused server-helper coverage proving `requestOwnerAccountDeletion` requires the exact `DELETE` confirmation before auth/table access and inserts authenticated-owner requests into `account_deletion_requests`. Extended the opt-in live Supabase RLS test to prove an owner-owned `account_deletion_requests` insert creates an `audit_logs` row with `account.deletion_requested`, entity type `account_deletion_request`, the deletion request id, and bounded status/language metadata.
+
+Validation passed:
+
+- `pnpm --filter web exec vitest run features/account/server/account-settings.test.ts app/api/account/settings/route.test.ts features/account/AccountApp.test.tsx` outside sandbox: 3 files, 23 tests passed.
+- `pnpm --filter web test`: 19 files passed, 5 skipped; 107 tests passed, 5 skipped.
+- `pnpm --filter web lint` outside sandbox: passed.
+- `CANIELLO_RUN_SUPABASE_RLS_TESTS=1 pnpm --filter web exec vitest run features/account/server/account-settings.rls.test.ts` outside sandbox with local Supabase: 1 file, 1 test passed.
+- `git diff --check`: passed.
+
+Validation artifact: `spec/validation/account-deletion-persistence-verification-evaluation.md`.
+
+Known gaps: no browser UI smoke was run because this implementation changed only server and live RLS test evidence, while existing UI coverage already verifies the Settings deletion request posts `{ action: "account_deletion", payload: { confirmation: "DELETE", language: "pl" } }` and copy remains queued/manual. No human acceptance, release, deployment, merge, or roadmap movement is implied.
