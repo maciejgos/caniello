@@ -19,7 +19,7 @@ Related roadmap item:
 ## Scope
 
 - Keep `spec/validation/mvp-validation-readiness-2026-06-13.md` as accepted historical evidence with the revised readiness interpretation.
-- Create or update a reusable next-pass validation checklist covering new-owner access, profile, reminders, documents, timeline, sharing, account settings, mobile smoke, console errors, and mockup review.
+- Create or update a reusable next-pass validation checklist covering seeded-owner baseline checks, new-owner access, profile, reminders, documents, timeline, sharing, account settings, mobile smoke, console errors, and mockup review.
 - Link the seven recovery tasks from the readiness artifact or handoff so the evidence chain is easy to follow.
 - State clearly that seeded-owner validation is not equivalent to broader new-owner MVP readiness.
 
@@ -51,11 +51,18 @@ Related roadmap item:
 
 ## Verification
 
-- [ ] `git diff --check`.
-- [ ] Manual review of links and readiness wording.
-- [ ] No roadmap scope expansion.
-- [ ] Handoff updated.
+- [x] `git diff --check`.
+- [x] Manual review of links and readiness wording.
+- [x] No roadmap scope expansion.
+- [x] Handoff updated.
+- [x] Evaluation artifact created: `spec/validation/mvp-readiness-baseline-and-script-evaluation.md`.
 
 ## Handoff Notes
 
-Update after implementation or evaluation.
+Implemented on branch `codex/mvp-readiness-baseline-script`.
+
+- Added next-pass validation script: `spec/validation/mvp-next-pass-validation-script.md`.
+- Linked the script from `spec/features/mvp-validation-readiness-recovery.md`.
+- The script preserves `spec/validation/mvp-validation-readiness-2026-06-13.md` as historical seeded-owner evidence and makes broader new-owner/mockup-fidelity readiness dependent on the recovery tasks.
+- Validation: `git diff --check` passed; manual artifact review confirmed the script distinguishes seeded-owner checks from new-owner checks, references the recovery task files and MVP mockups, and does not add product behavior or roadmap scope.
+- Evaluator verdict: Pass. Artifact: `spec/validation/mvp-readiness-baseline-and-script-evaluation.md`.

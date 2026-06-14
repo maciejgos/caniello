@@ -50,6 +50,10 @@ The work protects the existing `Now - MVP Foundation` promise: a pet owner can o
 - `spec/tasks/timeline-upcoming-reminders-alignment.md`
 - `spec/tasks/account-deletion-persistence-verification.md`
 
+## Validation Script
+
+Next-pass checklist: `spec/validation/mvp-next-pass-validation-script.md`.
+
 ## Open Questions
 
 - Should real document file upload be required for the next MVP validation pass, or is metadata-only acceptable with clearer copy?

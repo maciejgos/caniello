@@ -39,13 +39,30 @@ The 2026-06-13 readiness pass supports seeded-owner internal validation, but man
 
 Implementation for visible MVP surfaces should follow `spec/design/visual-artifacts/mvp/*.png` 1:1. Intentional deviations require an explicit note and human approval before the affected task can count as readiness evidence.
 
-- Preserve the readiness baseline and next-pass script: `spec/tasks/mvp-readiness-baseline-and-script.md`.
-- Make new-owner local signup/login validation possible and stop advertising broken OAuth actions: `spec/tasks/new-owner-access-validation.md`.
-- Align dashboard and app shell behavior with live pet state and MVP mockups: `spec/tasks/dashboard-mockup-and-active-pet-alignment.md`.
-- Clarify pet/profile IA, first-pet versus multi-pet expectations, and species/sex-or-gender controls: `spec/tasks/pet-profile-ia-and-controls.md`.
-- Decide document upload scope before promising or implementing file upload: `spec/tasks/document-upload-scope-decision.md`.
-- Align Timeline with `spec/design/visual-artifacts/mvp/image 10.png` by showing history in the main timeline and upcoming reminders/actions in the right-side panel: `spec/tasks/timeline-upcoming-reminders-alignment.md`.
-- Verify account deletion request persistence against the intended table: `spec/tasks/account-deletion-persistence-verification.md`.
+Resolved readiness checkpoints:
+
+- Readiness baseline and next-pass script are preserved in `spec/tasks/mvp-readiness-baseline-and-script.md`.
+- Document upload scope decision is resolved by accepted ADR 0025 and recorded in `spec/tasks/document-upload-scope-decision.md`; remaining work is the real upload implementation task below.
+
+Remaining MVP readiness implementation tasks:
+
+- Make new-owner local signup/login validation possible and stop advertising broken OAuth actions: `spec/tasks/new-owner-access-validation.md` (ADRs 0014, 0023 draft boundary, 0032).
+- Align dashboard and app shell behavior with live pet state and MVP mockups: `spec/tasks/dashboard-mockup-and-active-pet-alignment.md` (ADRs 0011, 0012, 0027, 0028).
+- Clarify pet/profile IA, first-pet versus multi-pet expectations, and species/sex-or-gender controls: `spec/tasks/pet-profile-ia-and-controls.md` (ADRs 0014, 0015, 0027, 0028).
+- Align Timeline with `spec/design/visual-artifacts/mvp/image 10.png` by showing history in the main timeline and upcoming reminders/actions in the right-side panel: `spec/tasks/timeline-upcoming-reminders-alignment.md` (ADRs 0011, 0015, 0028; ADR 0024 if completion writes product events).
+- Verify account deletion request persistence against the intended table: `spec/tasks/account-deletion-persistence-verification.md` (ADRs 0014, 0015, 0024, 0026, 0031).
+
+Accepted architecture implementation backlog:
+
+The 2026-06-14 architecture review accepted ADRs 0024 through 0032. The following `Now` tasks implement those decisions without approving release, deployment, public health-record upload, or scope expansion:
+
+- Implement real Supabase Storage document upload within MVP limits: `spec/tasks/document-upload-storage-implementation.md` (ADRs 0024, 0025, 0028, 0030, 0031).
+- Add the audit-log and product-event foundation for sensitive MVP actions: `spec/tasks/audit-product-event-foundation.md` (ADRs 0014, 0019, 0024, 0028).
+- Create the manual data-rights operations runbook for export and deletion requests: `spec/tasks/data-rights-manual-runbook.md` (ADRs 0015, 0024, 0025, 0026, 0031).
+- Harden share-link lifecycle with access logging and operational revocation notes: `spec/tasks/share-link-lifecycle-hardening.md` (ADRs 0017, 0024, 0025, 0029).
+- Make live RLS tests use disposable validation fixtures instead of seeded demo rows: `spec/tasks/live-rls-fixture-isolation.md` (ADRs 0015, 0028, 0030).
+- Create the release-readiness playbook required before public health-record upload: `spec/tasks/public-health-upload-release-readiness-playbook.md` (ADRs 0019, 0024, 0025, 0026, 0029, 0031, 0032).
+- Add lightweight dependency guardrails for sensitive feature boundaries: `spec/tasks/feature-boundary-dependency-guardrails.md` (ADRs 0011, 0028).
 
 ## Next - Retention and Sharing
 

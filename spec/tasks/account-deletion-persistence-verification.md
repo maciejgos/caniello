@@ -42,13 +42,16 @@ Related roadmap item:
 - Existing code appears intended to write to `account_deletion_requests`; the manual finding says persistence failed, so reproduction comes before changes.
 - Relevant files likely include `apps/web/features/account/server/account-settings.ts`, `/api/account/settings`, `AccountSettingsSection`, RLS tests, and migrations if a schema issue is discovered.
 - Preserve data-rights copy and avoid promising immediate deletion.
+- Follow ADR 0026 by preserving manual data-rights operations until automated lifecycle execution is explicitly approved.
+- Follow ADR 0024 for audit/product-event separation if the request path records sensitive activity.
+- Treat ADR 0031 as the release gate for public health-record upload readiness; this verification improves privacy readiness but does not approve release.
 
 ## Architecture Decisions
 
-- Existing ADRs: `spec/architecture-records/0014-use-supabase-auth-minimal-rbac-and-audit.md`, `spec/architecture-records/0015-use-supabase-data-lifecycle-and-rls.md`.
+- Existing ADRs: `spec/architecture-records/0014-use-supabase-auth-minimal-rbac-and-audit.md`, `spec/architecture-records/0015-use-supabase-data-lifecycle-and-rls.md`, `spec/architecture-records/0024-separate-audit-logs-from-product-events.md`, `spec/architecture-records/0026-use-manual-data-rights-runbook-before-automated-account-lifecycle.md`, `spec/architecture-records/0031-require-release-readiness-playbook-before-public-health-record-upload.md`.
 - New ADR needed: No for verification or bug fix; yes if changing account lifecycle policy.
 - ADR draft: None.
-- Approval state: Not needed for verification/bug fix.
+- Approval state: ADRs accepted; account lifecycle policy changes still need explicit architecture approval.
 
 ## Verification
 

@@ -44,10 +44,13 @@ Related roadmap item:
 - Relevant existing tasks: `spec/tasks/care-timeline-foundation.md` and `spec/tasks/care-reminder-foundation.md`.
 - Likely files: `CareTimelineSection`, reminder API usage, account content, and `AccountApp` tests.
 - Avoid broad cross-feature service layers; use existing API/client patterns.
+- Follow ADR 0028 by keeping timeline/reminder coordination in feature-local helpers unless a shared contract or server boundary is genuinely needed.
+- If completing a reminder creates or emits a durable timeline/product event, follow ADR 0024 and keep product events separate from audit logs.
 
 ## Architecture Decisions
 
-- Existing ADRs: `spec/architecture-records/0011-use-pragmatic-engineering-practices-from-mvp-start.md`, `spec/architecture-records/0015-use-supabase-data-lifecycle-and-rls.md`.
+- Existing ADRs: `spec/architecture-records/0011-use-pragmatic-engineering-practices-from-mvp-start.md`, `spec/architecture-records/0015-use-supabase-data-lifecycle-and-rls.md`, `spec/architecture-records/0028-use-feature-local-vertical-slices-with-explicit-shared-package-graduation.md`.
+- Conditional ADR: `spec/architecture-records/0024-separate-audit-logs-from-product-events.md` if implementation creates or emits durable product events from reminder completion.
 - New ADR needed: No unless automatic cross-record creation is introduced.
 - ADR draft: None.
 - Approval state: Not needed for display-only alignment; approval needed for automatic timeline generation.

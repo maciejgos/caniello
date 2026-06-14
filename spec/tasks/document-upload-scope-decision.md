@@ -2,7 +2,9 @@
 
 ## Goal
 
-Decide whether real document file upload is required for the next MVP validation pass, and make the document vault UI and validation script match that decision.
+Record the accepted decision that real document file upload is required for the next MVP validation pass, and keep the document vault UI and validation script aligned with that decision.
+
+Decision accepted on 2026-06-14: real document upload is required for the next MVP validation pass, with Supabase Storage and conservative free-tier-friendly limits. Implementation should follow accepted ADR `spec/architecture-records/0025-use-supabase-storage-for-mvp-document-upload.md`.
 
 ## Roadmap Alignment
 
@@ -23,6 +25,7 @@ Related roadmap item:
 - If metadata-only remains acceptable, update copy and validation scripts so upload is not promised.
 - If upload is required, produce the follow-up implementation task scope, required storage decisions, security checks, and approval needs.
 - Treat the relevant document-safe mockup in `spec/design/visual-artifacts/mvp/` as the 1:1 UI target for any later implementation; if metadata-only remains the scope, record exactly how the UI will avoid diverging from or overpromising the mockup.
+- Drafted upload path: private `pet-documents` Supabase Storage bucket, 5 MB max file size, PDF/JPEG/PNG/WebP only, 20 files per owner, 100 MB stored bytes per owner, one file per document, server-mediated upload, and short-lived owner-only signed read URLs.
 
 ## Non-Goals
 
@@ -46,18 +49,18 @@ Related roadmap item:
 
 ## Architecture Decisions
 
-- Existing ADRs: `spec/architecture-records/0004-use-supabase-for-mvp-data-auth-storage-and-rls.md`, `spec/architecture-records/0016-use-staged-ai-document-intake-pipeline.md`.
-- New ADR needed: No for metadata-only clarification; maybe for a durable upload/storage boundary if existing ADRs are insufficient.
+- Existing ADRs: `spec/architecture-records/0004-use-supabase-for-mvp-data-auth-storage-and-rls.md`, `spec/architecture-records/0016-use-staged-ai-document-intake-pipeline.md`, `spec/architecture-records/0025-use-supabase-storage-for-mvp-document-upload.md`.
+- New ADR needed: No; the storage, quota, access-control, and cost boundary decision is accepted in ADR 0025.
 - ADR draft: None.
-- Approval state: Human product approval needed if real upload becomes required.
+- Approval state: ADR 0025 accepted by human on 2026-06-14.
 
 ## Verification
 
-- [ ] Documentation/copy review.
-- [ ] Validation script updated if scope changes.
-- [ ] No roadmap scope expansion beyond document-vault MVP.
-- [ ] Handoff updated.
+- [x] Documentation/copy review.
+- [ ] Validation script updated if scope changes during implementation planning.
+- [x] No roadmap scope expansion beyond document-vault MVP.
+- [x] Handoff updated.
 
 ## Handoff Notes
 
-Update after implementation or evaluation.
+Decision checkpoint is resolved. Real upload architecture was accepted on 2026-06-14 in ADR 0025. Follow-up implementation task: `spec/tasks/document-upload-storage-implementation.md`. This decision task does not implement upload behavior, migrations, bucket creation, route changes, UI changes, release, deployment, or roadmap movement.
