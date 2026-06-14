@@ -4,7 +4,7 @@
 
 - Active task: `spec/tasks/account-deletion-persistence-verification.md`.
 - Active branch: `codex/account-deletion-persistence-verification`.
-- Current workflow: evaluated Pass and ready for publication. The implementation is evidence-only: no runtime account deletion behavior changed. The 2026-06-13 readiness artifact remains historical evidence for seeded-owner internal validation only: `spec/validation/mvp-validation-readiness-2026-06-13.md`. Broader new-owner and mockup-fidelity MVP validation still depends on the recovery task set or explicit human waivers. This does not approve release, deployment, merge, production use, or roadmap movement.
+- Current workflow: publication complete; draft PR opened for human review. The implementation is evidence-only: no runtime account deletion behavior changed. The 2026-06-13 readiness artifact remains historical evidence for seeded-owner internal validation only: `spec/validation/mvp-validation-readiness-2026-06-13.md`. Broader new-owner and mockup-fidelity MVP validation still depends on the recovery task set or explicit human waivers. This does not approve release, deployment, merge, production use, or roadmap movement.
 
 ## Latest Notes
 
@@ -14,7 +14,8 @@
 - Evaluator verdict: Pass. Validation artifact: `spec/validation/account-deletion-persistence-verification-evaluation.md`.
 - Validation passed: focused account settings Vitest outside sandbox; `pnpm --filter web test`; `pnpm --filter web lint` outside sandbox; `CANIELLO_RUN_SUPABASE_RLS_TESTS=1 pnpm --filter web exec vitest run features/account/server/account-settings.rls.test.ts` outside sandbox after `./scripts/start.sh`; `git diff --check`.
 - Skipped browser UI smoke because no UI behavior, copy, CSS, route, or component logic changed. Existing `AccountApp.test.tsx` coverage still verifies the Settings deletion request sends the queued account-deletion API payload.
-- Approval state: no human acceptance, release, deployment, merge, production-readiness state, or roadmap phase movement. Recommended next action: publish a focused draft PR for human review.
+- Published draft PR https://github.com/maciejgos/caniello/pull/32 from `codex/account-deletion-persistence-verification` to `mvp-implementation` on 2026-06-14. The branch includes task commit `6e44c6a`; this publish-record handoff update follows as a separate metadata commit. The PR is draft only and does not mark the task accepted, approved, merged, released, deployed, production-ready, or roadmap scope moved.
+- Approval state: no human acceptance, release, deployment, merge, production-readiness state, or roadmap phase movement. Recommended next action: human review of draft PR #32.
 - Human accepted ADRs 0024 through 0032 on 2026-06-14 by saying "Accept all ADRs." ADR files and `spec/architecture-records/README.md` were updated from `Draft` to `Accepted`. Older draft ADRs 0022 and 0023 were not changed by this acceptance.
 - Used `forge-shaper` on 2026-06-14 to create feature brief `spec/features/accepted-architecture-implementation-backlog.md`.
 - Used `forge-planner` on 2026-06-14 to create implementation task files from the accepted architecture backlog:
@@ -263,7 +264,7 @@
 
 ## Current Dirty Worktree
 
-- Intentional dirty files for the current task: `apps/web/features/account/server/account-settings.test.ts`, `apps/web/features/account/server/account-settings.rls.test.ts`, `spec/tasks/account-deletion-persistence-verification.md`, `spec/validation/account-deletion-persistence-verification-evaluation.md`, and `spec/handoff.md`.
+- Clean after publish-record commit is pushed.
 - No unrelated dirty files are currently known.
 
 Previous publish note:
