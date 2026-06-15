@@ -2,12 +2,19 @@
 
 ## Current State
 
-- Active task: `spec/tasks/account-deletion-persistence-verification.md`.
-- Active branch: `codex/account-deletion-persistence-verification`.
-- Current workflow: publication complete; draft PR opened for human review. The implementation is evidence-only: no runtime account deletion behavior changed. The 2026-06-13 readiness artifact remains historical evidence for seeded-owner internal validation only: `spec/validation/mvp-validation-readiness-2026-06-13.md`. Broader new-owner and mockup-fidelity MVP validation still depends on the recovery task set or explicit human waivers. This does not approve release, deployment, merge, production use, or roadmap movement.
+- Active task: `spec/tasks/review-ci-babysitting-guardrails.md`.
+- Active branch: `codex/review-ci-babysitting-guardrails`.
+- Current workflow: implementation and handoff in progress for repository process guardrails. The branch adds review and Codex babysitting guidance, changed-file formatting validation, repository hygiene validation, and clearer GitHub Actions jobs. No product behavior, UI behavior, roadmap content, release, deployment, merge, production-readiness state, or human checkpoint approval changed.
 
 ## Latest Notes
 
+- Planned and implemented `spec/tasks/review-ci-babysitting-guardrails.md` on 2026-06-15 without updating `spec/roadmap.md`.
+- Added root `AGENTS.md` review and Codex babysitting checklists covering MVP scope, privacy/consent, medical/legal boundaries, contracts, RLS/migrations, sensitive data flows, tests, generated-file hygiene, and Playwright Interactive as supporting evidence rather than a replacement for automated validation.
+- Added `apps/web/AGENTS.md` guidance for server/client separation, contracts at API boundaries, feature-local UI/server placement, and focused UI validation for authenticated app changes.
+- Added `scripts/format-check-changed.mjs` and `scripts/repo-hygiene-gate.mjs`, plus `package.json` scripts `format:check` and `validation:repo-hygiene`.
+- Split GitHub Actions from one broad pnpm/Turbo job into separate lifecycle, repository hygiene, typecheck, unit/contract test, validation, build, and Playwright E2E jobs. Playwright evidence upload now runs on the E2E job.
+- Validation passed: `node scripts/repo-hygiene-gate.mjs`; `pnpm validation:repo-hygiene` outside sandbox; `pnpm format:check` outside sandbox; `node scripts/pdlc-lifecycle-gate.mjs`; `git diff --check`. Current `pnpm typecheck` is blocked by unrelated untracked `apps/web/app/(landing)/mvp-flow/page.tsx`, which imports a missing `features/mvp-flow/MvpFlowPrototype` module; those prototype files are left unstaged and outside this task.
+- Browser validation was skipped because no UI behavior changed. No evaluator artifact has been created yet. No human acceptance, release, deployment, merge, production-readiness state, roadmap movement, or mandatory downstream adoption has been recorded.
 - Planned, implemented, and evaluated `spec/tasks/account-deletion-persistence-verification.md` on 2026-06-14.
 - Added focused server-helper tests proving `requestOwnerAccountDeletion` rejects non-`DELETE` confirmation before auth/table access and inserts authenticated-owner rows into `account_deletion_requests`.
 - Extended the opt-in live Supabase RLS test so account deletion request persistence also verifies `audit_logs` evidence for `account.deletion_requested` with entity type `account_deletion_request`, the deletion request id, and bounded status/language metadata.
