@@ -22,7 +22,8 @@ Related roadmap item:
 - Keep the main Timeline surface focused on chronological historical/completed care events.
 - Add or align a right-side `Next Upcoming` panel that shows the next active reminder/action for the selected pet.
 - Link the upcoming panel to the Reminders flow.
-- Decide and document whether completing a reminder should create/link a timeline event now or remain deferred.
+- Keep the existing manual timeline event form available without adding export, automatic timeline generation, or reminder-completion writes.
+- Document that completing a reminder does not create or link a timeline event in this slice.
 
 ## Non-Goals
 
@@ -37,7 +38,8 @@ Related roadmap item:
 - Upcoming reminder/action content comes from existing reminder data where available.
 - Empty states clearly explain when no upcoming reminder exists.
 - Tests and browser checks cover desktop and mobile behavior.
-- Any deferred automation is explicitly stated in UI copy or validation notes.
+- Manual timeline event create/edit behavior remains available and covered by focused tests.
+- Reminder completion does not create timeline events, and that deferred automation is explicitly stated in UI copy or validation notes.
 
 ## Implementation Notes
 
@@ -57,11 +59,24 @@ Related roadmap item:
 
 ## Verification
 
-- [ ] Focused timeline/reminder tests.
-- [ ] Browser validation against `image 10.png` at desktop and mobile widths.
-- [ ] No reminder notification or automation scope expansion.
-- [ ] Handoff updated.
+- [x] Focused timeline/reminder tests.
+- [x] Browser validation against `image 10.png` at desktop and mobile widths.
+- [x] No reminder notification or automation scope expansion.
+- [x] Handoff updated.
 
 ## Handoff Notes
 
-Update after implementation or evaluation.
+Implemented on branch `codex/timeline-upcoming-reminders-alignment`.
+
+Validation artifact: `spec/validation/timeline-upcoming-reminders-alignment-evaluation.md`.
+
+Checks passed:
+
+- `pnpm --filter web exec vitest run features/account/AccountApp.test.tsx` outside sandbox after sandbox `fetch failed`.
+- `pnpm --filter web test`.
+- `pnpm --filter web lint` outside sandbox after sandbox `fetch failed`.
+- `pnpm build` outside sandbox after sandbox `fetch failed`.
+- `git diff --check`.
+- In-app Browser smoke with seeded owner `akowalska@example.com`: Timeline rendered at 1440x900 desktop and 390x900 mobile with mockup-style title, active-pet card, filter/export toolbar, vertical timeline rows, compact summary, `Next Upcoming`, no visible dev issue overlay, and zero horizontal overflow.
+
+Evaluator verdict: Pass. The implementation remains display-only for reminder/timeline coordination: completing reminders still does not create timeline events, and no notifications, recurrence, calendar sync, export, OCR, AI, sharing, provider workflow, booking, payment, marketplace, or official passport behavior was added.

@@ -528,6 +528,17 @@ describe("Caniello account experience", () => {
       notes: "Kontrola wagi i plan szczepień.",
       updatedAt: "2026-06-12T10:00:00.000Z"
     };
+    const nextReminder = {
+      id: "77777777-7777-4777-8777-777777777777",
+      petId: savedPet.id,
+      title: "Szczepienie przeciw wściekliźnie",
+      reminderType: "vaccination",
+      dueDate: "2026-07-12",
+      notes: "Zabierz poprzedni dokument.",
+      status: "active",
+      createdAt: "2026-06-12T09:00:00.000Z",
+      updatedAt: "2026-06-12T09:00:00.000Z"
+    };
     vi.stubGlobal(
       "fetch",
       vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
@@ -552,6 +563,13 @@ describe("Caniello account experience", () => {
           });
         }
 
+        if (String(input) === "/api/reminders") {
+          return new Response(JSON.stringify({ ok: true, pet: savedPet, reminders: [nextReminder] }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" }
+          });
+        }
+
         return new Response(JSON.stringify({ ok: true, status: "ok" }), {
           status: 200,
           headers: { "Content-Type": "application/json" }
@@ -562,8 +580,13 @@ describe("Caniello account experience", () => {
     render(<AccountApp route="app-home" />);
 
     await user.click(screen.getAllByRole("button", { name: accountCopy.pl.appNavTimeline })[0]);
-    expect(await screen.findByRole("heading", { name: /historia opieki: luna/i })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: /oś czasu opieki/i })).toBeInTheDocument();
     expect(screen.getByText(/brak wydarzeń na osi czasu/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^wszystko$/i })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("heading", { name: /podsumowanie osi czasu/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /najbliższe zadanie/i })).toBeInTheDocument();
+    expect(screen.getByText("Szczepienie przeciw wściekliźnie")).toBeInTheDocument();
+    expect(screen.getByText("2026-07-12")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /automatyzacje wkrótce/i })).toBeDisabled();
     expect(screen.getByText(/automatyczne wpisy z dokumentów, ocr, ai/i)).toBeInTheDocument();
 
@@ -593,9 +616,9 @@ describe("Caniello account experience", () => {
       notes: "Kontrola wagi."
     });
     expect(screen.getByText("Wizyta kontrolna")).toBeInTheDocument();
-    expect(screen.getByText(/wpis ręczny/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/wykonane/i).length).toBeGreaterThan(0);
 
-    await user.click(screen.getByRole("button", { name: /^edytuj$/i }));
+    await user.click(screen.getByRole("button", { name: /edytuj: wizyta kontrolna/i }));
     await user.clear(screen.getByLabelText(/^tytuł wydarzenia$/i));
     await user.type(screen.getByLabelText(/^tytuł wydarzenia$/i), "Wizyta i szczepienie");
     await user.clear(screen.getByLabelText(/^data wydarzenia$/i));
@@ -625,9 +648,13 @@ describe("Caniello account experience", () => {
     expect(screen.getByText("Wizyta i szczepienie")).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "EN" }));
-    expect(screen.getByRole("heading", { name: /care history: luna/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /care timeline/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /next upcoming/i })).toBeInTheDocument();
     expect(screen.getByText(/does not generate diagnoses/i)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /automation coming soon/i })).toBeDisabled();
+
+    await user.click(screen.getByRole("button", { name: /view all reminders/i }));
+    expect(await screen.findByRole("heading", { name: /reminders: luna/i })).toBeInTheDocument();
   });
 
   it("creates and revokes a care card share link without enabling PDF export", async () => {

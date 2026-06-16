@@ -2,9 +2,9 @@
 
 ## Current State
 
-- Active task: `spec/tasks/account-deletion-persistence-verification.md`.
-- Active branch: `codex/account-deletion-persistence-verification`.
-- Current workflow: publication complete; draft PR opened for human review. The implementation is evidence-only: no runtime account deletion behavior changed. The 2026-06-13 readiness artifact remains historical evidence for seeded-owner internal validation only: `spec/validation/mvp-validation-readiness-2026-06-13.md`. Broader new-owner and mockup-fidelity MVP validation still depends on the recovery task set or explicit human waivers. This does not approve release, deployment, merge, production use, or roadmap movement.
+- Active task: `spec/tasks/review-ci-babysitting-guardrails.md`.
+- Active branch: `codex/review-ci-babysitting-guardrails`.
+- Current workflow: implementation and handoff in progress for repository process guardrails. The branch adds review and Codex babysitting guidance, changed-file formatting validation, repository hygiene validation, and clearer GitHub Actions jobs. No product behavior, UI behavior, roadmap content, release, deployment, merge, production-readiness state, or human checkpoint approval changed.
 
 ## Latest Notes
 
@@ -13,6 +13,30 @@
 - Added root `DESIGN.md` on 2026-06-16 by adapting the Stitch-generated `DESIGN.md` draft into Caniello-specific visual guidance. The file defines Caniello's visual priority order, colors, typography, layout rules, component guidance, imagery guidance, accessibility expectations, and product-safety design boundaries.
 - Updated `AGENTS.md` so future UI, design-system, prototype, screenshot-alignment, and visual QA work reads `DESIGN.md` alongside `spec/product-context.md`, `spec/roadmap.md`, relevant task files, and human-supplied MVP screenshots.
 - Validation passed: `git diff --check`. No tests were run because this was a documentation/design-guidance update only. No product behavior, UI implementation, route behavior, database change, release, deployment, merge, roadmap movement, production-readiness state, or human approval checkpoint changed.
+- Planned and implemented `spec/tasks/review-ci-babysitting-guardrails.md` on 2026-06-15 without updating `spec/roadmap.md`.
+- Added root `AGENTS.md` review and Codex babysitting checklists covering MVP scope, privacy/consent, medical/legal boundaries, contracts, RLS/migrations, sensitive data flows, tests, generated-file hygiene, and Playwright Interactive as supporting evidence rather than a replacement for automated validation.
+- Added `apps/web/AGENTS.md` guidance for server/client separation, contracts at API boundaries, feature-local UI/server placement, and focused UI validation for authenticated app changes.
+- Added `scripts/format-check-changed.mjs` and `scripts/repo-hygiene-gate.mjs`, plus `package.json` scripts `format:check` and `validation:repo-hygiene`.
+- Split GitHub Actions from one broad pnpm/Turbo job into separate lifecycle, repository hygiene, typecheck, unit/contract test, validation, build, and Playwright E2E jobs. Playwright evidence upload now runs on the E2E job.
+- Validation passed: `node scripts/repo-hygiene-gate.mjs`; `pnpm validation:repo-hygiene` outside sandbox; `pnpm format:check` outside sandbox; `pnpm typecheck` outside sandbox; `node scripts/pdlc-lifecycle-gate.mjs`; `git diff --check`.
+- Browser validation was skipped because no UI behavior changed. No evaluator artifact has been created yet. No human acceptance, release, deployment, merge, production-readiness state, roadmap movement, or mandatory downstream adoption has been recorded.
+- Published draft PR https://github.com/maciejgos/caniello/pull/34 from `codex/review-ci-babysitting-guardrails` to `mvp-implementation` on 2026-06-15. The branch includes task commit `718d786`; this publish-record handoff update follows as a separate metadata commit. The PR is draft only and does not mark the task accepted, approved, merged, released, deployed, production-ready, or roadmap scope moved.
+- Active task: `spec/tasks/timeline-upcoming-reminders-alignment.md`.
+- Active branch: `codex/timeline-upcoming-reminders-alignment`.
+- Current workflow: implementation, evaluation, handoff, and draft PR publication complete; human review is next. The Timeline screen now follows `spec/design/visual-artifacts/mvp/image 10.png` much more closely with a `Care Timeline` header, active-pet card, filter/export toolbar, vertical timeline rows, compact summary, and right-side `Next Upcoming` panel sourced from existing reminders while retaining the existing manual event form below the primary surface. Evaluator verdict: Pass. Validation artifact: `spec/validation/timeline-upcoming-reminders-alignment-evaluation.md`. Draft PR: https://github.com/maciejgos/caniello/pull/33. This does not approve release, deployment, merge, production use, roadmap movement, or the documented visible deviation that keeps the manual event form available below the mockup-style panels.
+
+## Latest Notes
+
+- Planned, implemented, and evaluated `spec/tasks/timeline-upcoming-reminders-alignment.md` on 2026-06-14.
+- Updated `CareTimelineSection` to load `/api/timeline-events` and `/api/reminders` together, show the mockup-style `Care Timeline` header, active-pet card, filter/export toolbar, vertical timeline rows, compact summary, render the nearest active reminder in `Next Upcoming`, and link that panel into the Reminders flow.
+- Updated the app pet selector and Timeline pet card to use the existing Bruno dog image asset. Updated `useLanguage` so persisted English no longer causes a server/client hydration mismatch or visible Next.js issue overlay during browser validation.
+- Preserved manual timeline event create/edit behavior by moving the existing form below the history/right-rail layout. This is documented as a current-MVP deviation from `spec/design/visual-artifacts/mvp/image 10.png`; no export, notification delivery, recurrence, calendar sync, OCR, AI, sharing, provider workflow, booking, payment, marketplace, official passport, or automatic reminder-completion-to-timeline behavior was added.
+- Validation passed after final visual-fidelity edits: focused `AccountApp` Vitest outside sandbox after sandbox `fetch failed`; `pnpm --filter web test`; `pnpm --filter web lint` outside sandbox after sandbox `fetch failed`; `pnpm build` outside sandbox after sandbox `fetch failed`; `git diff --check`.
+- Browser validation after final visual tweaks passed with seeded owner `akowalska@example.com` at 1440x900 desktop and 390x900 mobile. Metrics confirmed Timeline title, active-pet card, filters, disabled export, summary, `Next Upcoming`, timeline rows, no visible issue overlay, and zero horizontal overflow.
+- Final focused Vitest, web lint, full web test, production build, and `git diff --check` all passed after the latest visual-fidelity edits.
+- Evaluator verdict: Pass. Validation artifact: `spec/validation/timeline-upcoming-reminders-alignment-evaluation.md`.
+- Published draft PR https://github.com/maciejgos/caniello/pull/33 from `codex/timeline-upcoming-reminders-alignment` to `mvp-implementation` on 2026-06-14. The branch includes task commit `eca540d`; this publish-record handoff update follows as a separate metadata commit. The PR is draft only and does not mark the task accepted, approved, merged, released, deployed, production-ready, roadmap scope moved, or the documented mockup deviation approved.
+- Approval state: no human acceptance, release, deployment, merge, production-readiness state, roadmap movement, or mockup-deviation approval has been recorded. Recommended next action: human review of the Timeline visible deviation.
 - Planned, implemented, and evaluated `spec/tasks/account-deletion-persistence-verification.md` on 2026-06-14.
 - Added focused server-helper tests proving `requestOwnerAccountDeletion` rejects non-`DELETE` confirmation before auth/table access and inserts authenticated-owner rows into `account_deletion_requests`.
 - Extended the opt-in live Supabase RLS test so account deletion request persistence also verifies `audit_logs` evidence for `account.deletion_requested` with entity type `account_deletion_request`, the deletion request id, and bounded status/language metadata.

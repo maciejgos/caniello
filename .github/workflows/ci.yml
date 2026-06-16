@@ -32,8 +32,139 @@ jobs:
           PDLC_GATE_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
           PDLC_GATE_HEAD: ${{ github.sha }}
 
-  ci:
-    name: pnpm/Turbo CI
+  repo-hygiene:
+    name: Repository Hygiene
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Enable pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@9.15.4 --activate
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check formatting
+        run: pnpm format:check
+        env:
+          FORMAT_CHECK_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          FORMAT_CHECK_HEAD: ${{ github.sha }}
+
+      - name: Check repository hygiene
+        run: pnpm validation:repo-hygiene
+
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Enable pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@9.15.4 --activate
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck workspace
+        run: pnpm typecheck
+
+  unit-tests:
+    name: Unit and Contract Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Enable pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@9.15.4 --activate
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run unit and contract tests
+        run: pnpm test
+
+  validation-gates:
+    name: Validation Gates
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Enable pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@9.15.4 --activate
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run MailerLite integration validation gate
+        run: pnpm validation:mailerlite-integration
+
+      - name: Run platform foundation validation gate
+        run: pnpm validation:platform-foundation
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Enable pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@9.15.4 --activate
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build workspace
+        run: pnpm build
+
+  e2e:
+    name: Playwright E2E
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -56,20 +187,16 @@ jobs:
       - name: Install Playwright Chromium
         run: pnpm exec playwright install --with-deps chromium
 
-      - name: Lint and type-check workspace
-        run: pnpm lint
-
-      - name: Run unit and contract tests
-        run: pnpm test
-
-      - name: Run MailerLite integration validation gate
-        run: pnpm validation:mailerlite-integration
-
-      - name: Run platform foundation validation gate
-        run: pnpm validation:platform-foundation
-
-      - name: Build workspace
-        run: pnpm build
-
       - name: Run Playwright browser checks
         run: pnpm test:e2e
+
+      - name: Upload Playwright evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-evidence
+          path: |
+            playwright-report/
+            test-results/
+            spec/validation/screenshots/
+          if-no-files-found: ignore
