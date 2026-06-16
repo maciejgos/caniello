@@ -2,6 +2,20 @@
 
 ## Current State
 
+- Active task: `spec/tasks/review-ci-babysitting-guardrails.md`.
+- Active branch: `codex/review-ci-babysitting-guardrails`.
+- Current workflow: implementation and handoff in progress for repository process guardrails. The branch adds review and Codex babysitting guidance, changed-file formatting validation, repository hygiene validation, and clearer GitHub Actions jobs. No product behavior, UI behavior, roadmap content, release, deployment, merge, production-readiness state, or human checkpoint approval changed.
+
+## Latest Notes
+
+- Planned and implemented `spec/tasks/review-ci-babysitting-guardrails.md` on 2026-06-15 without updating `spec/roadmap.md`.
+- Added root `AGENTS.md` review and Codex babysitting checklists covering MVP scope, privacy/consent, medical/legal boundaries, contracts, RLS/migrations, sensitive data flows, tests, generated-file hygiene, and Playwright Interactive as supporting evidence rather than a replacement for automated validation.
+- Added `apps/web/AGENTS.md` guidance for server/client separation, contracts at API boundaries, feature-local UI/server placement, and focused UI validation for authenticated app changes.
+- Added `scripts/format-check-changed.mjs` and `scripts/repo-hygiene-gate.mjs`, plus `package.json` scripts `format:check` and `validation:repo-hygiene`.
+- Split GitHub Actions from one broad pnpm/Turbo job into separate lifecycle, repository hygiene, typecheck, unit/contract test, validation, build, and Playwright E2E jobs. Playwright evidence upload now runs on the E2E job.
+- Validation passed: `node scripts/repo-hygiene-gate.mjs`; `pnpm validation:repo-hygiene` outside sandbox; `pnpm format:check` outside sandbox; `pnpm typecheck` outside sandbox; `node scripts/pdlc-lifecycle-gate.mjs`; `git diff --check`.
+- Browser validation was skipped because no UI behavior changed. No evaluator artifact has been created yet. No human acceptance, release, deployment, merge, production-readiness state, roadmap movement, or mandatory downstream adoption has been recorded.
+- Published draft PR https://github.com/maciejgos/caniello/pull/34 from `codex/review-ci-babysitting-guardrails` to `mvp-implementation` on 2026-06-15. The branch includes task commit `718d786`; this publish-record handoff update follows as a separate metadata commit. The PR is draft only and does not mark the task accepted, approved, merged, released, deployed, production-ready, or roadmap scope moved.
 - Active task: `spec/tasks/timeline-upcoming-reminders-alignment.md`.
 - Active branch: `codex/timeline-upcoming-reminders-alignment`.
 - Current workflow: implementation, evaluation, handoff, and draft PR publication complete; human review is next. The Timeline screen now follows `spec/design/visual-artifacts/mvp/image 10.png` much more closely with a `Care Timeline` header, active-pet card, filter/export toolbar, vertical timeline rows, compact summary, and right-side `Next Upcoming` panel sourced from existing reminders while retaining the existing manual event form below the primary surface. Evaluator verdict: Pass. Validation artifact: `spec/validation/timeline-upcoming-reminders-alignment-evaluation.md`. Draft PR: https://github.com/maciejgos/caniello/pull/33. This does not approve release, deployment, merge, production use, roadmap movement, or the documented visible deviation that keeps the manual event form available below the mockup-style panels.

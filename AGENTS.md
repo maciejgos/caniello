@@ -136,6 +136,47 @@ Use:
 
 Record skipped, failed, unavailable, or deferred checks in the task file or handoff. Do not imply validation is accepted or complete without explicit human approval.
 
+## Review Checklist
+
+For every PR, reviewers should check:
+
+- roadmap or task alignment and MVP scope;
+- privacy, consent, medical/legal boundary, and owner-control behavior;
+- browser/API/data contracts and Zod validation at trust boundaries;
+- server/client separation, with no Supabase service-role, provider, audit, storage, or external-integration logic in UI components;
+- RLS, migration, storage, share-link, audit-log, product-event, and data-rights implications;
+- tests or validation evidence proportionate to the risk of the change;
+- no generated output, local env files, caches, dependency folders, or tool artifacts committed.
+
+Block changes that expand `Now` scope, weaken RLS/privacy/medical boundaries, expose secrets, bypass shared contracts, or mark human approval, release, deployment, merge, or roadmap checkpoints complete without explicit maintainer approval.
+
+## Codex Babysitting Checklist
+
+Before starting work, Codex should check:
+
+- `spec/product-context.md`;
+- `spec/roadmap.md`;
+- the relevant `spec/tasks/` file when one exists;
+- `git status --short`.
+
+During work, Codex should watch for:
+
+- MVP scope drift;
+- medical/legal boundary violations;
+- privacy, consent, RLS, auth, share-link, document-upload, audit-log, product-event, and data-rights risk;
+- direct provider or persistence logic in UI components;
+- missing contracts or validation at API boundaries;
+- generated files, local env files, caches, or tool output entering git.
+
+Before stopping, Codex should:
+
+- run the smallest meaningful validation first, then broaden when risk warrants it;
+- record skipped, failed, unavailable, or deferred checks;
+- update the task file and `spec/handoff.md`;
+- leave the repository state clear for the next session.
+
+Use Playwright Interactive for exploratory UI validation, mockup comparison, responsive checks, and debugging. Treat it as supporting evidence, not a replacement for automated tests or required security/data validation gates.
+
 ## Branches, Commits, and Pull Requests
 
 Before broad changes, inspect the tree with `git status --short` and preserve user edits. Do not rewrite history on `main` unless explicitly requested.
