@@ -8,6 +8,7 @@
 
 ## Latest Notes
 
+- Resolved PR #35 merge conflicts on 2026-06-16 by merging latest `origin/mvp-implementation` into `codex/caniello-design-guidance` and preserving both the new repository guardrails and the `DESIGN.md` visual guidance. GitHub reports PR #35 as mergeable after commit `ff27d42`; remaining PR state is draft/check status only, not a file conflict.
 - Published draft PR https://github.com/maciejgos/caniello/pull/35 from `codex/caniello-design-guidance` to `mvp-implementation` on 2026-06-16. The branch includes design-guidance commit `17c608f`; this publish-record handoff update follows as a separate metadata commit. The PR is draft only and does not mark the guidance accepted, approved, merged, released, deployed, production-ready, or roadmap scope moved.
 - Approval state: no human acceptance, release, deployment, merge, production-readiness state, or roadmap phase movement. Recommended next action: human review of draft PR #35.
 - Added root `DESIGN.md` on 2026-06-16 by adapting the Stitch-generated `DESIGN.md` draft into Caniello-specific visual guidance. The file defines Caniello's visual priority order, colors, typography, layout rules, component guidance, imagery guidance, accessibility expectations, and product-safety design boundaries.
