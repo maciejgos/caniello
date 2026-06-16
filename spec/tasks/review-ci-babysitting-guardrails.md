@@ -70,9 +70,8 @@ Validation passed:
 - `node scripts/repo-hygiene-gate.mjs`
 - `pnpm validation:repo-hygiene` outside sandbox after sandboxed pnpm commands failed with `fetch failed`
 - `pnpm format:check` outside sandbox after sandboxed pnpm commands failed with `fetch failed`
+- `pnpm typecheck` outside sandbox after sandboxed pnpm command failed with `fetch failed`
 - `node scripts/pdlc-lifecycle-gate.mjs`
 - `git diff --check`
-
-Current `pnpm typecheck` is blocked by unrelated untracked `apps/web/app/(landing)/mvp-flow/page.tsx`, which imports a missing `features/mvp-flow/MvpFlowPrototype` module. Those prototype files are intentionally left unstaged and outside this task.
 
 Playwright/browser validation was not required because no UI behavior changed.
