@@ -8,6 +8,9 @@
 
 ## Latest Notes
 
+- Added root `DESIGN.md` on 2026-06-16 by adapting the Stitch-generated `DESIGN.md` draft into Caniello-specific visual guidance. The file defines Caniello's visual priority order, colors, typography, layout rules, component guidance, imagery guidance, accessibility expectations, and product-safety design boundaries.
+- Updated `AGENTS.md` so future UI, design-system, prototype, screenshot-alignment, and visual QA work reads `DESIGN.md` alongside `spec/product-context.md`, `spec/roadmap.md`, relevant task files, and human-supplied MVP screenshots.
+- Validation passed: `git diff --check`. No tests were run because this was a documentation/design-guidance update only. No product behavior, UI implementation, route behavior, database change, release, deployment, merge, roadmap movement, production-readiness state, or human approval checkpoint changed.
 - Planned, implemented, and evaluated `spec/tasks/account-deletion-persistence-verification.md` on 2026-06-14.
 - Added focused server-helper tests proving `requestOwnerAccountDeletion` rejects non-`DELETE` confirmation before auth/table access and inserts authenticated-owner rows into `account_deletion_requests`.
 - Extended the opt-in live Supabase RLS test so account deletion request persistence also verifies `audit_logs` evidence for `account.deletion_requested` with entity type `account_deletion_request`, the deletion request id, and bounded status/language metadata.
