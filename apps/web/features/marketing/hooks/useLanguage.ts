@@ -9,20 +9,22 @@ function isSupportedLanguage(value: string | null): value is Language {
 }
 
 export function useLanguage() {
-  const [language, setLanguage] = useState<Language>(() => {
-    if (typeof window === "undefined") {
-      return "pl";
-    }
-
-    const storedLanguage = window.localStorage.getItem(languageStorageKey);
-
-    return isSupportedLanguage(storedLanguage) ? storedLanguage : "pl";
-  });
+  const [language, setLanguage] = useState<Language>("pl");
+  const [hasLoadedStoredLanguage, setHasLoadedStoredLanguage] = useState(false);
 
   useEffect(() => {
+    const storedLanguage = window.localStorage.getItem(languageStorageKey);
+    if (isSupportedLanguage(storedLanguage)) {
+      setLanguage(storedLanguage);
+    }
+    setHasLoadedStoredLanguage(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hasLoadedStoredLanguage) return;
     window.localStorage.setItem(languageStorageKey, language);
     document.documentElement.lang = language;
-  }, [language]);
+  }, [hasLoadedStoredLanguage, language]);
 
   return { language, setLanguage };
 }

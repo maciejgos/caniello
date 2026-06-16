@@ -40,7 +40,7 @@ export function AuthenticatedAppShell({ language, onLanguageChange }: Authentica
           ) : activeSection === "pets" ? (
             <PetProfileSection copy={copy} />
           ) : activeSection === "timeline" ? (
-            <CareTimelineSection copy={copy} onPetsRequest={() => setActiveSection("pets")} />
+            <CareTimelineSection copy={copy} onPetsRequest={() => setActiveSection("pets")} onRemindersRequest={() => setActiveSection("reminders")} />
           ) : activeSection === "documents" ? (
             <DocumentVaultSection copy={copy} onPetsRequest={() => setActiveSection("pets")} />
           ) : activeSection === "reminders" ? (
