@@ -6,6 +6,7 @@ on:
     branches:
       - main
       - "codex/**"
+      - "feature/**"
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
@@ -138,6 +139,12 @@ jobs:
 
       - name: Run platform foundation validation gate
         run: pnpm validation:platform-foundation
+
+      - name: Run spec alignment validation gate
+        run: pnpm validation:spec-alignment
+        env:
+          SPEC_GATE_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          SPEC_GATE_HEAD: ${{ github.sha }}
 
   build:
     name: Build

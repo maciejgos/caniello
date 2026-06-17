@@ -15,7 +15,8 @@
     "test": "turbo test",
     "test:e2e": "turbo test:e2e --filter=web",
     "typecheck": "turbo typecheck",
-    "validation:platform-foundation": "node scripts/platform-foundation-gate.mjs"
+    "validation:platform-foundation": "node scripts/platform-foundation-gate.mjs",
+    "validation:spec-alignment": "node scripts/spec-alignment-gate.mjs"
   },
   "devDependencies": {
     "@playwright/test": "latest",
