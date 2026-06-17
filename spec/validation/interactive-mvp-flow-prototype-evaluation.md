@@ -42,7 +42,7 @@ Pass with recorded tooling limitation.
 
 ## Human Checkpoint State
 
-No human acceptance, approval, release, deployment, merge, production-readiness state, roadmap movement, or mandatory downstream adoption has been recorded for this prototype evaluation. The evaluation verdict is implementation evidence only; human review remains required before treating the prototype as accepted or readiness evidence.
+Human accepted the interactive MVP flow prototype artifacts on 2026-06-17 by replying "Accepted" in the Codex thread. This acceptance applies to the prototype task artifacts and does not approve release, deployment, merge, production-readiness state, roadmap movement, or mandatory downstream adoption.
 
 ## Residual Risk
 
