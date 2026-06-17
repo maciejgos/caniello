@@ -8,6 +8,12 @@
 
 ## Latest Notes
 
+- Resolved PR #35 merge conflicts on 2026-06-16 by merging latest `origin/mvp-implementation` into `codex/caniello-design-guidance` and preserving both the new repository guardrails and the `DESIGN.md` visual guidance. GitHub reports PR #35 as mergeable after commit `ff27d42`; remaining PR state is draft/check status only, not a file conflict.
+- Published draft PR https://github.com/maciejgos/caniello/pull/35 from `codex/caniello-design-guidance` to `mvp-implementation` on 2026-06-16. The branch includes design-guidance commit `17c608f`; this publish-record handoff update follows as a separate metadata commit. The PR is draft only and does not mark the guidance accepted, approved, merged, released, deployed, production-ready, or roadmap scope moved.
+- Approval state: no human acceptance, release, deployment, merge, production-readiness state, or roadmap phase movement. Recommended next action: human review of draft PR #35.
+- Added root `DESIGN.md` on 2026-06-16 by adapting the Stitch-generated `DESIGN.md` draft into Caniello-specific visual guidance. The file defines Caniello's visual priority order, colors, typography, layout rules, component guidance, imagery guidance, accessibility expectations, and product-safety design boundaries.
+- Updated `AGENTS.md` so future UI, design-system, prototype, screenshot-alignment, and visual QA work reads `DESIGN.md` alongside `spec/product-context.md`, `spec/roadmap.md`, relevant task files, and human-supplied MVP screenshots.
+- Validation passed: `git diff --check`. No tests were run because this was a documentation/design-guidance update only. No product behavior, UI implementation, route behavior, database change, release, deployment, merge, roadmap movement, production-readiness state, or human approval checkpoint changed.
 - Planned and implemented `spec/tasks/review-ci-babysitting-guardrails.md` on 2026-06-15 without updating `spec/roadmap.md`.
 - Added root `AGENTS.md` review and Codex babysitting checklists covering MVP scope, privacy/consent, medical/legal boundaries, contracts, RLS/migrations, sensitive data flows, tests, generated-file hygiene, and Playwright Interactive as supporting evidence rather than a replacement for automated validation.
 - Added `apps/web/AGENTS.md` guidance for server/client separation, contracts at API boundaries, feature-local UI/server placement, and focused UI validation for authenticated app changes.

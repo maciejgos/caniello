@@ -6,6 +6,8 @@ This repository is Caniello, a pet health and care organization utility. Caniell
 
 Durable product truth lives in `spec/product-context.md`. Read it with `spec/roadmap.md` before shaping, planning, implementing, or evaluating Caniello product work.
 
+Durable visual guidance lives in `DESIGN.md`. Read it before implementing or evaluating visible UI, design-system, prototype, or screenshot-alignment work. `DESIGN.md` does not override product scope, medical/privacy boundaries, roadmap governance, task files, ADRs, or human-supplied MVP screenshots.
+
 The MVP promise is:
 
 > One place for a pet's health records, reminders, documents, and shareable care information.
@@ -135,6 +137,10 @@ Use:
 - manual validation notes when automation is unavailable or insufficient.
 
 Record skipped, failed, unavailable, or deferred checks in the task file or handoff. Do not imply validation is accepted or complete without explicit human approval.
+
+## Visual Guidance
+
+Read `DESIGN.md` before implementing or evaluating visible UI, design-system guidance, prototypes, screenshots, or visual QA. It is visual guidance only; it does not override product scope, medical/privacy boundaries, roadmap governance, task files, ADRs, or human-supplied MVP screenshots.
 
 ## Review Checklist
 
