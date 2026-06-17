@@ -6,6 +6,7 @@ on:
     branches:
       - main
       - "codex/**"
+      - "feature/**"
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
