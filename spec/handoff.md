@@ -2,12 +2,17 @@
 
 ## Current State
 
-- Active task: `spec/tasks/review-ci-babysitting-guardrails.md`.
-- Active branch: `codex/review-ci-babysitting-guardrails`.
-- Current workflow: implementation and handoff in progress for repository process guardrails. The branch adds review and Codex babysitting guidance, changed-file formatting validation, repository hygiene validation, and clearer GitHub Actions jobs. No product behavior, UI behavior, roadmap content, release, deployment, merge, production-readiness state, or human checkpoint approval changed.
+- Active task: `spec/tasks/interactive-mvp-flow-prototype.md`.
+- Active branch: `codex/interactive-mvp-flow-merge-prep`.
+- Current workflow: clean merge-prep and publication in progress for the frontend-only `/mvp-flow` interactive prototype. This branch was rebuilt from latest `origin/mvp-implementation` to include only the prototype task slice and avoid republishing old CI/design-guidance commits already merged through PRs #34 and #35. The prototype is local-state only and does not add real auth, Supabase writes, storage upload, OCR, AI generation, reminder delivery, real sharing, PDF export, release, deployment, merge, roadmap movement, production-readiness state, or human checkpoint approval.
 
 ## Latest Notes
 
+- Prepared clean branch `codex/interactive-mvp-flow-merge-prep` on 2026-06-17 from latest `origin/mvp-implementation` for the remaining interactive prototype changes from old mixed branch `codex/interactive-mvp-flow`.
+- Included only the coherent prototype slice: `/mvp-flow` route, feature-local prototype component/styles/test, required prototype assets `bruno-avatar.png` and `extraction-pets.png`, `design-qa.md`, task file, and validation artifact. Excluded old CI/guardrail and `DESIGN.md` commits because those were already merged via PRs #34 and #35.
+- Validation passed on clean branch: `pnpm --filter web test -- features/mvp-flow/MvpFlowPrototype.test.tsx`; `pnpm --filter web lint` outside sandbox after sandbox `fetch failed`; `pnpm format:check` outside sandbox after formatting copied files; `pnpm validation:repo-hygiene` outside sandbox after sandbox `fetch failed`; `git diff --check`.
+- Browser smoke attempted against local `http://localhost:3000/mvp-flow`, but Playwright automation was unavailable because the Chromium executable is missing from the local cache. Existing evaluation artifact still records earlier browser evidence from the original prototype implementation pass.
+- Approval state: no human acceptance, release, deployment, merge, production-readiness state, or roadmap phase movement. Recommended next action: publish a focused draft PR from `codex/interactive-mvp-flow-merge-prep` to `mvp-implementation` for human review.
 - Resolved PR #35 merge conflicts on 2026-06-16 by merging latest `origin/mvp-implementation` into `codex/caniello-design-guidance` and preserving both the new repository guardrails and the `DESIGN.md` visual guidance. GitHub reports PR #35 as mergeable after commit `ff27d42`; remaining PR state is draft/check status only, not a file conflict.
 - Published draft PR https://github.com/maciejgos/caniello/pull/35 from `codex/caniello-design-guidance` to `mvp-implementation` on 2026-06-16. The branch includes design-guidance commit `17c608f`; this publish-record handoff update follows as a separate metadata commit. The PR is draft only and does not mark the guidance accepted, approved, merged, released, deployed, production-ready, or roadmap scope moved.
 - Approval state: no human acceptance, release, deployment, merge, production-readiness state, or roadmap phase movement. Recommended next action: human review of draft PR #35.
