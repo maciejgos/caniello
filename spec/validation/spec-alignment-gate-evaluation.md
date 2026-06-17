@@ -2,7 +2,7 @@
 
 ## Status
 
-Ready for human review
+Accepted
 
 ## Scope
 
@@ -131,6 +131,6 @@ The implemented gate is deterministic, scoped to task/evidence presence, and avo
 
 ## Human Decision
 
-Pending
+Accepted by human on 2026-06-17.
 
-This validation does not approve, merge, release, deploy, mark human checkpoints complete, or make the gate accepted as a project policy without human review.
+The human accepted the spec-alignment gate validation artifacts. This does not approve, merge, release, deploy, mark release checkpoints complete, or move roadmap scope.
