@@ -8,6 +8,7 @@
 
 ## Latest Notes
 
+- Fixed PR #36 Lifecycle Gate failure on 2026-06-17 by adding a `Human Checkpoint State` section to `spec/validation/interactive-mvp-flow-prototype-evaluation.md`. Root cause was the PDLC lifecycle gate requiring explicit human decision/checkpoint language for changed validation artifacts. Validation passed locally with `PDLC_GATE_BASE=6eec52d884f0da193b20ccad7bcf42abbd152f1c PDLC_GATE_HEAD=HEAD node scripts/pdlc-lifecycle-gate.mjs`, `pnpm format:check`, and `git diff --check`.
 - Prepared clean branch `codex/interactive-mvp-flow-merge-prep` on 2026-06-17 from latest `origin/mvp-implementation` for the remaining interactive prototype changes from old mixed branch `codex/interactive-mvp-flow`.
 - Included only the coherent prototype slice: `/mvp-flow` route, feature-local prototype component/styles/test, required prototype assets `bruno-avatar.png` and `extraction-pets.png`, `design-qa.md`, task file, and validation artifact. Excluded old CI/guardrail and `DESIGN.md` commits because those were already merged via PRs #34 and #35.
 - Validation passed on clean branch: `pnpm --filter web test -- features/mvp-flow/MvpFlowPrototype.test.tsx`; `pnpm --filter web lint` outside sandbox after sandbox `fetch failed`; `pnpm format:check` outside sandbox after formatting copied files; `pnpm validation:repo-hygiene` outside sandbox after sandbox `fetch failed`; `git diff --check`.
