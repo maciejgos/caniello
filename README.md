@@ -143,6 +143,14 @@ Local demo account:
 
 The demo account is defined in `infra/supabase/seed.sql` for local development only. After changing seed data, recreate the local database with `supabase db reset --workdir infra`, then restart `pnpm dev` if the web app is already running.
 
+Local new-owner validation:
+
+- Start the local stack with `./scripts/start.sh` and the web app with `pnpm dev`.
+- Open `http://127.0.0.1:3000/signup` or `http://localhost:3000/signup`.
+- Create a new owner with email/password. Google and Apple sign-in are intentionally disabled until provider configuration is explicitly implemented and tested.
+- The current local Supabase settings report `mailer_autoconfirm: true`, so signup should complete and open the protected app without a confirmation email.
+- If local email confirmation is enabled in a future Supabase config, open Supabase Inbucket at `http://127.0.0.1:54324`, find the signup email, follow the confirmation link, then return to `/login` and sign in with the new owner credentials.
+
 Vercel should use `apps/web` as the Root Directory. The MVP uses one Vercel project for the web app and its `/api/*` routes; do not create a separate API project for the MVP.
 
 ## Landing Lead Capture Configuration

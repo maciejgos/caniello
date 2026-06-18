@@ -19,8 +19,9 @@ Related roadmap item:
 ## Scope
 
 - Confirm the local signup flow can complete in development through Mailpit/Inbucket, Supabase local auth configuration, or a documented validation-account confirmation bypass.
-- Decide whether visible Google and Apple sign-in buttons should be implemented for local validation or hidden/disabled with clear unavailable state.
+- Keep email/password as the MVP validation path and make visible Google and Apple sign-in buttons disabled with clear unavailable-state copy.
 - Ensure login/signup copy does not advertise working OAuth if provider configuration is absent.
+- Document the local new-owner validation path, including where to confirm the signup email in the local Supabase Inbucket.
 - Add focused tests or browser checks for new-owner signup/login and unavailable OAuth affordances.
 - Match the relevant auth mockups in `spec/design/visual-artifacts/mvp/` 1:1 for visible layout, labels, controls, and unavailable states, unless a deviation is explicitly recorded and approved.
 
@@ -38,6 +39,7 @@ Related roadmap item:
 - Login/signup screens match the supplied MVP auth mockups 1:1 for visible UI, or approved deviations are documented.
 - Tests or browser evidence cover the chosen new-owner path.
 - The validation artifact or handoff records any remaining production-auth caveats.
+- No production OAuth provider configuration, provider secrets, account linking, paid auth work, release, deployment, or roadmap movement is introduced.
 
 ## Implementation Notes
 
@@ -56,12 +58,25 @@ Related roadmap item:
 
 ## Verification
 
-- [ ] Focused auth tests.
-- [ ] Browser validation for new-owner signup/login.
-- [ ] Browser validation that unavailable OAuth actions are not misleading.
-- [ ] No roadmap scope expansion.
-- [ ] Handoff updated.
+- [x] Focused auth tests.
+- [x] Browser validation for new-owner signup/login.
+- [x] Browser validation that unavailable OAuth actions are not misleading.
+- [x] Local validation path documented.
+- [x] No roadmap scope expansion.
+- [x] Handoff updated.
 
 ## Handoff Notes
 
-Update after implementation or evaluation.
+Implemented on branch `codex/new-owner-access-validation`.
+
+Changed the signup auth boundary so Supabase autoconfirmed local signups return `authenticated` instead of always showing email-verification guidance. The signup form redirects authenticated signup responses into `/app`; verification-required responses still show the existing email guidance. Google and Apple auth buttons remain visible for mockup alignment, but they are disabled with visible Polish/English unavailable-state copy and accessible labels. README now documents the local new-owner validation path and notes that the current local Supabase settings report `mailer_autoconfirm: true`; Inbucket confirmation is documented as the future path if local email confirmation is enabled.
+
+Validation passed: focused `AccountApp.test.tsx`; focused account server auth tests; full `pnpm --filter web test`; `pnpm --filter web lint` outside sandbox after sandbox `fetch failed`; `pnpm --filter web test:e2e -- account.spec.ts` outside sandbox after sandbox `fetch failed`; opt-in live local new-owner E2E `CANIELLO_RUN_LIVE_AUTH_E2E=1 pnpm --filter web test:e2e -- new-owner-live.spec.ts` outside sandbox with local Supabase and Mailpit running; `pnpm build` outside sandbox after sandbox `fetch failed`; `pnpm format:check` outside sandbox after sandbox `fetch failed`; `pnpm validation:spec-alignment` outside sandbox after sandbox `fetch failed`; `git diff --check`. Initial live E2E failed because local Supabase autoconfirmed signups and did not send Mailpit confirmation email; implementation and test were corrected to respect `/auth/v1/settings`.
+
+Validation artifact: `spec/validation/new-owner-access-validation-evaluation.md`.
+
+No production OAuth rollout, provider secrets, account linking, email marketing automation, release, deployment, merge, production-readiness state, or roadmap movement is included or approved.
+
+## Human Decision
+
+Accepted on 2026-06-18. Acceptance applies to this task and its validation evidence only. It does not approve merge, release, deployment, production readiness, OAuth rollout, provider setup, or roadmap movement.
