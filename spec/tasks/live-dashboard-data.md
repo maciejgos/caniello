@@ -23,6 +23,7 @@ Related roadmap item:
 - Render recent documents and care timeline panels from saved records ordered by record date.
 - Keep the health summary derived from the saved pet profile.
 - Derive sharing and tip banners from current saved data.
+- Make the active-pet summary card open the existing pet-profile section.
 - Replace the simulated Ask Caniello prompt and suggestions with an honest unavailable state and navigation to the Ask Caniello section.
 - Add localized loading, empty, and recoverable error states without falling back to sample records.
 - Add focused UI tests and desktop/mobile browser validation.
@@ -41,6 +42,7 @@ Related roadmap item:
 - Upcoming cards show saved active/suggested reminders in due-date order and have a clear empty state.
 - Recent documents and timeline panels show saved records in descending record-date order and have clear empty states.
 - Health values come from the active saved pet profile.
+- The active-pet summary is keyboard-accessible and opens the saved pet profile.
 - Sharing status reflects whether an active, unexpired share link exists.
 - Ask Caniello clearly states that answers are unavailable and routes owners to its dedicated section instead of simulating answers or unexpectedly opening another feature.
 - API loading or failure states remain honest and recoverable; failed requests do not reveal stale demonstration content.

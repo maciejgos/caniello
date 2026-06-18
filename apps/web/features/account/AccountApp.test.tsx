@@ -477,6 +477,18 @@ describe("Caniello account experience", () => {
       screen.getByRole("button", { name: /powiadomienia/i }),
     ).toBeInTheDocument();
     await user.click(
+      screen.getByRole("button", { name: /podsumowanie aktywnego pupila/i }),
+    );
+    expect(
+      await screen.findByRole("heading", {
+        name: /zapisz podstawowe dane pupila/i,
+      }),
+    ).toBeInTheDocument();
+    await user.click(
+      screen.getAllByRole("button", { name: accountCopy.pl.appNavHome })[0],
+    );
+    await screen.findByRole("heading", { name: /dzień dobry/i });
+    await user.click(
       screen.getByRole("button", { name: /otwórz ask caniello/i }),
     );
     expect(

@@ -65,6 +65,10 @@ Evaluate `spec/tasks/live-dashboard-data.md` against the `Now - MVP Foundation` 
   Evidence status: Supported.
   Evidence: Existing profile fields render Bruno's saved age, weight, allergies value, and microchip.
 
+- Criterion: Active-pet summary opens the saved pet profile.
+  Evidence status: Supported.
+  Evidence: The summary is a semantic button with visible focus treatment; focused tests and browser interaction navigate to the existing pet-profile section.
+
 - Criterion: Sharing reflects an active, unexpired link.
   Evidence status: Supported.
   Evidence: Focused populated test renders active-link copy; seeded browser state with no link renders the inactive state. Revoked and expired links are excluded by the client selector.
@@ -140,6 +144,7 @@ Evaluate `spec/tasks/live-dashboard-data.md` against the `Now - MVP Foundation` 
 
 - No material findings.
 - Browser review follow-up resolved: the Ask Caniello card no longer routes unexpectedly to Documents; its action opens the dedicated Ask Caniello section.
+- Browser review follow-up resolved: the active-pet summary card is now an accessible button that opens the pet-profile section.
 - Low residual risk: dashboard data is loaded by four parallel requests, so one failed endpoint places all non-profile dashboard regions into the recoverable unavailable state. This is intentionally simpler and safer than displaying a partially stale mixture; a future task may introduce per-panel recovery if user evidence warrants it.
 
 ## Missing, Skipped, or Unavailable Checks
