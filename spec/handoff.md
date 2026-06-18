@@ -4,10 +4,11 @@
 
 - Active task: `spec/tasks/dashboard-mockup-and-active-pet-alignment.md`.
 - Active branch: `codex/dashboard-mockup-active-pet`.
-- Current workflow: planning, implementation, evaluation, artifact acceptance, handoff, and publication preparation complete. Evaluator verdict: Pass. Validation artifact: `spec/validation/dashboard-mockup-and-active-pet-alignment-evaluation.md`. No merge, release, deployment, production-readiness state, multi-pet rollout, live dashboard aggregation, or roadmap movement has been approved.
+- Current workflow: planning, implementation, evaluation, artifact acceptance, handoff, and draft PR publication complete. Evaluator verdict: Pass. Validation artifact: `spec/validation/dashboard-mockup-and-active-pet-alignment-evaluation.md`. Draft PR: https://github.com/maciejgos/caniello/pull/39. No merge, release, deployment, production-readiness state, multi-pet rollout, live dashboard aggregation, or roadmap movement has been approved.
 
 ## Latest Notes
 
+- Published draft PR https://github.com/maciejgos/caniello/pull/39 from `codex/dashboard-mockup-active-pet` to `mvp-implementation` on 2026-06-18. The validated implementation commit is `56662b9` (`Align dashboard with active pet`); this publish-record handoff update follows as a separate metadata commit. The PR records evaluator verdict `Pass`, full automated and browser evidence, the no-pet screenshot follow-up, formatter-driven diff volume, and deferred live dashboard aggregation/multi-pet/account-photo limits. The draft PR does not approve merge, release, deployment, production readiness, roadmap movement, multi-pet rollout, or deferred capabilities. Recommended next action: maintainer review and merge PR #39 when ready.
 - Planned, implemented, and evaluated `spec/tasks/dashboard-mockup-and-active-pet-alignment.md` on 2026-06-18.
 - The authenticated shell now loads the owner-scoped first saved pet once through `/api/pets/profile`. A saved pet opens the returning dashboard; no saved pet opens onboarding automatically. The old demo-state switch was removed.
 - Saving a pet profile propagates the saved pet into the shell and dashboard without a page reload. The top-bar pet affordance is now a status/current-context indicator rather than a false multi-pet selector.
