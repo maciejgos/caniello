@@ -11,17 +11,30 @@ import { CareTimelineSection } from "./CareTimelineSection";
 import { CareRemindersSection } from "./CareRemindersSection";
 import { DocumentVaultSection } from "./DocumentVaultSection";
 import { PetProfileSection } from "./PetProfileSection";
+import { useActivePetProfile } from "./useActivePetProfile";
 
-export type AppSection = "home" | "pets" | "timeline" | "documents" | "reminders" | "ask" | "sharing" | "settings";
+export type AppSection =
+  | "home"
+  | "pets"
+  | "timeline"
+  | "documents"
+  | "reminders"
+  | "ask"
+  | "sharing"
+  | "settings";
 
 type AuthenticatedAppShellProps = {
   language: AccountLanguage;
   onLanguageChange: (language: AccountLanguage) => void;
 };
 
-export function AuthenticatedAppShell({ language, onLanguageChange }: AuthenticatedAppShellProps) {
+export function AuthenticatedAppShell({
+  language,
+  onLanguageChange,
+}: AuthenticatedAppShellProps) {
   const copy = accountCopy[language];
   const [activeSection, setActiveSection] = useState<AppSection>("home");
+  const activePet = useActivePetProfile();
 
   async function logout() {
     await fetch("/api/account/logout", { method: "POST" });
@@ -31,24 +44,64 @@ export function AuthenticatedAppShell({ language, onLanguageChange }: Authentica
   return (
     <main className="min-h-screen bg-[#fbfaf7] text-navy">
       <div className="min-h-screen lg:grid lg:grid-cols-[236px_1fr]">
-        <AppSidebar copy={copy} activeSection={activeSection} onSectionChange={setActiveSection} />
+        <AppSidebar
+          copy={copy}
+          activeSection={activeSection}
+          onSectionChange={setActiveSection}
+        />
         <div className="min-w-0 border-l border-[#e6e9ef] bg-white">
-          <AppTopBar copy={copy} language={language} onLanguageChange={onLanguageChange} onLogout={logout} />
-          <MobileAppNav copy={copy} activeSection={activeSection} onSectionChange={setActiveSection} />
+          <AppTopBar
+            copy={copy}
+            language={language}
+            onLanguageChange={onLanguageChange}
+            onLogout={logout}
+            pet={activePet.pet}
+            isPetLoading={activePet.isLoading}
+          />
+          <MobileAppNav
+            copy={copy}
+            activeSection={activeSection}
+            onSectionChange={setActiveSection}
+          />
           {activeSection === "home" ? (
-            <AppHomeDashboard copy={copy} />
+            <AppHomeDashboard
+              copy={copy}
+              pet={activePet.pet}
+              isPetLoading={activePet.isLoading}
+              hasPetLoadError={activePet.hasLoadError}
+              onPetsRequest={() => setActiveSection("pets")}
+              onSectionRequest={setActiveSection}
+              onPetSaved={activePet.setPet}
+            />
           ) : activeSection === "pets" ? (
-            <PetProfileSection copy={copy} />
+            <PetProfileSection copy={copy} onPetSaved={activePet.setPet} />
           ) : activeSection === "timeline" ? (
-            <CareTimelineSection copy={copy} onPetsRequest={() => setActiveSection("pets")} onRemindersRequest={() => setActiveSection("reminders")} />
+            <CareTimelineSection
+              copy={copy}
+              onPetsRequest={() => setActiveSection("pets")}
+              onRemindersRequest={() => setActiveSection("reminders")}
+            />
           ) : activeSection === "documents" ? (
-            <DocumentVaultSection copy={copy} onPetsRequest={() => setActiveSection("pets")} />
+            <DocumentVaultSection
+              copy={copy}
+              onPetsRequest={() => setActiveSection("pets")}
+            />
           ) : activeSection === "reminders" ? (
-            <CareRemindersSection copy={copy} onPetsRequest={() => setActiveSection("pets")} />
+            <CareRemindersSection
+              copy={copy}
+              onPetsRequest={() => setActiveSection("pets")}
+            />
           ) : activeSection === "sharing" ? (
-            <CareCardPreviewSection copy={copy} onPetsRequest={() => setActiveSection("pets")} />
+            <CareCardPreviewSection
+              copy={copy}
+              onPetsRequest={() => setActiveSection("pets")}
+            />
           ) : activeSection === "settings" ? (
-            <AccountSettingsSection copy={copy} language={language} onLanguageChange={onLanguageChange} />
+            <AccountSettingsSection
+              copy={copy}
+              language={language}
+              onLanguageChange={onLanguageChange}
+            />
           ) : (
             <AppSectionEmptyState copy={copy} section={activeSection} />
           )}

@@ -3,6 +3,23 @@ import userEvent from "@testing-library/user-event";
 import { AccountApp } from "./AccountApp";
 import { accountCopy } from "./content";
 
+const brunoPet = {
+  id: "44444444-4444-4444-8444-444444444444",
+  householdId: "33333333-3333-4333-8333-333333333333",
+  name: "Bruno",
+  species: "dog",
+  breed: "Golden Retriever",
+  birthDate: "2022-05-26",
+  sexOrGender: "male",
+  weightKg: 26.4,
+  microchipNumber: "616093900000000",
+  allergies: null,
+  medication: "OmegaVet",
+  importantNotes: null,
+  createdAt: "2026-06-04T09:00:00.000Z",
+  updatedAt: "2026-06-04T09:30:00.000Z",
+};
+
 describe("Caniello account experience", () => {
   beforeEach(() => {
     window.localStorage.clear();
@@ -200,16 +217,45 @@ describe("Caniello account experience", () => {
       configurable: true,
       value: { assign },
     });
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+        if (String(input) === "/api/pets/profile") {
+          return new Response(JSON.stringify({ ok: true, pet: brunoPet }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          });
+        }
+
+        if (
+          String(input) === "/api/account/logout" &&
+          init?.method === "POST"
+        ) {
+          return new Response(JSON.stringify({ ok: true }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          });
+        }
+
+        return new Response(JSON.stringify({ ok: true, status: "ok" }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        });
+      }),
+    );
     const user = userEvent.setup();
     render(<AccountApp route="app-home" />);
 
     expect(
-      screen.getByRole("heading", { name: /panel opiekuna/i }),
+      await screen.findByRole("heading", { name: /dzień dobry/i }),
     ).toBeInTheDocument();
+    expect(screen.getByText(/oto co czeka bruno/i)).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: /co dziś u bruno/i }),
-    ).toBeInTheDocument();
-    expect(screen.getByText(/podgląd demo/i)).toBeInTheDocument();
+      screen.getByRole("status", { name: /aktywny pupil/i }),
+    ).toHaveTextContent(/bruno.*pierwszy profil/i);
+    expect(
+      screen.queryByRole("button", { name: /pierwsze uruchomienie/i }),
+    ).not.toBeInTheDocument();
     expect(
       screen.getByRole("heading", { name: /co dalej/i }),
     ).toBeInTheDocument();
@@ -218,13 +264,14 @@ describe("Caniello account experience", () => {
     expect(
       screen.getByRole("heading", { name: /podsumowanie zdrowia/i }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/dane przykładowe/i)).toBeInTheDocument();
+    expect(screen.getByText("26.4 kg")).toBeInTheDocument();
+    expect(screen.getByText("616093900000000")).toBeInTheDocument();
     expect(
       screen.getByRole("heading", { name: /ostatnie dokumenty/i }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: /przejdź do dokumentów/i }),
-    ).toBeDisabled();
+      screen.getByRole("button", { name: /zobacz dokumenty/i }),
+    ).toBeEnabled();
     expect(
       screen.getByRole("heading", { name: /oś czasu opieki/i }),
     ).toBeInTheDocument();
@@ -232,55 +279,13 @@ describe("Caniello account experience", () => {
       screen.getByRole("heading", { name: /zapytaj caniello/i }),
     ).toBeInTheDocument();
     expect(screen.getByText(/nie udziela diagnoz/i)).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /zapytaj na podstawie rekordów/i }),
-    ).toBeDisabled();
+    expect(screen.getByText(/zadaj pytanie o bruno/i)).toBeInTheDocument();
     expect(
       screen.getByRole("heading", { name: /udostępnij kartę opieki/i }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /przygotuj udostępnianie/i }),
-    ).toBeDisabled();
-    expect(
-      screen.getByText(/nie zastępuje lekarza weterynarii/i),
-    ).toBeInTheDocument();
-    await user.click(
-      screen.getByRole("button", { name: /pierwsze uruchomienie/i }),
-    );
-    expect(
-      screen.getByRole("heading", { name: /witaj w caniello/i }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/zacznijmy od kilku prostych kroków/i),
-    ).toBeInTheDocument();
-    expect(screen.getAllByText(/dodaj pupila/i)[0]).toBeInTheDocument();
-    expect(
-      screen.getAllByText(/prześlij lub zeskanuj pierwszy dokument/i)[0],
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/przypomnienia i ask caniello/i),
-    ).toBeInTheDocument();
-    expect(screen.getByLabelText(/imię pupila/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/gatunek/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/rasa/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/data urodzenia/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/płeć/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/waga/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /dodaj bruno/i })).toBeDisabled();
-    expect(
-      screen.getByRole("button", { name: /prześlij pierwszy dokument/i }),
-    ).toBeDisabled();
-    expect(
-      screen.getByRole("button", { name: /skanuj dokument/i }),
-    ).toBeDisabled();
-    expect(
-      screen.getByRole("button", { name: /podgląd pełnego dokumentu/i }),
-    ).toBeDisabled();
-    expect(
-      screen.getByRole("button", { name: /dowiedz się więcej o dokumentach/i }),
-    ).toBeDisabled();
-    expect(screen.getByText(/sprawdź wyciągnięte dane/i)).toBeInTheDocument();
-    expect(screen.getByText(/wskazówka caniello/i)).toBeInTheDocument();
+    ).toBeEnabled();
     expect(
       screen.getAllByRole("button", { name: accountCopy.pl.appNavHome })[0],
     ).toHaveAttribute("aria-current", "page");
@@ -313,7 +318,7 @@ describe("Caniello account experience", () => {
       screen.getByRole("searchbox", { name: /szukaj w caniello/i }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: /aktywny pupil/i }),
+      screen.getByRole("status", { name: /aktywny pupil/i }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /powiadomienia/i }),
@@ -329,49 +334,46 @@ describe("Caniello account experience", () => {
   });
 
   it("keeps protected app shell labels coherent after switching to English", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (input: RequestInfo | URL) => {
+        if (String(input) === "/api/pets/profile") {
+          return new Response(JSON.stringify({ ok: true, pet: brunoPet }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          });
+        }
+
+        return new Response(JSON.stringify({ ok: true, status: "ok" }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        });
+      }),
+    );
     const user = userEvent.setup();
     render(<AccountApp route="app-home" />);
 
+    await screen.findByRole("heading", { name: /dzień dobry/i });
     await user.click(screen.getByRole("button", { name: "EN" }));
 
     expect(
-      screen.getByRole("heading", { name: /owner dashboard/i }),
+      screen.getByRole("heading", { name: /good morning/i }),
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole("heading", { name: /what needs attention for bruno/i }),
-    ).toBeInTheDocument();
-    expect(screen.getByText(/demo preview/i)).toBeInTheDocument();
+    expect(screen.getByText(/what's ahead for bruno/i)).toBeInTheDocument();
     expect(
       screen.getByRole("heading", { name: /what's next/i }),
     ).toBeInTheDocument();
     expect(screen.getByText(/rabies due in 18 days/i)).toBeInTheDocument();
-    expect(screen.getByText(/example data/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/details saved in the pet profile/i),
+    ).toBeInTheDocument();
     expect(
       screen.getByRole("heading", { name: /recent documents/i }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: /ask from records/i }),
-    ).toBeDisabled();
-    expect(
       screen.getByRole("button", { name: /prepare sharing/i }),
-    ).toBeDisabled();
+    ).toBeEnabled();
     expect(screen.getByText(/does not diagnose/i)).toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: /first run/i }));
-    expect(
-      screen.getByRole("heading", { name: /welcome to caniello/i }),
-    ).toBeInTheDocument();
-    expect(screen.getByText(/let's get started/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/pet name/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/species/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /add bruno/i })).toBeDisabled();
-    expect(
-      screen.getByRole("button", { name: /upload first document/i }),
-    ).toBeDisabled();
-    expect(
-      screen.getByRole("button", { name: /scan document/i }),
-    ).toBeDisabled();
-    expect(screen.getByText(/review extracted details/i)).toBeInTheDocument();
-    expect(screen.getByText(/caniello tip/i)).toBeInTheDocument();
     expect(
       screen.getAllByRole("button", { name: /pets/i })[0],
     ).toBeInTheDocument();
@@ -382,7 +384,129 @@ describe("Caniello account experience", () => {
       screen.getByRole("searchbox", { name: /search caniello/i }),
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/does not replace a veterinarian/i),
+      screen.getByRole("status", { name: /active pet/i }),
+    ).toHaveTextContent(/bruno.*first profile/i);
+    expect(screen.getByText(/remain demonstration data/i)).toBeInTheDocument();
+  });
+
+  it("opens honest first-run onboarding when no pet profile exists", async () => {
+    const savedPet = {
+      ...brunoPet,
+      name: "Luna",
+      species: "cat",
+      breed: "europejski",
+      birthDate: "2023-04-12",
+      sexOrGender: "female",
+      weightKg: 4.6,
+    };
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+        if (String(input) === "/api/pets/profile" && init?.method === "PUT") {
+          return new Response(JSON.stringify({ ok: true, pet: savedPet }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          });
+        }
+
+        if (String(input) === "/api/pets/profile") {
+          return new Response(JSON.stringify({ ok: true, pet: null }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          });
+        }
+
+        return new Response(JSON.stringify({ ok: true, status: "ok" }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        });
+      }),
+    );
+    const user = userEvent.setup();
+
+    render(<AccountApp route="app-home" />);
+
+    expect(
+      await screen.findByRole("heading", { name: /witaj w caniello/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/zacznijmy od kilku prostych kroków/i),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("status", { name: /aktywny pupil/i }),
+    ).toHaveTextContent(/brak zapisanego pupila/i);
+    expect(
+      screen.getByRole("button", { name: /dodaj profil/i }),
+    ).toBeDisabled();
+    expect(screen.getByLabelText(/imię pupila/i)).toHaveValue("");
+    expect(screen.getByLabelText(/^gatunek$/i)).toHaveValue("");
+    expect(screen.queryByText(/bruno/i)).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("status", { name: /aktywny pupil/i }),
+    ).not.toHaveTextContent(/pierwszy profil/i);
+    expect(
+      screen.queryByRole("button", { name: /panel pupila/i }),
+    ).not.toBeInTheDocument();
+
+    await user.type(screen.getByLabelText(/imię pupila/i), "Luna");
+    await user.selectOptions(screen.getByLabelText(/^gatunek$/i), "cat");
+    await user.type(screen.getByLabelText(/^rasa$/i), "europejski");
+    await user.type(screen.getByLabelText(/data urodzenia/i), "2023-04-12");
+    await user.selectOptions(screen.getByLabelText(/^płeć$/i), "female");
+    await user.type(screen.getByLabelText(/^waga$/i), "4.6");
+    await user.click(screen.getByRole("button", { name: /dodaj profil/i }));
+
+    await waitFor(() =>
+      expect(fetch).toHaveBeenCalledWith(
+        "/api/pets/profile",
+        expect.objectContaining({ method: "PUT" }),
+      ),
+    );
+    expect(
+      await screen.findByRole("heading", { name: /dzień dobry/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/oto co czeka luna/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("status", { name: /aktywny pupil/i }),
+    ).toHaveTextContent(/luna.*pierwszy profil/i);
+  });
+
+  it("shows a recoverable dashboard state when the active pet cannot load", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (input: RequestInfo | URL) => {
+        if (String(input) === "/api/pets/profile") {
+          return new Response(
+            JSON.stringify({ ok: false, message: "Profile unavailable." }),
+            {
+              status: 500,
+              headers: { "Content-Type": "application/json" },
+            },
+          );
+        }
+
+        return new Response(JSON.stringify({ ok: true, status: "ok" }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        });
+      }),
+    );
+    const user = userEvent.setup();
+
+    render(<AccountApp route="app-home" />);
+
+    expect(
+      await screen.findByRole("heading", {
+        name: /nie udało się załadować profilu pupila/i,
+      }),
+    ).toBeInTheDocument();
+    await user.click(
+      screen.getByRole("button", { name: /przejdź do profilu/i }),
+    );
+    expect(
+      await screen.findByRole("heading", {
+        name: /zapisz podstawowe dane pupila/i,
+      }),
     ).toBeInTheDocument();
   });
 
@@ -680,14 +804,12 @@ describe("Caniello account experience", () => {
       screen.getAllByRole("button", { name: accountCopy.pl.appNavHome })[0],
     );
     expect(
-      screen.getByRole("heading", { name: /co dziś u bruno/i }),
+      screen.getByRole("heading", { name: /dzień dobry/i }),
     ).toBeInTheDocument();
-    await user.click(
-      screen.getByRole("button", { name: /pierwsze uruchomienie/i }),
-    );
+    expect(screen.getByText(/oto co czeka luna/i)).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: /witaj w caniello/i }),
-    ).toBeInTheDocument();
+      screen.getByRole("status", { name: /aktywny pupil/i }),
+    ).toHaveTextContent(/luna.*pierwszy profil/i);
 
     await user.click(screen.getByRole("button", { name: "EN" }));
     await user.click(
@@ -807,7 +929,7 @@ describe("Caniello account experience", () => {
     expect(
       await screen.findByRole("heading", { name: /podgląd karty opieki/i }),
     ).toBeInTheDocument();
-    expect(screen.getByText("Luna")).toBeInTheDocument();
+    expect(screen.getAllByText("Luna").length).toBeGreaterThan(0);
     expect(
       screen.getByText(/dog · mixed breed · 2021-05-01/i),
     ).toBeInTheDocument();
