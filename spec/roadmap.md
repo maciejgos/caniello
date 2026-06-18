@@ -43,14 +43,14 @@ Resolved readiness checkpoints:
 
 - Readiness baseline and next-pass script are preserved in `spec/tasks/mvp-readiness-baseline-and-script.md`.
 - Document upload scope decision is resolved by accepted ADR 0025 and recorded in `spec/tasks/document-upload-scope-decision.md`; remaining work is the real upload implementation task below.
+- New-owner local email/password validation and honest unavailable OAuth states are implemented and merged through `spec/tasks/new-owner-access-validation.md` (ADRs 0014, 0023 draft boundary, 0032).
+- Dashboard/app-shell active-pet alignment and live saved-data rendering are implemented and merged through `spec/tasks/dashboard-mockup-and-active-pet-alignment.md`, `spec/tasks/live-dashboard-data.md`, and `spec/tasks/app-annotation-followups.md` (ADRs 0011, 0012, 0027, 0028).
+- Timeline history and upcoming-reminder layout alignment is implemented and merged through `spec/tasks/timeline-upcoming-reminders-alignment.md` (ADRs 0011, 0015, 0028).
+- Account deletion request persistence and audit evidence are verified and merged through `spec/tasks/account-deletion-persistence-verification.md` (ADRs 0014, 0015, 0024, 0026, 0031).
 
 Remaining MVP readiness implementation tasks:
 
-- Make new-owner local signup/login validation possible and stop advertising broken OAuth actions: `spec/tasks/new-owner-access-validation.md` (ADRs 0014, 0023 draft boundary, 0032).
-- Align dashboard and app shell behavior with live pet state and MVP mockups: `spec/tasks/dashboard-mockup-and-active-pet-alignment.md` (ADRs 0011, 0012, 0027, 0028).
-- Clarify pet/profile IA, first-pet versus multi-pet expectations, and species/sex-or-gender controls: `spec/tasks/pet-profile-ia-and-controls.md` (ADRs 0014, 0015, 0027, 0028).
-- Align Timeline with `spec/design/visual-artifacts/mvp/image 10.png` by showing history in the main timeline and upcoming reminders/actions in the right-side panel: `spec/tasks/timeline-upcoming-reminders-alignment.md` (ADRs 0011, 0015, 0028; ADR 0024 if completion writes product events).
-- Verify account deletion request persistence against the intended table: `spec/tasks/account-deletion-persistence-verification.md` (ADRs 0014, 0015, 0024, 0026, 0031).
+- Refine the remaining pet/profile IA and sex-or-gender control gaps after removing scope already delivered by the active-pet and species-dropdown work: `spec/tasks/pet-profile-ia-and-controls.md` (ADRs 0014, 0015, 0027, 0028).
 
 Accepted architecture implementation backlog:
 
