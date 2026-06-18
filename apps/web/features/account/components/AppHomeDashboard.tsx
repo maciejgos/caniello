@@ -4,6 +4,7 @@ import { AppIcon } from "./AppIcon";
 import type { AppSection } from "./AuthenticatedAppShell";
 import { FirstRunOnboarding } from "./FirstRunOnboarding";
 import { ReturningOwnerDashboard } from "./ReturningOwnerDashboard";
+import { useDashboardData } from "./useDashboardData";
 
 type AppHomeDashboardProps = {
   copy: AccountCopy;
@@ -24,6 +25,8 @@ export function AppHomeDashboard({
   onSectionRequest,
   onPetSaved,
 }: AppHomeDashboardProps) {
+  const dashboardData = useDashboardData(Boolean(pet));
+
   return (
     <section
       className="min-w-0 px-5 py-8 sm:px-8 lg:px-10 lg:py-8 xl:px-12"
@@ -46,10 +49,18 @@ export function AppHomeDashboard({
           />
         ) : pet ? (
           <>
-            <ReturningDashboardHeader copy={copy} pet={pet} />
-            <ReturningOwnerDashboard
+            <ReturningDashboardHeader
               copy={copy}
               pet={pet}
+              onPetRequest={onPetsRequest}
+            />
+            <ReturningOwnerDashboard
+              copy={copy}
+              data={dashboardData.data}
+              hasLoadError={dashboardData.hasLoadError}
+              isLoading={dashboardData.isLoading}
+              pet={pet}
+              onReload={dashboardData.reload}
               onSectionRequest={onSectionRequest}
             />
           </>
@@ -67,9 +78,11 @@ export function AppHomeDashboard({
 function ReturningDashboardHeader({
   copy,
   pet,
+  onPetRequest,
 }: {
   copy: AccountCopy;
   pet: PetProfileResponse;
+  onPetRequest: () => void;
 }) {
   return (
     <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(360px,500px)] xl:items-center">
@@ -92,7 +105,7 @@ function ReturningDashboardHeader({
           </p>
         </div>
       </div>
-      <PetIdentityCard copy={copy} pet={pet} />
+      <PetIdentityCard copy={copy} pet={pet} onPetRequest={onPetRequest} />
     </div>
   );
 }
@@ -100,9 +113,11 @@ function ReturningDashboardHeader({
 function PetIdentityCard({
   copy,
   pet,
+  onPetRequest,
 }: {
   copy: AccountCopy;
   pet: PetProfileResponse;
+  onPetRequest: () => void;
 }) {
   const metadata = [
     pet.breed || pet.species,
@@ -112,9 +127,11 @@ function PetIdentityCard({
   ].filter((value): value is string => Boolean(value));
 
   return (
-    <section
-      className="flex min-w-0 items-center gap-4 rounded-lg border border-[#e3e8f0] bg-white px-5 py-4 shadow-[0_12px_32px_rgba(15,23,42,0.04)]"
+    <button
+      className="flex min-w-0 items-center gap-4 rounded-lg border border-[#e3e8f0] bg-white px-5 py-4 text-left shadow-[0_12px_32px_rgba(15,23,42,0.04)] transition hover:border-[#bfd0e8] hover:bg-[#fbfdff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#174c9f] focus-visible:ring-offset-2"
       aria-label={copy.dashboardPetSummaryLabel}
+      onClick={onPetRequest}
+      type="button"
     >
       <span
         className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#fff3e5] text-[#d97706]"
@@ -135,7 +152,7 @@ function PetIdentityCard({
       <span className="ml-auto text-navy/42" aria-hidden="true">
         <AppIcon name="chevronRight" />
       </span>
-    </section>
+    </button>
   );
 }
 

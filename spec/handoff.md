@@ -2,12 +2,20 @@
 
 ## Current State
 
-- Active task: `spec/tasks/dashboard-mockup-and-active-pet-alignment.md`.
-- Active branch: `codex/dashboard-mockup-active-pet`.
-- Current workflow: planning, implementation, evaluation, artifact acceptance, handoff, and draft PR publication complete. Evaluator verdict: Pass. Validation artifact: `spec/validation/dashboard-mockup-and-active-pet-alignment-evaluation.md`. Draft PR: https://github.com/maciejgos/caniello/pull/39. No merge, release, deployment, production-readiness state, multi-pet rollout, live dashboard aggregation, or roadmap movement has been approved.
+- Active task: `spec/tasks/live-dashboard-data.md`.
+- Active branch: `codex/live-dashboard-data`.
+- Current workflow: implementation, evaluation, handoff, and stacked draft PR publication complete. Evaluator verdict: Pass. Validation artifact: `spec/validation/live-dashboard-data-evaluation.md`. Draft PR: https://github.com/maciejgos/caniello/pull/40, based on the unmerged dashboard/onboarding branch used by draft PR #39. No merge, release, deployment, production-readiness state, AI answer behavior, multi-pet rollout, or roadmap movement has been approved.
 
 ## Latest Notes
 
+- Review follow-up on draft PR #40 makes the dashboard active-pet summary card an accessible button that opens the existing pet-profile section. The chevron and hover/focus styling now match the actual interaction.
+- Review follow-up on draft PR #40 changes the dashboard Ask Caniello action from an unexpected Documents navigation to the dedicated Ask Caniello section. The destination remains an honest unavailable state and does not generate answers or medical guidance.
+- Published stacked draft PR https://github.com/maciejgos/caniello/pull/40 from `codex/live-dashboard-data` to `codex/dashboard-mockup-active-pet` on 2026-06-18. The validated implementation commit is `99d2a0f` (`Connect dashboard to saved care data`). The PR remains stacked while PR #39 is unmerged and does not approve merge, release, deployment, production readiness, roadmap movement, AI behavior, or deferred capabilities. Recommended next action: review PR #39 first, then review/retarget PR #40 as appropriate.
+- Planned, implemented, and evaluated `spec/tasks/live-dashboard-data.md` on 2026-06-18. The returning-owner dashboard now loads existing owner-scoped reminder, document, timeline-event, and share-link APIs in parallel and derives every dashboard region from saved data or an explicit empty/unavailable state.
+- Removed demonstration reminder/document/timeline records, simulated Ask prompt/suggestions, preview disclosure, and dormant mock-copy keys. Ask Caniello now states that answers are unavailable and routes to saved documents; it does not invent medical or record answers.
+- Focused tests passed with 20 account tests covering populated data, date ordering, empty states, active sharing, API failure/retry, absence of old mock strings, and dashboard-to-documents navigation. Full web tests passed with 113 tests and 5 existing opt-in skips; web TypeScript, production build, formatting, spec alignment after evidence updates, and `git diff --check` passed.
+- In-app Browser validation using the seeded owner passed at 1440x900 and 390x900: saved OmegaVet/rabies reminders and Rabies certificate rendered; timeline and sharing showed honest empty states; no old demonstration strings, console warnings/errors, visible framework overlay, or horizontal overflow appeared.
+- Evaluator verdict: Pass. Validation artifact: `spec/validation/live-dashboard-data-evaluation.md`. Recommended next action: publish a stacked draft PR based on `codex/dashboard-mockup-active-pet` while PR #39 remains unmerged, then await maintainer review.
 - Review follow-up on draft PR https://github.com/maciejgos/caniello/pull/39 makes the first-run `Dodaj pupila` panel functional. The previously read-only mockup fields now accept pet name, species, breed, birth date, sex/gender, and weight, save through the existing typed `/api/pets/profile` boundary, and update the shell/dashboard immediately without a reload.
 - Follow-up validation passed on 2026-06-18: focused account coverage remains 19 tests; full web suite passed with 112 tests and 5 existing opt-in skips; web TypeScript, production build, formatting, spec alignment after evidence updates, and `git diff --check` passed. Fresh-owner Playwright checks at 1440x900 and 390x900 confirmed save, immediate dashboard transition, reload persistence, zero console/page errors, no framework overlay, and no horizontal overflow.
 - Evaluator follow-up verdict remains Pass. No merge, release, deployment, production-readiness state, roadmap movement, multi-pet expansion, or new API/data boundary has been approved.

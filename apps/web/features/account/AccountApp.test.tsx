@@ -20,6 +20,102 @@ const brunoPet = {
   updatedAt: "2026-06-04T09:30:00.000Z",
 };
 
+const dashboardReminders = [
+  {
+    id: "11111111-1111-4111-8111-111111111111",
+    petId: brunoPet.id,
+    title: "Kontrola stomatologiczna",
+    reminderType: "visit",
+    dueDate: "2026-07-20",
+    notes: null,
+    status: "active",
+    createdAt: "2026-06-10T09:00:00.000Z",
+    updatedAt: "2026-06-10T09:00:00.000Z",
+  },
+  {
+    id: "22222222-2222-4222-8222-222222222222",
+    petId: brunoPet.id,
+    title: "Szczepienie przypominające",
+    reminderType: "vaccination",
+    dueDate: "2026-07-05",
+    notes: null,
+    status: "suggested",
+    createdAt: "2026-06-09T09:00:00.000Z",
+    updatedAt: "2026-06-09T09:00:00.000Z",
+  },
+];
+
+const dashboardDocuments = [
+  {
+    id: "77777777-7777-4777-8777-777777777777",
+    petId: brunoPet.id,
+    title: "Starsza karta szczepień",
+    documentType: "vaccination",
+    documentDate: "2026-05-02",
+    providerName: "Przychodnia Zielona",
+    notes: null,
+    originalFilename: null,
+    mimeType: null,
+    status: "metadata_only",
+    createdAt: "2026-05-02T09:00:00.000Z",
+    updatedAt: "2026-05-02T09:00:00.000Z",
+  },
+  {
+    id: "33333333-3333-4333-8333-333333333333",
+    petId: brunoPet.id,
+    title: "Wyniki morfologii",
+    documentType: "lab_result",
+    documentDate: "2026-06-12",
+    providerName: "Przychodnia Zielona",
+    notes: null,
+    originalFilename: null,
+    mimeType: null,
+    status: "metadata_only",
+    createdAt: "2026-06-12T09:00:00.000Z",
+    updatedAt: "2026-06-12T09:00:00.000Z",
+  },
+];
+
+const dashboardEvents = [
+  {
+    id: "88888888-8888-4888-8888-888888888888",
+    petId: brunoPet.id,
+    eventType: "vaccination",
+    eventDate: "2026-05-10",
+    title: "Szczepienie sezonowe",
+    notes: null,
+    createdAt: "2026-05-10T09:00:00.000Z",
+    updatedAt: "2026-05-10T09:00:00.000Z",
+  },
+  {
+    id: "55555555-5555-4555-8555-555555555555",
+    petId: brunoPet.id,
+    eventType: "visit",
+    eventDate: "2026-06-11",
+    title: "Kontrola ogólna",
+    notes: null,
+    createdAt: "2026-06-11T09:00:00.000Z",
+    updatedAt: "2026-06-11T09:00:00.000Z",
+  },
+];
+
+const dashboardShareLinks = [
+  {
+    id: "66666666-6666-4666-8666-666666666666",
+    petId: brunoPet.id,
+    expiresAt: "2027-01-15T12:00:00.000Z",
+    revokedAt: null,
+    createdAt: "2026-06-12T09:00:00.000Z",
+  },
+];
+
+function jsonResponse(body: unknown, status = 200) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { "Content-Type": "application/json" },
+  });
+}
+
 describe("Caniello account experience", () => {
   beforeEach(() => {
     window.localStorage.clear();
@@ -227,6 +323,35 @@ describe("Caniello account experience", () => {
           });
         }
 
+        if (String(input) === "/api/reminders") {
+          return jsonResponse({
+            ok: true,
+            pet: brunoPet,
+            reminders: dashboardReminders,
+          });
+        }
+        if (String(input) === "/api/documents") {
+          return jsonResponse({
+            ok: true,
+            pet: brunoPet,
+            documents: dashboardDocuments,
+          });
+        }
+        if (String(input) === "/api/timeline-events") {
+          return jsonResponse({
+            ok: true,
+            pet: brunoPet,
+            events: dashboardEvents,
+          });
+        }
+        if (String(input) === "/api/share-links") {
+          return jsonResponse({
+            ok: true,
+            pet: brunoPet,
+            shareLinks: dashboardShareLinks,
+          });
+        }
+
         if (
           String(input) === "/api/account/logout" &&
           init?.method === "POST"
@@ -259,8 +384,17 @@ describe("Caniello account experience", () => {
     expect(
       screen.getByRole("heading", { name: /co dalej/i }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/wścieklizna za 18 dni/i)).toBeInTheDocument();
-    expect(screen.getByText(/omegavet dziś o 19:00/i)).toBeInTheDocument();
+    expect(
+      await screen.findByText(/szczepienie przypominające/i),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/kontrola stomatologiczna/i)).toBeInTheDocument();
+    expect(
+      screen
+        .getByText(/szczepienie przypominające/i)
+        .compareDocumentPosition(
+          screen.getByText(/kontrola stomatologiczna/i),
+        ) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
     expect(
       screen.getByRole("heading", { name: /podsumowanie zdrowia/i }),
     ).toBeInTheDocument();
@@ -269,23 +403,42 @@ describe("Caniello account experience", () => {
     expect(
       screen.getByRole("heading", { name: /ostatnie dokumenty/i }),
     ).toBeInTheDocument();
+    expect(screen.getByText(/wyniki morfologii/i)).toBeInTheDocument();
+    expect(
+      screen
+        .getByText(/wyniki morfologii/i)
+        .compareDocumentPosition(screen.getByText(/starsza karta szczepień/i)) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
     expect(
       screen.getByRole("button", { name: /zobacz dokumenty/i }),
     ).toBeEnabled();
     expect(
       screen.getByRole("heading", { name: /oś czasu opieki/i }),
     ).toBeInTheDocument();
+    expect(screen.getByText(/kontrola ogólna/i)).toBeInTheDocument();
+    expect(
+      screen
+        .getByText(/kontrola ogólna/i)
+        .compareDocumentPosition(screen.getByText(/szczepienie sezonowe/i)) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
     expect(
       screen.getByRole("heading", { name: /zapytaj caniello/i }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/nie udziela diagnoz/i)).toBeInTheDocument();
-    expect(screen.getByText(/zadaj pytanie o bruno/i)).toBeInTheDocument();
+    expect(screen.getByText(/nie zgaduje odpowiedzi/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /otwórz ask caniello/i }),
+    ).toBeEnabled();
     expect(
       screen.getByRole("heading", { name: /udostępnij kartę opieki/i }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /przygotuj udostępnianie/i }),
     ).toBeEnabled();
+    expect(
+      screen.getByText(/aktywny link tylko do odczytu/i),
+    ).toBeInTheDocument();
     expect(
       screen.getAllByRole("button", { name: accountCopy.pl.appNavHome })[0],
     ).toHaveAttribute("aria-current", "page");
@@ -323,6 +476,31 @@ describe("Caniello account experience", () => {
     expect(
       screen.getByRole("button", { name: /powiadomienia/i }),
     ).toBeInTheDocument();
+    await user.click(
+      screen.getByRole("button", { name: /podsumowanie aktywnego pupila/i }),
+    );
+    expect(
+      await screen.findByRole("heading", {
+        name: /zapisz podstawowe dane pupila/i,
+      }),
+    ).toBeInTheDocument();
+    await user.click(
+      screen.getAllByRole("button", { name: accountCopy.pl.appNavHome })[0],
+    );
+    await screen.findByRole("heading", { name: /dzień dobry/i });
+    await user.click(
+      screen.getByRole("button", { name: /otwórz ask caniello/i }),
+    );
+    expect(
+      await screen.findByRole("heading", { name: /zapytaj caniello/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/ask caniello nie jest jeszcze aktywne/i),
+    ).toBeInTheDocument();
+    await user.click(
+      screen.getAllByRole("button", { name: accountCopy.pl.appNavHome })[0],
+    );
+    await screen.findByRole("heading", { name: /dzień dobry/i });
     await user.click(screen.getByRole("button", { name: /wyloguj się/i }));
 
     await waitFor(() =>
@@ -363,7 +541,9 @@ describe("Caniello account experience", () => {
     expect(
       screen.getByRole("heading", { name: /what's next/i }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/rabies due in 18 days/i)).toBeInTheDocument();
+    expect(
+      await screen.findByText(/there are no active or suggested reminders/i),
+    ).toBeInTheDocument();
     expect(
       screen.getByText(/details saved in the pet profile/i),
     ).toBeInTheDocument();
@@ -373,7 +553,7 @@ describe("Caniello account experience", () => {
     expect(
       screen.getByRole("button", { name: /prepare sharing/i }),
     ).toBeEnabled();
-    expect(screen.getByText(/does not diagnose/i)).toBeInTheDocument();
+    expect(screen.getByText(/does not guess answers/i)).toBeInTheDocument();
     expect(
       screen.getAllByRole("button", { name: /pets/i })[0],
     ).toBeInTheDocument();
@@ -386,7 +566,61 @@ describe("Caniello account experience", () => {
     expect(
       screen.getByRole("status", { name: /active pet/i }),
     ).toHaveTextContent(/bruno.*first profile/i);
-    expect(screen.getByText(/remain demonstration data/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/shows only data saved in the profile/i),
+    ).toBeInTheDocument();
+  });
+
+  it("shows an honest dashboard data failure and retries without sample records", async () => {
+    let shouldFail = true;
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (input: RequestInfo | URL) => {
+        if (String(input) === "/api/pets/profile") {
+          return jsonResponse({ ok: true, pet: brunoPet });
+        }
+
+        if (shouldFail) {
+          return jsonResponse({ ok: false, message: "Unavailable" }, 503);
+        }
+
+        if (String(input) === "/api/reminders") {
+          return jsonResponse({ ok: true, pet: brunoPet, reminders: [] });
+        }
+        if (String(input) === "/api/documents") {
+          return jsonResponse({ ok: true, pet: brunoPet, documents: [] });
+        }
+        if (String(input) === "/api/timeline-events") {
+          return jsonResponse({ ok: true, pet: brunoPet, events: [] });
+        }
+        if (String(input) === "/api/share-links") {
+          return jsonResponse({ ok: true, pet: brunoPet, shareLinks: [] });
+        }
+
+        return jsonResponse({ ok: true });
+      }),
+    );
+    const user = userEvent.setup();
+
+    render(<AccountApp route="app-home" />);
+
+    expect(
+      await screen.findByText(
+        /nie udało się załadować zapisanych przypomnień/i,
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText(/wścieklizna za 18 dni/i),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText(/omegavet/i)).not.toBeInTheDocument();
+
+    shouldFail = false;
+    await user.click(screen.getByRole("button", { name: /spróbuj ponownie/i }));
+
+    expect(
+      await screen.findByText(/nie ma aktywnych ani sugerowanych przypomnień/i),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/brak aktywnego linku/i)).toBeInTheDocument();
   });
 
   it("opens honest first-run onboarding when no pet profile exists", async () => {
