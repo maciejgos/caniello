@@ -4,6 +4,7 @@ import { AppIcon } from "./AppIcon";
 import type { AppSection } from "./AuthenticatedAppShell";
 import { FirstRunOnboarding } from "./FirstRunOnboarding";
 import { ReturningOwnerDashboard } from "./ReturningOwnerDashboard";
+import { useDashboardData } from "./useDashboardData";
 
 type AppHomeDashboardProps = {
   copy: AccountCopy;
@@ -24,6 +25,8 @@ export function AppHomeDashboard({
   onSectionRequest,
   onPetSaved,
 }: AppHomeDashboardProps) {
+  const dashboardData = useDashboardData(Boolean(pet));
+
   return (
     <section
       className="min-w-0 px-5 py-8 sm:px-8 lg:px-10 lg:py-8 xl:px-12"
@@ -49,7 +52,11 @@ export function AppHomeDashboard({
             <ReturningDashboardHeader copy={copy} pet={pet} />
             <ReturningOwnerDashboard
               copy={copy}
+              data={dashboardData.data}
+              hasLoadError={dashboardData.hasLoadError}
+              isLoading={dashboardData.isLoading}
               pet={pet}
+              onReload={dashboardData.reload}
               onSectionRequest={onSectionRequest}
             />
           </>
