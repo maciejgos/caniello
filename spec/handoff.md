@@ -4,10 +4,11 @@
 
 - Active task: `spec/tasks/live-dashboard-data.md`.
 - Active branch: `codex/live-dashboard-data`.
-- Current workflow: implementation, evaluation, and handoff complete; publication pending. Evaluator verdict: Pass. Validation artifact: `spec/validation/live-dashboard-data-evaluation.md`. This branch is stacked on the unmerged dashboard/onboarding branch used by draft PR #39. No merge, release, deployment, production-readiness state, AI answer behavior, multi-pet rollout, or roadmap movement has been approved.
+- Current workflow: implementation, evaluation, handoff, and stacked draft PR publication complete. Evaluator verdict: Pass. Validation artifact: `spec/validation/live-dashboard-data-evaluation.md`. Draft PR: https://github.com/maciejgos/caniello/pull/40, based on the unmerged dashboard/onboarding branch used by draft PR #39. No merge, release, deployment, production-readiness state, AI answer behavior, multi-pet rollout, or roadmap movement has been approved.
 
 ## Latest Notes
 
+- Published stacked draft PR https://github.com/maciejgos/caniello/pull/40 from `codex/live-dashboard-data` to `codex/dashboard-mockup-active-pet` on 2026-06-18. The validated implementation commit is `99d2a0f` (`Connect dashboard to saved care data`). The PR remains stacked while PR #39 is unmerged and does not approve merge, release, deployment, production readiness, roadmap movement, AI behavior, or deferred capabilities. Recommended next action: review PR #39 first, then review/retarget PR #40 as appropriate.
 - Planned, implemented, and evaluated `spec/tasks/live-dashboard-data.md` on 2026-06-18. The returning-owner dashboard now loads existing owner-scoped reminder, document, timeline-event, and share-link APIs in parallel and derives every dashboard region from saved data or an explicit empty/unavailable state.
 - Removed demonstration reminder/document/timeline records, simulated Ask prompt/suggestions, preview disclosure, and dormant mock-copy keys. Ask Caniello now states that answers are unavailable and routes to saved documents; it does not invent medical or record answers.
 - Focused tests passed with 20 account tests covering populated data, date ordering, empty states, active sharing, API failure/retry, absence of old mock strings, and dashboard-to-documents navigation. Full web tests passed with 113 tests and 5 existing opt-in skips; web TypeScript, production build, formatting, spec alignment after evidence updates, and `git diff --check` passed.
