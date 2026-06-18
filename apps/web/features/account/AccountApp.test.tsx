@@ -467,15 +467,15 @@ describe("Caniello account experience", () => {
     expect(
       screen.getAllByRole("button", { name: accountCopy.pl.appNavSettings })[0],
     ).toBeInTheDocument();
+    const activePet = screen.getByRole("status", { name: /aktywny pupil/i });
+    expect(activePet).toBeInTheDocument();
+    expect(activePet.querySelector("img")).not.toBeInTheDocument();
     expect(
-      screen.getByRole("searchbox", { name: /szukaj w caniello/i }),
-    ).toBeInTheDocument();
+      screen.queryByRole("searchbox", { name: /szukaj w caniello/i }),
+    ).not.toBeInTheDocument();
     expect(
-      screen.getByRole("status", { name: /aktywny pupil/i }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /powiadomienia/i }),
-    ).toBeInTheDocument();
+      screen.queryByRole("button", { name: /powiadomienia/i }),
+    ).not.toBeInTheDocument();
     await user.click(
       screen.getByRole("button", { name: /podsumowanie aktywnego pupila/i }),
     );
@@ -561,8 +561,8 @@ describe("Caniello account experience", () => {
       screen.getAllByRole("button", { name: /timeline/i })[0],
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("searchbox", { name: /search caniello/i }),
-    ).toBeInTheDocument();
+      screen.queryByRole("searchbox", { name: /search caniello/i }),
+    ).not.toBeInTheDocument();
     expect(
       screen.getByRole("status", { name: /active pet/i }),
     ).toHaveTextContent(/bruno.*first profile/i);
@@ -851,7 +851,7 @@ describe("Caniello account experience", () => {
     ).toHaveAttribute("aria-current", "page");
 
     await user.type(screen.getByLabelText(/imię pupila/i), "Luna");
-    await user.type(screen.getByLabelText(/^gatunek$/i), "kot");
+    await user.selectOptions(screen.getByLabelText(/^gatunek$/i), "cat");
     await user.type(screen.getByLabelText(/^rasa$/i), "europejski");
     await user.type(screen.getByLabelText(/data urodzenia/i), "2022-02-14");
     await user.type(screen.getByLabelText(/płeć lub opis/i), "samica");
@@ -889,7 +889,7 @@ describe("Caniello account experience", () => {
     const init = putCall?.[1] as RequestInit;
     expect(JSON.parse(String(init.body))).toMatchObject({
       name: "Luna",
-      species: "kot",
+      species: "cat",
       weightKg: 4.8,
       microchipNumber: "616093900000001",
     });
@@ -1221,6 +1221,12 @@ describe("Caniello account experience", () => {
       createdAt: "2026-06-12T09:00:00.000Z",
       updatedAt: "2026-06-12T09:00:00.000Z",
     };
+    const futureEvent = {
+      ...createdEvent,
+      id: "99999999-9999-4999-8999-999999999999",
+      title: "Przyszła wizyta",
+      eventDate: "2099-06-12",
+    };
     const updatedEvent = {
       ...createdEvent,
       title: "Wizyta i szczepienie",
@@ -1270,7 +1276,11 @@ describe("Caniello account experience", () => {
 
         if (String(input) === "/api/timeline-events") {
           return new Response(
-            JSON.stringify({ ok: true, pet: savedPet, events: [] }),
+            JSON.stringify({
+              ok: true,
+              pet: savedPet,
+              events: [futureEvent],
+            }),
             {
               status: 200,
               headers: { "Content-Type": "application/json" },
@@ -1307,7 +1317,13 @@ describe("Caniello account experience", () => {
     expect(
       await screen.findByRole("heading", { name: /oś czasu opieki/i }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/brak wydarzeń na osi czasu/i)).toBeInTheDocument();
+    expect(
+      screen
+        .getByRole("complementary", { name: /aktywny pupil osi czasu/i })
+        .querySelector("img"),
+    ).not.toBeInTheDocument();
+    expect(screen.getByText("Przyszła wizyta")).toBeInTheDocument();
+    expect(screen.getByText("Nadchodzące")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /^wszystko$/i })).toHaveAttribute(
       "aria-pressed",
       "true",
@@ -1368,7 +1384,7 @@ describe("Caniello account experience", () => {
       notes: "Kontrola wagi.",
     });
     expect(screen.getByText("Wizyta kontrolna")).toBeInTheDocument();
-    expect(screen.getAllByText(/wykonane/i).length).toBeGreaterThan(0);
+    expect(screen.getByText("Zapisane")).toBeInTheDocument();
 
     await user.click(
       screen.getByRole("button", { name: /edytuj: wizyta kontrolna/i }),
@@ -1844,6 +1860,71 @@ describe("Caniello account experience", () => {
 
     await waitFor(() => expect(nameField).not.toBeDisabled());
     expect(speciesField).not.toBeDisabled();
+  });
+
+  it("preserves an existing non-standard species value when saving the profile", async () => {
+    const petWithLegacySpecies = {
+      ...brunoPet,
+      species: "królik",
+    };
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+        if (String(input) === "/api/pets/profile" && init?.method === "PUT") {
+          return new Response(
+            JSON.stringify({ ok: true, pet: petWithLegacySpecies }),
+            {
+              status: 200,
+              headers: { "Content-Type": "application/json" },
+            },
+          );
+        }
+
+        if (String(input) === "/api/pets/profile") {
+          return new Response(
+            JSON.stringify({ ok: true, pet: petWithLegacySpecies }),
+            {
+              status: 200,
+              headers: { "Content-Type": "application/json" },
+            },
+          );
+        }
+
+        return new Response(JSON.stringify({ ok: true, status: "ok" }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        });
+      }),
+    );
+    const user = userEvent.setup();
+    render(<AccountApp route="app-home" />);
+
+    await user.click(
+      screen.getAllByRole("button", { name: accountCopy.pl.appNavPets })[0],
+    );
+    const speciesField = await screen.findByLabelText(/^gatunek$/i);
+    await waitFor(() => expect(speciesField).toHaveValue("królik"));
+    expect(screen.getByRole("option", { name: "królik" })).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: /zapisz profil/i }));
+
+    await waitFor(() =>
+      expect(fetch).toHaveBeenCalledWith(
+        "/api/pets/profile",
+        expect.objectContaining({ method: "PUT" }),
+      ),
+    );
+    const putCall = (
+      fetch as unknown as {
+        mock: { calls: Array<[string, RequestInit | undefined]> };
+      }
+    ).mock.calls.find(
+      ([input, requestInit]) =>
+        input === "/api/pets/profile" && requestInit?.method === "PUT",
+    );
+    expect(JSON.parse(String(putCall?.[1]?.body))).toMatchObject({
+      species: "królik",
+    });
   });
 
   it("records owner account privacy settings and data-rights requests", async () => {
