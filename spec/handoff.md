@@ -8,6 +8,7 @@
 
 ## Latest Notes
 
+- Published draft PR https://github.com/maciejgos/caniello/pull/38 from `codex/new-owner-access-validation` to `mvp-implementation` on 2026-06-18. The validated implementation commit is `edd7c4e` (`Validate new owner access flow`); this publish-record handoff update follows as a separate metadata commit. The PR records evaluator verdict `Pass`, accepted task evidence, full validation results, formatter-driven diff volume, and the deferred production OAuth and real Mailpit confirmation checks. The draft PR does not approve merge, release, deployment, production readiness, OAuth rollout, provider setup, or roadmap movement. Recommended next action: maintainer review and merge PR #38 when ready.
 - Human accepted `spec/tasks/new-owner-access-validation.md` and its validation evidence on 2026-06-18 by replying "accepted" in the Codex thread. Acceptance does not approve merge, release, deployment, production readiness, OAuth rollout, provider setup, or roadmap movement.
 - Planned, implemented, and evaluated `spec/tasks/new-owner-access-validation.md` on 2026-06-17.
 - Updated the email/password signup path so `requestSignup` preserves Supabase's real verification state: confirmation-required signups still return `verification_required`, while local autoconfirmed signups return `authenticated`. The signup form now redirects authenticated signup responses to `/app` instead of showing stale email-verification guidance.
