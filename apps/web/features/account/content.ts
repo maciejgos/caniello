@@ -112,7 +112,7 @@ export const accountCopy = {
       "Odpowiedzi Ask Caniello dla rekordów {petName} nie są jeszcze dostępne.",
     dashboardAskBoundary:
       "Caniello nie zgaduje odpowiedzi i nie udziela diagnoz, zaleceń leczenia ani porad awaryjnych.",
-    dashboardAskRecordsAction: "Przejrzyj zapisane dokumenty",
+    dashboardAskAction: "Otwórz Ask Caniello",
     dashboardSharingTitle: "Udostępnij kartę opieki",
     dashboardSharingAction: "Przygotuj udostępnianie",
     dashboardSharingActiveBody:
@@ -699,7 +699,7 @@ export const accountCopy = {
       "Ask Caniello answers for {petName}'s records are not available yet.",
     dashboardAskBoundary:
       "Caniello does not guess answers or provide diagnosis, treatment recommendations, or emergency advice.",
-    dashboardAskRecordsAction: "Review saved documents",
+    dashboardAskAction: "Open Ask Caniello",
     dashboardSharingTitle: "Share care card",
     dashboardSharingAction: "Prepare sharing",
     dashboardSharingActiveBody:

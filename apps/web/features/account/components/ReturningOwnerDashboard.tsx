@@ -143,7 +143,7 @@ export function ReturningOwnerDashboard({
         <DashboardAskPanel
           copy={copy}
           petName={pet.name}
-          onRecordsRequest={() => onSectionRequest("documents")}
+          onAskRequest={() => onSectionRequest("ask")}
         />
       </div>
 
@@ -387,11 +387,11 @@ function DashboardPanel({
 function DashboardAskPanel({
   copy,
   petName,
-  onRecordsRequest,
+  onAskRequest,
 }: {
   copy: AccountCopy;
   petName: string;
-  onRecordsRequest: () => void;
+  onAskRequest: () => void;
 }) {
   return (
     <section
@@ -415,9 +415,9 @@ function DashboardAskPanel({
       <button
         className="mt-auto inline-flex min-h-10 w-full items-center justify-center rounded-md border border-[#dce2ec] bg-white px-4 text-xs font-black text-navy hover:bg-[#f8fafc]"
         type="button"
-        onClick={onRecordsRequest}
+        onClick={onAskRequest}
       >
-        {copy.dashboardAskRecordsAction}
+        {copy.dashboardAskAction}
       </button>
     </section>
   );

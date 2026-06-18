@@ -23,7 +23,7 @@ Related roadmap item:
 - Render recent documents and care timeline panels from saved records ordered by record date.
 - Keep the health summary derived from the saved pet profile.
 - Derive sharing and tip banners from current saved data.
-- Replace the simulated Ask Caniello prompt and suggestions with an honest unavailable state and navigation to existing record sections.
+- Replace the simulated Ask Caniello prompt and suggestions with an honest unavailable state and navigation to the Ask Caniello section.
 - Add localized loading, empty, and recoverable error states without falling back to sample records.
 - Add focused UI tests and desktop/mobile browser validation.
 
@@ -42,7 +42,7 @@ Related roadmap item:
 - Recent documents and timeline panels show saved records in descending record-date order and have clear empty states.
 - Health values come from the active saved pet profile.
 - Sharing status reflects whether an active, unexpired share link exists.
-- Ask Caniello clearly states that answers are unavailable and routes owners to existing records instead of simulating answers.
+- Ask Caniello clearly states that answers are unavailable and routes owners to its dedicated section instead of simulating answers or unexpectedly opening another feature.
 - API loading or failure states remain honest and recoverable; failed requests do not reveal stale demonstration content.
 - Focused tests cover populated, empty, loading/failure, ordering, sharing, and navigation behavior.
 - Desktop and mobile checks show no overlap, horizontal overflow, console errors, or visible framework error overlay.
@@ -74,7 +74,7 @@ Related roadmap item:
 
 Implementation validation passed on branch `codex/live-dashboard-data`; evaluator verdict: Pass.
 
-The dashboard now loads existing reminder, document, timeline-event, and share-link APIs in parallel after the active first pet is known. Upcoming reminders, recent documents, timeline history, sharing status, health values, and contextual tips are derived from saved data. Empty and failure states never fall back to sample records. Ask Caniello is explicitly unavailable and links to saved documents.
+The dashboard now loads existing reminder, document, timeline-event, and share-link APIs in parallel after the active first pet is known. Upcoming reminders, recent documents, timeline history, sharing status, health values, and contextual tips are derived from saved data. Empty and failure states never fall back to sample records. Ask Caniello is explicitly unavailable and links to its dedicated section.
 
 Validation artifact: `spec/validation/live-dashboard-data-evaluation.md`.
 

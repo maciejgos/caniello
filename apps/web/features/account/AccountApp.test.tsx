@@ -428,7 +428,7 @@ describe("Caniello account experience", () => {
     ).toBeInTheDocument();
     expect(screen.getByText(/nie zgaduje odpowiedzi/i)).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: /przejrzyj zapisane dokumenty/i }),
+      screen.getByRole("button", { name: /otwórz ask caniello/i }),
     ).toBeEnabled();
     expect(
       screen.getByRole("heading", { name: /udostępnij kartę opieki/i }),
@@ -477,10 +477,13 @@ describe("Caniello account experience", () => {
       screen.getByRole("button", { name: /powiadomienia/i }),
     ).toBeInTheDocument();
     await user.click(
-      screen.getByRole("button", { name: /przejrzyj zapisane dokumenty/i }),
+      screen.getByRole("button", { name: /otwórz ask caniello/i }),
     );
     expect(
-      await screen.findByRole("heading", { name: /sejf dokumentów: bruno/i }),
+      await screen.findByRole("heading", { name: /zapytaj caniello/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/ask caniello nie jest jeszcze aktywne/i),
     ).toBeInTheDocument();
     await user.click(
       screen.getAllByRole("button", { name: accountCopy.pl.appNavHome })[0],

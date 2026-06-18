@@ -8,6 +8,7 @@
 
 ## Latest Notes
 
+- Review follow-up on draft PR #40 changes the dashboard Ask Caniello action from an unexpected Documents navigation to the dedicated Ask Caniello section. The destination remains an honest unavailable state and does not generate answers or medical guidance.
 - Published stacked draft PR https://github.com/maciejgos/caniello/pull/40 from `codex/live-dashboard-data` to `codex/dashboard-mockup-active-pet` on 2026-06-18. The validated implementation commit is `99d2a0f` (`Connect dashboard to saved care data`). The PR remains stacked while PR #39 is unmerged and does not approve merge, release, deployment, production readiness, roadmap movement, AI behavior, or deferred capabilities. Recommended next action: review PR #39 first, then review/retarget PR #40 as appropriate.
 - Planned, implemented, and evaluated `spec/tasks/live-dashboard-data.md` on 2026-06-18. The returning-owner dashboard now loads existing owner-scoped reminder, document, timeline-event, and share-link APIs in parallel and derives every dashboard region from saved data or an explicit empty/unavailable state.
 - Removed demonstration reminder/document/timeline records, simulated Ask prompt/suggestions, preview disclosure, and dormant mock-copy keys. Ask Caniello now states that answers are unavailable and routes to saved documents; it does not invent medical or record answers.
