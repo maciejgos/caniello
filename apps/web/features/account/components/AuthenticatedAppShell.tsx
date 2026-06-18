@@ -71,6 +71,7 @@ export function AuthenticatedAppShell({
               hasPetLoadError={activePet.hasLoadError}
               onPetsRequest={() => setActiveSection("pets")}
               onSectionRequest={setActiveSection}
+              onPetSaved={activePet.setPet}
             />
           ) : activeSection === "pets" ? (
             <PetProfileSection copy={copy} onPetSaved={activePet.setPet} />

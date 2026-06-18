@@ -53,9 +53,13 @@ Evaluate `spec/tasks/dashboard-mockup-and-active-pet-alignment.md` against the `
   Evidence status: Supported.
   Evidence: Focused tests cover both API states. Playwright captured seeded saved-pet and intercepted no-pet states.
 
+- Criterion: Onboarding pet fields accept owner input and save the first profile.
+  Evidence status: Supported.
+  Evidence: Focused tests enter Luna's values and assert the typed profile PUT. Fresh-owner Playwright runs entered complete first-pet data on desktop and mobile, saved successfully, and retained the profile after reload.
+
 - Criterion: Saving a profile updates shell/dashboard context without full reload.
   Evidence status: Supported.
-  Evidence: `PetProfileSection` calls the shell-owned update callback after a successful PUT; focused test verifies Luna after returning Home.
+  Evidence: Both pet-profile surfaces call the shell-owned update callback after a successful PUT; focused and live browser checks verify the new pet appears immediately on Home.
 
 - Criterion: Top-bar pet affordance is honest and non-switching.
   Evidence status: Supported.
@@ -121,6 +125,12 @@ Evaluate `spec/tasks/dashboard-mockup-and-active-pet-alignment.md` against the `
   Expected result: Saved-pet desktop/mobile and no-pet desktop render without overlay, console errors, or horizontal overflow.
   Actual result: Passed at 1440x900, 390x900, and intercepted no-pet 1440x900. No-pet scan confirmed no Bruno body text or input value.
 
+- Check: Fresh-owner onboarding save and persistence
+  Type: UI
+  Status: Passed
+  Expected result: Editable onboarding fields save a first pet, update the dashboard immediately, and persist after reload.
+  Actual result: Passed at 1440x900 and 390x900 with unique local owners. Both remained on `/app`, showed the saved pet immediately and after reload, produced no console/page errors or visible framework overlay, and had no horizontal overflow.
+
 - Check: `git diff --check`
   Type: Automated
   Status: Passed
@@ -132,15 +142,20 @@ Evaluate `spec/tasks/dashboard-mockup-and-active-pet-alignment.md` against the `
 - Saved-pet desktop screenshot: `/private/tmp/caniello-dashboard-desktop.png`
 - Saved-pet mobile screenshot: `/private/tmp/caniello-dashboard-mobile.png`
 - No-pet desktop screenshot: `/private/tmp/caniello-dashboard-no-pet.png`
+- Fresh-owner saved desktop screenshot: `/private/tmp/caniello-onboarding-save-desktop.png`
+- Fresh-owner saved mobile screenshot: `/private/tmp/caniello-onboarding-save-mobile.png`
 - In-app Browser page identity: `http://127.0.0.1:3000/app`, title `Caniello`.
 - Browser console logs: no warnings or errors.
 - Desktop Playwright metrics: 1440 client width and 1440 scroll width.
 - Mobile Playwright metrics: 390 client width and 390 scroll width.
 - No-pet Playwright metrics: 1440 client width and 1440 scroll width; no visible framework overlay; `containsBruno: false`.
+- Fresh-owner desktop metrics: 1440 client width and 1440 scroll width; no visible framework overlay; zero console/page errors.
+- Fresh-owner mobile metrics: 390 client width and 390 scroll width; no visible framework overlay; zero console/page errors.
 
 ## Findings
 
 - No material findings.
+- Review comment resolved: the onboarding pet card previously rendered read-only placeholder controls. It now uses controlled text/date/number/select fields and saves through the existing typed API boundary.
 - Low-risk intentional deviation: the pet-profile contract has no photo field, so the dashboard uses a neutral paw avatar instead of pretending another saved pet is Bruno.
 - Low-risk intentional limitation: dashboard reminder/document/timeline cards are disclosed demonstration content until a separate live aggregation task exists.
 

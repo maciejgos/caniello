@@ -390,9 +390,25 @@ describe("Caniello account experience", () => {
   });
 
   it("opens honest first-run onboarding when no pet profile exists", async () => {
+    const savedPet = {
+      ...brunoPet,
+      name: "Luna",
+      species: "cat",
+      breed: "europejski",
+      birthDate: "2023-04-12",
+      sexOrGender: "female",
+      weightKg: 4.6,
+    };
     vi.stubGlobal(
       "fetch",
-      vi.fn(async (input: RequestInfo | URL) => {
+      vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+        if (String(input) === "/api/pets/profile" && init?.method === "PUT") {
+          return new Response(JSON.stringify({ ok: true, pet: savedPet }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          });
+        }
+
         if (String(input) === "/api/pets/profile") {
           return new Response(JSON.stringify({ ok: true, pet: null }), {
             status: 200,
@@ -406,6 +422,7 @@ describe("Caniello account experience", () => {
         });
       }),
     );
+    const user = userEvent.setup();
 
     render(<AccountApp route="app-home" />);
 
@@ -421,8 +438,8 @@ describe("Caniello account experience", () => {
     expect(
       screen.getByRole("button", { name: /dodaj profil/i }),
     ).toBeDisabled();
-    expect(screen.getByLabelText(/imię pupila/i)).toHaveValue("Imię pupila");
-    expect(screen.getByLabelText(/^gatunek$/i)).toHaveValue("Wybierz gatunek");
+    expect(screen.getByLabelText(/imię pupila/i)).toHaveValue("");
+    expect(screen.getByLabelText(/^gatunek$/i)).toHaveValue("");
     expect(screen.queryByText(/bruno/i)).not.toBeInTheDocument();
     expect(
       screen.getByRole("status", { name: /aktywny pupil/i }),
@@ -430,6 +447,28 @@ describe("Caniello account experience", () => {
     expect(
       screen.queryByRole("button", { name: /panel pupila/i }),
     ).not.toBeInTheDocument();
+
+    await user.type(screen.getByLabelText(/imię pupila/i), "Luna");
+    await user.selectOptions(screen.getByLabelText(/^gatunek$/i), "cat");
+    await user.type(screen.getByLabelText(/^rasa$/i), "europejski");
+    await user.type(screen.getByLabelText(/data urodzenia/i), "2023-04-12");
+    await user.selectOptions(screen.getByLabelText(/^płeć$/i), "female");
+    await user.type(screen.getByLabelText(/^waga$/i), "4.6");
+    await user.click(screen.getByRole("button", { name: /dodaj profil/i }));
+
+    await waitFor(() =>
+      expect(fetch).toHaveBeenCalledWith(
+        "/api/pets/profile",
+        expect.objectContaining({ method: "PUT" }),
+      ),
+    );
+    expect(
+      await screen.findByRole("heading", { name: /dzień dobry/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/oto co czeka luna/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("status", { name: /aktywny pupil/i }),
+    ).toHaveTextContent(/luna.*pierwszy profil/i);
   });
 
   it("shows a recoverable dashboard state when the active pet cannot load", async () => {

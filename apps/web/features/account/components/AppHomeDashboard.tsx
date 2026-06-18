@@ -12,6 +12,7 @@ type AppHomeDashboardProps = {
   hasPetLoadError: boolean;
   onPetsRequest: () => void;
   onSectionRequest: (section: AppSection) => void;
+  onPetSaved: (pet: PetProfileResponse) => void;
 };
 
 export function AppHomeDashboard({
@@ -21,6 +22,7 @@ export function AppHomeDashboard({
   hasPetLoadError,
   onPetsRequest,
   onSectionRequest,
+  onPetSaved,
 }: AppHomeDashboardProps) {
   return (
     <section
@@ -54,7 +56,7 @@ export function AppHomeDashboard({
         ) : (
           <>
             <FirstRunHeader copy={copy} />
-            <FirstRunOnboarding copy={copy} />
+            <FirstRunOnboarding copy={copy} onPetSaved={onPetSaved} />
           </>
         )}
       </div>

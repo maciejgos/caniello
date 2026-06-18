@@ -40,6 +40,7 @@ Related roadmap item:
 
 - The dashboard does not show Bruno-specific copy for a different saved pet.
 - A saved first pet opens the returning-owner dashboard; an owner without a saved pet opens onboarding without a demo-state toggle.
+- The onboarding pet fields accept owner input and save the first pet through the existing profile API boundary.
 - Saving a pet profile updates the shell/dashboard pet context without requiring a full page reload.
 - The app shell active-pet affordance shows the saved pet name or an honest no-pet state and does not imply switching functionality.
 - The returning dashboard preserves the major region order and panel structure of `image 1.png`; the no-pet state preserves the onboarding structure of `image 6.png`.
@@ -69,6 +70,7 @@ Related roadmap item:
 - [x] Focused component tests for saved-pet, no-pet, save propagation, and load failure.
 - [x] Full web test suite, TypeScript validation, and production build.
 - [x] Browser checks at desktop and mobile widths with the seeded owner.
+- [x] Fresh-owner desktop/mobile browser check for entering, saving, and reloading a first pet.
 - [x] Manual mismatch ledger against `image 1.png` and `image 6.png`.
 - [x] No roadmap scope expansion.
 - [x] Handoff updated.
@@ -85,6 +87,7 @@ Checks passed:
 - `git diff --check`.
 - In-app Browser validation: seeded-owner login, saved-pet dashboard render, dashboard-to-documents interaction, empty framework error portal, no console warnings/errors, and no horizontal overflow at 1280x720 and 390x900.
 - Playwright screenshot fallback after in-app screenshot capture timed out: saved-pet dashboard at 1440x900 and 390x900, plus intercepted no-pet onboarding at 1440x900. All had no console/page errors, no visible framework overlay, and no horizontal overflow; the no-pet state contained no Bruno text or input value.
+- Review follow-up Playwright validation: fresh owners entered and saved first-pet data at 1440x900 and 390x900, transitioned to the returning dashboard without a page reload, retained the pet after reload, and had no console/page errors, visible framework overlay, or horizontal overflow.
 
 Mismatch ledger:
 
@@ -92,7 +95,7 @@ Mismatch ledger:
 - The saved first pet uses live profile identity and values. Pet photography falls back to the existing Bruno image only for Bruno in the top bar and a neutral paw avatar elsewhere because the current profile contract has no photo field.
 - `What's next`, recent documents, and timeline preview content remain clearly disclosed demonstration data because live cross-feature dashboard aggregation is outside this task.
 - Search, notifications, Ask Caniello answers, PDF export, and unavailable sharing behavior remain inert or explicitly limited; existing implemented section-navigation actions are enabled.
-- The no-pet state preserves the `image 6.png` structure while using generic profile fields and sample-document content rather than pretending a Bruno record exists.
+- The no-pet state preserves the `image 6.png` structure while using editable generic profile fields and sample-document content rather than pretending a Bruno record exists.
 
 Evaluator verdict: Pass. No validation gaps remain for this task scope.
 
