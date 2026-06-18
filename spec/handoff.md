@@ -2,12 +2,22 @@
 
 ## Current State
 
-- Active task: `spec/tasks/new-owner-access-validation.md`.
-- Active branch: `codex/new-owner-access-validation`.
-- Current workflow: planning, implementation, evaluation, handoff, and human acceptance complete for new-owner local access validation. Evaluator verdict: Pass. Validation artifact: `spec/validation/new-owner-access-validation-evaluation.md`. No release, deployment, merge, production-readiness state, OAuth rollout, provider setup, or roadmap movement has been approved.
+- Active task: `spec/tasks/dashboard-mockup-and-active-pet-alignment.md`.
+- Active branch: `codex/dashboard-mockup-active-pet`.
+- Current workflow: planning, implementation, evaluation, artifact acceptance, handoff, and publication preparation complete. Evaluator verdict: Pass. Validation artifact: `spec/validation/dashboard-mockup-and-active-pet-alignment-evaluation.md`. No merge, release, deployment, production-readiness state, multi-pet rollout, live dashboard aggregation, or roadmap movement has been approved.
 
 ## Latest Notes
 
+- Planned, implemented, and evaluated `spec/tasks/dashboard-mockup-and-active-pet-alignment.md` on 2026-06-18.
+- The authenticated shell now loads the owner-scoped first saved pet once through `/api/pets/profile`. A saved pet opens the returning dashboard; no saved pet opens onboarding automatically. The old demo-state switch was removed.
+- Saving a pet profile propagates the saved pet into the shell and dashboard without a page reload. The top-bar pet affordance is now a status/current-context indicator rather than a false multi-pet selector.
+- The returning dashboard follows `spec/design/visual-artifacts/mvp/image 1.png` region order and uses live saved-pet identity, age, weight, allergies, and microchip values. Preview reminder/document/timeline content remains explicitly disclosed demonstration data.
+- The no-pet state follows `image 6.png` structure with generic form values and sample-document content. Final Playwright evidence confirmed the no-pet state contains no Bruno text or input value.
+- Validation passed: focused account tests (19), full web suite (112 passed, 5 existing opt-in live tests skipped), web TypeScript, production build, changed-file format gate, `git diff --check`, in-app Browser login/interaction/console/overflow checks, and Playwright screenshot fallback at saved-pet desktop/mobile and no-pet desktop widths.
+- In-app Browser screenshot capture timed out after its DOM, interaction, console, and responsive checks passed. Regular Playwright supplied screenshot evidence with no console/page errors, no visible framework overlay, and no horizontal overflow.
+- Evaluator verdict: Pass. Validation artifact: `spec/validation/dashboard-mockup-and-active-pet-alignment-evaluation.md`.
+- The human's initial instruction explicitly requested artifact acceptance and publication once evaluation was satisfied without gaps. This acceptance applies to the task artifacts only and does not approve merge, release, deployment, production readiness, multi-pet behavior, live dashboard aggregation, pet-photo/account-profile expansion, or roadmap movement.
+- Next recommended action: publish the validated task as one draft PR to `mvp-implementation`, then await maintainer review.
 - Published draft PR https://github.com/maciejgos/caniello/pull/38 from `codex/new-owner-access-validation` to `mvp-implementation` on 2026-06-18. The validated implementation commit is `edd7c4e` (`Validate new owner access flow`); this publish-record handoff update follows as a separate metadata commit. The PR records evaluator verdict `Pass`, accepted task evidence, full validation results, formatter-driven diff volume, and the deferred production OAuth and real Mailpit confirmation checks. The draft PR does not approve merge, release, deployment, production readiness, OAuth rollout, provider setup, or roadmap movement. Recommended next action: maintainer review and merge PR #38 when ready.
 - Human accepted `spec/tasks/new-owner-access-validation.md` and its validation evidence on 2026-06-18 by replying "accepted" in the Codex thread. Acceptance does not approve merge, release, deployment, production readiness, OAuth rollout, provider setup, or roadmap movement.
 - Planned, implemented, and evaluated `spec/tasks/new-owner-access-validation.md` on 2026-06-17.

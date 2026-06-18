@@ -1,59 +1,235 @@
-import { useState } from "react";
+import type { PetProfileResponse } from "@caniello/contracts";
 import type { AccountCopy } from "../content";
 import { AppIcon } from "./AppIcon";
+import type { AppSection } from "./AuthenticatedAppShell";
 import { FirstRunOnboarding } from "./FirstRunOnboarding";
 import { ReturningOwnerDashboard } from "./ReturningOwnerDashboard";
 
-type DashboardMode = "returning" | "firstRun";
+type AppHomeDashboardProps = {
+  copy: AccountCopy;
+  pet: PetProfileResponse | null;
+  isPetLoading: boolean;
+  hasPetLoadError: boolean;
+  onPetsRequest: () => void;
+  onSectionRequest: (section: AppSection) => void;
+};
 
-export function AppHomeDashboard({ copy }: { copy: AccountCopy }) {
-  const [mode, setMode] = useState<DashboardMode>("returning");
-
+export function AppHomeDashboard({
+  copy,
+  pet,
+  isPetLoading,
+  hasPetLoadError,
+  onPetsRequest,
+  onSectionRequest,
+}: AppHomeDashboardProps) {
   return (
-    <section className="min-w-0 px-5 py-8 sm:px-8 lg:px-12 lg:py-10 xl:px-16" aria-labelledby="app-home-title">
-      <div className="mx-auto max-w-[1300px]">
-        <AppHomeHeader copy={copy} mode={mode} onModeChange={setMode} />
-        {mode === "returning" ? <ReturningOwnerDashboard copy={copy} /> : <FirstRunOnboarding copy={copy} />}
+    <section
+      className="min-w-0 px-5 py-8 sm:px-8 lg:px-10 lg:py-8 xl:px-12"
+      aria-labelledby="app-home-title"
+    >
+      <div className="mx-auto max-w-[1380px]">
+        {isPetLoading ? (
+          <DashboardStatus
+            copy={copy}
+            title={copy.dashboardLoadingTitle}
+            body={copy.dashboardLoadingBody}
+          />
+        ) : hasPetLoadError ? (
+          <DashboardStatus
+            copy={copy}
+            title={copy.dashboardLoadErrorTitle}
+            body={copy.dashboardLoadErrorBody}
+            actionLabel={copy.dashboardLoadErrorAction}
+            onAction={onPetsRequest}
+          />
+        ) : pet ? (
+          <>
+            <ReturningDashboardHeader copy={copy} pet={pet} />
+            <ReturningOwnerDashboard
+              copy={copy}
+              pet={pet}
+              onSectionRequest={onSectionRequest}
+            />
+          </>
+        ) : (
+          <>
+            <FirstRunHeader copy={copy} />
+            <FirstRunOnboarding copy={copy} />
+          </>
+        )}
       </div>
     </section>
   );
 }
 
-function AppHomeHeader({ copy, mode, onModeChange }: { copy: AccountCopy; mode: DashboardMode; onModeChange: (mode: DashboardMode) => void }) {
+function ReturningDashboardHeader({
+  copy,
+  pet,
+}: {
+  copy: AccountCopy;
+  pet: PetProfileResponse;
+}) {
   return (
-    <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
-      <div className="flex max-w-4xl items-start gap-4">
-        <span className="mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#fff3e5] text-[#f59a23]" aria-hidden="true">
+    <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(360px,500px)] xl:items-center">
+      <div className="flex min-w-0 items-start gap-4">
+        <span
+          className="mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#fff3e5] text-[#f59a23]"
+          aria-hidden="true"
+        >
           <AppIcon name="sun" />
         </span>
         <div className="min-w-0">
-          <h2 className="mb-2 text-sm font-black uppercase tracking-[0.08em] text-navy/54">{copy.appTitle}</h2>
-          <h1 id="app-home-title" className="font-serif text-[clamp(2.1rem,3vw,3.2rem)] font-black leading-tight tracking-[0] text-navy">
-            {mode === "returning" ? copy.dashboardTitle : copy.onboardingTitle}
+          <h1
+            id="app-home-title"
+            className="font-serif text-[clamp(2.05rem,3vw,3rem)] font-black leading-tight tracking-[0] text-navy"
+          >
+            {copy.dashboardTitle}
           </h1>
-          <p className="mt-3 max-w-3xl text-base font-semibold leading-7 text-navy/82">{mode === "returning" ? copy.dashboardIntro : copy.onboardingIntro}</p>
-          {mode === "firstRun" ? <p className="mt-1 max-w-3xl text-base font-semibold leading-7 text-navy/82">{copy.onboardingIntroNext}</p> : null}
-          <p className="mt-4 max-w-2xl text-sm leading-6 text-navy/62">{copy.medicalBoundary}</p>
+          <p className="mt-2 text-base font-semibold leading-7 text-navy/72">
+            {formatPetCopy(copy.dashboardIntro, pet.name)}
+          </p>
         </div>
       </div>
-      <div className="flex w-full max-w-sm rounded-lg border border-[#e3e8f0] bg-[#f8fafc] p-1" aria-label={copy.appNavHome} role="group">
-        <button
-          className={`min-h-10 flex-1 rounded-md px-3 text-sm font-black transition ${mode === "returning" ? "bg-white text-navy shadow-[0_8px_20px_rgba(15,23,42,0.08)]" : "text-navy/64 hover:text-navy"}`}
-          type="button"
-          aria-pressed={mode === "returning"}
-          onClick={() => onModeChange("returning")}
+      <PetIdentityCard copy={copy} pet={pet} />
+    </div>
+  );
+}
+
+function PetIdentityCard({
+  copy,
+  pet,
+}: {
+  copy: AccountCopy;
+  pet: PetProfileResponse;
+}) {
+  const metadata = [
+    pet.breed || pet.species,
+    formatAge(copy, pet.birthDate),
+    pet.sexOrGender,
+    pet.weightKg === null ? null : `${pet.weightKg} kg`,
+  ].filter((value): value is string => Boolean(value));
+
+  return (
+    <section
+      className="flex min-w-0 items-center gap-4 rounded-lg border border-[#e3e8f0] bg-white px-5 py-4 shadow-[0_12px_32px_rgba(15,23,42,0.04)]"
+      aria-label={copy.dashboardPetSummaryLabel}
+    >
+      <span
+        className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#fff3e5] text-[#d97706]"
+        aria-hidden="true"
+      >
+        <AppIcon name="paw" />
+      </span>
+      <div className="min-w-0">
+        <h2 className="truncate font-serif text-xl font-black text-navy">
+          {pet.name}
+        </h2>
+        <p className="mt-1 line-clamp-2 text-sm font-semibold text-navy/58">
+          {metadata.length > 0
+            ? metadata.join(" · ")
+            : copy.dashboardPetSummaryFallback}
+        </p>
+      </div>
+      <span className="ml-auto text-navy/42" aria-hidden="true">
+        <AppIcon name="chevronRight" />
+      </span>
+    </section>
+  );
+}
+
+function FirstRunHeader({ copy }: { copy: AccountCopy }) {
+  return (
+    <div className="flex max-w-4xl items-start gap-4">
+      <span
+        className="mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#fff3e5] text-[#f59a23]"
+        aria-hidden="true"
+      >
+        <AppIcon name="sun" />
+      </span>
+      <div className="min-w-0">
+        <h1
+          id="app-home-title"
+          className="font-serif text-[clamp(2.05rem,3vw,3rem)] font-black leading-tight tracking-[0] text-navy"
         >
-          {copy.dashboardModeReturning}
-        </button>
-        <button
-          className={`min-h-10 flex-1 rounded-md px-3 text-sm font-black transition ${mode === "firstRun" ? "bg-white text-navy shadow-[0_8px_20px_rgba(15,23,42,0.08)]" : "text-navy/64 hover:text-navy"}`}
-          type="button"
-          aria-pressed={mode === "firstRun"}
-          onClick={() => onModeChange("firstRun")}
-        >
-          {copy.dashboardModeFirstRun}
-        </button>
+          {copy.onboardingTitle}
+        </h1>
+        <p className="mt-2 text-base font-semibold leading-7 text-navy/72">
+          {copy.onboardingIntro}
+        </p>
+        <p className="text-base font-semibold leading-7 text-navy/72">
+          {copy.onboardingIntroNext}
+        </p>
       </div>
     </div>
   );
+}
+
+function DashboardStatus({
+  copy,
+  title,
+  body,
+  actionLabel,
+  onAction,
+}: {
+  copy: AccountCopy;
+  title: string;
+  body: string;
+  actionLabel?: string;
+  onAction?: () => void;
+}) {
+  return (
+    <div className="flex min-h-[420px] items-center justify-center">
+      <section className="max-w-xl rounded-lg border border-[#e3e8f0] bg-white p-8 text-center shadow-[0_16px_45px_rgba(15,23,42,0.06)]">
+        <span
+          className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#fff3e5] text-[#d97706]"
+          aria-hidden="true"
+        >
+          <AppIcon name="paw" />
+        </span>
+        <h1
+          id="app-home-title"
+          className="mt-5 font-serif text-3xl font-black text-navy"
+        >
+          {title}
+        </h1>
+        <p className="mt-3 text-sm font-semibold leading-6 text-navy/64">
+          {body}
+        </p>
+        {actionLabel && onAction ? (
+          <button
+            className="mt-6 inline-flex min-h-11 items-center justify-center rounded-md bg-navy px-5 text-sm font-black text-white"
+            type="button"
+            onClick={onAction}
+          >
+            {actionLabel}
+          </button>
+        ) : null}
+        <p className="mt-5 text-xs font-semibold leading-5 text-navy/48">
+          {copy.medicalBoundary}
+        </p>
+      </section>
+    </div>
+  );
+}
+
+function formatPetCopy(template: string, petName: string) {
+  return template.replaceAll("{petName}", petName);
+}
+
+function formatAge(copy: AccountCopy, birthDate: string | null) {
+  if (!birthDate) return null;
+
+  const birth = new Date(`${birthDate}T00:00:00`);
+  if (Number.isNaN(birth.getTime())) return null;
+
+  const today = new Date();
+  let years = today.getFullYear() - birth.getFullYear();
+  const beforeBirthday =
+    today.getMonth() < birth.getMonth() ||
+    (today.getMonth() === birth.getMonth() &&
+      today.getDate() < birth.getDate());
+  if (beforeBirthday) years -= 1;
+  if (years < 0) return null;
+
+  return `${years} ${copy.dashboardPetAgeUnit}`;
 }

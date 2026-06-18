@@ -1,6 +1,9 @@
 "use client";
 
-import type { PetProfileApiResponse, PetProfileResponse } from "@caniello/contracts";
+import type {
+  PetProfileApiResponse,
+  PetProfileResponse,
+} from "@caniello/contracts";
 import type { FormEvent, HTMLAttributes } from "react";
 import { useEffect, useMemo, useState } from "react";
 import type { AccountCopy } from "../content";
@@ -8,6 +11,7 @@ import { AppIcon } from "./AppIcon";
 
 type PetProfileSectionProps = {
   copy: AccountCopy;
+  onPetSaved?: (pet: PetProfileResponse) => void;
 };
 
 type PetProfileFormState = {
@@ -33,10 +37,13 @@ const emptyForm: PetProfileFormState = {
   microchipNumber: "",
   allergies: "",
   medication: "",
-  importantNotes: ""
+  importantNotes: "",
 };
 
-export function PetProfileSection({ copy }: PetProfileSectionProps) {
+export function PetProfileSection({
+  copy,
+  onPetSaved,
+}: PetProfileSectionProps) {
   const [form, setForm] = useState<PetProfileFormState>(emptyForm);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -77,8 +84,13 @@ export function PetProfileSection({ copy }: PetProfileSectionProps) {
     };
   }, [copy.petProfileLoadError]);
 
-  const statusTitle = savedPet ? copy.petProfileSavedTitle : copy.petProfileEmptyTitle;
-  const canSave = useMemo(() => form.name.trim().length > 0 && !isLoading && !isSaving, [form.name, isLoading, isSaving]);
+  const statusTitle = savedPet
+    ? copy.petProfileSavedTitle
+    : copy.petProfileEmptyTitle;
+  const canSave = useMemo(
+    () => form.name.trim().length > 0 && !isLoading && !isSaving,
+    [form.name, isLoading, isSaving],
+  );
   const isFormLocked = isLoading || isSaving;
 
   function updateField(field: keyof PetProfileFormState, value: string) {
@@ -102,7 +114,7 @@ export function PetProfileSection({ copy }: PetProfileSectionProps) {
       const response = await fetch("/api/pets/profile", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(createPayloadFromForm(form))
+        body: JSON.stringify(createPayloadFromForm(form)),
       });
       const body = (await response.json()) as PetProfileApiResponse;
 
@@ -112,6 +124,7 @@ export function PetProfileSection({ copy }: PetProfileSectionProps) {
 
       setSavedPet(body.pet);
       setForm(createFormFromPet(body.pet));
+      onPetSaved?.(body.pet);
     } catch {
       setSaveError(copy.petProfileSaveError);
     } finally {
@@ -120,30 +133,48 @@ export function PetProfileSection({ copy }: PetProfileSectionProps) {
   }
 
   return (
-    <section className="min-w-0 px-5 py-8 sm:px-8 lg:px-12 lg:py-10 xl:px-16" aria-labelledby="pet-profile-title">
+    <section
+      className="min-w-0 px-5 py-8 sm:px-8 lg:px-12 lg:py-10 xl:px-16"
+      aria-labelledby="pet-profile-title"
+    >
       <div className="mx-auto max-w-[1080px]">
         <div className="flex min-w-0 items-start gap-4">
-          <span className="mt-1 flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-[#fff3e5] text-[#d97706]" aria-hidden="true">
+          <span
+            className="mt-1 flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-[#fff3e5] text-[#d97706]"
+            aria-hidden="true"
+          >
             <AppIcon name="paw" />
           </span>
           <div className="min-w-0">
-            <p className="text-sm font-black uppercase tracking-[0.08em] text-navy/54">{copy.petProfileEyebrow}</p>
-            <h1 id="pet-profile-title" className="mt-2 font-serif text-[clamp(2rem,3vw,3rem)] font-black leading-tight tracking-[0] text-navy">
+            <p className="text-sm font-black uppercase tracking-[0.08em] text-navy/54">
+              {copy.petProfileEyebrow}
+            </p>
+            <h1
+              id="pet-profile-title"
+              className="mt-2 font-serif text-[clamp(2rem,3vw,3rem)] font-black leading-tight tracking-[0] text-navy"
+            >
               {copy.petProfileTitle}
             </h1>
-            <p className="mt-4 max-w-3xl text-base font-semibold leading-7 text-navy/78">{copy.petProfileIntro}</p>
+            <p className="mt-4 max-w-3xl text-base font-semibold leading-7 text-navy/78">
+              {copy.petProfileIntro}
+            </p>
           </div>
         </div>
 
         <div className="mt-8 grid gap-6 xl:grid-cols-[minmax(0,1fr)_300px]">
-          <form className="rounded-lg border border-[#e6e9ef] bg-white p-5 shadow-[0_14px_40px_rgba(15,23,42,0.05)]" onSubmit={submitProfile}>
+          <form
+            className="rounded-lg border border-[#e6e9ef] bg-white p-5 shadow-[0_14px_40px_rgba(15,23,42,0.05)]"
+            onSubmit={submitProfile}
+          >
             {isLoading ? (
               <p className="text-sm font-bold text-navy/66" role="status">
                 {copy.petProfileLoading}
               </p>
             ) : null}
 
-            {loadError ? <p className="text-sm font-bold text-[#b42318]">{loadError}</p> : null}
+            {loadError ? (
+              <p className="text-sm font-bold text-[#b42318]">{loadError}</p>
+            ) : null}
 
             <div className="grid gap-4 sm:grid-cols-2">
               <PetTextField
@@ -235,38 +266,77 @@ export function PetProfileSection({ copy }: PetProfileSectionProps) {
               </div>
             </div>
 
-            {validationError ? <p className="mt-4 text-sm font-bold text-[#b42318]">{validationError}</p> : null}
-            {saveError ? <p className="mt-4 text-sm font-bold text-[#b42318]">{saveError}</p> : null}
+            {validationError ? (
+              <p className="mt-4 text-sm font-bold text-[#b42318]">
+                {validationError}
+              </p>
+            ) : null}
+            {saveError ? (
+              <p className="mt-4 text-sm font-bold text-[#b42318]">
+                {saveError}
+              </p>
+            ) : null}
 
             <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <p className="max-w-2xl text-sm leading-6 text-navy/62">{copy.petProfilePrivacyNote}</p>
+              <p className="max-w-2xl text-sm leading-6 text-navy/62">
+                {copy.petProfilePrivacyNote}
+              </p>
               <button
                 className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-md bg-[#0f172a] px-5 text-sm font-black text-white disabled:cursor-not-allowed disabled:bg-[#94a3b8]"
                 disabled={!canSave}
                 type="submit"
               >
-                {isSaving ? copy.petProfileSavingAction : copy.petProfileSaveAction}
+                {isSaving
+                  ? copy.petProfileSavingAction
+                  : copy.petProfileSaveAction}
               </button>
             </div>
           </form>
 
           <aside className="rounded-lg border border-[#e6e9ef] bg-[#f8fafc] p-5">
-            <p className="text-sm font-black uppercase tracking-[0.08em] text-navy/54">{statusTitle}</p>
-            <h2 className="mt-3 font-serif text-2xl font-black tracking-[0] text-navy">{savedPet?.name || copy.petProfileNamePlaceholder}</h2>
-            <p className="mt-3 text-sm font-semibold leading-6 text-navy/66">{copy.petProfileSavedBody}</p>
+            <p className="text-sm font-black uppercase tracking-[0.08em] text-navy/54">
+              {statusTitle}
+            </p>
+            <h2 className="mt-3 font-serif text-2xl font-black tracking-[0] text-navy">
+              {savedPet?.name || copy.petProfileNamePlaceholder}
+            </h2>
+            <p className="mt-3 text-sm font-semibold leading-6 text-navy/66">
+              {copy.petProfileSavedBody}
+            </p>
             {savedPet ? (
               <dl className="mt-5 space-y-3 text-sm">
-                <PetSummaryItem label={copy.petProfileSpecies} value={savedPet.species} />
-                <PetSummaryItem label={copy.petProfileBreed} value={savedPet.breed} />
-                <PetSummaryItem label={copy.petProfileBirthDate} value={savedPet.birthDate} />
-                <PetSummaryItem label={copy.petProfileWeightKg} value={savedPet.weightKg === null ? null : `${savedPet.weightKg} kg`} />
-                <PetSummaryItem label={copy.petProfileMicrochip} value={savedPet.microchipNumber} />
+                <PetSummaryItem
+                  label={copy.petProfileSpecies}
+                  value={savedPet.species}
+                />
+                <PetSummaryItem
+                  label={copy.petProfileBreed}
+                  value={savedPet.breed}
+                />
+                <PetSummaryItem
+                  label={copy.petProfileBirthDate}
+                  value={savedPet.birthDate}
+                />
+                <PetSummaryItem
+                  label={copy.petProfileWeightKg}
+                  value={
+                    savedPet.weightKg === null
+                      ? null
+                      : `${savedPet.weightKg} kg`
+                  }
+                />
+                <PetSummaryItem
+                  label={copy.petProfileMicrochip}
+                  value={savedPet.microchipNumber}
+                />
               </dl>
             ) : null}
           </aside>
         </div>
 
-        <p className="mt-5 max-w-3xl text-sm leading-6 text-navy/62">{copy.medicalBoundary}</p>
+        <p className="mt-5 max-w-3xl text-sm leading-6 text-navy/62">
+          {copy.medicalBoundary}
+        </p>
       </div>
     </section>
   );
@@ -281,7 +351,7 @@ function PetTextField({
   placeholder,
   required,
   type = "text",
-  value
+  value,
 }: {
   disabled?: boolean;
   inputMode?: HTMLAttributes<HTMLInputElement>["inputMode"];
@@ -294,7 +364,10 @@ function PetTextField({
   value: string;
 }) {
   return (
-    <label className="block text-sm font-black text-navy" htmlFor={`pet-profile-${name}`}>
+    <label
+      className="block text-sm font-black text-navy"
+      htmlFor={`pet-profile-${name}`}
+    >
       {label}
       <input
         className="mt-2 min-h-11 w-full rounded-md border border-[#dce2ec] bg-white px-3 text-base font-semibold text-navy outline-none transition focus:border-[#0f766e] focus:ring-2 focus:ring-[#ccfbf1]"
@@ -319,7 +392,7 @@ function PetTextareaField({
   name,
   onChange,
   placeholder,
-  value
+  value,
 }: {
   disabled?: boolean;
   label: string;
@@ -329,7 +402,10 @@ function PetTextareaField({
   value: string;
 }) {
   return (
-    <label className="block text-sm font-black text-navy" htmlFor={`pet-profile-${name}`}>
+    <label
+      className="block text-sm font-black text-navy"
+      htmlFor={`pet-profile-${name}`}
+    >
       {label}
       <textarea
         className="mt-2 min-h-28 w-full resize-y rounded-md border border-[#dce2ec] bg-white px-3 py-3 text-base font-semibold text-navy outline-none transition focus:border-[#0f766e] focus:ring-2 focus:ring-[#ccfbf1]"
@@ -344,7 +420,13 @@ function PetTextareaField({
   );
 }
 
-function PetSummaryItem({ label, value }: { label: string; value: string | number | null }) {
+function PetSummaryItem({
+  label,
+  value,
+}: {
+  label: string;
+  value: string | number | null;
+}) {
   if (value === null || value === "") return null;
 
   return (
@@ -366,7 +448,7 @@ function createFormFromPet(pet: PetProfileResponse): PetProfileFormState {
     microchipNumber: pet.microchipNumber ?? "",
     allergies: pet.allergies ?? "",
     medication: pet.medication ?? "",
-    importantNotes: pet.importantNotes ?? ""
+    importantNotes: pet.importantNotes ?? "",
   };
 }
 
@@ -383,6 +465,6 @@ function createPayloadFromForm(form: PetProfileFormState) {
     microchipNumber: form.microchipNumber,
     allergies: form.allergies,
     medication: form.medication,
-    importantNotes: form.importantNotes
+    importantNotes: form.importantNotes,
   };
 }
