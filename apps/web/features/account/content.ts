@@ -4,10 +4,12 @@ export const accountCopy = {
   pl: {
     brand: "Caniello",
     heroTitle: "Zdrowie Twojego pupila w jednym bezpiecznym miejscu.",
-    heroIntro: "Caniello pomaga organizować dokumenty, monitorować zdrowie, odbierać przypomnienia i pytać asystenta AI o opiekę nad pupilem.",
+    heroIntro:
+      "Caniello pomaga organizować dokumenty, monitorować zdrowie, odbierać przypomnienia i pytać asystenta AI o opiekę nad pupilem.",
     heroTrust: "Zaufane przez opiekunów. Stworzone dla spokoju.",
     featureDocumentsTitle: "Porządkuj dokumenty",
-    featureDocumentsBody: "Trzymaj całą dokumentację medyczną w jednym miejscu.",
+    featureDocumentsBody:
+      "Trzymaj całą dokumentację medyczną w jednym miejscu.",
     featureRemindersTitle: "Sprytne przypomnienia",
     featureRemindersBody: "Nie przegap szczepienia ani leku.",
     featureAssistantTitle: "Zapytaj Caniello",
@@ -19,7 +21,8 @@ export const accountCopy = {
     loginTitle: "Witaj ponownie",
     loginIntro: "Zaloguj się do swojego konta Caniello.",
     resetTitle: "Odzyskaj dostęp",
-    resetIntro: "Podaj e-mail, a wyślemy instrukcję resetowania hasła przez Supabase Auth.",
+    resetIntro:
+      "Podaj e-mail, a wyślemy instrukcję resetowania hasła przez Supabase Auth.",
     fullName: "Imię i nazwisko",
     fullNamePlaceholder: "Twoje imię i nazwisko",
     email: "Adres e-mail",
@@ -40,23 +43,32 @@ export const accountCopy = {
     loginWith: "lub kontynuuj przez",
     continueGoogle: "Kontynuuj z Google",
     continueApple: "Kontynuuj z Apple",
+    socialUnavailable:
+      "Logowanie Google i Apple jest wyłączone w tej lokalnej wersji walidacyjnej. Użyj e-maila i hasła.",
+    socialUnavailableSuffix: "niedostępne lokalnie",
     neverShare: "Nigdy nie udostępniamy Twoich danych podmiotom trzecim.",
     legalAgreementLead: "Logując się, akceptujesz",
     legalAgreementMiddle: "oraz",
     logoutAction: "Wyloguj się",
     verifyTitle: "Sprawdź skrzynkę e-mail",
-    verifyBody: "Konto zostało utworzone. Potwierdź adres e-mail, zanim uzyskasz pełny dostęp do aplikacji.",
+    verifyBody:
+      "Konto zostało utworzone. Potwierdź adres e-mail, zanim uzyskasz pełny dostęp do aplikacji.",
     resetSent: "Jeśli konto istnieje, wysłaliśmy instrukcję resetowania hasła.",
     appTitle: "Panel opiekuna",
-    appIntro: "To chroniony obszar Caniello. Tutaj pojawią się profile pupili, dokumenty i ustawienia prywatności.",
-    protectedNote: "Dostęp wymaga aktywnej sesji. Wylogowanie ponownie zablokuje ten widok.",
+    appIntro:
+      "To chroniony obszar Caniello. Tutaj pojawią się profile pupili, dokumenty i ustawienia prywatności.",
+    protectedNote:
+      "Dostęp wymaga aktywnej sesji. Wylogowanie ponownie zablokuje ten widok.",
     appGreeting: "Witaj w Caniello",
-    appShellIntro: "Twoje miejsce na profile pupili, dokumenty, przypomnienia i bezpieczne informacje do udostępniania.",
-    appShellStatus: "To pierwszy widok po zalogowaniu. Kolejne zadania dodadzą treść dashboardu i dane pupili.",
+    appShellIntro:
+      "Twoje miejsce na profile pupili, dokumenty, przypomnienia i bezpieczne informacje do udostępniania.",
+    appShellStatus:
+      "To pierwszy widok po zalogowaniu. Kolejne zadania dodadzą treść dashboardu i dane pupili.",
     dashboardModeReturning: "Panel Bruno",
     dashboardModeFirstRun: "Pierwsze uruchomienie",
     dashboardTitle: "Co dziś u Bruno?",
-    dashboardIntro: "Demo panelu pokazuje, gdzie pojawią się najbliższe zadania, dokumenty i podsumowanie opieki, gdy rekordy pupila zostaną zapisane.",
+    dashboardIntro:
+      "Demo panelu pokazuje, gdzie pojawią się najbliższe zadania, dokumenty i podsumowanie opieki, gdy rekordy pupila zostaną zapisane.",
     dashboardDemoBadge: "Podgląd demo",
     dashboardNextTitle: "Co dalej",
     dashboardNextVaccineTitle: "Szczepienie",
@@ -69,7 +81,8 @@ export const accountCopy = {
     dashboardNextDocumentBody: "Sprawdź kartę szczepień",
     dashboardPreviewOnly: "Tylko podgląd",
     dashboardHealthTitle: "Podsumowanie zdrowia",
-    dashboardHealthBody: "Dane przykładowe. Właściwe informacje pojawią się po zapisaniu profilu i dokumentów.",
+    dashboardHealthBody:
+      "Dane przykładowe. Właściwe informacje pojawią się po zapisaniu profilu i dokumentów.",
     dashboardHealthAge: "Wiek",
     dashboardHealthAgeValue: "4 lata",
     dashboardHealthWeight: "Waga",
@@ -89,27 +102,35 @@ export const accountCopy = {
     dashboardTimelineVisit: "Wizyta kontrolna i zalecenie obserwacji wagi",
     dashboardTimelineReminder: "Przypomnienie o dawce OmegaVet",
     dashboardAskTitle: "Zapytaj Caniello",
-    dashboardAskBody: "W przyszłości Caniello pomoże odnaleźć informacje w zapisanych rekordach właściciela. Nie udziela diagnoz, zaleceń leczenia ani porad awaryjnych.",
+    dashboardAskBody:
+      "W przyszłości Caniello pomoże odnaleźć informacje w zapisanych rekordach właściciela. Nie udziela diagnoz, zaleceń leczenia ani porad awaryjnych.",
     dashboardAskAction: "Zapytaj na podstawie rekordów",
     dashboardSharingTitle: "Udostępnij kartę opieki",
-    dashboardSharingBody: "Podgląd miejsca na kontrolowane udostępnianie informacji rodzinie lub opiekunowi. Linki i PDF nie są jeszcze aktywne.",
+    dashboardSharingBody:
+      "Podgląd miejsca na kontrolowane udostępnianie informacji rodzinie lub opiekunowi. Linki i PDF nie są jeszcze aktywne.",
     dashboardSharingAction: "Przygotuj udostępnianie",
     dashboardTipTitle: "Wskazówka Caniello",
-    dashboardTipBody: "Najpierw dodaj ostatnią kartę szczepień i leki. To pomoże później budować przypomnienia bez zgadywania.",
+    dashboardTipBody:
+      "Najpierw dodaj ostatnią kartę szczepień i leki. To pomoże później budować przypomnienia bez zgadywania.",
     onboardingEyebrow: "Pierwsze uruchomienie",
     onboardingTitle: "Witaj w Caniello",
-    onboardingIntro: "Twój asystent opieki nad pupilem pomaga utrzymać Bruno zdrowego, szczęśliwego i pod dobrą opieką.",
+    onboardingIntro:
+      "Twój asystent opieki nad pupilem pomaga utrzymać Bruno zdrowego, szczęśliwego i pod dobrą opieką.",
     onboardingIntroNext: "Zacznijmy od kilku prostych kroków.",
     onboardingStepPet: "Dodaj profil pupila",
-    onboardingStepPetBody: "Utwórz profil Bruno, żebyśmy mogli personalizować opiekę.",
+    onboardingStepPetBody:
+      "Utwórz profil Bruno, żebyśmy mogli personalizować opiekę.",
     onboardingStepDocument: "Dodaj pierwszy dokument",
-    onboardingStepDocumentBody: "Dodaj szczepienie albo wynik wizyty, aby uporządkować rekordy.",
+    onboardingStepDocumentBody:
+      "Dodaj szczepienie albo wynik wizyty, aby uporządkować rekordy.",
     onboardingStepContext: "Przypomnienia i Ask Caniello",
-    onboardingStepContextBody: "Otrzymuj przypomnienia i pytaj o zapisane informacje Bruno.",
+    onboardingStepContextBody:
+      "Otrzymuj przypomnienia i pytaj o zapisane informacje Bruno.",
     onboardingPetStepLabel: "Krok 1 z 3",
     onboardingDocumentStepLabel: "Krok 2 z 3",
     onboardingPetFormTitle: "Dodaj pupila",
-    onboardingPetFormBody: "Powiedz nam trochę o Bruno, abyśmy mogli personalizować jego opiekę.",
+    onboardingPetFormBody:
+      "Powiedz nam trochę o Bruno, abyśmy mogli personalizować jego opiekę.",
     onboardingPetName: "Imię pupila",
     onboardingPetNamePlaceholder: "Bruno",
     onboardingSpecies: "Gatunek",
@@ -122,10 +143,12 @@ export const accountCopy = {
     onboardingGenderPlaceholder: "Samiec",
     onboardingWeight: "Waga",
     onboardingWeightPlaceholder: "26,4 kg",
-    onboardingPetReassurance: "Nie martw się, profil Bruno można później zaktualizować.",
+    onboardingPetReassurance:
+      "Nie martw się, profil Bruno można później zaktualizować.",
     onboardingSavePreview: "Dodaj Bruno",
     onboardingDocumentTitle: "Prześlij lub zeskanuj pierwszy dokument",
-    onboardingDocumentBody: "W przyszłości Caniello pomoże wyciągnąć ważne szczegóły, żeby nie trzeba było robić tego ręcznie.",
+    onboardingDocumentBody:
+      "W przyszłości Caniello pomoże wyciągnąć ważne szczegóły, żeby nie trzeba było robić tego ręcznie.",
     onboardingDocumentCardTitle: "Karta szczepień",
     onboardingDocumentCardPet: "Bruno",
     onboardingDocumentCardProvider: "Riverside Animal Hospital",
@@ -142,11 +165,13 @@ export const accountCopy = {
     onboardingScanPreview: "Skanuj dokument",
     onboardingDocumentPrivacy: "Twoje dokumenty są szyfrowane i prywatne.",
     onboardingAskTitle: "Przypomnienia i Ask Caniello",
-    onboardingAskBody: "Po zapisaniu profilu i dokumentów Caniello będzie mogło pomagać w organizacji właścicielskich informacji. Nie udziela diagnoz, zaleceń leczenia ani porad awaryjnych.",
+    onboardingAskBody:
+      "Po zapisaniu profilu i dokumentów Caniello będzie mogło pomagać w organizacji właścicielskich informacji. Nie udziela diagnoz, zaleceń leczenia ani porad awaryjnych.",
     onboardingReminderPreview: "Przypomnienia zależą od zapisanych danych",
     onboardingAskPreview: "Ask Caniello będzie oparte na Twoich rekordach",
     onboardingTipTitle: "Wskazówka Caniello",
-    onboardingTipBody: "Dodanie pierwszej karty szczepień pomoże później budować oś czasu Bruno i wysyłać właściwe przypomnienia.",
+    onboardingTipBody:
+      "Dodanie pierwszej karty szczepień pomoże później budować oś czasu Bruno i wysyłać właściwe przypomnienia.",
     onboardingTipAction: "Dowiedz się więcej o dokumentach",
     appNavHome: "Start",
     appNavPets: "Pupile",
@@ -166,11 +191,13 @@ export const accountCopy = {
     appDataSafety: "Dane Twojego pupila są z Tobą.",
     petProfileEyebrow: "Profil pupila",
     petProfileTitle: "Zapisz podstawowe dane pupila",
-    petProfileIntro: "Uzupełnij najważniejsze informacje, które później pomogą budować dokumenty, przypomnienia i kartę opieki.",
+    petProfileIntro:
+      "Uzupełnij najważniejsze informacje, które później pomogą budować dokumenty, przypomnienia i kartę opieki.",
     petProfileLoading: "Ładujemy zapisany profil...",
     petProfileEmptyTitle: "Nie zapisaliśmy jeszcze profilu pupila.",
     petProfileSavedTitle: "Zapisany profil",
-    petProfileSavedBody: "Te dane są zapisane dla zalogowanego opiekuna i pozostaną widoczne po odświeżeniu strony.",
+    petProfileSavedBody:
+      "Te dane są zapisane dla zalogowanego opiekuna i pozostaną widoczne po odświeżeniu strony.",
     petProfileName: "Imię pupila",
     petProfileNamePlaceholder: "Bruno",
     petProfileSpecies: "Gatunek",
@@ -189,23 +216,32 @@ export const accountCopy = {
     petProfileMedication: "Leki i suplementy",
     petProfileMedicationPlaceholder: "Stałe leki, dawki lub suplementy",
     petProfileImportantNotes: "Ważne notatki",
-    petProfileImportantNotesPlaceholder: "Instrukcje dla rodziny, opiekuna lub lekarza weterynarii",
+    petProfileImportantNotesPlaceholder:
+      "Instrukcje dla rodziny, opiekuna lub lekarza weterynarii",
     petProfileSaveAction: "Zapisz profil",
     petProfileSavingAction: "Zapisywanie...",
     petProfileValidationName: "Wpisz imię pupila.",
-    petProfileLoadError: "Nie udało się pobrać profilu pupila. Spróbuj odświeżyć stronę.",
-    petProfileSaveError: "Nie udało się zapisać profilu. Sprawdź dane i spróbuj ponownie.",
-    petProfilePrivacyNote: "Profil jest prywatny dla zalogowanego opiekuna. Ten formularz nie tworzy dokumentów, przypomnień, udostępniania ani porad medycznych.",
+    petProfileLoadError:
+      "Nie udało się pobrać profilu pupila. Spróbuj odświeżyć stronę.",
+    petProfileSaveError:
+      "Nie udało się zapisać profilu. Sprawdź dane i spróbuj ponownie.",
+    petProfilePrivacyNote:
+      "Profil jest prywatny dla zalogowanego opiekuna. Ten formularz nie tworzy dokumentów, przypomnień, udostępniania ani porad medycznych.",
     remindersEyebrow: "Przypomnienia",
     remindersTitle: "Przypomnienia: {petName}",
     remindersPetNameFallback: "pupila",
-    remindersIntro: "Zapisz podstawowe terminy szczepień, leków, odrobaczania i wizyt. Powiadomienia oraz cykliczność nie są jeszcze aktywne.",
+    remindersIntro:
+      "Zapisz podstawowe terminy szczepień, leków, odrobaczania i wizyt. Powiadomienia oraz cykliczność nie są jeszcze aktywne.",
     remindersLoading: "Ładujemy przypomnienia...",
-    remindersLoadError: "Nie udało się pobrać przypomnień. Spróbuj odświeżyć stronę.",
-    remindersSaveError: "Nie udało się zapisać przypomnienia. Sprawdź dane i spróbuj ponownie.",
-    remindersCompleteError: "Nie udało się oznaczyć przypomnienia jako wykonane.",
+    remindersLoadError:
+      "Nie udało się pobrać przypomnień. Spróbuj odświeżyć stronę.",
+    remindersSaveError:
+      "Nie udało się zapisać przypomnienia. Sprawdź dane i spróbuj ponownie.",
+    remindersCompleteError:
+      "Nie udało się oznaczyć przypomnienia jako wykonane.",
     remindersPetRequiredTitle: "Najpierw zapisz profil pupila.",
-    remindersPetRequiredBody: "Przypomnienia muszą być przypisane do zapisanego pupila, aby dane pozostały prywatne i uporządkowane.",
+    remindersPetRequiredBody:
+      "Przypomnienia muszą być przypisane do zapisanego pupila, aby dane pozostały prywatne i uporządkowane.",
     remindersPetRequiredAction: "Przejdź do Pupili",
     remindersFormTitleCreate: "Utwórz przypomnienie",
     remindersFormTitleEdit: "Edytuj przypomnienie",
@@ -232,7 +268,8 @@ export const accountCopy = {
     remindersVaccinationTab: "Szczepienia",
     remindersVisitTab: "Wizyty",
     remindersEmptyTitle: "Brak przypomnień w tym widoku.",
-    remindersEmptyBody: "Dodaj pierwsze przypomnienie, aby najbliższe zadania {petName} były widoczne po odświeżeniu strony.",
+    remindersEmptyBody:
+      "Dodaj pierwsze przypomnienie, aby najbliższe zadania {petName} były widoczne po odświeżeniu strony.",
     remindersMarkCompleteAction: "Oznacz jako wykonane",
     remindersEditAction: "Edytuj",
     remindersCompletedBadge: "Wykonane",
@@ -240,18 +277,24 @@ export const accountCopy = {
     remindersSuggestedBadge: "Sugerowane",
     remindersDismissedBadge: "Odrzucone",
     remindersPreferencesTitle: "Preferencje przypomnień",
-    remindersPreferencesBody: "Godzina domyślna, drzemka, e-mail, push i testowe powiadomienie są odłożone do kolejnych zadań.",
+    remindersPreferencesBody:
+      "Godzina domyślna, drzemka, e-mail, push i testowe powiadomienie są odłożone do kolejnych zadań.",
     remindersPreferencesDisabled: "Powiadomienia wkrótce",
-    remindersPrivacyNote: "Przypomnienia są prywatne dla zalogowanego opiekuna. Ten widok nie wysyła powiadomień, e-maili, SMS-ów ani synchronizacji kalendarza.",
+    remindersPrivacyNote:
+      "Przypomnienia są prywatne dla zalogowanego opiekuna. Ten widok nie wysyła powiadomień, e-maili, SMS-ów ani synchronizacji kalendarza.",
     timelineEyebrow: "Oś czasu",
     timelineTitle: "Oś czasu opieki",
     timelinePetNameFallback: "pupila",
-    timelineIntro: "Chronologiczny widok zdrowia, opieki i ważnych wydarzeń {petName}.",
+    timelineIntro:
+      "Chronologiczny widok zdrowia, opieki i ważnych wydarzeń {petName}.",
     timelineLoading: "Ładujemy oś czasu...",
-    timelineLoadError: "Nie udało się pobrać osi czasu. Spróbuj odświeżyć stronę.",
-    timelineSaveError: "Nie udało się zapisać wydarzenia. Sprawdź dane i spróbuj ponownie.",
+    timelineLoadError:
+      "Nie udało się pobrać osi czasu. Spróbuj odświeżyć stronę.",
+    timelineSaveError:
+      "Nie udało się zapisać wydarzenia. Sprawdź dane i spróbuj ponownie.",
     timelinePetRequiredTitle: "Najpierw zapisz profil pupila.",
-    timelinePetRequiredBody: "Wydarzenia osi czasu muszą być przypisane do zapisanego pupila, aby historia pozostała prywatna i uporządkowana.",
+    timelinePetRequiredBody:
+      "Wydarzenia osi czasu muszą być przypisane do zapisanego pupila, aby historia pozostała prywatna i uporządkowana.",
     timelinePetRequiredAction: "Przejdź do Pupili",
     timelineFormTitleCreate: "Dodaj wydarzenie",
     timelineFormTitleEdit: "Edytuj wydarzenie",
@@ -275,7 +318,8 @@ export const accountCopy = {
     timelineValidationTitle: "Wpisz tytuł wydarzenia.",
     timelineValidationDate: "Wybierz poprawną datę wydarzenia.",
     timelineEmptyTitle: "Brak wydarzeń na osi czasu.",
-    timelineEmptyBody: "Dodaj pierwsze wydarzenie, aby historia opieki {petName} była widoczna po odświeżeniu strony.",
+    timelineEmptyBody:
+      "Dodaj pierwsze wydarzenie, aby historia opieki {petName} była widoczna po odświeżeniu strony.",
     timelineManualBadge: "Wpis ręczny",
     timelineEditAction: "Edytuj",
     timelineFilterAll: "Wszystko",
@@ -292,7 +336,8 @@ export const accountCopy = {
     timelineSummaryDocuments: "Dokumenty",
     timelineNextUpcomingTitle: "Najbliższe zadanie",
     timelineNextUpcomingLoading: "Ładujemy przypomnienia...",
-    timelineNextUpcomingEmpty: "Brak aktywnych przypomnień. Dodaj przypomnienie, aby następne zadanie opieki było widoczne obok historii.",
+    timelineNextUpcomingEmpty:
+      "Brak aktywnych przypomnień. Dodaj przypomnienie, aby następne zadanie opieki było widoczne obok historii.",
     timelineNextUpcomingAction: "Zobacz przypomnienia",
     timelineExportAction: "Eksport osi czasu",
     timelinePetCardLabel: "Aktywny pupil osi czasu",
@@ -305,18 +350,24 @@ export const accountCopy = {
     timelineStatusNormal: "Normalne",
     timelineStatusUploaded: "Dodano",
     timelineAutomationTitle: "Automatyzacje są wyłączone",
-    timelineAutomationBody: "Ta oś czasu zapisuje tylko wydarzenia wpisane przez opiekuna. Automatyczne wpisy z dokumentów, OCR, AI, przypomnień i udostępniania są poza tym zadaniem.",
+    timelineAutomationBody:
+      "Ta oś czasu zapisuje tylko wydarzenia wpisane przez opiekuna. Automatyczne wpisy z dokumentów, OCR, AI, przypomnień i udostępniania są poza tym zadaniem.",
     timelineAutomationAction: "Automatyzacje wkrótce",
-    timelinePrivacyNote: "Oś czasu jest prywatna dla zalogowanego opiekuna. Ten widok nie generuje diagnoz, zaleceń leczenia, porad awaryjnych ani oficjalnych dokumentów.",
+    timelinePrivacyNote:
+      "Oś czasu jest prywatna dla zalogowanego opiekuna. Ten widok nie generuje diagnoz, zaleceń leczenia, porad awaryjnych ani oficjalnych dokumentów.",
     documentsEyebrow: "Dokumenty",
     documentsTitle: "Sejf dokumentów: {petName}",
     documentsPetNameFallback: "pupila",
-    documentsIntro: "Zapisz podstawowe metadane dokumentów medycznych. Przesyłanie plików, skanowanie, OCR i analiza nie są jeszcze aktywne.",
+    documentsIntro:
+      "Zapisz podstawowe metadane dokumentów medycznych. Przesyłanie plików, skanowanie, OCR i analiza nie są jeszcze aktywne.",
     documentsLoading: "Ładujemy dokumenty...",
-    documentsLoadError: "Nie udało się pobrać dokumentów. Spróbuj odświeżyć stronę.",
-    documentsSaveError: "Nie udało się zapisać dokumentu. Sprawdź dane i spróbuj ponownie.",
+    documentsLoadError:
+      "Nie udało się pobrać dokumentów. Spróbuj odświeżyć stronę.",
+    documentsSaveError:
+      "Nie udało się zapisać dokumentu. Sprawdź dane i spróbuj ponownie.",
     documentsPetRequiredTitle: "Najpierw zapisz profil pupila.",
-    documentsPetRequiredBody: "Dokumenty muszą być przypisane do zapisanego pupila, aby dane pozostały prywatne i uporządkowane.",
+    documentsPetRequiredBody:
+      "Dokumenty muszą być przypisane do zapisanego pupila, aby dane pozostały prywatne i uporządkowane.",
     documentsPetRequiredAction: "Przejdź do Pupili",
     documentsFormTitleCreate: "Dodaj dokument",
     documentsFormTitleEdit: "Edytuj dokument",
@@ -346,119 +397,157 @@ export const accountCopy = {
     documentsValidationTitle: "Wpisz tytuł dokumentu.",
     documentsValidationDate: "Wybierz poprawną datę dokumentu.",
     documentsEmptyTitle: "Brak dokumentów.",
-    documentsEmptyBody: "Dodaj pierwszy opis dokumentu, aby rekordy {petName} były widoczne po odświeżeniu strony.",
+    documentsEmptyBody:
+      "Dodaj pierwszy opis dokumentu, aby rekordy {petName} były widoczne po odświeżeniu strony.",
     documentsEditAction: "Edytuj",
     documentsMetadataBadge: "Tylko metadane",
     documentsUnavailableTitle: "Pliki i OCR",
-    documentsUnavailableBody: "Przesyłanie plików, skanowanie, OCR, wyciąganie danych i weryfikacja dokumentów są odłożone do kolejnych zadań.",
+    documentsUnavailableBody:
+      "Przesyłanie plików, skanowanie, OCR, wyciąganie danych i weryfikacja dokumentów są odłożone do kolejnych zadań.",
     documentsUnavailableAction: "Przesyłanie wkrótce",
-    documentsPrivacyNote: "Dokumenty są prywatne dla zalogowanego opiekuna. Ten widok zapisuje tylko metadane i nie przesyła plików, nie analizuje treści ani nie tworzy porad medycznych.",
+    documentsPrivacyNote:
+      "Dokumenty są prywatne dla zalogowanego opiekuna. Ten widok zapisuje tylko metadane i nie przesyła plików, nie analizuje treści ani nie tworzy porad medycznych.",
     careCardEyebrow: "Karta opieki",
     careCardTitle: "Podgląd karty opieki",
-    careCardIntro: "Sprawdź, jakie informacje z zapisanych rekordów właściciela mogą później trafić do kontrolowanego udostępniania lub eksportu.",
+    careCardIntro:
+      "Sprawdź, jakie informacje z zapisanych rekordów właściciela mogą później trafić do kontrolowanego udostępniania lub eksportu.",
     careCardLoading: "Ładujemy kartę opieki...",
-    careCardLoadError: "Nie udało się pobrać danych karty opieki. Spróbuj odświeżyć stronę.",
+    careCardLoadError:
+      "Nie udało się pobrać danych karty opieki. Spróbuj odświeżyć stronę.",
     careCardPetRequiredTitle: "Najpierw zapisz profil pupila.",
-    careCardPetRequiredBody: "Karta opieki potrzebuje zapisanego profilu, aby pokazać właściwego pupila i pozostać prywatna dla zalogowanego opiekuna.",
+    careCardPetRequiredBody:
+      "Karta opieki potrzebuje zapisanego profilu, aby pokazać właściwego pupila i pozostać prywatna dla zalogowanego opiekuna.",
     careCardPetRequiredAction: "Przejdź do Pupili",
     careCardPetNameFallback: "Pupil",
     careCardPreviewLabel: "Podgląd prywatnej karty opieki",
     careCardPreviewBadge: "Prywatny podgląd",
     careCardOwnerOnlyBadge: "Tylko właściciel",
-    careCardIdentityMissing: "Uzupełnij gatunek, rasę lub datę urodzenia w profilu pupila.",
+    careCardIdentityMissing:
+      "Uzupełnij gatunek, rasę lub datę urodzenia w profilu pupila.",
     careCardMissingValue: "Nie uzupełniono",
     careCardRemindersTitle: "Najbliższe przypomnienia",
-    careCardRemindersEmpty: "Brak aktywnych przypomnień do pokazania w tym podglądzie.",
+    careCardRemindersEmpty:
+      "Brak aktywnych przypomnień do pokazania w tym podglądzie.",
     careCardDocumentsTitle: "Ostatnie dokumenty",
-    careCardDocumentsEmpty: "Brak metadanych dokumentów do pokazania w tym podglądzie.",
+    careCardDocumentsEmpty:
+      "Brak metadanych dokumentów do pokazania w tym podglądzie.",
     careCardUnavailableTitle: "Udostępnianie i eksport",
-    careCardUnavailableBody: "Utwórz kontrolowany link tylko do odczytu. Link pokazuje tę kartę opieki bez konta opiekuna, a PDF, zaproszenia i uprawnienia opiekunów nadal są wyłączone.",
+    careCardUnavailableBody:
+      "Utwórz kontrolowany link tylko do odczytu. Link pokazuje tę kartę opieki bez konta opiekuna, a PDF, zaproszenia i uprawnienia opiekunów nadal są wyłączone.",
     careCardShareLinkAction: "Utwórz link",
     careCardShareLinkLoading: "Sprawdzamy link udostępniania...",
     careCardShareLinkActiveTitle: "Aktywny link",
     careCardShareLinkCreatedTitle: "Nowy link gotowy",
-    careCardShareLinkCreatedBody: "Skopiuj ten adres teraz. Ze względów bezpieczeństwa Caniello nie pokazuje ponownie pełnego tokenu po odświeżeniu strony.",
-    careCardShareLinkActiveBody: "Link jest aktywny dla tej karty opieki. Możesz go odwołać w dowolnym momencie.",
+    careCardShareLinkCreatedBody:
+      "Skopiuj ten adres teraz. Ze względów bezpieczeństwa Caniello nie pokazuje ponownie pełnego tokenu po odświeżeniu strony.",
+    careCardShareLinkActiveBody:
+      "Link jest aktywny dla tej karty opieki. Możesz go odwołać w dowolnym momencie.",
     careCardShareLinkExpires: "Wygasa",
     careCardShareLinkCopy: "Kopiuj link",
     careCardShareLinkCopied: "Skopiowano",
     careCardShareLinkRevoke: "Odwołaj link",
     careCardShareLinkRevoking: "Odwołujemy...",
-    careCardShareLinkCreateError: "Nie udało się utworzyć linku. Spróbuj ponownie.",
-    careCardShareLinkRevokeError: "Nie udało się odwołać linku. Spróbuj ponownie.",
-    careCardShareLinkNoRecovery: "Pełny adres linku jest widoczny tylko zaraz po utworzeniu.",
+    careCardShareLinkCreateError:
+      "Nie udało się utworzyć linku. Spróbuj ponownie.",
+    careCardShareLinkRevokeError:
+      "Nie udało się odwołać linku. Spróbuj ponownie.",
+    careCardShareLinkNoRecovery:
+      "Pełny adres linku jest widoczny tylko zaraz po utworzeniu.",
     careCardPdfAction: "Eksport PDF wkrótce",
     careCardSafetyTitle: "Granice karty",
-    careCardSafetyBody: "Podgląd porządkuje dane zapisane przez właściciela. Nie jest diagnozą, zaleceniem leczenia, poradą awaryjną, decyzją weterynaryjną ani oficjalnym paszportem zwierzęcia.",
+    careCardSafetyBody:
+      "Podgląd porządkuje dane zapisane przez właściciela. Nie jest diagnozą, zaleceniem leczenia, poradą awaryjną, decyzją weterynaryjną ani oficjalnym paszportem zwierzęcia.",
     appSectionPreviewEyebrow: "Sekcja w przygotowaniu",
     appSectionPreviewTitle: "Co pojawi się tutaj",
     appSectionPetsTitle: "Profile pupili",
-    appSectionPetsBody: "Tutaj pojawią się profile pupili z podstawowymi danymi, chipem, alergiami, lekami i ważnymi notatkami.",
+    appSectionPetsBody:
+      "Tutaj pojawią się profile pupili z podstawowymi danymi, chipem, alergiami, lekami i ważnymi notatkami.",
     appSectionPetsAction: "Dodawanie profilu wkrótce",
-    appSectionPetsSafety: "To tylko podgląd sekcji. Nie zapisaliśmy profilu, danych medycznych ani zmian w bazie.",
+    appSectionPetsSafety:
+      "To tylko podgląd sekcji. Nie zapisaliśmy profilu, danych medycznych ani zmian w bazie.",
     appSectionTimelineTitle: "Oś czasu opieki",
-    appSectionTimelineBody: "Tutaj Caniello uporządkuje wizyty, szczepienia, leki i dokumenty, gdy właściciel zapisze rekordy pupila.",
+    appSectionTimelineBody:
+      "Tutaj Caniello uporządkuje wizyty, szczepienia, leki i dokumenty, gdy właściciel zapisze rekordy pupila.",
     appSectionTimelineAction: "Oś czasu wkrótce",
-    appSectionTimelineSafety: "Zdarzenia są jeszcze niedostępne. Ten widok nie tworzy historii leczenia ani zweryfikowanych wpisów.",
+    appSectionTimelineSafety:
+      "Zdarzenia są jeszcze niedostępne. Ten widok nie tworzy historii leczenia ani zweryfikowanych wpisów.",
     appSectionDocumentsTitle: "Dokumenty",
-    appSectionDocumentsBody: "Tutaj znajdzie się sejf na karty szczepień, wyniki badań i ważne dokumenty medyczne.",
+    appSectionDocumentsBody:
+      "Tutaj znajdzie się sejf na karty szczepień, wyniki badań i ważne dokumenty medyczne.",
     appSectionDocumentsAction: "Przesyłanie dokumentów wkrótce",
-    appSectionDocumentsSafety: "Przesyłanie, skanowanie, OCR, analiza i weryfikacja dokumentów nie są aktywne w tym widoku.",
+    appSectionDocumentsSafety:
+      "Przesyłanie, skanowanie, OCR, analiza i weryfikacja dokumentów nie są aktywne w tym widoku.",
     appSectionRemindersTitle: "Przypomnienia",
-    appSectionRemindersBody: "Tutaj pojawią się przypomnienia o szczepieniach, lekach, odrobaczaniu i wizytach, gdy będą oparte na zapisanych danych.",
+    appSectionRemindersBody:
+      "Tutaj pojawią się przypomnienia o szczepieniach, lekach, odrobaczaniu i wizytach, gdy będą oparte na zapisanych danych.",
     appSectionRemindersAction: "Tworzenie przypomnień wkrótce",
-    appSectionRemindersSafety: "Nie utworzono przypomnienia, powiadomienia, e-maila, synchronizacji kalendarza ani reguły cyklicznej.",
+    appSectionRemindersSafety:
+      "Nie utworzono przypomnienia, powiadomienia, e-maila, synchronizacji kalendarza ani reguły cyklicznej.",
     appSectionAskTitle: "Zapytaj Caniello",
-    appSectionAskBody: "W przyszłości Caniello pomoże odnaleźć informacje w rekordach zapisanych przez właściciela.",
+    appSectionAskBody:
+      "W przyszłości Caniello pomoże odnaleźć informacje w rekordach zapisanych przez właściciela.",
     appSectionAskAction: "Asystent wkrótce",
-    appSectionAskSafety: "Ask Caniello nie jest jeszcze aktywne. Nie generuje odpowiedzi, diagnoz, zaleceń leczenia, decyzji weterynaryjnych ani porad awaryjnych.",
+    appSectionAskSafety:
+      "Ask Caniello nie jest jeszcze aktywne. Nie generuje odpowiedzi, diagnoz, zaleceń leczenia, decyzji weterynaryjnych ani porad awaryjnych.",
     appSectionSharingTitle: "Udostępnianie",
-    appSectionSharingBody: "Tutaj pojawią się kontrolowane sposoby pokazania rodzinie lub opiekunowi najważniejszych informacji o opiece.",
+    appSectionSharingBody:
+      "Tutaj pojawią się kontrolowane sposoby pokazania rodzinie lub opiekunowi najważniejszych informacji o opiece.",
     appSectionSharingAction: "Udostępnianie wkrótce",
-    appSectionSharingSafety: "Nie utworzono linku, PDF, zaproszenia, uprawnienia opiekuna ani odwołania dostępu.",
+    appSectionSharingSafety:
+      "Nie utworzono linku, PDF, zaproszenia, uprawnienia opiekuna ani odwołania dostępu.",
     appSectionSettingsTitle: "Ustawienia",
-    appSectionSettingsBody: "Tutaj będą uporządkowane ustawienia konta, prywatności, zgód i języka.",
+    appSectionSettingsBody:
+      "Tutaj będą uporządkowane ustawienia konta, prywatności, zgód i języka.",
     appSectionSettingsAction: "Ustawienia szczegółowe wkrótce",
-    appSectionSettingsSafety: "Ten podgląd nie dodaje nowych przepływów usuwania konta, eksportu danych, zgód ani uprawnień.",
+    appSectionSettingsSafety:
+      "Ten podgląd nie dodaje nowych przepływów usuwania konta, eksportu danych, zgód ani uprawnień.",
     settingsEyebrow: "Ustawienia prywatności",
     settingsTitle: "Konto, zgody i dane",
-    settingsIntro: "Zarządzaj podstawowym profilem konta, językiem i zgodami. Eksport danych i usunięcie konta są rejestrowane jako prośby do dalszej obsługi.",
+    settingsIntro:
+      "Zarządzaj podstawowym profilem konta, językiem i zgodami. Eksport danych i usunięcie konta są rejestrowane jako prośby do dalszej obsługi.",
     settingsLoading: "Ładujemy ustawienia...",
     settingsError: "Nie udało się obsłużyć ustawień. Spróbuj ponownie.",
     settingsSaved: "Zapisano ustawienia.",
     settingsSaving: "Zapisywanie...",
     settingsProfileTitle: "Profil konta",
-    settingsProfileBody: "Te dane dotyczą konta właściciela, a nie profilu pupila.",
+    settingsProfileBody:
+      "Te dane dotyczą konta właściciela, a nie profilu pupila.",
     settingsDisplayName: "Nazwa opiekuna",
     settingsLanguage: "Język konta",
     settingsLanguagePl: "Polski",
     settingsLanguageEn: "Angielski",
     settingsProfileAction: "Zapisz profil konta",
     settingsConsentTitle: "Zgody",
-    settingsConsentBody: "Zapisz bieżące zgody dla analityki i komunikacji. Każda zmiana jest osobnym zdarzeniem.",
+    settingsConsentBody:
+      "Zapisz bieżące zgody dla analityki i komunikacji. Każda zmiana jest osobnym zdarzeniem.",
     settingsAnalyticsConsent: "Zgadzam się na analitykę produktu.",
     settingsMarketingConsent: "Zgadzam się na komunikację marketingową.",
     settingsLatestConsent: "Ostatnia zgoda",
     settingsNoConsent: "brak zapisu",
     settingsConsentAction: "Zapisz zgody",
     settingsExportTitle: "Eksport danych",
-    settingsExportBody: "Zarejestruj prośbę o eksport danych. Ten widok nie tworzy jeszcze pliku, linku pobierania ani wiadomości e-mail.",
+    settingsExportBody:
+      "Zarejestruj prośbę o eksport danych. Ten widok nie tworzy jeszcze pliku, linku pobierania ani wiadomości e-mail.",
     settingsExportAction: "Poproś o eksport danych",
     settingsDeletionTitle: "Usunięcie konta",
-    settingsDeletionBody: "Zarejestruj prośbę o usunięcie konta. Konto i rekordy nie są usuwane automatycznie w tym zadaniu.",
+    settingsDeletionBody:
+      "Zarejestruj prośbę o usunięcie konta. Konto i rekordy nie są usuwane automatycznie w tym zadaniu.",
     settingsDeletionConfirmation: "Wpisz DELETE, aby odblokować prośbę",
     settingsDeletionAction: "Poproś o usunięcie konta",
     settingsRequestStatus: "Status prośby",
     settingsNoRequest: "brak prośby",
-    settingsPrivacyNote: "Ustawienia są prywatne dla zalogowanego właściciela. Ten widok nie zmienia ról, uprawnień opiekunów, linków udostępniania, eksportu PDF ani oficjalnych dokumentów.",
+    settingsPrivacyNote:
+      "Ustawienia są prywatne dla zalogowanego właściciela. Ten widok nie zmienia ról, uprawnień opiekunów, linków udostępniania, eksportu PDF ani oficjalnych dokumentów.",
     validationFullName: "Wpisz imię i nazwisko.",
     validationEmail: "Wpisz poprawny adres e-mail.",
     validationPassword: "Hasło musi mieć co najmniej 12 znaków.",
     validationConfirmPassword: "Hasła muszą być takie same.",
     validationTerms: "Zaakceptuj regulamin i politykę prywatności.",
-    invalidCredentials: "Nie znaleźliśmy konta z tym e-mailem i hasłem. Sprawdź dane albo utwórz konto.",
+    invalidCredentials:
+      "Nie znaleźliśmy konta z tym e-mailem i hasłem. Sprawdź dane albo utwórz konto.",
     genericError: "Nie udało się zakończyć operacji. Spróbuj ponownie.",
-    authUnavailable: "Logowanie lokalne nie jest jeszcze skonfigurowane. Ustaw NEXT_PUBLIC_SUPABASE_URL i NEXT_PUBLIC_SUPABASE_ANON_KEY dla apps/web, a potem uruchom ponownie serwer dev.",
+    authUnavailable:
+      "Logowanie lokalne nie jest jeszcze skonfigurowane. Ustaw NEXT_PUBLIC_SUPABASE_URL i NEXT_PUBLIC_SUPABASE_ANON_KEY dla apps/web, a potem uruchom ponownie serwer dev.",
     privacy: "Prywatność",
     terms: "Regulamin",
     medical: "Granice medyczne",
@@ -467,12 +556,14 @@ export const accountCopy = {
     signupPrompt: "Nie masz konta?",
     loginLink: "Zaloguj się",
     signupLink: "Utwórz konto",
-    medicalBoundary: "Caniello porządkuje dokumenty i przypomnienia. Nie zastępuje lekarza weterynarii, diagnozy, leczenia, nagłej pomocy ani oficjalnego paszportu zwierzęcia."
+    medicalBoundary:
+      "Caniello porządkuje dokumenty i przypomnienia. Nie zastępuje lekarza weterynarii, diagnozy, leczenia, nagłej pomocy ani oficjalnego paszportu zwierzęcia.",
   },
   en: {
     brand: "Caniello",
     heroTitle: "All of your pet's health, in one secure place.",
-    heroIntro: "Caniello helps you organize documents, track health, get reminders and ask our AI assistant about your pet's care.",
+    heroIntro:
+      "Caniello helps you organize documents, track health, get reminders and ask our AI assistant about your pet's care.",
     heroTrust: "Trusted by pet parents. Built for peace of mind.",
     featureDocumentsTitle: "Organize documents",
     featureDocumentsBody: "Keep all medical records in one place.",
@@ -487,7 +578,8 @@ export const accountCopy = {
     loginTitle: "Welcome back",
     loginIntro: "Log in to your Caniello account",
     resetTitle: "Recover access",
-    resetIntro: "Enter your email and we will send password reset instructions through Supabase Auth.",
+    resetIntro:
+      "Enter your email and we will send password reset instructions through Supabase Auth.",
     fullName: "Full name",
     fullNamePlaceholder: "Your full name",
     email: "Email address",
@@ -508,23 +600,32 @@ export const accountCopy = {
     loginWith: "or continue with",
     continueGoogle: "Continue with Google",
     continueApple: "Continue with Apple",
+    socialUnavailable:
+      "Google and Apple login are disabled in this local validation build. Use email and password.",
+    socialUnavailableSuffix: "unavailable locally",
     neverShare: "We never share your data with third parties.",
     legalAgreementLead: "By logging in, you agree to our",
     legalAgreementMiddle: "and",
     logoutAction: "Log out",
     verifyTitle: "Check your email",
-    verifyBody: "The account was created. Verify your email address before full app access is available.",
+    verifyBody:
+      "The account was created. Verify your email address before full app access is available.",
     resetSent: "If the account exists, we sent password reset instructions.",
     appTitle: "Owner dashboard",
-    appIntro: "This is Caniello's protected area. Pet profiles, documents, and privacy settings will appear here.",
-    protectedNote: "Access requires an active session. Logging out blocks this view again.",
+    appIntro:
+      "This is Caniello's protected area. Pet profiles, documents, and privacy settings will appear here.",
+    protectedNote:
+      "Access requires an active session. Logging out blocks this view again.",
     appGreeting: "Welcome to Caniello",
-    appShellIntro: "Your place for pet profiles, documents, reminders, and safe shareable care information.",
-    appShellStatus: "This is the first signed-in view. Later tasks will add dashboard content and pet data.",
+    appShellIntro:
+      "Your place for pet profiles, documents, reminders, and safe shareable care information.",
+    appShellStatus:
+      "This is the first signed-in view. Later tasks will add dashboard content and pet data.",
     dashboardModeReturning: "Bruno dashboard",
     dashboardModeFirstRun: "First run",
     dashboardTitle: "What needs attention for Bruno?",
-    dashboardIntro: "This demo dashboard shows where upcoming tasks, documents, and care summaries will appear after pet records are saved.",
+    dashboardIntro:
+      "This demo dashboard shows where upcoming tasks, documents, and care summaries will appear after pet records are saved.",
     dashboardDemoBadge: "Demo preview",
     dashboardNextTitle: "What's next",
     dashboardNextVaccineTitle: "Vaccine",
@@ -537,7 +638,8 @@ export const accountCopy = {
     dashboardNextDocumentBody: "Review vaccination record",
     dashboardPreviewOnly: "Preview only",
     dashboardHealthTitle: "Health summary",
-    dashboardHealthBody: "Example data. Real information will appear after the pet profile and documents are saved.",
+    dashboardHealthBody:
+      "Example data. Real information will appear after the pet profile and documents are saved.",
     dashboardHealthAge: "Age",
     dashboardHealthAgeValue: "4 years",
     dashboardHealthWeight: "Weight",
@@ -557,27 +659,35 @@ export const accountCopy = {
     dashboardTimelineVisit: "Checkup visit and weight observation note",
     dashboardTimelineReminder: "OmegaVet dose reminder",
     dashboardAskTitle: "Ask Caniello",
-    dashboardAskBody: "In the future, Caniello can help find information in saved owner records. It does not diagnose, recommend treatment, or provide emergency advice.",
+    dashboardAskBody:
+      "In the future, Caniello can help find information in saved owner records. It does not diagnose, recommend treatment, or provide emergency advice.",
     dashboardAskAction: "Ask from records",
     dashboardSharingTitle: "Share care card",
-    dashboardSharingBody: "Preview space for controlled sharing with family or a caregiver. Links and PDFs are not active yet.",
+    dashboardSharingBody:
+      "Preview space for controlled sharing with family or a caregiver. Links and PDFs are not active yet.",
     dashboardSharingAction: "Prepare sharing",
     dashboardTipTitle: "Caniello Tip",
-    dashboardTipBody: "Start with the latest vaccination record and medications. That will help future reminders stay grounded in records.",
+    dashboardTipBody:
+      "Start with the latest vaccination record and medications. That will help future reminders stay grounded in records.",
     onboardingEyebrow: "First run",
     onboardingTitle: "Welcome to Caniello",
-    onboardingIntro: "Your AI pet-care assistant that helps you keep Bruno healthy, happy, and on track.",
+    onboardingIntro:
+      "Your AI pet-care assistant that helps you keep Bruno healthy, happy, and on track.",
     onboardingIntroNext: "Let's get started in just a few easy steps.",
     onboardingStepPet: "Add your pet",
-    onboardingStepPetBody: "Create Bruno's profile so we can personalize his care.",
+    onboardingStepPetBody:
+      "Create Bruno's profile so we can personalize his care.",
     onboardingStepDocument: "Upload or scan your first document",
-    onboardingStepDocumentBody: "Add a vaccination record or vet visit so Caniello can keep everything organized.",
+    onboardingStepDocumentBody:
+      "Add a vaccination record or vet visit so Caniello can keep everything organized.",
     onboardingStepContext: "Get reminders and ask Caniello",
-    onboardingStepContextBody: "Receive timely reminders and get instant answers about Bruno's care.",
+    onboardingStepContextBody:
+      "Receive timely reminders and get instant answers about Bruno's care.",
     onboardingPetStepLabel: "Step 1 of 3",
     onboardingDocumentStepLabel: "Step 2 of 3",
     onboardingPetFormTitle: "Add your pet",
-    onboardingPetFormBody: "Tell us a little about Bruno so we can personalize his care.",
+    onboardingPetFormBody:
+      "Tell us a little about Bruno so we can personalize his care.",
     onboardingPetName: "Pet name",
     onboardingPetNamePlaceholder: "Bruno",
     onboardingSpecies: "Species",
@@ -590,10 +700,12 @@ export const accountCopy = {
     onboardingGenderPlaceholder: "Male",
     onboardingWeight: "Weight",
     onboardingWeightPlaceholder: "26.4 kg",
-    onboardingPetReassurance: "Don't worry, you can always update Bruno's profile later.",
+    onboardingPetReassurance:
+      "Don't worry, you can always update Bruno's profile later.",
     onboardingSavePreview: "Add Bruno",
     onboardingDocumentTitle: "Upload or scan your first document",
-    onboardingDocumentBody: "We'll extract the important details so you don't have to.",
+    onboardingDocumentBody:
+      "We'll extract the important details so you don't have to.",
     onboardingDocumentCardTitle: "Vaccination Record",
     onboardingDocumentCardPet: "Bruno",
     onboardingDocumentCardProvider: "Riverside Animal Hospital",
@@ -610,11 +722,13 @@ export const accountCopy = {
     onboardingScanPreview: "Scan document",
     onboardingDocumentPrivacy: "Your documents are encrypted and private.",
     onboardingAskTitle: "Reminders and Ask Caniello",
-    onboardingAskBody: "After profiles and documents are saved, Caniello can help organize owner-provided information. It does not diagnose, recommend treatment, or provide emergency advice.",
+    onboardingAskBody:
+      "After profiles and documents are saved, Caniello can help organize owner-provided information. It does not diagnose, recommend treatment, or provide emergency advice.",
     onboardingReminderPreview: "Reminders depend on saved records",
     onboardingAskPreview: "Ask Caniello will be grounded in your records",
     onboardingTipTitle: "Caniello Tip",
-    onboardingTipBody: "Adding a vaccination record first helps us build Bruno's timeline and send the right reminders.",
+    onboardingTipBody:
+      "Adding a vaccination record first helps us build Bruno's timeline and send the right reminders.",
     onboardingTipAction: "Learn more about documents",
     appNavHome: "Home",
     appNavPets: "Pets",
@@ -634,11 +748,13 @@ export const accountCopy = {
     appDataSafety: "Your pet's data stays with you.",
     petProfileEyebrow: "Pet profile",
     petProfileTitle: "Save your pet's core details",
-    petProfileIntro: "Add the key information that will later support documents, reminders, and the shareable care card.",
+    petProfileIntro:
+      "Add the key information that will later support documents, reminders, and the shareable care card.",
     petProfileLoading: "Loading the saved profile...",
     petProfileEmptyTitle: "No pet profile has been saved yet.",
     petProfileSavedTitle: "Saved profile",
-    petProfileSavedBody: "These details are saved for the signed-in owner and stay visible after reloading the page.",
+    petProfileSavedBody:
+      "These details are saved for the signed-in owner and stay visible after reloading the page.",
     petProfileName: "Pet name",
     petProfileNamePlaceholder: "Bruno",
     petProfileSpecies: "Species",
@@ -655,25 +771,33 @@ export const accountCopy = {
     petProfileAllergies: "Allergies",
     petProfileAllergiesPlaceholder: "None saved, or describe reactions",
     petProfileMedication: "Medication and supplements",
-    petProfileMedicationPlaceholder: "Regular medication, doses, or supplements",
+    petProfileMedicationPlaceholder:
+      "Regular medication, doses, or supplements",
     petProfileImportantNotes: "Important notes",
-    petProfileImportantNotesPlaceholder: "Instructions for family, caregivers, or the veterinarian",
+    petProfileImportantNotesPlaceholder:
+      "Instructions for family, caregivers, or the veterinarian",
     petProfileSaveAction: "Save profile",
     petProfileSavingAction: "Saving...",
     petProfileValidationName: "Enter the pet name.",
-    petProfileLoadError: "We could not load the pet profile. Try refreshing the page.",
-    petProfileSaveError: "We could not save the profile. Check the details and try again.",
-    petProfilePrivacyNote: "The profile is private to the signed-in owner. This form does not create documents, reminders, sharing, or medical advice.",
+    petProfileLoadError:
+      "We could not load the pet profile. Try refreshing the page.",
+    petProfileSaveError:
+      "We could not save the profile. Check the details and try again.",
+    petProfilePrivacyNote:
+      "The profile is private to the signed-in owner. This form does not create documents, reminders, sharing, or medical advice.",
     remindersEyebrow: "Reminders",
     remindersTitle: "Reminders: {petName}",
     remindersPetNameFallback: "your pet",
-    remindersIntro: "Save basic vaccine, medication, deworming, and visit dates. Notifications and recurrence are not active yet.",
+    remindersIntro:
+      "Save basic vaccine, medication, deworming, and visit dates. Notifications and recurrence are not active yet.",
     remindersLoading: "Loading reminders...",
     remindersLoadError: "We could not load reminders. Try refreshing the page.",
-    remindersSaveError: "We could not save the reminder. Check the details and try again.",
+    remindersSaveError:
+      "We could not save the reminder. Check the details and try again.",
     remindersCompleteError: "We could not mark the reminder complete.",
     remindersPetRequiredTitle: "Save a pet profile first.",
-    remindersPetRequiredBody: "Reminders must be attached to a saved pet so the data stays private and organized.",
+    remindersPetRequiredBody:
+      "Reminders must be attached to a saved pet so the data stays private and organized.",
     remindersPetRequiredAction: "Go to Pets",
     remindersFormTitleCreate: "Create reminder",
     remindersFormTitleEdit: "Edit reminder",
@@ -700,7 +824,8 @@ export const accountCopy = {
     remindersVaccinationTab: "Vaccines",
     remindersVisitTab: "Visits",
     remindersEmptyTitle: "No reminders in this view.",
-    remindersEmptyBody: "Add the first reminder so {petName}'s next care task stays visible after reloading the page.",
+    remindersEmptyBody:
+      "Add the first reminder so {petName}'s next care task stays visible after reloading the page.",
     remindersMarkCompleteAction: "Mark complete",
     remindersEditAction: "Edit",
     remindersCompletedBadge: "Completed",
@@ -708,18 +833,24 @@ export const accountCopy = {
     remindersSuggestedBadge: "Suggested",
     remindersDismissedBadge: "Dismissed",
     remindersPreferencesTitle: "Reminder preferences",
-    remindersPreferencesBody: "Default time, snooze, email, push, and test notifications are deferred to later tasks.",
+    remindersPreferencesBody:
+      "Default time, snooze, email, push, and test notifications are deferred to later tasks.",
     remindersPreferencesDisabled: "Notifications coming soon",
-    remindersPrivacyNote: "Reminders are private to the signed-in owner. This view does not send notifications, email, SMS, or calendar sync.",
+    remindersPrivacyNote:
+      "Reminders are private to the signed-in owner. This view does not send notifications, email, SMS, or calendar sync.",
     timelineEyebrow: "Timeline",
     timelineTitle: "Care Timeline",
     timelinePetNameFallback: "your pet",
-    timelineIntro: "A chronological view of {petName}'s health, care, and important milestones.",
+    timelineIntro:
+      "A chronological view of {petName}'s health, care, and important milestones.",
     timelineLoading: "Loading timeline...",
-    timelineLoadError: "We could not load the timeline. Try refreshing the page.",
-    timelineSaveError: "We could not save the event. Check the details and try again.",
+    timelineLoadError:
+      "We could not load the timeline. Try refreshing the page.",
+    timelineSaveError:
+      "We could not save the event. Check the details and try again.",
     timelinePetRequiredTitle: "Save a pet profile first.",
-    timelinePetRequiredBody: "Timeline events must be attached to a saved pet so the history stays private and organized.",
+    timelinePetRequiredBody:
+      "Timeline events must be attached to a saved pet so the history stays private and organized.",
     timelinePetRequiredAction: "Go to Pets",
     timelineFormTitleCreate: "Add event",
     timelineFormTitleEdit: "Edit event",
@@ -743,7 +874,8 @@ export const accountCopy = {
     timelineValidationTitle: "Enter the event title.",
     timelineValidationDate: "Choose a valid event date.",
     timelineEmptyTitle: "No timeline events yet.",
-    timelineEmptyBody: "Add the first event so {petName}'s care history stays visible after reloading the page.",
+    timelineEmptyBody:
+      "Add the first event so {petName}'s care history stays visible after reloading the page.",
     timelineManualBadge: "Manual entry",
     timelineEditAction: "Edit",
     timelineFilterAll: "All",
@@ -760,7 +892,8 @@ export const accountCopy = {
     timelineSummaryDocuments: "Documents",
     timelineNextUpcomingTitle: "Next Upcoming",
     timelineNextUpcomingLoading: "Loading reminders...",
-    timelineNextUpcomingEmpty: "No active reminders yet. Add a reminder so the next care action is visible next to the history.",
+    timelineNextUpcomingEmpty:
+      "No active reminders yet. Add a reminder so the next care action is visible next to the history.",
     timelineNextUpcomingAction: "View all reminders",
     timelineExportAction: "Export timeline",
     timelinePetCardLabel: "Timeline active pet",
@@ -773,18 +906,23 @@ export const accountCopy = {
     timelineStatusNormal: "Normal",
     timelineStatusUploaded: "Uploaded",
     timelineAutomationTitle: "Automation is off",
-    timelineAutomationBody: "This timeline only saves owner-entered events. Automatic entries from documents, OCR, AI, reminders, and sharing are outside this task.",
+    timelineAutomationBody:
+      "This timeline only saves owner-entered events. Automatic entries from documents, OCR, AI, reminders, and sharing are outside this task.",
     timelineAutomationAction: "Automation coming soon",
-    timelinePrivacyNote: "The timeline is private to the signed-in owner. This view does not generate diagnoses, treatment advice, emergency guidance, or official documents.",
+    timelinePrivacyNote:
+      "The timeline is private to the signed-in owner. This view does not generate diagnoses, treatment advice, emergency guidance, or official documents.",
     documentsEyebrow: "Documents",
     documentsTitle: "Document vault: {petName}",
     documentsPetNameFallback: "your pet",
-    documentsIntro: "Save basic medical document metadata. File upload, scanning, OCR, and analysis are not active yet.",
+    documentsIntro:
+      "Save basic medical document metadata. File upload, scanning, OCR, and analysis are not active yet.",
     documentsLoading: "Loading documents...",
     documentsLoadError: "We could not load documents. Try refreshing the page.",
-    documentsSaveError: "We could not save the document. Check the details and try again.",
+    documentsSaveError:
+      "We could not save the document. Check the details and try again.",
     documentsPetRequiredTitle: "Save a pet profile first.",
-    documentsPetRequiredBody: "Documents must be attached to a saved pet so the data stays private and organized.",
+    documentsPetRequiredBody:
+      "Documents must be attached to a saved pet so the data stays private and organized.",
     documentsPetRequiredAction: "Go to Pets",
     documentsFormTitleCreate: "Add document",
     documentsFormTitleEdit: "Edit document",
@@ -814,39 +952,51 @@ export const accountCopy = {
     documentsValidationTitle: "Enter the document title.",
     documentsValidationDate: "Choose a valid document date.",
     documentsEmptyTitle: "No documents yet.",
-    documentsEmptyBody: "Add the first document description so {petName}'s records stay visible after reloading the page.",
+    documentsEmptyBody:
+      "Add the first document description so {petName}'s records stay visible after reloading the page.",
     documentsEditAction: "Edit",
     documentsMetadataBadge: "Metadata only",
     documentsUnavailableTitle: "Files and OCR",
-    documentsUnavailableBody: "File upload, scanning, OCR, data extraction, and document verification are deferred to later tasks.",
+    documentsUnavailableBody:
+      "File upload, scanning, OCR, data extraction, and document verification are deferred to later tasks.",
     documentsUnavailableAction: "Upload coming soon",
-    documentsPrivacyNote: "Documents are private to the signed-in owner. This view saves metadata only and does not upload files, analyze content, or create medical advice.",
+    documentsPrivacyNote:
+      "Documents are private to the signed-in owner. This view saves metadata only and does not upload files, analyze content, or create medical advice.",
     careCardEyebrow: "Care card",
     careCardTitle: "Care card preview",
-    careCardIntro: "Review which owner-saved records could later become controlled shared or exported care information.",
+    careCardIntro:
+      "Review which owner-saved records could later become controlled shared or exported care information.",
     careCardLoading: "Loading care card...",
-    careCardLoadError: "We could not load the care card data. Try refreshing the page.",
+    careCardLoadError:
+      "We could not load the care card data. Try refreshing the page.",
     careCardPetRequiredTitle: "Save a pet profile first.",
-    careCardPetRequiredBody: "The care card needs a saved profile so it can show the right pet and stay private to the signed-in owner.",
+    careCardPetRequiredBody:
+      "The care card needs a saved profile so it can show the right pet and stay private to the signed-in owner.",
     careCardPetRequiredAction: "Go to Pets",
     careCardPetNameFallback: "Pet",
     careCardPreviewLabel: "Private care card preview",
     careCardPreviewBadge: "Private preview",
     careCardOwnerOnlyBadge: "Owner only",
-    careCardIdentityMissing: "Add species, breed, or birth date in the pet profile.",
+    careCardIdentityMissing:
+      "Add species, breed, or birth date in the pet profile.",
     careCardMissingValue: "Not filled in",
     careCardRemindersTitle: "Upcoming reminders",
-    careCardRemindersEmpty: "No active reminders are available for this preview.",
+    careCardRemindersEmpty:
+      "No active reminders are available for this preview.",
     careCardDocumentsTitle: "Recent documents",
-    careCardDocumentsEmpty: "No document metadata is available for this preview.",
+    careCardDocumentsEmpty:
+      "No document metadata is available for this preview.",
     careCardUnavailableTitle: "Sharing and export",
-    careCardUnavailableBody: "Create a controlled read-only link. The link shows this care card without owner account access, while PDFs, invitations, and caregiver permissions stay off.",
+    careCardUnavailableBody:
+      "Create a controlled read-only link. The link shows this care card without owner account access, while PDFs, invitations, and caregiver permissions stay off.",
     careCardShareLinkAction: "Create link",
     careCardShareLinkLoading: "Checking share link...",
     careCardShareLinkActiveTitle: "Active link",
     careCardShareLinkCreatedTitle: "New link ready",
-    careCardShareLinkCreatedBody: "Copy this address now. For safety, Caniello does not show the full token again after refresh.",
-    careCardShareLinkActiveBody: "The link is active for this care card. You can revoke it at any time.",
+    careCardShareLinkCreatedBody:
+      "Copy this address now. For safety, Caniello does not show the full token again after refresh.",
+    careCardShareLinkActiveBody:
+      "The link is active for this care card. You can revoke it at any time.",
     careCardShareLinkExpires: "Expires",
     careCardShareLinkCopy: "Copy link",
     careCardShareLinkCopied: "Copied",
@@ -854,79 +1004,103 @@ export const accountCopy = {
     careCardShareLinkRevoking: "Revoking...",
     careCardShareLinkCreateError: "We could not create the link. Try again.",
     careCardShareLinkRevokeError: "We could not revoke the link. Try again.",
-    careCardShareLinkNoRecovery: "The full link address is visible only right after creation.",
+    careCardShareLinkNoRecovery:
+      "The full link address is visible only right after creation.",
     careCardPdfAction: "PDF export coming soon",
     careCardSafetyTitle: "Card boundaries",
-    careCardSafetyBody: "The preview organizes owner-saved data. It is not a diagnosis, treatment advice, emergency guidance, veterinary decision, or official pet passport.",
+    careCardSafetyBody:
+      "The preview organizes owner-saved data. It is not a diagnosis, treatment advice, emergency guidance, veterinary decision, or official pet passport.",
     appSectionPreviewEyebrow: "Section in progress",
     appSectionPreviewTitle: "What will appear here",
     appSectionPetsTitle: "Pet profiles",
-    appSectionPetsBody: "This is where pet profiles will hold basic data, microchip details, allergies, medications, and important notes.",
+    appSectionPetsBody:
+      "This is where pet profiles will hold basic data, microchip details, allergies, medications, and important notes.",
     appSectionPetsAction: "Profile creation coming soon",
-    appSectionPetsSafety: "This is only a section preview. No profile, medical data, or database change has been saved.",
+    appSectionPetsSafety:
+      "This is only a section preview. No profile, medical data, or database change has been saved.",
     appSectionTimelineTitle: "Care timeline",
-    appSectionTimelineBody: "Caniello will organize visits, vaccines, medications, and documents here after the owner saves pet records.",
+    appSectionTimelineBody:
+      "Caniello will organize visits, vaccines, medications, and documents here after the owner saves pet records.",
     appSectionTimelineAction: "Timeline coming soon",
-    appSectionTimelineSafety: "Timeline events are not available yet. This view does not create treatment history or verified entries.",
+    appSectionTimelineSafety:
+      "Timeline events are not available yet. This view does not create treatment history or verified entries.",
     appSectionDocumentsTitle: "Documents",
-    appSectionDocumentsBody: "This is where vaccination records, test results, and important medical documents will live.",
+    appSectionDocumentsBody:
+      "This is where vaccination records, test results, and important medical documents will live.",
     appSectionDocumentsAction: "Document upload coming soon",
-    appSectionDocumentsSafety: "Upload, scan, OCR, analysis, and document verification are not active in this view.",
+    appSectionDocumentsSafety:
+      "Upload, scan, OCR, analysis, and document verification are not active in this view.",
     appSectionRemindersTitle: "Reminders",
-    appSectionRemindersBody: "This is where vaccine, medication, deworming, and visit reminders will appear once they are grounded in saved records.",
+    appSectionRemindersBody:
+      "This is where vaccine, medication, deworming, and visit reminders will appear once they are grounded in saved records.",
     appSectionRemindersAction: "Reminder creation coming soon",
-    appSectionRemindersSafety: "No reminder, notification, email, calendar sync, or recurrence rule has been created.",
+    appSectionRemindersSafety:
+      "No reminder, notification, email, calendar sync, or recurrence rule has been created.",
     appSectionAskTitle: "Ask Caniello",
-    appSectionAskBody: "In the future, Caniello can help find information in owner-saved records.",
+    appSectionAskBody:
+      "In the future, Caniello can help find information in owner-saved records.",
     appSectionAskAction: "Assistant coming soon",
-    appSectionAskSafety: "Ask Caniello is not active yet. It does not generate answers, diagnoses, treatment recommendations, veterinary decisions, or emergency advice.",
+    appSectionAskSafety:
+      "Ask Caniello is not active yet. It does not generate answers, diagnoses, treatment recommendations, veterinary decisions, or emergency advice.",
     appSectionSharingTitle: "Sharing",
-    appSectionSharingBody: "Controlled ways to show family or a caregiver the most important care information will appear here.",
+    appSectionSharingBody:
+      "Controlled ways to show family or a caregiver the most important care information will appear here.",
     appSectionSharingAction: "Sharing coming soon",
-    appSectionSharingSafety: "No link, PDF, invitation, caregiver permission, or access revocation has been created.",
+    appSectionSharingSafety:
+      "No link, PDF, invitation, caregiver permission, or access revocation has been created.",
     appSectionSettingsTitle: "Settings",
-    appSectionSettingsBody: "Account, privacy, consent, and language settings will be organized here.",
+    appSectionSettingsBody:
+      "Account, privacy, consent, and language settings will be organized here.",
     appSectionSettingsAction: "Detailed settings coming soon",
-    appSectionSettingsSafety: "This preview does not add new account deletion, data export, consent, or permission flows.",
+    appSectionSettingsSafety:
+      "This preview does not add new account deletion, data export, consent, or permission flows.",
     settingsEyebrow: "Privacy settings",
     settingsTitle: "Account, consent, and data",
-    settingsIntro: "Manage the basic owner account profile, language, and consent choices. Data export and account deletion are recorded as follow-up requests.",
+    settingsIntro:
+      "Manage the basic owner account profile, language, and consent choices. Data export and account deletion are recorded as follow-up requests.",
     settingsLoading: "Loading settings...",
     settingsError: "We could not handle settings. Try again.",
     settingsSaved: "Settings saved.",
     settingsSaving: "Saving...",
     settingsProfileTitle: "Account profile",
-    settingsProfileBody: "These details belong to the owner account, not the pet profile.",
+    settingsProfileBody:
+      "These details belong to the owner account, not the pet profile.",
     settingsDisplayName: "Owner display name",
     settingsLanguage: "Account language",
     settingsLanguagePl: "Polish",
     settingsLanguageEn: "English",
     settingsProfileAction: "Save account profile",
     settingsConsentTitle: "Consent",
-    settingsConsentBody: "Save current analytics and communication choices. Each change is recorded as a separate event.",
+    settingsConsentBody:
+      "Save current analytics and communication choices. Each change is recorded as a separate event.",
     settingsAnalyticsConsent: "I agree to product analytics.",
     settingsMarketingConsent: "I agree to marketing communication.",
     settingsLatestConsent: "Latest consent",
     settingsNoConsent: "not recorded",
     settingsConsentAction: "Save consent",
     settingsExportTitle: "Data export",
-    settingsExportBody: "Record a data export request. This view does not generate a file, download link, or email yet.",
+    settingsExportBody:
+      "Record a data export request. This view does not generate a file, download link, or email yet.",
     settingsExportAction: "Request data export",
     settingsDeletionTitle: "Account deletion",
-    settingsDeletionBody: "Record an account deletion request. The account and records are not deleted automatically in this task.",
+    settingsDeletionBody:
+      "Record an account deletion request. The account and records are not deleted automatically in this task.",
     settingsDeletionConfirmation: "Type DELETE to unlock the request",
     settingsDeletionAction: "Request account deletion",
     settingsRequestStatus: "Request status",
     settingsNoRequest: "no request",
-    settingsPrivacyNote: "Settings are private to the signed-in owner. This view does not change roles, caregiver permissions, share links, PDF export, or official documents.",
+    settingsPrivacyNote:
+      "Settings are private to the signed-in owner. This view does not change roles, caregiver permissions, share links, PDF export, or official documents.",
     validationFullName: "Enter your full name.",
     validationEmail: "Enter a valid email address.",
     validationPassword: "Password must be at least 12 characters.",
     validationConfirmPassword: "Passwords must match.",
     validationTerms: "Accept the terms and privacy policy.",
-    invalidCredentials: "We could not find an account with that email and password. Check the details or create an account.",
+    invalidCredentials:
+      "We could not find an account with that email and password. Check the details or create an account.",
     genericError: "We could not complete the action. Try again.",
-    authUnavailable: "Local auth is not configured yet. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY for apps/web, then restart the dev server.",
+    authUnavailable:
+      "Local auth is not configured yet. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY for apps/web, then restart the dev server.",
     privacy: "Privacy",
     terms: "Terms",
     medical: "Medical boundaries",
@@ -935,8 +1109,9 @@ export const accountCopy = {
     signupPrompt: "Don't have an account?",
     loginLink: "Log in",
     signupLink: "Sign up",
-    medicalBoundary: "Caniello organizes records and reminders. It does not replace a veterinarian, diagnosis, treatment advice, emergency care, or an official pet passport."
-  }
+    medicalBoundary:
+      "Caniello organizes records and reminders. It does not replace a veterinarian, diagnosis, treatment advice, emergency care, or an official pet passport.",
+  },
 } as const;
 
 export type AccountCopy = (typeof accountCopy)[AccountLanguage];
