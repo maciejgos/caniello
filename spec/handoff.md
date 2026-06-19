@@ -4,10 +4,10 @@
 
 - Active task: `spec/tasks/settings-consent-and-account-deletion-alignment.md`.
 - Active branch: `codex/settings-consent-alignment`, created from `mvp-implementation`.
-- Current workflow: publication after evaluator Pass and handoff update.
+- Current workflow: draft PR review after publication.
 - Execution mode: Standard; user-visible privacy UI on existing authenticated APIs/RLS, with no migration or lifecycle-policy change.
-- Worktree: contains only the Settings task implementation, tests, task evidence, validation artifact, and this handoff update.
-- Publication: pending commit, push, and draft PR.
+- Worktree: expected clean after this publication handoff update is committed and pushed.
+- Publication: commit `f3c5381` was pushed to `origin/codex/settings-consent-alignment`; draft PR #43 is open at https://github.com/maciejgos/caniello/pull/43 against `mvp-implementation`.
 - Pull requests: PR #42 merged into `mvp-implementation` on 2026-06-19 before this task branch was created.
 - Human approval state: no release, deployment, production-readiness, public health-record upload, roadmap expansion, or deferred-capability rollout is approved by this handoff.
 
@@ -71,6 +71,6 @@
 
 ## Next Recommended Action
 
-- Publish the validated Settings alignment task as one draft PR, then request human review of the task and validation artifact.
+- Review draft PR #43 and the Settings validation artifact. Evaluator Pass and publication do not imply human acceptance or merge approval.
 - After review/merge, select exactly one remaining `Now` task. `spec/tasks/pet-profile-ia-and-controls.md` still needs scope refinement before implementation because active-pet honesty and the species dropdown were already delivered.
 - Before any broader readiness claim, rerun the MVP validation script and replace the historical 2026-06-13 gap assessment with current evidence.
