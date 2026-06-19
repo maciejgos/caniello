@@ -98,3 +98,9 @@ Publish this single validated task as a draft PR for human review.
 ## Approval Caveat
 
 This evaluator verdict is readiness evidence only. It does not approve, accept, merge, release, deploy, change roadmap scope, or complete any human checkpoint.
+
+## Human Decision
+
+Pending
+
+No validation acceptance, merge, release, deployment, roadmap change, or other human checkpoint has been approved.
