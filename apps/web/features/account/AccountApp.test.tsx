@@ -474,8 +474,8 @@ describe("Caniello account experience", () => {
       screen.queryByRole("searchbox", { name: /szukaj w caniello/i }),
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByRole("button", { name: /powiadomienia/i }),
-    ).not.toBeInTheDocument();
+      screen.getByRole("button", { name: /powiadomienia/i }),
+    ).toBeDisabled();
     await user.click(
       screen.getByRole("button", { name: /podsumowanie aktywnego pupila/i }),
     );
@@ -1014,22 +1014,20 @@ describe("Caniello account experience", () => {
       screen.getAllByRole("button", { name: accountCopy.pl.appNavSettings })[0],
     );
     expect(
-      screen.getByRole("heading", { name: /konto, zgody i dane/i }),
+      screen.getByRole("heading", { name: /^ustawienia$/i }),
     ).toBeInTheDocument();
     expect(
-      screen.getByText(
-        /eksport danych i usunięcie konta są rejestrowane jako prośby/i,
-      ),
+      screen.getByText(/zarządzaj preferencjami konta/i),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: /zapisz profil konta/i }),
+      screen.getByRole("button", { name: /zapisz ustawienia/i }),
     ).toBeEnabled();
     expect(
       screen.getByRole("button", { name: /poproś o eksport danych/i }),
     ).toBeEnabled();
     expect(
       screen.getByRole("button", { name: /poproś o usunięcie konta/i }),
-    ).toBeDisabled();
+    ).toBeEnabled();
     expect(
       screen.getByRole("button", { name: /wyloguj się/i }),
     ).toBeInTheDocument();
@@ -1993,6 +1991,7 @@ describe("Caniello account experience", () => {
           return new Response(
             JSON.stringify({
               ok: true,
+              ownerEmail: "anna@example.com",
               profile,
               latestConsent: null,
               latestDataExportRequest: null,
@@ -2019,16 +2018,20 @@ describe("Caniello account experience", () => {
     );
 
     expect(
-      await screen.findByRole("heading", { name: /konto, zgody i dane/i }),
+      await screen.findByRole("heading", { name: /^ustawienia$/i }),
     ).toBeInTheDocument();
-    const displayNameField = await screen.findByLabelText(/nazwa opiekuna/i);
+    const displayNameField = await screen.findByLabelText(/imię i nazwisko/i);
     expect(displayNameField).toHaveValue("Anna Kowalska");
+    expect(screen.getByLabelText(/adres e-mail/i)).toHaveValue(
+      "anna@example.com",
+    );
     expect(screen.getAllByText(/brak prośby/i).length).toBe(2);
 
     await user.clear(displayNameField);
     await user.type(displayNameField, "Anna Nowak");
+    await user.click(screen.getByLabelText(/zgadzam się na analitykę/i));
     await user.click(
-      screen.getByRole("button", { name: /zapisz profil konta/i }),
+      screen.getByRole("button", { name: /zapisz ustawienia/i }),
     );
 
     await waitFor(() =>
@@ -2040,9 +2043,6 @@ describe("Caniello account experience", () => {
         }),
       ),
     );
-
-    await user.click(screen.getByLabelText(/zgadzam się na analitykę/i));
-    await user.click(screen.getByRole("button", { name: /zapisz zgody/i }));
 
     await waitFor(() =>
       expect(fetch).toHaveBeenCalledWith(
@@ -2060,9 +2060,29 @@ describe("Caniello account experience", () => {
         }),
       ),
     );
-    expect(
-      await screen.findByText(/ostatnia zgoda: 2026-06-12/i),
-    ).toBeInTheDocument();
+    expect(await screen.findByText("2026-06-12")).toBeInTheDocument();
+
+    await user.click(screen.getByLabelText(/zgadzam się na analitykę/i));
+    await user.click(
+      screen.getByRole("button", { name: /zapisz ustawienia/i }),
+    );
+
+    await waitFor(() =>
+      expect(fetch).toHaveBeenCalledWith(
+        "/api/account/settings",
+        expect.objectContaining({
+          method: "POST",
+          body: JSON.stringify({
+            action: "consent",
+            payload: {
+              analyticsConsent: false,
+              marketingConsent: false,
+              language: "pl",
+            },
+          }),
+        }),
+      ),
+    );
 
     await user.click(
       screen.getByRole("button", { name: /poproś o eksport danych/i }),
@@ -2079,12 +2099,17 @@ describe("Caniello account experience", () => {
         }),
       ),
     );
-    expect(
-      screen.getAllByText(/status prośby: requested/i).length,
-    ).toBeGreaterThan(0);
+    expect(screen.getAllByText(/eksport: requested/i).length).toBeGreaterThan(
+      0,
+    );
 
+    await user.click(
+      screen.getByRole("button", {
+        name: /poproś o usunięcie konta/i,
+      }),
+    );
     const deletionButton = screen.getByRole("button", {
-      name: /poproś o usunięcie konta/i,
+      name: /wyślij prośbę o usunięcie/i,
     });
     expect(deletionButton).toBeDisabled();
     await user.type(screen.getByLabelText(/wpisz DELETE/i), "DELETE");
@@ -2103,6 +2128,97 @@ describe("Caniello account experience", () => {
         }),
       ),
     );
+  });
+
+  it("keeps edited Settings values visible when the API rejects a save", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+        if (
+          String(input) === "/api/account/settings" &&
+          init?.method === "PUT"
+        ) {
+          return new Response(
+            JSON.stringify({
+              ok: false,
+              message: "Invalid account profile payload.",
+            }),
+            {
+              status: 400,
+              headers: { "Content-Type": "application/json" },
+            },
+          );
+        }
+
+        if (
+          String(input) === "/api/account/settings" &&
+          init?.method === "POST"
+        ) {
+          return new Response(
+            JSON.stringify({
+              ok: true,
+              latestConsent: {
+                id: "22222222-2222-4222-8222-222222222222",
+                analyticsConsent: false,
+                marketingConsent: false,
+                language: "pl",
+                createdAt: "2026-06-12T08:05:00.000Z",
+              },
+            }),
+            {
+              status: 201,
+              headers: { "Content-Type": "application/json" },
+            },
+          );
+        }
+
+        if (String(input) === "/api/account/settings") {
+          return new Response(
+            JSON.stringify({
+              ok: true,
+              ownerEmail: "anna@example.com",
+              profile: {
+                id: "11111111-1111-4111-8111-111111111111",
+                displayName: "Anna Kowalska",
+                language: "pl",
+                createdAt: "2026-06-12T08:00:00.000Z",
+                updatedAt: "2026-06-12T08:00:00.000Z",
+              },
+              latestConsent: null,
+              latestDataExportRequest: null,
+              latestDeletionRequest: null,
+            }),
+            {
+              status: 200,
+              headers: { "Content-Type": "application/json" },
+            },
+          );
+        }
+
+        return new Response(JSON.stringify({ ok: true }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        });
+      }),
+    );
+    const user = userEvent.setup();
+    render(<AccountApp route="app-home" />);
+
+    await user.click(
+      screen.getAllByRole("button", { name: accountCopy.pl.appNavSettings })[0],
+    );
+
+    const displayNameField = await screen.findByLabelText(/imię i nazwisko/i);
+    await user.clear(displayNameField);
+    await user.type(displayNameField, "Anna Niedokończona");
+    await user.click(
+      screen.getByRole("button", { name: /zapisz ustawienia/i }),
+    );
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "Invalid account profile payload.",
+    );
+    expect(displayNameField).toHaveValue("Anna Niedokończona");
   });
 
   it("shows a setup-specific message when Supabase auth is unavailable", async () => {

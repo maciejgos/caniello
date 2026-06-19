@@ -20,7 +20,7 @@ import {
   timelineEventPayloadSchema,
   timelineEventResponseSchema,
   validationEventPayloadSchema,
-  versionPayloadSchema
+  versionPayloadSchema,
 } from ".";
 
 describe("Caniello API contracts", () => {
@@ -31,8 +31,8 @@ describe("Caniello API contracts", () => {
         source: "landing_page_hero",
         leadConsent: true,
         language: "pl",
-        utm: { utm_source: "newsletter" }
-      })
+        utm: { utm_source: "newsletter" },
+      }),
     ).toMatchObject({ email: "owner@example.com" });
   });
 
@@ -42,8 +42,8 @@ describe("Caniello API contracts", () => {
         email: "owner@example.com",
         source: "landing_page_hero",
         leadConsent: true,
-        language: "de"
-      })
+        language: "de",
+      }),
     ).toThrow();
   });
 
@@ -53,14 +53,19 @@ describe("Caniello API contracts", () => {
         email: "owner@example.com",
         source: "landing_page_hero",
         leadConsent: true,
-        role: "pet_service_provider"
-      })
+        role: "pet_service_provider",
+      }),
     ).toThrow();
   });
 
   it("accepts consent and page-view validation events", () => {
-    expect(validationEventPayloadSchema.parse({ name: "analytics_consent", analyticsConsent: true })).toMatchObject({
-      name: "analytics_consent"
+    expect(
+      validationEventPayloadSchema.parse({
+        name: "analytics_consent",
+        analyticsConsent: true,
+      }),
+    ).toMatchObject({
+      name: "analytics_consent",
     });
   });
 
@@ -70,7 +75,7 @@ describe("Caniello API contracts", () => {
     expect(healthPayloadSchema.parse(payload)).toEqual({
       ok: true,
       service: "caniello-web",
-      checkedAt: "2026-05-19T12:00:00.000Z"
+      checkedAt: "2026-05-19T12:00:00.000Z",
     });
   });
 
@@ -78,13 +83,13 @@ describe("Caniello API contracts", () => {
     const payload = createVersionPayload({
       version: "0.1.0",
       commit: "",
-      environment: "preview"
+      environment: "preview",
     });
 
     expect(versionPayloadSchema.parse(payload)).toEqual({
       app: "web",
       version: "0.1.0",
-      environment: "preview"
+      environment: "preview",
     });
   });
 
@@ -95,9 +100,13 @@ describe("Caniello API contracts", () => {
         email: "owner@example.com",
         password: "correct horse battery staple",
         language: "pl",
-        acceptedTerms: true
-      })
-    ).toMatchObject({ fullName: "Test Owner", email: "owner@example.com", language: "pl" });
+        acceptedTerms: true,
+      }),
+    ).toMatchObject({
+      fullName: "Test Owner",
+      email: "owner@example.com",
+      language: "pl",
+    });
   });
 
   it("rejects invalid owner account credentials and unsupported languages", () => {
@@ -107,15 +116,15 @@ describe("Caniello API contracts", () => {
         email: "not-an-email",
         password: "short",
         language: "de",
-        acceptedTerms: true
-      })
+        acceptedTerms: true,
+      }),
     ).toThrow();
 
     expect(() =>
       accountLoginPayloadSchema.parse({
         email: "owner@example.com",
-        password: "short"
-      })
+        password: "short",
+      }),
     ).toThrow();
   });
 
@@ -124,8 +133,8 @@ describe("Caniello API contracts", () => {
       passwordResetRequestPayloadSchema.parse({
         email: "owner@example.com",
         language: "en",
-        redirectTo: "https://example.com/reset"
-      })
+        redirectTo: "https://example.com/reset",
+      }),
     ).toThrow();
 
     expect(() =>
@@ -133,18 +142,20 @@ describe("Caniello API contracts", () => {
         analyticsConsent: true,
         marketingConsent: false,
         language: "pl",
-        trackingVendor: "unexpected"
-      })
+        trackingVendor: "unexpected",
+      }),
     ).toThrow();
   });
 
   it("accepts data-rights request payloads with clear confirmation", () => {
-    expect(dataExportRequestPayloadSchema.parse({ language: "en" })).toEqual({ language: "en" });
+    expect(dataExportRequestPayloadSchema.parse({ language: "en" })).toEqual({
+      language: "en",
+    });
     expect(
       accountDeletionRequestPayloadSchema.parse({
         confirmation: "DELETE",
-        language: "pl"
-      })
+        language: "pl",
+      }),
     ).toEqual({ confirmation: "DELETE", language: "pl" });
   });
 
@@ -152,38 +163,40 @@ describe("Caniello API contracts", () => {
     expect(
       accountSettingsApiResponseSchema.parse({
         ok: true,
+        ownerEmail: "anna@example.com",
         profile: {
           id: "11111111-1111-4111-8111-111111111111",
           displayName: "Anna Kowalska",
           language: "pl",
           createdAt: "2026-06-12T08:00:00.000Z",
-          updatedAt: "2026-06-12T08:00:00.000Z"
+          updatedAt: "2026-06-12T08:00:00.000Z",
         },
         latestConsent: {
           id: "22222222-2222-4222-8222-222222222222",
           analyticsConsent: true,
           marketingConsent: false,
           language: "pl",
-          createdAt: "2026-06-12T08:05:00.000Z"
+          createdAt: "2026-06-12T08:05:00.000Z",
         },
         latestDataExportRequest: {
           id: "33333333-3333-4333-8333-333333333333",
           status: "requested",
-          requestedAt: "2026-06-12T08:10:00.000Z"
+          requestedAt: "2026-06-12T08:10:00.000Z",
         },
-        latestDeletionRequest: null
-      })
+        latestDeletionRequest: null,
+      }),
     ).toMatchObject({
       ok: true,
+      ownerEmail: "anna@example.com",
       profile: { displayName: "Anna Kowalska" },
-      latestDataExportRequest: { status: "requested" }
+      latestDataExportRequest: { status: "requested" },
     });
 
     expect(() =>
       accountSettingsApiResponseSchema.parse({
         ok: true,
-        exportDownloadUrl: "https://example.com/private.zip"
-      })
+        exportDownloadUrl: "https://example.com/private.zip",
+      }),
     ).toThrow();
   });
 
@@ -199,8 +212,8 @@ describe("Caniello API contracts", () => {
         microchipNumber: " 616093900000000 ",
         allergies: "",
         medication: null,
-        importantNotes: "Needs quiet handling at the clinic."
-      })
+        importantNotes: "Needs quiet handling at the clinic.",
+      }),
     ).toEqual({
       name: "Bruno",
       species: "dog",
@@ -211,19 +224,36 @@ describe("Caniello API contracts", () => {
       microchipNumber: "616093900000000",
       allergies: null,
       medication: null,
-      importantNotes: "Needs quiet handling at the clinic."
+      importantNotes: "Needs quiet handling at the clinic.",
     });
   });
 
   it("rejects invalid pet profile payloads", () => {
-    expect(() => petProfilePayloadSchema.parse({ name: "", weightKg: 12 })).toThrow();
-    expect(() => petProfilePayloadSchema.parse({ name: "Bruno", birthDate: "01-05-2021" })).toThrow();
-    expect(() => petProfilePayloadSchema.parse({ name: "Bruno", birthDate: "2021-02-29" })).toThrow();
-    expect(() => petProfilePayloadSchema.parse({ name: "Bruno", birthDate: "2021-02-30" })).toThrow();
-    expect(() => petProfilePayloadSchema.parse({ name: "Bruno", birthDate: "2021-99-99" })).toThrow();
-    expect(petProfilePayloadSchema.parse({ name: "Bruno", birthDate: "2024-02-29" }).birthDate).toBe("2024-02-29");
-    expect(() => petProfilePayloadSchema.parse({ name: "Bruno", weightKg: 500 })).toThrow();
-    expect(() => petProfilePayloadSchema.parse({ name: "Bruno", documentUpload: true })).toThrow();
+    expect(() =>
+      petProfilePayloadSchema.parse({ name: "", weightKg: 12 }),
+    ).toThrow();
+    expect(() =>
+      petProfilePayloadSchema.parse({ name: "Bruno", birthDate: "01-05-2021" }),
+    ).toThrow();
+    expect(() =>
+      petProfilePayloadSchema.parse({ name: "Bruno", birthDate: "2021-02-29" }),
+    ).toThrow();
+    expect(() =>
+      petProfilePayloadSchema.parse({ name: "Bruno", birthDate: "2021-02-30" }),
+    ).toThrow();
+    expect(() =>
+      petProfilePayloadSchema.parse({ name: "Bruno", birthDate: "2021-99-99" }),
+    ).toThrow();
+    expect(
+      petProfilePayloadSchema.parse({ name: "Bruno", birthDate: "2024-02-29" })
+        .birthDate,
+    ).toBe("2024-02-29");
+    expect(() =>
+      petProfilePayloadSchema.parse({ name: "Bruno", weightKg: 500 }),
+    ).toThrow();
+    expect(() =>
+      petProfilePayloadSchema.parse({ name: "Bruno", documentUpload: true }),
+    ).toThrow();
   });
 
   it("accepts pet profile API responses without out-of-scope data", () => {
@@ -242,8 +272,8 @@ describe("Caniello API contracts", () => {
         medication: null,
         importantNotes: null,
         createdAt: "2026-06-04T09:00:00.000Z",
-        updatedAt: "2026-06-04T09:00:00.000Z"
-      })
+        updatedAt: "2026-06-04T09:00:00.000Z",
+      }),
     ).toMatchObject({ name: "Bruno", weightKg: 26.4 });
   });
 
@@ -253,23 +283,55 @@ describe("Caniello API contracts", () => {
         title: " Rabies vaccine ",
         reminderType: "vaccination",
         dueDate: "2026-07-12",
-        notes: "  Bring previous record. "
-      })
+        notes: "  Bring previous record. ",
+      }),
     ).toEqual({
       title: "Rabies vaccine",
       reminderType: "vaccination",
       dueDate: "2026-07-12",
-      notes: "Bring previous record."
+      notes: "Bring previous record.",
     });
 
-    expect(reminderPayloadSchema.parse({ title: "Vet visit", reminderType: "visit", dueDate: "2026-08-01", notes: "" }).notes).toBeNull();
+    expect(
+      reminderPayloadSchema.parse({
+        title: "Vet visit",
+        reminderType: "visit",
+        dueDate: "2026-08-01",
+        notes: "",
+      }).notes,
+    ).toBeNull();
   });
 
   it("rejects invalid care reminder payloads", () => {
-    expect(() => reminderPayloadSchema.parse({ title: "", reminderType: "visit", dueDate: "2026-08-01" })).toThrow();
-    expect(() => reminderPayloadSchema.parse({ title: "Dose", reminderType: "medication", dueDate: "2026-02-30" })).toThrow();
-    expect(() => reminderPayloadSchema.parse({ title: "Dose", reminderType: "calendar", dueDate: "2026-08-01" })).toThrow();
-    expect(() => reminderPayloadSchema.parse({ title: "Dose", reminderType: "medication", dueDate: "2026-08-01", notifyByEmail: true })).toThrow();
+    expect(() =>
+      reminderPayloadSchema.parse({
+        title: "",
+        reminderType: "visit",
+        dueDate: "2026-08-01",
+      }),
+    ).toThrow();
+    expect(() =>
+      reminderPayloadSchema.parse({
+        title: "Dose",
+        reminderType: "medication",
+        dueDate: "2026-02-30",
+      }),
+    ).toThrow();
+    expect(() =>
+      reminderPayloadSchema.parse({
+        title: "Dose",
+        reminderType: "calendar",
+        dueDate: "2026-08-01",
+      }),
+    ).toThrow();
+    expect(() =>
+      reminderPayloadSchema.parse({
+        title: "Dose",
+        reminderType: "medication",
+        dueDate: "2026-08-01",
+        notifyByEmail: true,
+      }),
+    ).toThrow();
   });
 
   it("accepts reminder API responses without notification or AI fields", () => {
@@ -283,9 +345,13 @@ describe("Caniello API contracts", () => {
         notes: null,
         status: "active",
         createdAt: "2026-06-06T09:00:00.000Z",
-        updatedAt: "2026-06-06T09:00:00.000Z"
-      })
-    ).toMatchObject({ title: "Rabies vaccine", reminderType: "vaccination", status: "active" });
+        updatedAt: "2026-06-06T09:00:00.000Z",
+      }),
+    ).toMatchObject({
+      title: "Rabies vaccine",
+      reminderType: "vaccination",
+      status: "active",
+    });
   });
 
   it("validates owner timeline event payloads and normalizes optional blanks", () => {
@@ -294,29 +360,54 @@ describe("Caniello API contracts", () => {
         title: " Annual visit ",
         eventType: "visit",
         eventDate: "2026-06-12",
-        notes: "  Weight check and vaccine plan. "
-      })
+        notes: "  Weight check and vaccine plan. ",
+      }),
     ).toEqual({
       title: "Annual visit",
       eventType: "visit",
       eventDate: "2026-06-12",
-      notes: "Weight check and vaccine plan."
+      notes: "Weight check and vaccine plan.",
     });
 
-    expect(timelineEventPayloadSchema.parse({ title: "Rabies vaccine", eventType: "vaccination", eventDate: "2026-05-20", notes: "" }).notes).toBeNull();
+    expect(
+      timelineEventPayloadSchema.parse({
+        title: "Rabies vaccine",
+        eventType: "vaccination",
+        eventDate: "2026-05-20",
+        notes: "",
+      }).notes,
+    ).toBeNull();
   });
 
   it("rejects timeline event payloads that imply automation or unsupported links", () => {
-    expect(() => timelineEventPayloadSchema.parse({ title: "", eventType: "visit", eventDate: "2026-06-12" })).toThrow();
-    expect(() => timelineEventPayloadSchema.parse({ title: "Visit", eventType: "clinic_upload", eventDate: "2026-06-12" })).toThrow();
-    expect(() => timelineEventPayloadSchema.parse({ title: "Visit", eventType: "visit", eventDate: "2026-02-30" })).toThrow();
+    expect(() =>
+      timelineEventPayloadSchema.parse({
+        title: "",
+        eventType: "visit",
+        eventDate: "2026-06-12",
+      }),
+    ).toThrow();
+    expect(() =>
+      timelineEventPayloadSchema.parse({
+        title: "Visit",
+        eventType: "clinic_upload",
+        eventDate: "2026-06-12",
+      }),
+    ).toThrow();
+    expect(() =>
+      timelineEventPayloadSchema.parse({
+        title: "Visit",
+        eventType: "visit",
+        eventDate: "2026-02-30",
+      }),
+    ).toThrow();
     expect(() =>
       timelineEventPayloadSchema.parse({
         title: "Generated note",
         eventType: "document",
         eventDate: "2026-06-12",
-        sourceDocumentId: "77777777-7777-4777-8777-777777777777"
-      })
+        sourceDocumentId: "77777777-7777-4777-8777-777777777777",
+      }),
     ).toThrow();
   });
 
@@ -330,8 +421,8 @@ describe("Caniello API contracts", () => {
         eventDate: "2026-06-12",
         notes: null,
         createdAt: "2026-06-12T09:00:00.000Z",
-        updatedAt: "2026-06-12T09:00:00.000Z"
-      })
+        updatedAt: "2026-06-12T09:00:00.000Z",
+      }),
     ).toMatchObject({ title: "Annual visit", eventType: "visit" });
 
     expect(() =>
@@ -343,8 +434,8 @@ describe("Caniello API contracts", () => {
         eventDate: "2026-06-12",
         diagnosis: "AI-generated diagnosis",
         createdAt: "2026-06-12T09:00:00.000Z",
-        updatedAt: "2026-06-12T09:00:00.000Z"
-      })
+        updatedAt: "2026-06-12T09:00:00.000Z",
+      }),
     ).toThrow();
   });
 
@@ -357,8 +448,8 @@ describe("Caniello API contracts", () => {
         providerName: "  Riverside Animal Hospital ",
         notes: "",
         originalFilename: " rabies.pdf ",
-        mimeType: " application/pdf "
-      })
+        mimeType: " application/pdf ",
+      }),
     ).toEqual({
       title: "Rabies certificate",
       documentType: "vaccination",
@@ -366,21 +457,39 @@ describe("Caniello API contracts", () => {
       providerName: "Riverside Animal Hospital",
       notes: null,
       originalFilename: "rabies.pdf",
-      mimeType: "application/pdf"
+      mimeType: "application/pdf",
     });
   });
 
   it("rejects document metadata payloads that imply unsupported behavior", () => {
-    expect(() => documentPayloadSchema.parse({ title: "", documentType: "vaccination", documentDate: "2026-05-20" })).toThrow();
-    expect(() => documentPayloadSchema.parse({ title: "Lab", documentType: "lab", documentDate: "2026-05-20" })).toThrow();
-    expect(() => documentPayloadSchema.parse({ title: "Lab", documentType: "lab_result", documentDate: "2026-02-30" })).toThrow();
+    expect(() =>
+      documentPayloadSchema.parse({
+        title: "",
+        documentType: "vaccination",
+        documentDate: "2026-05-20",
+      }),
+    ).toThrow();
+    expect(() =>
+      documentPayloadSchema.parse({
+        title: "Lab",
+        documentType: "lab",
+        documentDate: "2026-05-20",
+      }),
+    ).toThrow();
+    expect(() =>
+      documentPayloadSchema.parse({
+        title: "Lab",
+        documentType: "lab_result",
+        documentDate: "2026-02-30",
+      }),
+    ).toThrow();
     expect(() =>
       documentPayloadSchema.parse({
         title: "Lab",
         documentType: "lab_result",
         documentDate: "2026-05-20",
-        storagePath: "owner/upload.pdf"
-      })
+        storagePath: "owner/upload.pdf",
+      }),
     ).toThrow();
   });
 
@@ -398,8 +507,12 @@ describe("Caniello API contracts", () => {
         mimeType: "application/pdf",
         status: "metadata_only",
         createdAt: "2026-06-07T10:00:00.000Z",
-        updatedAt: "2026-06-07T10:00:00.000Z"
-      })
-    ).toMatchObject({ title: "Rabies certificate", documentType: "vaccination", status: "metadata_only" });
+        updatedAt: "2026-06-07T10:00:00.000Z",
+      }),
+    ).toMatchObject({
+      title: "Rabies certificate",
+      documentType: "vaccination",
+      status: "metadata_only",
+    });
   });
 });

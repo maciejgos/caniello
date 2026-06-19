@@ -29,6 +29,16 @@ Related roadmap item:
 - Update shared contracts, route/server helpers, forward-only migrations, RLS policies, indexes, or audit triggers only where required to support the accepted visible behavior and reliable persistence.
 - Add focused UI, contract, route, server, database/RLS, and desktop/mobile browser coverage.
 
+## Execution Contract
+
+- Execution mode: Standard. This is a user-visible privacy surface backed by existing authenticated APIs and RLS, but it does not change schema or lifecycle policy.
+- Sprint boundary: one production Settings alignment slice only; no adjacent reminder, sharing, auth-provider, or account-lifecycle implementation.
+- Required gates: focused component behavior, account route/server tests, contracts tests, web typecheck, production build, live Supabase RLS, desktop/mobile browser interaction, and `git diff --check`.
+- Evaluator layers: product scope, UI behavior, API/contract behavior, owner isolation, persistence/audit evidence, responsive visual alignment, and approval-boundary review.
+- Ratchet baseline: preserve the existing account privacy schema, append-only consent history, owner-scoped RLS, queued manual data-rights semantics, audit evidence, Polish/English copy, and the authenticated shell structure.
+- Self-healing limit: fix task-local findings and rerun affected gates; stop before any migration, lifecycle-policy change, or unrelated refactor.
+- Learned-rule capture: not expected unless evaluation exposes a repeatable repository-wide rule.
+
 ## Non-Goals
 
 - No automatic Supabase Auth user deletion, cascade cleanup, Storage deletion, background processing, or email confirmation.
@@ -60,6 +70,8 @@ Related roadmap item:
 - Existing database foundation: `infra/supabase/migrations/20260520150000_owner_account_privacy_foundation.sql` and `20260523093000_create_account_profile_on_auth_signup.sql`.
 - Existing tables: `account_profiles`, `consent_events`, `data_export_requests`, and `account_deletion_requests`, all protected by owner-scoped RLS.
 - Preserve append-only consent history and database-backed audit evidence. Do not replace them with browser-only state.
+- Preserve the existing intentional repeated-request behavior: each exact-confirmation deletion submission creates a new queued manual-processing request and bounded audit row.
+- No migration or lifecycle policy change is planned for this implementation slice.
 - Any migration or change to deletion lifecycle semantics requires explicit human approval before implementation.
 
 ## Architecture Decisions
@@ -71,14 +83,28 @@ Related roadmap item:
 
 ## Verification
 
-- [ ] Focused account Settings component tests.
-- [ ] Contract, route, and server-helper tests for profile, consent, export request, and deletion request actions.
-- [ ] Opt-in live Supabase RLS test for owner isolation, consent persistence, deletion request persistence, and audit evidence.
-- [ ] Playwright Interactive comparison at desktop and `390x900`, including consent withdrawal and deletion-request interaction.
-- [ ] TypeScript, build, and `git diff --check`.
-- [ ] No roadmap scope expansion.
-- [ ] Handoff updated.
+- [x] Focused account Settings component tests.
+- [x] Contract, route, and server-helper tests for profile, consent, export request, and deletion request actions.
+- [x] Opt-in live Supabase RLS test for owner isolation, consent persistence, deletion request persistence, and audit evidence.
+- [x] Browser comparison at desktop plus focused Playwright mobile validation, including consent withdrawal and deletion-request interaction.
+- [x] TypeScript, production build, formatting, and `git diff --check`.
+- [x] No roadmap scope expansion.
+- [x] Handoff updated.
 
 ## Handoff Notes
 
-Planned with `forge-planner` on 2026-06-18. Implementation has not started.
+Planned with `forge-planner` on 2026-06-18 and refined on 2026-06-19 for implementation. Implemented and evaluated on `codex/settings-consent-alignment`.
+
+Production Settings now uses the `/mvp-flow` three-column/two-row panel rhythm with real owner-account profile, append-only consent, queued export, queued deletion, security, and medical-boundary panels. The destructive deletion action remains a separate panel, requires exact `DELETE`, clears confirmation only after success, and shows the latest queued request date/status. API failures keep edited values visible.
+
+After human visual feedback on 2026-06-19, the screen received a second fidelity pass against the supplied MVP screenshot. The production shell now matches the 272px sidebar/top-bar composition, orange Settings heading, single page-level save action, exact three-by-two card order, circular panel icons, field treatment, card spacing, and reference canvas alignment. At the live 1280px viewport, the first card begins at x=349px and is 368px tall, closely matching the supplied reference geometry.
+
+Product-safe differences remain intentional: the reference notification placeholders are represented by real append-only consent controls, reminder defaults are shown honestly as unavailable instead of invented, and privacy actions create real queued requests instead of claiming immediate fulfillment.
+
+Evaluator verdict: Pass pending the final PR build check for this fidelity-only follow-up. Validation artifact: `spec/validation/settings-consent-and-account-deletion-alignment-evaluation.md`.
+
+Passed: 29 focused account tests, 23 contracts tests, full web suite (115 passed, 5 skipped), web type/lint, production build, live local Supabase RLS/audit test, mobile Playwright check, changed-file formatting, and `git diff --check`. In-app browser desktop checks had no console warnings/errors and verified consent grant/withdrawal plus a queued deletion request. The in-app viewport override did not apply for the requested mobile size, so the repository Playwright mobile project supplied the responsive/no-overflow evidence.
+
+The second fidelity pass reran focused tests, the full web suite, contracts, typecheck, formatting, `git diff --check`, and live browser visual inspection. Its local production build rerun was blocked only because sandboxed Turbopack could not bind its internal local port and the escalation service was quota-limited; the already-passing branch build remains the baseline and the PR build check is the required final evidence.
+
+No migration, account lifecycle policy change, new ADR, release, deployment, or roadmap expansion was introduced.
