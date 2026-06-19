@@ -14,7 +14,7 @@ Evaluate `spec/tasks/live-dashboard-data.md` against the `Now - MVP Foundation` 
 - `spec/product-context.md`
 - `spec/roadmap.md`
 - `DESIGN.md`
-- `spec/design/visual-artifacts/mvp/image 1.png`
+- `spec/design/visual-artifacts/mvp/home-dashboard.png`
 - `apps/web/features/account/components/useDashboardData.ts`
 - `apps/web/features/account/components/AppHomeDashboard.tsx`
 - `apps/web/features/account/components/ReturningOwnerDashboard.tsx`

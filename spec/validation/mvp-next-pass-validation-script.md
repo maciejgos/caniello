@@ -96,7 +96,7 @@ Use `spec/design/visual-artifacts/mvp/*.png` as the visible UI source of truth f
   Expected result: Pet profile information architecture, species and sex-or-gender controls, labels, and supported pet-scope language match the supplied Pets/Profile mockups where defined.
 
 - Check: Timeline.
-  Expected result: `spec/design/visual-artifacts/mvp/image 10.png` is reflected with historical events in the main timeline and upcoming reminders/actions in the `Next Upcoming` side panel.
+  Expected result: `spec/design/visual-artifacts/mvp/care-timeline.png` is reflected with historical events in the main timeline and upcoming reminders/actions in the `Next Upcoming` side panel.
 
 - Check: Documents.
   Expected result: Document safe behavior and copy match the approved upload/metadata scope. If real upload is not approved, the UI must not imply actual file upload.
@@ -119,7 +119,7 @@ Use `spec/design/visual-artifacts/mvp/*.png` as the visible UI source of truth f
   Status for next pass: Required before validating document upload or deciding metadata-only is acceptable.
 
 - Gate: `spec/tasks/timeline-upcoming-reminders-alignment.md`
-  Status for next pass: Required before validating Timeline/Reminder relationship against `image 10.png`.
+  Status for next pass: Required before validating Timeline/Reminder relationship against `care-timeline.png`.
 
 - Gate: `spec/tasks/account-deletion-persistence-verification.md`
   Status for next pass: Required before treating account deletion request behavior as ready.

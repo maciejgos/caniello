@@ -25,7 +25,7 @@ Related roadmap item:
 - Preserve existing logout access and session-gated behavior.
 - Preserve Polish and English language behavior using the existing account and marketing language patterns.
 - Establish a main content region inside the shell for later dashboard tasks, with only minimal non-card placeholder content if needed.
-- Match the navigation and shell direction of `spec/design/visual-artifacts/mvp/image 1.png` and `image 6.png` closely enough for later dashboard implementation.
+- Match the navigation and shell direction of `spec/design/visual-artifacts/mvp/home-dashboard.png` and `first-run-onboarding.png` closely enough for later dashboard implementation.
 
 ## Non-Goals
 

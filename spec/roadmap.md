@@ -51,6 +51,7 @@ Resolved readiness checkpoints:
 Remaining MVP readiness implementation tasks:
 
 - Refine the remaining pet/profile IA and sex-or-gender control gaps after removing scope already delivered by the active-pet and species-dropdown work: `spec/tasks/pet-profile-ia-and-controls.md` (ADRs 0014, 0015, 0027, 0028).
+- Align Settings with the accepted MVP flow while preserving real consent and account deletion API/database behavior: `spec/tasks/settings-consent-and-account-deletion-alignment.md` (ADRs 0014, 0015, 0024, 0026, 0031).
 
 Accepted architecture implementation backlog:
 

@@ -23,7 +23,7 @@ Related roadmap item:
 - Preserve existing reminder RLS so owners can only read and mutate reminders for pets in their own household.
 - Add shared Zod contracts in `packages/contracts` for reminder read and write payloads.
 - Add focused server/data-access behavior for listing, creating, updating, and marking reminders completed for the signed-in owner's first pet.
-- Replace the Reminders empty state with a real authenticated reminder surface inspired by `spec/design/visual-artifacts/mvp/image 9.png`.
+- Replace the Reminders empty state with a real authenticated reminder surface inspired by `spec/design/visual-artifacts/mvp/reminders.png`.
 - Include a Polish-first and English reminder list with basic tabs or filters for upcoming, completed, medication, vaccination, and visit reminders when practical within the small slice.
 - Include a create/edit reminder form or panel with title, type, due date, and optional notes.
 - Keep reminder preferences, notification settings, snooze, and test notification controls visible only as disabled or deferred UI if they appear.
@@ -60,7 +60,7 @@ Related roadmap item:
 
 ## Implementation Notes
 
-- Visual reference: `spec/design/visual-artifacts/mvp/image 9.png`. Match the broad Reminders screen intent, but keep implementation smaller than the full mockup.
+- Visual reference: `spec/design/visual-artifacts/mvp/reminders.png`. Match the broad Reminders screen intent, but keep implementation smaller than the full mockup.
 - Existing baseline schema already includes `public.reminders` with `pet_id`, optional `source_document_id`, `title`, `due_date`, `status`, timestamps, and household-owned RLS. Prefer a forward migration only for missing MVP fields such as `reminder_type`, optional `notes`, or indexes.
 - Existing accepted ADRs cover the durable backend direction:
   - `spec/architecture-records/0004-use-supabase-for-mvp-data-auth-storage-and-rls.md`

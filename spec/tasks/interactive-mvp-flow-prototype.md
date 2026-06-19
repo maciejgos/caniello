@@ -42,7 +42,7 @@ Related roadmap item:
 
 ## Implementation Notes
 
-- Source visual truth: `spec/design/visual-artifacts/mvp/image 1.png` through `image 18.png`, plus the screenshots supplied in the user request.
+- Source visual truth: the named screen and flow references listed in `spec/design/visual-artifacts/mvp/README.md`, plus the screenshots supplied in the user request.
 - Use feature-local code under `apps/web/features/mvp-flow/` and a route under `apps/web/app/(landing)/mvp-flow/`.
 - Keep the prototype local-state only so it cannot imply real upload, storage, AI, reminder delivery, or sharing capability.
 

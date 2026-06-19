@@ -18,7 +18,7 @@ Related roadmap item:
 
 ## Scope
 
-- Use `spec/design/visual-artifacts/mvp/image 10.png` as the 1:1 implementation target for visible Timeline layout, controls, filters, right-rail cards, labels, and panel structure.
+- Use `spec/design/visual-artifacts/mvp/care-timeline.png` as the 1:1 implementation target for visible Timeline layout, controls, filters, right-rail cards, labels, and panel structure.
 - Keep the main Timeline surface focused on chronological historical/completed care events.
 - Add or align a right-side `Next Upcoming` panel that shows the next active reminder/action for the selected pet.
 - Link the upcoming panel to the Reminders flow.
@@ -34,7 +34,7 @@ Related roadmap item:
 ## Acceptance Criteria
 
 - Timeline layout and copy reflect the mockup relationship between history and upcoming care.
-- The implemented Timeline screen matches `spec/design/visual-artifacts/mvp/image 10.png` 1:1 where the mockup defines visible UI, or each deviation is explicitly documented and approved.
+- The implemented Timeline screen matches `spec/design/visual-artifacts/mvp/care-timeline.png` 1:1 where the mockup defines visible UI, or each deviation is explicitly documented and approved.
 - Upcoming reminder/action content comes from existing reminder data where available.
 - Empty states clearly explain when no upcoming reminder exists.
 - Tests and browser checks cover desktop and mobile behavior.
@@ -60,7 +60,7 @@ Related roadmap item:
 ## Verification
 
 - [x] Focused timeline/reminder tests.
-- [x] Browser validation against `image 10.png` at desktop and mobile widths.
+- [x] Browser validation against `care-timeline.png` at desktop and mobile widths.
 - [x] No reminder notification or automation scope expansion.
 - [x] Handoff updated.
 

@@ -30,7 +30,7 @@ The work protects the existing `Now - MVP Foundation` promise: a pet owner can o
 - Align the dashboard/app shell with live pet state and MVP mockups.
 - Clarify first-pet versus multi-pet UX and expected species/sex-or-gender controls.
 - Decide whether document upload is required for MVP validation before implementation expands storage behavior.
-- Align Timeline with `spec/design/visual-artifacts/mvp/image 10.png`: historical events in the main timeline and upcoming reminders/actions in the right rail.
+- Align Timeline with `spec/design/visual-artifacts/mvp/care-timeline.png`: historical events in the main timeline and upcoming reminders/actions in the right rail.
 - Re-verify account deletion persistence against the intended database table.
 
 ## Non-Goals

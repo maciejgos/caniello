@@ -19,7 +19,7 @@ Related roadmap item:
 ## Scope
 
 - Replace the current protected `/app` placeholder body with a first-run onboarding dashboard state inside the existing authenticated app shell.
-- Base the surface on `spec/features/authenticated-app-dashboard-skeleton.md` and `spec/design/visual-artifacts/mvp/image 6.png`.
+- Base the surface on `spec/features/authenticated-app-dashboard-skeleton.md` and `spec/design/visual-artifacts/mvp/first-run-onboarding.png`.
 - Show a compact three-step setup path: add a pet, add the first document, then prepare reminders and Ask Caniello once enough owner-owned context exists.
 - Add a non-persistent add-pet form skeleton with MVP-friendly fields: pet name, species, breed, birth date, sex or gender, and weight when they can be represented safely as UI-only fields.
 - Add a first-document prompt with upload and scan affordances presented as disabled, preview, or coming-soon placeholders.
@@ -79,7 +79,7 @@ Validation notes:
 
 - Forge evaluator artifact: `spec/validation/first-run-onboarding-skeleton-evaluation.md`
 - Fresh evaluator verdict: Pass. Acceptance criteria are supported by implementation review, focused tests, full web tests, TypeScript validation, and authenticated Playwright smoke validation.
-- Follow-up implementation aligned the onboarding surface more closely with `spec/design/visual-artifacts/mvp/image 6.png`: welcome header, horizontal three-step strip, pet setup panel, document extraction/review preview panel, pet imagery, and bottom Caniello tip band.
+- Follow-up implementation aligned the onboarding surface more closely with `spec/design/visual-artifacts/mvp/first-run-onboarding.png`: welcome header, horizontal three-step strip, pet setup panel, document extraction/review preview panel, pet imagery, and bottom Caniello tip band.
 - Follow-up implementation split the authenticated shell, topbar/search/account controls, left menu, dashboard body, onboarding stepper, pet panel, document panel, tip, fields, and icons into separate feature-local components under `apps/web/features/account/components/`.
 - Evaluator-run `pnpm --filter web test -- AccountApp.test.tsx` passed; 1 test file and 8 tests passed with the existing localStorage experimental warning.
 - Evaluator-run `pnpm --filter web lint` passed outside the sandbox after the sandboxed command failed with `[ERROR] fetch failed`.
@@ -95,4 +95,4 @@ Validation notes:
 
 Implemented on 2026-05-24 on branch `codex/first-run-onboarding-skeleton`.
 
-The signed-in `/app` home now renders a Polish/English first-run onboarding skeleton inside the existing authenticated shell. The surface follows the `image 6.png` mockup structure with a welcome header, horizontal step strip, add-pet form card, first-document extraction/review preview card, pet imagery, and Caniello tip band. It keeps the implementation skeleton-only: no pet persistence, upload/storage, scan, extraction, reminders, AI answers, sharing, or new routes.
+The signed-in `/app` home now renders a Polish/English first-run onboarding skeleton inside the existing authenticated shell. The surface follows the `first-run-onboarding.png` mockup structure with a welcome header, horizontal step strip, add-pet form card, first-document extraction/review preview card, pet imagery, and Caniello tip band. It keeps the implementation skeleton-only: no pet persistence, upload/storage, scan, extraction, reminders, AI answers, sharing, or new routes.

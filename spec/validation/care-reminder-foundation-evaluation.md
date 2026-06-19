@@ -15,7 +15,7 @@ The evaluation checks whether a signed-in owner can create, view, edit, complete
 - Task: `spec/tasks/care-reminder-foundation.md`
 - Product context: `spec/product-context.md`
 - Roadmap: `spec/roadmap.md`
-- Visual reference: `spec/design/visual-artifacts/mvp/image 9.png`
+- Visual reference: `spec/design/visual-artifacts/mvp/reminders.png`
 - Migration reviewed: `infra/supabase/migrations/20260606110000_extend_care_reminder_fields.sql`
 - Contracts reviewed: `packages/contracts/src/index.ts`
 - API route reviewed: `apps/web/app/api/reminders/route.ts`

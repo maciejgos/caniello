@@ -18,7 +18,7 @@ Related roadmap item:
 
 ## Scope
 
-- Add a returning-user dashboard state inspired by `spec/design/visual-artifacts/mvp/image 1.png`.
+- Add a returning-user dashboard state inspired by `spec/design/visual-artifacts/mvp/home-dashboard.png`.
 - Keep the dashboard skeleton inside the existing authenticated app shell and preserve the first-run onboarding surface unless the codebase already has a safe local way to select the returning-owner state.
 - Use a small feature-local static view model for returning-owner demo content. Do not read or write Supabase records in this task.
 - Show "What's next" cards for vaccine due, vet visit, medication, and document review as preview/demo data.

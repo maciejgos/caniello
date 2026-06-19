@@ -4,8 +4,8 @@
 
 The input combines two MVP mockups and the visual backlog for the Caniello Web + Mobile MVP.
 
-- `spec/design/visual-artifacts/mvp/image 1.png` shows the signed-in owner dashboard: left navigation, top search and pet/account selectors, "What's next" cards, health summary, recent documents, care timeline preview, Ask Caniello panel, sharing prompt, and a care tip.
-- `spec/design/visual-artifacts/mvp/image 6.png` shows first-run onboarding inside the same authenticated shell: a three-step getting-started strip, add-pet form, first-document upload/scan prompt, review-extraction illustration, and a tip.
+- `spec/design/visual-artifacts/mvp/home-dashboard.png` shows the signed-in owner dashboard: left navigation, top search and pet/account selectors, "What's next" cards, health summary, recent documents, care timeline preview, Ask Caniello panel, sharing prompt, and a care tip.
+- `spec/design/visual-artifacts/mvp/first-run-onboarding.png` shows first-run onboarding inside the same authenticated shell: a three-step getting-started strip, add-pet form, first-document upload/scan prompt, review-extraction illustration, and a tip.
 - `spec/design/visual-artifacts/mvp/backlog.md` frames the MVP flow as Scan -> Extract -> Review -> Timeline -> Reminder -> Ask -> Share, while also listing auth, privacy, security, and owner workspace foundations as required.
 
 ## User Problem

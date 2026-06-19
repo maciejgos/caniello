@@ -74,7 +74,7 @@ Changed files reviewed:
 
 - Criterion: The script references the relevant task files and design artifacts.
   Evidence status: Supported.
-  Evidence: Script `Source Artifacts`, `Mockup-Fidelity Checks`, and `Recovery Task Gates` reference the seven recovery task files and `spec/design/visual-artifacts/mvp/*.png`, including `image 10.png` for Timeline.
+  Evidence: Script `Source Artifacts`, `Mockup-Fidelity Checks`, and `Recovery Task Gates` reference the seven recovery task files and `spec/design/visual-artifacts/mvp/*.png`, including `care-timeline.png` for Timeline.
 
 - Criterion: The handoff records that the current readiness artifact is historical evidence, not a launch approval.
   Evidence status: Supported.

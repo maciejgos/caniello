@@ -210,7 +210,7 @@ Human acceptance applies to the original readiness artifact and MVP validation r
   Impact: If MVP validation requires actual medical-file upload, current document-vault readiness is insufficient. If metadata-only is the intended validation scope, the UI must set expectations more clearly.
 
 - P2: Timeline and reminder relationship is unclear.
-  Evidence: Human manual finding on 2026-06-13. The MVP mockup at `spec/design/visual-artifacts/mvp/image 10.png` shows the Timeline page as a historical care timeline with a right-side `Next Upcoming` panel for upcoming reminder/action context. Current implementation treats reminders and timeline events as separate manual records and intentionally excludes automatic timeline entries from reminders/documents.
+  Evidence: Human manual finding on 2026-06-13. The MVP mockup at `spec/design/visual-artifacts/mvp/care-timeline.png` shows the Timeline page as a historical care timeline with a right-side `Next Upcoming` panel for upcoming reminder/action context. Current implementation treats reminders and timeline events as separate manual records and intentionally excludes automatic timeline entries from reminders/documents.
   Impact: Users may not understand whether completed reminders should appear in timeline history. The implementation should align the Timeline surface to the mockup: historical/completed events in the main timeline, upcoming reminder/action context in the right rail, and clear navigation from that upcoming block to the reminder flow.
 
 - P2: Account deletion request persistence needs verification against the intended table.
@@ -239,7 +239,7 @@ Human reported the following manual findings on 2026-06-13 after accepting the r
 - The pet menu/profile flow suggests adding and editing only one pet.
 - Species and gender/sex selection is not presented as expected dropdown choices.
 - The document safe is missing real upload.
-- The relationship between timeline and reminders is unclear; `spec/design/visual-artifacts/mvp/image 10.png` indicates upcoming reminders/actions should appear on the right side of the Timeline page while historical events remain in the main timeline.
+- The relationship between timeline and reminders is unclear; `spec/design/visual-artifacts/mvp/care-timeline.png` indicates upcoming reminders/actions should appear on the right side of the Timeline page while historical events remain in the main timeline.
 - The panel implementation does not comply with `spec/design/visual-artifacts/mvp/*.png`.
 - Apple and Google sign-in buttons do not work.
 - Account deletion request is not saved in the proper table.
@@ -293,7 +293,7 @@ Feature brief: `spec/features/mvp-validation-readiness-recovery.md`.
 
 5. Decide document upload scope before promising or implementing real file upload: `spec/tasks/document-upload-scope-decision.md`.
 
-6. Implement the Timeline page relationship shown in `spec/design/visual-artifacts/mvp/image 10.png`: history in the main timeline, upcoming reminders/actions in the right-side panel, and navigation into Reminders: `spec/tasks/timeline-upcoming-reminders-alignment.md`.
+6. Implement the Timeline page relationship shown in `spec/design/visual-artifacts/mvp/care-timeline.png`: history in the main timeline, upcoming reminders/actions in the right-side panel, and navigation into Reminders: `spec/tasks/timeline-upcoming-reminders-alignment.md`.
 
 7. Re-verify account deletion requests live against `account_deletion_requests` and related audit behavior: `spec/tasks/account-deletion-persistence-verification.md`.
 

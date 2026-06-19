@@ -21,7 +21,7 @@ Related roadmap item:
 - Decide and express whether the current MVP validates one active pet or multiple pets.
 - Update active-pet selector/menu copy and behavior so it does not imply add/edit functionality that is absent.
 - Improve species and sex-or-gender inputs into clear choices when required for validation.
-- Match the relevant Pets/Profile mockups in `spec/design/visual-artifacts/mvp/` 1:1 for visible IA, controls, labels, and pet-menu behavior, unless a deviation is explicitly recorded and approved.
+- Match the pet-profile states in `spec/design/visual-artifacts/mvp/web-assistant-sharing-flow.png` and `spec/design/visual-artifacts/mvp/mobile-assistant-sharing-flow.png` 1:1 for visible IA, controls, labels, and pet-menu behavior, unless a deviation is explicitly recorded and approved.
 - Preserve existing first-pet data persistence and RLS boundaries.
 - Add tests for the selected UX behavior and validation labels.
 

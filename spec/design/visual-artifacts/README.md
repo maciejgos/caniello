@@ -38,7 +38,7 @@ Visual artifacts are organized by product area so implementation work can refere
 | `landing/logo.png` | Brand reference | Caniello logo reference for implementation and future asset optimization. | Available |
 | `landing/puppys.png` | Brand/product reference | Pet imagery reference for landing page tone and asset direction. | Available |
 | `landing/puppys_transparent.png` | Brand/product reference | Transparent pet imagery reference for compositing and future implementation experiments. | Available |
-| `mvp/image 1.png` through `mvp/image 18.png` | MVP UI reference set | Web/mobile owner-flow visual references for product direction. | Available |
+| `mvp/*.png` | MVP UI reference set | Descriptively named web/mobile owner-flow visual references; see `mvp/README.md`. | Available |
 | `back-office/image 1.png` through `back-office/image 6.png` | Back-office UI reference set | Admin, review, support, and operational workflow visual references. | Available |
 
 ## Backlog Drafts
