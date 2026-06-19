@@ -5,7 +5,7 @@ export const leadSources = [
   "landing_page_mid_cta",
   "landing_page_footer",
   "landing_page_wave2",
-  "landing_page_wave3"
+  "landing_page_wave3",
 ] as const;
 
 export const landingLeadLanguages = ["pl", "en"] as const;
@@ -18,7 +18,7 @@ export const landingLeadPayloadSchema = z
     source: z.enum(leadSources).optional(),
     leadConsent: z.literal(true),
     language: z.enum(landingLeadLanguages),
-    utm: utmSchema.optional()
+    utm: utmSchema.optional(),
   })
   .strict();
 
@@ -30,7 +30,7 @@ export const validationEventNames = [
   "page_view",
   "waitlist_submit",
   "waitlist_success",
-  "waitlist_error"
+  "waitlist_error",
 ] as const;
 
 export const validationEventPayloadSchema = z
@@ -39,17 +39,19 @@ export const validationEventPayloadSchema = z
     source: z.enum(leadSources).optional(),
     analyticsConsent: z.boolean().optional(),
     utm: utmSchema.optional(),
-    createdAt: z.string().datetime().optional()
+    createdAt: z.string().datetime().optional(),
   })
   .strict();
 
-export type ValidationEventPayload = z.infer<typeof validationEventPayloadSchema>;
+export type ValidationEventPayload = z.infer<
+  typeof validationEventPayloadSchema
+>;
 
 export const healthPayloadSchema = z
   .object({
     ok: z.literal(true),
     service: z.literal("caniello-web"),
-    checkedAt: z.string().datetime()
+    checkedAt: z.string().datetime(),
   })
   .strict();
 
@@ -59,7 +61,7 @@ export function createHealthPayload(now: Date = new Date()): HealthPayload {
   return {
     ok: true,
     service: "caniello-web",
-    checkedAt: now.toISOString()
+    checkedAt: now.toISOString(),
   };
 }
 
@@ -68,7 +70,7 @@ export const versionPayloadSchema = z
     app: z.literal("web"),
     version: z.string().min(1),
     commit: z.string().min(1).optional(),
-    environment: z.string().min(1).optional()
+    environment: z.string().min(1).optional(),
   })
   .strict();
 
@@ -80,12 +82,14 @@ export type VersionPayloadInput = {
   environment?: string | null;
 };
 
-export function createVersionPayload(input: VersionPayloadInput): VersionPayload {
+export function createVersionPayload(
+  input: VersionPayloadInput,
+): VersionPayload {
   return versionPayloadSchema.parse({
     app: "web",
     version: input.version,
     commit: input.commit || undefined,
-    environment: input.environment || undefined
+    environment: input.environment || undefined,
   });
 }
 
@@ -102,7 +106,7 @@ export const accountSignupPayloadSchema = z
     email: ownerEmailSchema,
     password: ownerPasswordSchema,
     language: accountLanguageSchema,
-    acceptedTerms: z.literal(true)
+    acceptedTerms: z.literal(true),
   })
   .strict();
 
@@ -111,7 +115,7 @@ export type AccountSignupPayload = z.infer<typeof accountSignupPayloadSchema>;
 export const accountLoginPayloadSchema = z
   .object({
     email: ownerEmailSchema,
-    password: ownerPasswordSchema
+    password: ownerPasswordSchema,
   })
   .strict();
 
@@ -120,70 +124,90 @@ export type AccountLoginPayload = z.infer<typeof accountLoginPayloadSchema>;
 export const passwordResetRequestPayloadSchema = z
   .object({
     email: ownerEmailSchema,
-    language: accountLanguageSchema
+    language: accountLanguageSchema,
   })
   .strict();
 
-export type PasswordResetRequestPayload = z.infer<typeof passwordResetRequestPayloadSchema>;
+export type PasswordResetRequestPayload = z.infer<
+  typeof passwordResetRequestPayloadSchema
+>;
 
 export const accountProfileUpdatePayloadSchema = z
   .object({
     displayName: z.string().trim().min(1).max(120).optional(),
-    language: accountLanguageSchema
+    language: accountLanguageSchema,
   })
   .strict();
 
-export type AccountProfileUpdatePayload = z.infer<typeof accountProfileUpdatePayloadSchema>;
+export type AccountProfileUpdatePayload = z.infer<
+  typeof accountProfileUpdatePayloadSchema
+>;
 
 export const consentPreferencePayloadSchema = z
   .object({
     analyticsConsent: z.boolean(),
     marketingConsent: z.boolean().optional(),
-    language: accountLanguageSchema
+    language: accountLanguageSchema,
   })
   .strict();
 
-export type ConsentPreferencePayload = z.infer<typeof consentPreferencePayloadSchema>;
+export type ConsentPreferencePayload = z.infer<
+  typeof consentPreferencePayloadSchema
+>;
 
 export const dataExportRequestPayloadSchema = z
   .object({
-    language: accountLanguageSchema
+    language: accountLanguageSchema,
   })
   .strict();
 
-export type DataExportRequestPayload = z.infer<typeof dataExportRequestPayloadSchema>;
+export type DataExportRequestPayload = z.infer<
+  typeof dataExportRequestPayloadSchema
+>;
 
 export const accountDeletionRequestPayloadSchema = z
   .object({
     confirmation: z.literal("DELETE"),
-    language: accountLanguageSchema
+    language: accountLanguageSchema,
   })
   .strict();
 
-export type AccountDeletionRequestPayload = z.infer<typeof accountDeletionRequestPayloadSchema>;
+export type AccountDeletionRequestPayload = z.infer<
+  typeof accountDeletionRequestPayloadSchema
+>;
 
-export const dataRightsRequestStatuses = ["requested", "processing", "completed", "failed", "cancelled"] as const;
+export const dataRightsRequestStatuses = [
+  "requested",
+  "processing",
+  "completed",
+  "failed",
+  "cancelled",
+] as const;
 export const dataRightsRequestStatusSchema = z.enum(dataRightsRequestStatuses);
 
 export const dataExportRequestResponseSchema = z
   .object({
     id: z.string().uuid(),
     status: dataRightsRequestStatusSchema,
-    requestedAt: z.string().datetime()
+    requestedAt: z.string().datetime(),
   })
   .strict();
 
-export type DataExportRequestResponse = z.infer<typeof dataExportRequestResponseSchema>;
+export type DataExportRequestResponse = z.infer<
+  typeof dataExportRequestResponseSchema
+>;
 
 export const accountDeletionRequestResponseSchema = z
   .object({
     id: z.string().uuid(),
     status: dataRightsRequestStatusSchema,
-    requestedAt: z.string().datetime()
+    requestedAt: z.string().datetime(),
   })
   .strict();
 
-export type AccountDeletionRequestResponse = z.infer<typeof accountDeletionRequestResponseSchema>;
+export type AccountDeletionRequestResponse = z.infer<
+  typeof accountDeletionRequestResponseSchema
+>;
 
 export const accountProfileResponseSchema = z
   .object({
@@ -191,11 +215,13 @@ export const accountProfileResponseSchema = z
     displayName: z.string().nullable(),
     language: accountLanguageSchema,
     createdAt: z.string().datetime(),
-    updatedAt: z.string().datetime()
+    updatedAt: z.string().datetime(),
   })
   .strict();
 
-export type AccountProfileResponse = z.infer<typeof accountProfileResponseSchema>;
+export type AccountProfileResponse = z.infer<
+  typeof accountProfileResponseSchema
+>;
 
 export const consentEventResponseSchema = z
   .object({
@@ -203,7 +229,7 @@ export const consentEventResponseSchema = z
     analyticsConsent: z.boolean(),
     marketingConsent: z.boolean().nullable(),
     language: accountLanguageSchema,
-    createdAt: z.string().datetime()
+    createdAt: z.string().datetime(),
   })
   .strict();
 
@@ -212,33 +238,44 @@ export type ConsentEventResponse = z.infer<typeof consentEventResponseSchema>;
 export const accountSettingsApiResponseSchema = z
   .object({
     ok: z.boolean(),
+    ownerEmail: ownerEmailSchema.nullable().optional(),
     profile: accountProfileResponseSchema.nullable().optional(),
     latestConsent: consentEventResponseSchema.nullable().optional(),
-    latestDataExportRequest: dataExportRequestResponseSchema.nullable().optional(),
-    latestDeletionRequest: accountDeletionRequestResponseSchema.nullable().optional(),
+    latestDataExportRequest: dataExportRequestResponseSchema
+      .nullable()
+      .optional(),
+    latestDeletionRequest: accountDeletionRequestResponseSchema
+      .nullable()
+      .optional(),
     message: z.string().optional(),
-    issues: z.unknown().optional()
+    issues: z.unknown().optional(),
   })
   .strict();
 
-export type AccountSettingsApiResponse = z.infer<typeof accountSettingsApiResponseSchema>;
+export type AccountSettingsApiResponse = z.infer<
+  typeof accountSettingsApiResponseSchema
+>;
 
 export const accountPrivacyAuditActions = {
   profileUpdated: "account.profile_updated",
   consentUpdated: "account.consent_updated",
   dataExportRequested: "account.data_export_requested",
-  accountDeletionRequested: "account.deletion_requested"
+  accountDeletionRequested: "account.deletion_requested",
 } as const;
 
 export const accountPrivacyAuditActionNames = [
   accountPrivacyAuditActions.profileUpdated,
   accountPrivacyAuditActions.consentUpdated,
   accountPrivacyAuditActions.dataExportRequested,
-  accountPrivacyAuditActions.accountDeletionRequested
+  accountPrivacyAuditActions.accountDeletionRequested,
 ] as const;
 
-export const accountPrivacyAuditActionSchema = z.enum(accountPrivacyAuditActionNames);
-export type AccountPrivacyAuditAction = z.infer<typeof accountPrivacyAuditActionSchema>;
+export const accountPrivacyAuditActionSchema = z.enum(
+  accountPrivacyAuditActionNames,
+);
+export type AccountPrivacyAuditAction = z.infer<
+  typeof accountPrivacyAuditActionSchema
+>;
 
 const optionalProfileTextSchema = (maxLength: number) =>
   z
@@ -254,11 +291,16 @@ const optionalProfileTextSchema = (maxLength: number) =>
 
 function isRealCalendarDate(value: string): boolean {
   const [year, month, day] = value.split("-").map(Number);
-  if (year < 1000 || month < 1 || month > 12 || day < 1 || day > 31) return false;
+  if (year < 1000 || month < 1 || month > 12 || day < 1 || day > 31)
+    return false;
 
   const date = new Date(Date.UTC(year, month - 1, day));
 
-  return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
+  return (
+    date.getUTCFullYear() === year &&
+    date.getUTCMonth() === month - 1 &&
+    date.getUTCDate() === day
+  );
 }
 
 const optionalCalendarDateSchema = z
@@ -277,11 +319,17 @@ export const petProfilePayloadSchema = z
     breed: optionalProfileTextSchema(120),
     birthDate: optionalCalendarDateSchema,
     sexOrGender: optionalProfileTextSchema(60),
-    weightKg: z.number().min(0).max(250).optional().nullable().transform((value) => value ?? null),
+    weightKg: z
+      .number()
+      .min(0)
+      .max(250)
+      .optional()
+      .nullable()
+      .transform((value) => value ?? null),
     microchipNumber: optionalProfileTextSchema(64),
     allergies: optionalProfileTextSchema(2000),
     medication: optionalProfileTextSchema(2000),
-    importantNotes: optionalProfileTextSchema(4000)
+    importantNotes: optionalProfileTextSchema(4000),
   })
   .strict();
 
@@ -302,7 +350,7 @@ export const petProfileResponseSchema = z
     medication: z.string().nullable(),
     importantNotes: z.string().nullable(),
     createdAt: z.string().datetime(),
-    updatedAt: z.string().datetime()
+    updatedAt: z.string().datetime(),
   })
   .strict();
 
@@ -313,17 +361,28 @@ export const petProfileApiResponseSchema = z
     ok: z.boolean(),
     pet: petProfileResponseSchema.nullable().optional(),
     message: z.string().optional(),
-    issues: z.unknown().optional()
+    issues: z.unknown().optional(),
   })
   .strict();
 
 export type PetProfileApiResponse = z.infer<typeof petProfileApiResponseSchema>;
 
-export const reminderTypes = ["vaccination", "medication", "deworming", "visit", "other"] as const;
+export const reminderTypes = [
+  "vaccination",
+  "medication",
+  "deworming",
+  "visit",
+  "other",
+] as const;
 export const reminderTypeSchema = z.enum(reminderTypes);
 export type ReminderType = z.infer<typeof reminderTypeSchema>;
 
-export const reminderStatuses = ["suggested", "active", "completed", "dismissed"] as const;
+export const reminderStatuses = [
+  "suggested",
+  "active",
+  "completed",
+  "dismissed",
+] as const;
 export const reminderStatusSchema = z.enum(reminderStatuses);
 export type ReminderStatus = z.infer<typeof reminderStatusSchema>;
 
@@ -351,7 +410,7 @@ export const reminderPayloadSchema = z
     reminderType: reminderTypeSchema,
     dueDate: requiredCalendarDateSchema,
     notes: optionalReminderTextSchema(1000),
-    status: reminderStatusSchema.optional()
+    status: reminderStatusSchema.optional(),
   })
   .strict();
 
@@ -367,7 +426,7 @@ export const reminderResponseSchema = z
     notes: z.string().nullable(),
     status: reminderStatusSchema,
     createdAt: z.string().datetime(),
-    updatedAt: z.string().datetime()
+    updatedAt: z.string().datetime(),
   })
   .strict();
 
@@ -380,13 +439,21 @@ export const remindersApiResponseSchema = z
     reminders: z.array(reminderResponseSchema).optional(),
     reminder: reminderResponseSchema.optional(),
     message: z.string().optional(),
-    issues: z.unknown().optional()
+    issues: z.unknown().optional(),
   })
   .strict();
 
 export type RemindersApiResponse = z.infer<typeof remindersApiResponseSchema>;
 
-export const timelineEventTypes = ["vaccination", "medication", "deworming", "visit", "document", "note", "other"] as const;
+export const timelineEventTypes = [
+  "vaccination",
+  "medication",
+  "deworming",
+  "visit",
+  "document",
+  "note",
+  "other",
+] as const;
 export const timelineEventTypeSchema = z.enum(timelineEventTypes);
 export type TimelineEventType = z.infer<typeof timelineEventTypeSchema>;
 
@@ -395,7 +462,7 @@ export const timelineEventPayloadSchema = z
     title: z.string().trim().min(1).max(160),
     eventType: timelineEventTypeSchema,
     eventDate: requiredCalendarDateSchema,
-    notes: optionalReminderTextSchema(2000)
+    notes: optionalReminderTextSchema(2000),
   })
   .strict();
 
@@ -410,7 +477,7 @@ export const timelineEventResponseSchema = z
     title: z.string(),
     notes: z.string().nullable(),
     createdAt: z.string().datetime(),
-    updatedAt: z.string().datetime()
+    updatedAt: z.string().datetime(),
   })
   .strict();
 
@@ -423,17 +490,36 @@ export const timelineEventsApiResponseSchema = z
     events: z.array(timelineEventResponseSchema).optional(),
     event: timelineEventResponseSchema.optional(),
     message: z.string().optional(),
-    issues: z.unknown().optional()
+    issues: z.unknown().optional(),
   })
   .strict();
 
-export type TimelineEventsApiResponse = z.infer<typeof timelineEventsApiResponseSchema>;
+export type TimelineEventsApiResponse = z.infer<
+  typeof timelineEventsApiResponseSchema
+>;
 
-export const documentTypes = ["vaccination", "lab_result", "visit_summary", "prescription", "insurance", "travel", "other"] as const;
+export const documentTypes = [
+  "vaccination",
+  "lab_result",
+  "visit_summary",
+  "prescription",
+  "insurance",
+  "travel",
+  "other",
+] as const;
 export const documentTypeSchema = z.enum(documentTypes);
 export type DocumentType = z.infer<typeof documentTypeSchema>;
 
-export const documentStatuses = ["metadata_only", "uploaded", "processing", "extracted", "needs_review", "confirmed", "failed", "archived"] as const;
+export const documentStatuses = [
+  "metadata_only",
+  "uploaded",
+  "processing",
+  "extracted",
+  "needs_review",
+  "confirmed",
+  "failed",
+  "archived",
+] as const;
 export const documentStatusSchema = z.enum(documentStatuses);
 export type DocumentStatus = z.infer<typeof documentStatusSchema>;
 
@@ -457,7 +543,7 @@ export const documentPayloadSchema = z
     providerName: optionalDocumentTextSchema(160),
     notes: optionalDocumentTextSchema(2000),
     originalFilename: optionalDocumentTextSchema(240),
-    mimeType: optionalDocumentTextSchema(120)
+    mimeType: optionalDocumentTextSchema(120),
   })
   .strict();
 
@@ -476,7 +562,7 @@ export const documentResponseSchema = z
     mimeType: z.string().nullable(),
     status: documentStatusSchema,
     createdAt: z.string().datetime(),
-    updatedAt: z.string().datetime()
+    updatedAt: z.string().datetime(),
   })
   .strict();
 
@@ -489,7 +575,7 @@ export const documentsApiResponseSchema = z
     documents: z.array(documentResponseSchema).optional(),
     document: documentResponseSchema.optional(),
     message: z.string().optional(),
-    issues: z.unknown().optional()
+    issues: z.unknown().optional(),
   })
   .strict();
 
@@ -502,7 +588,7 @@ export const shareLinkResponseSchema = z
     url: z.string().url().optional(),
     expiresAt: z.string().datetime().nullable(),
     revokedAt: z.string().datetime().nullable(),
-    createdAt: z.string().datetime()
+    createdAt: z.string().datetime(),
   })
   .strict();
 
@@ -515,7 +601,7 @@ export const shareLinksApiResponseSchema = z
     shareLinks: z.array(shareLinkResponseSchema).optional(),
     shareLink: shareLinkResponseSchema.optional(),
     message: z.string().optional(),
-    issues: z.unknown().optional()
+    issues: z.unknown().optional(),
   })
   .strict();
 

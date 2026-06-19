@@ -97,8 +97,14 @@ Planned with `forge-planner` on 2026-06-18 and refined on 2026-06-19 for impleme
 
 Production Settings now uses the `/mvp-flow` three-column/two-row panel rhythm with real owner-account profile, append-only consent, queued export, queued deletion, security, and medical-boundary panels. The destructive deletion action remains a separate panel, requires exact `DELETE`, clears confirmation only after success, and shows the latest queued request date/status. API failures keep edited values visible.
 
-Evaluator verdict: Pass. Validation artifact: `spec/validation/settings-consent-and-account-deletion-alignment-evaluation.md`.
+After human visual feedback on 2026-06-19, the screen received a second fidelity pass against the supplied MVP screenshot. The production shell now matches the 272px sidebar/top-bar composition, orange Settings heading, single page-level save action, exact three-by-two card order, circular panel icons, field treatment, card spacing, and reference canvas alignment. At the live 1280px viewport, the first card begins at x=349px and is 368px tall, closely matching the supplied reference geometry.
+
+Product-safe differences remain intentional: the reference notification placeholders are represented by real append-only consent controls, reminder defaults are shown honestly as unavailable instead of invented, and privacy actions create real queued requests instead of claiming immediate fulfillment.
+
+Evaluator verdict: Pass pending the final PR build check for this fidelity-only follow-up. Validation artifact: `spec/validation/settings-consent-and-account-deletion-alignment-evaluation.md`.
 
 Passed: 29 focused account tests, 23 contracts tests, full web suite (115 passed, 5 skipped), web type/lint, production build, live local Supabase RLS/audit test, mobile Playwright check, changed-file formatting, and `git diff --check`. In-app browser desktop checks had no console warnings/errors and verified consent grant/withdrawal plus a queued deletion request. The in-app viewport override did not apply for the requested mobile size, so the repository Playwright mobile project supplied the responsive/no-overflow evidence.
+
+The second fidelity pass reran focused tests, the full web suite, contracts, typecheck, formatting, `git diff --check`, and live browser visual inspection. Its local production build rerun was blocked only because sandboxed Turbopack could not bind its internal local port and the escalation service was quota-limited; the already-passing branch build remains the baseline and the PR build check is the required final evidence.
 
 No migration, account lifecycle policy change, new ADR, release, deployment, or roadmap expansion was introduced.

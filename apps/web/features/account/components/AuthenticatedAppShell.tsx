@@ -43,7 +43,7 @@ export function AuthenticatedAppShell({
 
   return (
     <main className="min-h-screen bg-[#fbfaf7] text-navy">
-      <div className="min-h-screen lg:grid lg:grid-cols-[236px_1fr]">
+      <div className="min-h-screen lg:grid lg:grid-cols-[272px_1fr]">
         <AppSidebar
           copy={copy}
           activeSection={activeSection}
@@ -100,6 +100,7 @@ export function AuthenticatedAppShell({
             <AccountSettingsSection
               copy={copy}
               language={language}
+              pet={activePet.pet}
               onLanguageChange={onLanguageChange}
             />
           ) : (

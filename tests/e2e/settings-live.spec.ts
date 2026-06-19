@@ -25,12 +25,12 @@ describeSettingsLive("live owner Settings", () => {
 
     await expect(
       page.getByRole("heading", {
-        name: /Konto, zgody i dane|Account, consent, and data/i,
+        name: /^(Ustawienia|Settings)$/i,
       }),
     ).toBeVisible();
     await expect(
       page.getByRole("heading", {
-        name: /^(Profil konta|Account profile)$/i,
+        name: /^(Profil|Profile)$/i,
       }),
     ).toBeVisible();
     await expect(
@@ -38,12 +38,12 @@ describeSettingsLive("live owner Settings", () => {
     ).toBeVisible();
     await expect(
       page.getByRole("heading", {
-        name: /^(Eksport danych|Data export)$/i,
+        name: /^(Domyślne ustawienia opieki|Pet care defaults)$/i,
       }),
     ).toBeVisible();
     await expect(
       page.getByRole("heading", {
-        name: /^(Usunięcie konta|Account deletion)$/i,
+        name: /^(Prywatność i dane|Privacy & data)$/i,
       }),
     ).toBeVisible();
     await expect(
@@ -56,12 +56,17 @@ describeSettingsLive("live owner Settings", () => {
         name: /^(Granice medyczne|Medical boundary)$/i,
       }),
     ).toBeVisible();
-    await expect(
-      page.getByLabel(/Nazwa opiekuna|Owner display name/i),
-    ).toHaveValue(/Anna/);
+    await expect(page.getByLabel(/Imię i nazwisko|Full name/i)).toHaveValue(
+      /Anna/,
+    );
 
+    await page
+      .getByRole("button", {
+        name: /Poproś o usunięcie konta|Request account deletion/i,
+      })
+      .click();
     const deletionButton = page.getByRole("button", {
-      name: /Poproś o usunięcie konta|Request account deletion/i,
+      name: /Wyślij prośbę o usunięcie|Submit deletion request/i,
     });
     await expect(deletionButton).toBeDisabled();
     await page.getByLabel(/Wpisz DELETE|Type DELETE/i).fill("DELETE");

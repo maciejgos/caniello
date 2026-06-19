@@ -7,7 +7,7 @@
 - Current workflow: draft PR review after publication.
 - Execution mode: Standard; user-visible privacy UI on existing authenticated APIs/RLS, with no migration or lifecycle-policy change.
 - Worktree: expected clean after this publication handoff update is committed and pushed.
-- Publication: commit `f3c5381` was pushed to `origin/codex/settings-consent-alignment`; draft PR #43 is open at https://github.com/maciejgos/caniello/pull/43 against `mvp-implementation`.
+- Publication: branch `origin/codex/settings-consent-alignment` is published; draft PR #43 is open at https://github.com/maciejgos/caniello/pull/43 against `mvp-implementation`.
 - Pull requests: PR #42 merged into `mvp-implementation` on 2026-06-19 before this task branch was created.
 - Human approval state: no release, deployment, production-readiness, public health-record upload, roadmap expansion, or deferred-capability rollout is approved by this handoff.
 
@@ -25,7 +25,9 @@
 - Split Settings into focused feature-local panels for account profile, consent, data export, destructive account deletion, security context, and medical boundaries.
 - Added action-specific success/error feedback that preserves edited values, explicit latest request dates/statuses, consent withdrawal coverage, and exact-confirmation deletion behavior.
 - Added opt-in live Settings Playwright coverage for desktop reference capture and Pixel 7 responsive/no-overflow verification.
-- Evaluator verdict: Pass. Validation artifact: `spec/validation/settings-consent-and-account-deletion-alignment-evaluation.md`.
+- Applied a second screenshot-fidelity pass after human review: widened the production shell to the 272px sidebar reference, added the top-bar search/bell composition, matched the orange Settings title and one Save settings action, and rebuilt the content as the reference's ordered three-by-two card grid.
+- Preserved real product behavior while matching the visual source: owner email and active pet are real, consent remains append-only, unavailable reminder defaults are not fabricated, and export/deletion remain queued owner requests.
+- Evaluator verdict: Pass pending the final PR build check for the second visual-only pass. Validation artifact: `spec/validation/settings-consent-and-account-deletion-alignment-evaluation.md`.
 
 - Renamed the 18 MVP visual artifacts from anonymous `image N.png` names to screen/flow names such as `home-dashboard.png`, `document-upload-scan.png`, `care-timeline.png`, `sign-in.png`, and `sign-up.png`.
 - Added `spec/design/visual-artifacts/mvp/README.md` as the artifact map and recorded `/mvp-flow` Settings as the visual source because no standalone Settings screenshot was supplied.
@@ -48,6 +50,8 @@
 ## Validation Status
 
 - Passed: focused Settings component/route/server tests (29), contracts tests (23), full web suite (115 passed, 5 skipped), web type/lint, production build, live local Supabase RLS/audit test, Pixel 7 Playwright check, formatting, and `git diff --check`.
+- Second fidelity pass passed 25 focused account tests, 23 contracts tests, the full web suite (115 passed, 5 skipped), web typecheck, direct formatting, `git diff --check`, and live browser visual/geometry inspection.
+- The second-pass local production build rerun was environment-blocked by sandboxed Turbopack local-port restrictions, and the approval service was temporarily quota-limited. The prior branch production build passed; PR #43 build/lifecycle checks are the required final confirmation.
 - Browser: in-app desktop Settings and real consent/deletion interactions passed with no relevant console warnings/errors. The in-app viewport override did not apply for mobile, so the configured Playwright mobile project supplied responsive evidence.
 - Required gate state: unit/integration Passed; lint/types Passed; build Passed; owner-isolation/audit Passed; design comparison Passed; evaluator Pass; coverage baseline preserved; architecture/product/privacy ratchets preserved.
 - Validation artifact: `spec/validation/settings-consent-and-account-deletion-alignment-evaluation.md`.

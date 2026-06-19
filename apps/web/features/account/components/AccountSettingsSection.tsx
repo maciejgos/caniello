@@ -1,11 +1,15 @@
-import type { AccountSettingsApiResponse } from "@caniello/contracts";
-import { FormEvent, useEffect, useState } from "react";
+import type {
+  AccountSettingsApiResponse,
+  PetProfileResponse,
+} from "@caniello/contracts";
+import { useEffect, useState } from "react";
 import type { AccountCopy, AccountLanguage } from "../content";
 import {
-  AccountDeletionSettingsPanel,
   AccountSafetyPanels,
   ConsentSettingsPanel,
-  DataExportSettingsPanel,
+  DeletionDialog,
+  PetDefaultsSettingsPanel,
+  PrivacySettingsPanel,
   ProfileSettingsPanel,
 } from "./AccountSettingsPanels";
 import { AppIcon } from "./AppIcon";
@@ -13,27 +17,24 @@ import { AppIcon } from "./AppIcon";
 type AccountSettingsSectionProps = {
   copy: AccountCopy;
   language: AccountLanguage;
+  pet: PetProfileResponse | null;
   onLanguageChange: (language: AccountLanguage) => void;
 };
 
 type SettingsSnapshot = Pick<
   AccountSettingsApiResponse,
+  | "ownerEmail"
   | "profile"
   | "latestConsent"
   | "latestDataExportRequest"
   | "latestDeletionRequest"
 >;
 
-type SettingsAction =
-  | "loading"
-  | "profile"
-  | "consent"
-  | "export"
-  | "deletion"
-  | null;
+type SettingsAction = "loading" | "save" | "export" | "deletion" | null;
 type Feedback = { tone: "success" | "error"; message: string } | null;
 
 const EMPTY_SNAPSHOT: SettingsSnapshot = {
+  ownerEmail: null,
   profile: null,
   latestConsent: null,
   latestDataExportRequest: null,
@@ -43,6 +44,7 @@ const EMPTY_SNAPSHOT: SettingsSnapshot = {
 export function AccountSettingsSection({
   copy,
   language,
+  pet,
   onLanguageChange,
 }: AccountSettingsSectionProps) {
   const [activeAction, setActiveAction] = useState<SettingsAction>("loading");
@@ -54,6 +56,7 @@ export function AccountSettingsSection({
   const [analyticsConsent, setAnalyticsConsent] = useState(false);
   const [marketingConsent, setMarketingConsent] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState("");
+  const [isDeletionOpen, setDeletionOpen] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -75,6 +78,7 @@ export function AccountSettingsSection({
         }
 
         const nextSnapshot = {
+          ownerEmail: result.ownerEmail ?? null,
           profile: result.profile ?? null,
           latestConsent: result.latestConsent ?? null,
           latestDataExportRequest: result.latestDataExportRequest ?? null,
@@ -103,34 +107,67 @@ export function AccountSettingsSection({
     };
   }, [copy.settingsError, language]);
 
-  async function submitProfile(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const result = await mutateSettings("profile", "/api/account/settings", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        displayName: displayName.trim() || undefined,
-        language: settingsLanguage,
-      }),
-    });
-    if (!result?.profile) return;
+  async function saveSettings() {
+    setActiveAction("save");
+    setFeedback(null);
+    try {
+      const [profileResponse, consentResponse] = await Promise.all([
+        fetch("/api/account/settings", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            displayName: displayName.trim() || undefined,
+            language: settingsLanguage,
+          }),
+        }),
+        fetch("/api/account/settings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "consent",
+            payload: {
+              analyticsConsent,
+              marketingConsent,
+              language: settingsLanguage,
+            },
+          }),
+        }),
+      ]);
+      const profileResult =
+        (await profileResponse.json()) as AccountSettingsApiResponse;
+      const consentResult =
+        (await consentResponse.json()) as AccountSettingsApiResponse;
 
-    setSnapshot((current) => ({ ...current, profile: result.profile ?? null }));
-    onLanguageChange(result.profile.language);
-  }
+      if (!profileResponse.ok || !profileResult.ok || !profileResult.profile) {
+        setFeedback({
+          tone: "error",
+          message: profileResult.message ?? copy.settingsError,
+        });
+        return;
+      }
+      if (
+        !consentResponse.ok ||
+        !consentResult.ok ||
+        !consentResult.latestConsent
+      ) {
+        setFeedback({
+          tone: "error",
+          message: consentResult.message ?? copy.settingsError,
+        });
+        return;
+      }
 
-  async function submitConsent(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const result = await postSettingsAction("consent", {
-      analyticsConsent,
-      marketingConsent,
-      language: settingsLanguage,
-    });
-    if (result?.latestConsent) {
       setSnapshot((current) => ({
         ...current,
-        latestConsent: result.latestConsent ?? null,
+        profile: profileResult.profile ?? null,
+        latestConsent: consentResult.latestConsent ?? null,
       }));
+      onLanguageChange(profileResult.profile.language);
+      setFeedback({ tone: "success", message: copy.settingsSaved });
+    } catch {
+      setFeedback({ tone: "error", message: copy.settingsError });
+    } finally {
+      setActiveAction(null);
     }
   }
 
@@ -158,35 +195,24 @@ export function AccountSettingsSection({
       latestDeletionRequest: result.latestDeletionRequest ?? null,
     }));
     setDeleteConfirmation("");
+    setDeletionOpen(false);
   }
 
   async function postSettingsAction(
-    action: "consent" | "export" | "deletion",
+    action: "export" | "deletion",
     payload: unknown,
-  ) {
-    const apiAction =
-      action === "export"
-        ? "data_export"
-        : action === "deletion"
-          ? "account_deletion"
-          : "consent";
-
-    return mutateSettings(action, "/api/account/settings", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: apiAction, payload }),
-    });
-  }
-
-  async function mutateSettings(
-    action: Exclude<SettingsAction, "loading" | null>,
-    input: string,
-    init: RequestInit,
   ) {
     setActiveAction(action);
     setFeedback(null);
     try {
-      const response = await fetch(input, init);
+      const response = await fetch("/api/account/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: action === "export" ? "data_export" : "account_deletion",
+          payload,
+        }),
+      });
       const result = (await response.json()) as AccountSettingsApiResponse;
       if (!response.ok || !result.ok) {
         setFeedback({
@@ -209,39 +235,48 @@ export function AccountSettingsSection({
 
   return (
     <section
-      className="min-w-0 px-5 py-8 sm:px-8 lg:px-10 lg:py-10 xl:px-12"
+      className="min-w-0 px-5 py-7 sm:px-8 lg:px-9 lg:py-8 xl:pl-[76px] xl:pr-6"
       aria-labelledby="account-settings-title"
     >
-      <div className="mx-auto max-w-[1180px]">
-        <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
-          <div className="min-w-0">
-            <div className="flex items-center gap-3 text-[#1e6de8]">
-              <span
-                className="flex h-11 w-11 items-center justify-center rounded-lg bg-[#eaf2ff]"
-                aria-hidden="true"
-              >
+      <div className="mx-auto max-w-[1700px]">
+        <header className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+          <div className="flex min-w-0 items-start gap-4">
+            <span
+              className="mt-1 flex h-12 w-12 shrink-0 items-center justify-center text-[#ff8500]"
+              aria-hidden="true"
+            >
+              <span className="scale-[1.7]">
                 <AppIcon name="settings" />
               </span>
-              <p className="text-sm font-black uppercase tracking-[0.08em] text-navy/54">
-                {copy.settingsEyebrow}
+            </span>
+            <div>
+              <h1
+                id="account-settings-title"
+                className="font-serif text-[clamp(2.35rem,4vw,3.45rem)] font-bold leading-none tracking-[0] text-navy"
+              >
+                {copy.appNavSettings}
+              </h1>
+              <p className="mt-3 text-base font-semibold leading-6 text-[#314a7a]">
+                {copy.settingsReferenceIntro
+                  .replace("{ownerName}", displayName || copy.appAccountName)
+                  .replace("{petName}", pet?.name ?? copy.settingsNoActivePet)}
               </p>
             </div>
-            <h1
-              id="account-settings-title"
-              className="mt-3 font-serif text-[clamp(2.1rem,3vw,2.9rem)] font-black leading-[1.06] tracking-[0] text-navy"
-            >
-              {copy.settingsTitle}
-            </h1>
-            <p className="mt-3 max-w-3xl text-base font-semibold leading-7 text-navy/72">
-              {copy.settingsIntro}
-            </p>
           </div>
-          <div className="rounded-lg border border-[#f0dfc8] bg-[#fff8ee] px-4 py-3 text-sm font-bold leading-6 text-navy/72 md:max-w-[310px]">
-            {copy.settingsOwnerControlNote}
-          </div>
-        </div>
+          <button
+            className="inline-flex min-h-13 shrink-0 items-center justify-center gap-3 rounded-[8px] bg-[#092d73] px-7 text-base font-black text-white shadow-[0_12px_30px_rgba(9,45,115,0.16)] transition hover:bg-[#06245f] disabled:cursor-not-allowed disabled:bg-[#7183a5]"
+            disabled={isLoading || activeAction === "save"}
+            type="button"
+            onClick={saveSettings}
+          >
+            <span aria-hidden="true">✓</span>
+            {activeAction === "save"
+              ? copy.settingsSaving
+              : copy.settingsSaveAll}
+          </button>
+        </header>
 
-        <div className="mt-6 min-h-12" aria-live="polite">
+        <div className="mt-4 min-h-10" aria-live="polite">
           {isLoading ? (
             <StatusNotice tone="loading" message={copy.settingsLoading} />
           ) : null}
@@ -251,49 +286,58 @@ export function AccountSettingsSection({
         </div>
 
         <div
-          className={`mt-3 grid gap-5 md:grid-cols-2 xl:grid-cols-3 ${isLoading ? "pointer-events-none opacity-60" : ""}`}
+          className={`mt-3 grid items-stretch gap-5 md:grid-cols-2 xl:grid-cols-3 ${
+            isLoading ? "pointer-events-none opacity-60" : ""
+          }`}
           aria-busy={isLoading}
         >
           <ProfileSettingsPanel
             copy={copy}
             displayName={displayName}
+            ownerEmail={snapshot.ownerEmail ?? null}
             language={settingsLanguage}
-            isBusy={activeAction === "profile"}
+            isBusy={activeAction === "save"}
             onDisplayNameChange={setDisplayName}
             onLanguageChange={setSettingsLanguage}
-            onSubmit={submitProfile}
           />
+          <PetDefaultsSettingsPanel copy={copy} pet={pet} />
           <ConsentSettingsPanel
             copy={copy}
             latestConsent={snapshot.latestConsent ?? null}
             analyticsConsent={analyticsConsent}
             marketingConsent={marketingConsent}
-            isBusy={activeAction === "consent"}
+            isBusy={activeAction === "save"}
             onAnalyticsChange={setAnalyticsConsent}
             onMarketingChange={setMarketingConsent}
-            onSubmit={submitConsent}
           />
-          <DataExportSettingsPanel
+          <PrivacySettingsPanel
             copy={copy}
             exportRequest={snapshot.latestDataExportRequest ?? null}
-            isBusy={activeAction === "export"}
-            onExport={requestExport}
-          />
-          <AccountDeletionSettingsPanel
-            copy={copy}
             deletionRequest={snapshot.latestDeletionRequest ?? null}
-            deleteConfirmation={deleteConfirmation}
-            isBusy={activeAction === "deletion"}
-            onDeleteConfirmationChange={setDeleteConfirmation}
-            onDeletion={requestDeletion}
+            isExporting={activeAction === "export"}
+            onExport={requestExport}
+            onOpenDeletion={() => setDeletionOpen(true)}
           />
           <AccountSafetyPanels copy={copy} />
         </div>
-
-        <p className="mt-6 max-w-4xl text-sm font-semibold leading-6 text-navy/58">
-          {copy.settingsPrivacyNote}
-        </p>
       </div>
+
+      {isDeletionOpen ? (
+        <DeletionDialog
+          copy={copy}
+          request={snapshot.latestDeletionRequest ?? null}
+          confirmation={deleteConfirmation}
+          isBusy={activeAction === "deletion"}
+          onConfirmationChange={setDeleteConfirmation}
+          onClose={() => {
+            if (activeAction !== "deletion") {
+              setDeleteConfirmation("");
+              setDeletionOpen(false);
+            }
+          }}
+          onConfirm={requestDeletion}
+        />
+      ) : null}
     </section>
   );
 }
@@ -314,7 +358,7 @@ function StatusNotice({
 
   return (
     <p
-      className={`rounded-md border px-4 py-3 text-sm font-black ${toneClass}`}
+      className={`inline-flex rounded-md border px-4 py-2 text-sm font-black ${toneClass}`}
       role={tone === "error" ? "alert" : "status"}
     >
       {message}

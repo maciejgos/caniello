@@ -46,16 +46,26 @@ Evaluate the production authenticated Settings alignment against the `/mvp-flow`
 - Changed-file formatting: Passed.
 - `git diff --check`: Passed.
 
+Second visual-fidelity pass after human review:
+
+- Focused account tests: Passed, 25 tests.
+- Shared contracts tests: Passed, 23 tests.
+- Full web suite: Passed, 115 tests and 5 skipped.
+- Web typecheck: Passed.
+- Direct changed-file formatting and `git diff --check`: Passed.
+- Live in-app browser structure and visual inspection: Passed.
+- Local production build rerun: Environment-blocked because sandboxed Turbopack could not bind an internal local port. The approval service could not run the outside-sandbox retry because its temporary usage quota was exhausted. The prior production build on this branch passed; the PR build check is required as final evidence for the follow-up.
+
 ## Ratchet Baseline
 
 - Coverage: focused behavior was added for consent withdrawal and retaining edited values after API rejection; existing passing suites remain green.
 - Architecture: feature-local React components, shared contract boundaries, authenticated route/server separation, and owner-scoped persistence remain intact.
 - Product/privacy: append-only consent, queued manual export/deletion semantics, exact deletion confirmation, owner isolation, audit evidence, medical boundaries, and official-document boundaries are preserved.
-- Design: production Settings keeps the accepted prototype's heading hierarchy, compact panel treatment, three-column/two-row desktop rhythm, single-column mobile flow, serif/sans typography, navy/cream/blue palette, and production shell conventions.
+- Design: production Settings now directly matches the supplied MVP screenshot's 272px sidebar/top-bar composition, orange Settings heading, page-level save action, three-column/two-row desktop rhythm, circular icon badges, equal card rows, field treatment, serif/sans typography, and navy/cream/blue palette.
 
 ## Acceptance Criteria Mapping
 
-- Settings follows `/mvp-flow` at desktop and mobile: Supported by reference/implementation image inspection, in-app browser desktop evidence, and Pixel 7 Playwright evidence.
+- Settings follows `/mvp-flow` at desktop and mobile: Supported by the supplied screenshot/implementation comparison, measured live browser geometry, in-app browser desktop evidence, and Pixel 7 Playwright evidence.
 - Loading, success, validation/server error, and existing-request states remain visible: Supported by component tests, API-message feedback, live loading/success state, and persisted request status/date rendering.
 - Profile save survives reload: Supported by existing authenticated server behavior, live owner profile loading, and passing account server/RLS coverage.
 - Consent is appended and latest state reloads: Supported by server/RLS tests plus live grant then withdrawal interaction showing the latest recorded date.
@@ -72,28 +82,30 @@ Evaluate the production authenticated Settings alignment against the `/mvp-flow`
 - Interaction: granted analytics consent, saved, withdrew consent, saved again, entered exact `DELETE`, and created a queued deletion request. The confirmation cleared after success and the request displayed `requested · 2026-06-19`.
 - Responsive fallback: the in-app browser viewport override remained at 1440px after requesting 390px. The repository Playwright Pixel 7 project was used for mobile validation and proved no document-level horizontal overflow.
 - Visual comparison inspected directly:
-  - Prototype reference: `/tmp/caniello-settings-reference.png`
-  - Desktop implementation: `/tmp/caniello-settings-desktop.png`
+  - Human-supplied MVP reference: `Screenshot 2026-06-19 at 09.21.25.png`
+  - Final full-page implementation: `/tmp/caniello-settings-full.png`
+  - Final viewport implementation: `/tmp/caniello-settings-fidelity.png`
   - Mobile implementation: `/tmp/caniello-settings-mobile.png`
-- Intentional deviations: prototype-only pet-care defaults and notification controls were not copied. Production uses real consent and data-rights controls and keeps the existing authenticated shell.
+- Measured desktop geometry at 1280px: first card x=349px, height=368px; this closely matches the reference's x≈349px and height≈363px. The asymmetric desktop padding preserves the same left edge and expands the cards naturally at the 2048px reference width.
+- Intentional product-safe deviations: notification placeholders are represented by real append-only consent controls; unavailable reminder defaults are not invented; privacy actions create real queued requests; the authenticated shell retains language and logout controls.
 
 ## Findings
 
-No material findings remain.
+No material UI, behavior, privacy, contract, or scope findings remain. Final production-build evidence for the second visual-only pass is delegated to the PR build check because the local sandbox could not run Turbopack.
 
 ## Missing, Skipped, or Deferred Checks
 
-- No missing required validation.
+- The second-pass local production build rerun is environment-blocked; the already-passing branch build is preserved and the PR build check must pass before the follow-up is treated as gap-free.
 - Production deployment and public health-record upload readiness were not tested because they are outside this task and remain human approval gates.
 - No migration validation was required because the task changed no schema or lifecycle policy.
 
 ## Verdict
 
-Pass
+Pass pending PR build confirmation
 
 ## Recommended Next Action
 
-Publish this single validated task as a draft PR for human review.
+Publish the fidelity follow-up to the existing draft PR, confirm the PR build and lifecycle checks, then treat the evaluator result as gap-free.
 
 ## Approval Caveat
 
