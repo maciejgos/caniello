@@ -534,6 +534,8 @@ export const accountCopy = {
     settingsTitle: "Konto, zgody i dane",
     settingsIntro:
       "Zarządzaj podstawowym profilem konta, językiem i zgodami. Eksport danych i usunięcie konta są rejestrowane jako prośby do dalszej obsługi.",
+    settingsOwnerControlNote:
+      "Ty kontrolujesz konto i dane. Zmiany zgód są zapisywane, a prośby dotyczące danych trafiają do ręcznej obsługi.",
     settingsLoading: "Ładujemy ustawienia...",
     settingsError: "Nie udało się obsłużyć ustawień. Spróbuj ponownie.",
     settingsSaved: "Zapisano ustawienia.",
@@ -554,6 +556,7 @@ export const accountCopy = {
     settingsLatestConsent: "Ostatnia zgoda",
     settingsNoConsent: "brak zapisu",
     settingsConsentAction: "Zapisz zgody",
+    settingsDataRightsTitle: "Prywatność i dane",
     settingsExportTitle: "Eksport danych",
     settingsExportBody:
       "Zarejestruj prośbę o eksport danych. Ten widok nie tworzy jeszcze pliku, linku pobierania ani wiadomości e-mail.",
@@ -565,6 +568,15 @@ export const accountCopy = {
     settingsDeletionAction: "Poproś o usunięcie konta",
     settingsRequestStatus: "Status prośby",
     settingsNoRequest: "brak prośby",
+    settingsSecurityTitle: "Bezpieczeństwo",
+    settingsSecuritySession: "Dostęp do konta",
+    settingsSecuritySessionValue: "Wymaga aktywnej sesji właściciela",
+    settingsSecurityStorage: "Dane prywatne",
+    settingsSecurityStorageValue: "Chronione regułami dostępu właściciela",
+    settingsSecurityOwnership: "Realizacja próśb",
+    settingsSecurityOwnershipValue:
+      "Eksport i usunięcie są obsługiwane ręcznie",
+    settingsMedicalTitle: "Granice medyczne",
     settingsPrivacyNote:
       "Ustawienia są prywatne dla zalogowanego właściciela. Ten widok nie zmienia ról, uprawnień opiekunów, linków udostępniania, eksportu PDF ani oficjalnych dokumentów.",
     validationFullName: "Wpisz imię i nazwisko.",
@@ -1114,6 +1126,8 @@ export const accountCopy = {
     settingsTitle: "Account, consent, and data",
     settingsIntro:
       "Manage the basic owner account profile, language, and consent choices. Data export and account deletion are recorded as follow-up requests.",
+    settingsOwnerControlNote:
+      "You control the account and its data. Consent changes are recorded, while data-rights requests enter manual follow-up.",
     settingsLoading: "Loading settings...",
     settingsError: "We could not handle settings. Try again.",
     settingsSaved: "Settings saved.",
@@ -1134,6 +1148,7 @@ export const accountCopy = {
     settingsLatestConsent: "Latest consent",
     settingsNoConsent: "not recorded",
     settingsConsentAction: "Save consent",
+    settingsDataRightsTitle: "Privacy & data",
     settingsExportTitle: "Data export",
     settingsExportBody:
       "Record a data export request. This view does not generate a file, download link, or email yet.",
@@ -1145,6 +1160,14 @@ export const accountCopy = {
     settingsDeletionAction: "Request account deletion",
     settingsRequestStatus: "Request status",
     settingsNoRequest: "no request",
+    settingsSecurityTitle: "Security",
+    settingsSecuritySession: "Account access",
+    settingsSecuritySessionValue: "Requires an active owner session",
+    settingsSecurityStorage: "Private data",
+    settingsSecurityStorageValue: "Protected by owner-scoped access rules",
+    settingsSecurityOwnership: "Request fulfillment",
+    settingsSecurityOwnershipValue: "Export and deletion are handled manually",
+    settingsMedicalTitle: "Medical boundary",
     settingsPrivacyNote:
       "Settings are private to the signed-in owner. This view does not change roles, caregiver permissions, share links, PDF export, or official documents.",
     validationFullName: "Enter your full name.",

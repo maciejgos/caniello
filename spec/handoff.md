@@ -2,12 +2,13 @@
 
 ## Current State
 
-- Active task: `spec/tasks/settings-consent-and-account-deletion-alignment.md` is planned; implementation has not started.
-- Active branch: `codex/name-mvp-artifacts-and-plan-settings`, created from `mvp-implementation`.
-- Current workflow: draft PR review after publication.
-- Worktree: expected clean after this publication handoff update is committed and pushed.
-- Publication: commit `e8e1c37` was pushed to `origin/codex/name-mvp-artifacts-and-plan-settings`; draft PR #42 is open at https://github.com/maciejgos/caniello/pull/42 against `mvp-implementation`.
-- Pull requests: draft PR #42 is open. PRs #39, #40, and #41 were merged into `mvp-implementation` on 2026-06-18.
+- Active task: `spec/tasks/settings-consent-and-account-deletion-alignment.md`.
+- Active branch: `codex/settings-consent-alignment`, created from `mvp-implementation`.
+- Current workflow: publication after evaluator Pass and handoff update.
+- Execution mode: Standard; user-visible privacy UI on existing authenticated APIs/RLS, with no migration or lifecycle-policy change.
+- Worktree: contains only the Settings task implementation, tests, task evidence, validation artifact, and this handoff update.
+- Publication: pending commit, push, and draft PR.
+- Pull requests: PR #42 merged into `mvp-implementation` on 2026-06-19 before this task branch was created.
 - Human approval state: no release, deployment, production-readiness, public health-record upload, roadmap expansion, or deferred-capability rollout is approved by this handoff.
 
 ## Roadmap Review
@@ -19,6 +20,12 @@
 - Remaining readiness work is represented by the pending task files in `spec/roadmap.md`; the new Settings task makes the existing `Now` account/privacy/consent outcome executable without expanding or reprioritizing product scope.
 
 ## Latest Completed Work
+
+- Aligned production Settings with the `/mvp-flow` panel hierarchy and responsive visual language while preserving real profile, consent, export-request, deletion-request, RLS, and audit behavior.
+- Split Settings into focused feature-local panels for account profile, consent, data export, destructive account deletion, security context, and medical boundaries.
+- Added action-specific success/error feedback that preserves edited values, explicit latest request dates/statuses, consent withdrawal coverage, and exact-confirmation deletion behavior.
+- Added opt-in live Settings Playwright coverage for desktop reference capture and Pixel 7 responsive/no-overflow verification.
+- Evaluator verdict: Pass. Validation artifact: `spec/validation/settings-consent-and-account-deletion-alignment-evaluation.md`.
 
 - Renamed the 18 MVP visual artifacts from anonymous `image N.png` names to screen/flow names such as `home-dashboard.png`, `document-upload-scan.png`, `care-timeline.png`, `sign-in.png`, and `sign-up.png`.
 - Added `spec/design/visual-artifacts/mvp/README.md` as the artifact map and recorded `/mvp-flow` Settings as the visual source because no standalone Settings screenshot was supplied.
@@ -40,18 +47,16 @@
 
 ## Validation Status
 
-- This planning pass changed documentation and renamed binary visual-reference files only; no runtime code changed.
-- Passed: all 18 renamed files exist, no current `spec/design/visual-artifacts/mvp/image N.png` references remain, named references were reviewed, and `git diff --check` passed.
-- Unavailable: `pnpm validation:spec-alignment` could not verify the pinned pnpm release in the sandbox because registry fetches failed. The required escalation rerun was rejected when the approval service reported its usage limit.
-- Product tests, builds, and browser checks: not required because runtime behavior did not change.
-- Evaluator artifact: not required for this planning-only publication; the human explicitly requested Forge Publisher.
+- Passed: focused Settings component/route/server tests (29), contracts tests (23), full web suite (115 passed, 5 skipped), web type/lint, production build, live local Supabase RLS/audit test, Pixel 7 Playwright check, formatting, and `git diff --check`.
+- Browser: in-app desktop Settings and real consent/deletion interactions passed with no relevant console warnings/errors. The in-app viewport override did not apply for mobile, so the configured Playwright mobile project supplied responsive evidence.
+- Required gate state: unit/integration Passed; lint/types Passed; build Passed; owner-isolation/audit Passed; design comparison Passed; evaluator Pass; coverage baseline preserved; architecture/product/privacy ratchets preserved.
+- Validation artifact: `spec/validation/settings-consent-and-account-deletion-alignment-evaluation.md`.
 - Current readiness baseline remains `spec/validation/mvp-validation-readiness-2026-06-13.md`, but its manual gap list is partly historical because several recovery tasks have since merged. Run a fresh readiness pass before making a broader MVP-readiness claim.
 
 ## Known Gaps
 
 - Remaining roadmap-listed readiness tasks:
   - `spec/tasks/pet-profile-ia-and-controls.md`
-  - `spec/tasks/settings-consent-and-account-deletion-alignment.md`
   - `spec/tasks/document-upload-storage-implementation.md`
   - `spec/tasks/audit-product-event-foundation.md`
   - `spec/tasks/data-rights-manual-runbook.md`
@@ -66,5 +71,6 @@
 
 ## Next Recommended Action
 
-- Review draft PR #42. After review, implement exactly one remaining `Now` task; the newly planned Settings alignment task is ready for human scope review, but implementation that introduces a migration or changes account lifecycle policy still requires explicit human approval.
+- Publish the validated Settings alignment task as one draft PR, then request human review of the task and validation artifact.
+- After review/merge, select exactly one remaining `Now` task. `spec/tasks/pet-profile-ia-and-controls.md` still needs scope refinement before implementation because active-pet honesty and the species dropdown were already delivered.
 - Before any broader readiness claim, rerun the MVP validation script and replace the historical 2026-06-13 gap assessment with current evidence.
