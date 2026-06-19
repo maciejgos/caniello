@@ -1,4 +1,4 @@
-name: CI/CD and Lifecycle Gates
+name: CI/CD and Harness Gates
 
 on:
   pull_request:
@@ -68,6 +68,30 @@ jobs:
 
       - name: Typecheck workspace
         run: pnpm typecheck
+
+  lint:
+    name: ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Enable pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@9.15.4 --activate
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint workspace
+        run: pnpm lint
 
   unit-tests:
     name: Unit and Contract Tests
@@ -173,6 +197,9 @@ jobs:
 
       - name: Install Playwright Chromium
         run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run runtime smoke checks
+        run: pnpm smoke
 
       - name: Run Playwright browser checks
         run: pnpm test:e2e

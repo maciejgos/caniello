@@ -1,6 +1,7 @@
 import { execFileSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { pathToFileURL } from "node:url";
 
 const generatedPathPatterns = [
   /(^|\/)\.next(\/|$)/,
@@ -76,70 +77,62 @@ function walkFiles(root) {
 
 function checkTrackedArtifacts(files) {
   for (const file of files) {
-    if (generatedPathPatterns.some((pattern) => pattern.test(file))) {
-      violations.push(
-        `${file}: generated output, cache, dependency folder, or tool artifact must not be tracked.`,
-      );
-    }
-
-    if (localEnvPattern.test(file) && !allowedEnvFiles.has(file)) {
-      violations.push(`${file}: local environment files must not be tracked.`);
-    }
+    violations.push(...trackedArtifactViolations(file));
   }
 }
 
-function checkSensitiveProviderBoundaries(files) {
-  for (const file of files) {
-    const content = readFileSync(file, "utf8");
-
-    if (content.includes("NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY")) {
-      violations.push(
-        `${file}: service role keys must never use a NEXT_PUBLIC_ name.`,
-      );
-    }
-
-    const isUiComponent =
-      file.startsWith("apps/web/features/") && file.includes("/components/");
-    if (!isUiComponent) {
-      continue;
-    }
-
-    if (content.includes("SUPABASE_SERVICE_ROLE_KEY")) {
-      violations.push(
-        `${file}: UI components must not read or reference Supabase service-role keys.`,
-      );
-    }
-
-    if (
-      content.includes("@supabase/supabase-js") ||
-      content.includes("createSupabaseServiceRoleClient")
-    ) {
-      violations.push(
-        `${file}: UI components must not construct Supabase/provider clients directly.`,
-      );
-    }
-
-    if (content.includes("audit_logs") || content.includes("product_events")) {
-      violations.push(
-        `${file}: UI components must not write audit or product-event records directly.`,
-      );
-    }
+export function trackedArtifactViolations(file) {
+  const found = [];
+  if (generatedPathPatterns.some((pattern) => pattern.test(file))) {
+    found.push(
+      `${file}: generated output, cache, dependency folder, or tool artifact must not be tracked.`,
+    );
   }
+  if (localEnvPattern.test(file) && !allowedEnvFiles.has(file)) {
+    found.push(`${file}: local environment files must not be tracked.`);
+  }
+  return found;
 }
 
-function checkCrossFeatureImports(files) {
+export function sourceBoundaryViolations(file, content) {
+  const found = [];
+
+  if (content.includes("NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY")) {
+    found.push(
+      `${file}: service role keys must never use a NEXT_PUBLIC_ name.`,
+    );
+  }
+
+  const isUiComponent =
+    file.startsWith("apps/web/features/") && file.includes("/components/");
+  if (isUiComponent && content.includes("SUPABASE_SERVICE_ROLE_KEY")) {
+    found.push(
+      `${file}: UI components must not read or reference Supabase service-role keys.`,
+    );
+  }
+  if (
+    isUiComponent &&
+    (content.includes("@supabase/supabase-js") ||
+      content.includes("createSupabaseServiceRoleClient"))
+  ) {
+    found.push(
+      `${file}: UI components must not construct Supabase/provider clients directly.`,
+    );
+  }
+  if (
+    isUiComponent &&
+    (content.includes("audit_logs") || content.includes("product_events"))
+  ) {
+    found.push(
+      `${file}: UI components must not write audit or product-event records directly.`,
+    );
+  }
+
   const importPattern = /from\s+["']([^"']+)["']/g;
-
-  for (const file of files) {
-    const match = file.match(/^apps\/web\/features\/([^/]+)\//);
-    if (!match) {
-      continue;
-    }
-
+  const match = file.match(/^apps\/web\/features\/([^/]+)\//);
+  if (match) {
     const currentFeature = match[1];
-    const content = readFileSync(file, "utf8");
     let importMatch;
-
     while ((importMatch = importPattern.exec(content)) !== null) {
       const importPath = importMatch[1];
       const otherFeatureMatch =
@@ -147,27 +140,42 @@ function checkCrossFeatureImports(files) {
         importPath.match(/^apps\/web\/features\/([^/]+)\//);
 
       if (otherFeatureMatch && otherFeatureMatch[1] !== currentFeature) {
-        violations.push(
+        found.push(
           `${file}: cross-feature import from "${importPath}" bypasses package contracts or feature-owned runtime boundaries.`,
         );
       }
     }
   }
+
+  return found;
 }
 
-const tracked = trackedFiles();
-const sourceFiles = sourceRoots.flatMap(walkFiles);
-
-checkTrackedArtifacts(tracked);
-checkSensitiveProviderBoundaries(sourceFiles);
-checkCrossFeatureImports(sourceFiles);
-
-if (violations.length > 0) {
-  console.error("Repository hygiene gate failed:");
-  for (const violation of violations) {
-    console.error(`- ${violation}`);
+function checkSourceBoundaries(files) {
+  for (const file of files) {
+    violations.push(
+      ...sourceBoundaryViolations(file, readFileSync(file, "utf8")),
+    );
   }
-  process.exit(1);
 }
 
-console.log("Repository hygiene gate passed.");
+function main() {
+  const tracked = trackedFiles();
+  const sourceFiles = sourceRoots.flatMap(walkFiles);
+
+  checkTrackedArtifacts(tracked);
+  checkSourceBoundaries(sourceFiles);
+
+  if (violations.length > 0) {
+    console.error("Repository hygiene gate failed:");
+    for (const violation of violations) {
+      console.error(`- ${violation}`);
+    }
+    process.exit(1);
+  }
+
+  console.log("Repository hygiene gate passed.");
+}
+
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main();
+}

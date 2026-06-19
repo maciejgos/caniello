@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 
 const projectPatterns = [
@@ -119,7 +119,7 @@ function isTaskFile(file) {
   return /^spec\/tasks\/[^/]+\.md$/.test(file);
 }
 
-export function validateTaskContent(file, content) {
+export function validateTaskContent(file, content, exists = existsSync) {
   const violations = [];
   const frontmatter = parseFrontmatter(content);
 
@@ -138,6 +138,15 @@ export function validateTaskContent(file, content) {
   }
   if (!/^\[[^\]]*\]$/.test(frontmatter.adrs ?? "")) {
     violations.push(`${file}: adrs must be a YAML inline list.`);
+  } else {
+    const adrs = [...frontmatter.adrs.matchAll(/\b(\d{4})\b/g)].map(
+      (match) => match[1],
+    );
+    for (const adr of adrs) {
+      if (!exists(`spec/adrs/${adr}-placeholder.md`)) {
+        violations.push(`${file}: referenced ADR ${adr} does not exist.`);
+      }
+    }
   }
 
   for (const heading of requiredSections) {
@@ -152,6 +161,65 @@ export function validateTaskContent(file, content) {
     violations.push(`${file}: "Acceptance criteria" must use list items.`);
   }
 
+  const verification = section(content, "Verification");
+  if (
+    frontmatter.status === "review" &&
+    /\b(?:pending|todo|tbd)\b/i.test(verification)
+  ) {
+    violations.push(
+      `${file}: review tasks must not contain pending verification.`,
+    );
+  }
+
+  return violations;
+}
+
+function taskRecord(file, content) {
+  const frontmatter = parseFrontmatter(content);
+  return {
+    file,
+    status: frontmatter?.status,
+    risk: frontmatter?.risk,
+  };
+}
+
+export function validateBacklog(content, tasks) {
+  const violations = [];
+  const rows = [
+    ...content.matchAll(
+      /^\|\s*\d+\s*\|\s*\[[^\]]+\]\((spec\/tasks\/[^)]+)\)\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|$/gm,
+    ),
+  ].map((match) => ({
+    file: match[1],
+    status: match[2].trim().toLowerCase().replaceAll(" ", "-"),
+    risk: match[3].trim().toLowerCase(),
+  }));
+  const rowsByFile = new Map(rows.map((row) => [row.file, row]));
+
+  for (const task of tasks) {
+    const row = rowsByFile.get(task.file);
+    if (!row) {
+      violations.push(`BACKLOG.md: missing active task ${task.file}.`);
+      continue;
+    }
+    if (row.status !== task.status) {
+      violations.push(
+        `BACKLOG.md: ${task.file} status "${row.status}" does not match "${task.status}".`,
+      );
+    }
+    if (row.risk !== task.risk) {
+      violations.push(
+        `BACKLOG.md: ${task.file} risk "${row.risk}" does not match "${task.risk}".`,
+      );
+    }
+  }
+
+  for (const row of rows) {
+    if (!tasks.some((task) => task.file === row.file)) {
+      violations.push(`BACKLOG.md: references missing task ${row.file}.`);
+    }
+  }
+
   return violations;
 }
 
@@ -159,6 +227,8 @@ export function evaluateTaskContract(
   files,
   read = readFileSync,
   exists = existsSync,
+  allTaskFiles = [],
+  backlogContent = "",
 ) {
   const projectFiles = files.filter(isProjectFile);
   const taskFiles = files.filter((file) => exists(file) && isTaskFile(file));
@@ -170,8 +240,23 @@ export function evaluateTaskContract(
     );
   }
 
-  for (const file of taskFiles) {
-    violations.push(...validateTaskContent(file, read(file, "utf8")));
+  const tasksToValidate = allTaskFiles.length > 0 ? allTaskFiles : taskFiles;
+  const records = [];
+  const adrExists = (placeholder) => {
+    const adr = placeholder.match(/spec\/adrs\/(\d{4})-/)?.[1];
+    return adr
+      ? readdirSync("spec/adrs").some((file) => file.startsWith(`${adr}-`))
+      : exists(placeholder);
+  };
+
+  for (const file of tasksToValidate) {
+    const content = read(file, "utf8");
+    violations.push(...validateTaskContent(file, content, adrExists));
+    records.push(taskRecord(file, content));
+  }
+
+  if (backlogContent) {
+    violations.push(...validateBacklog(backlogContent, records));
   }
 
   return violations;
@@ -179,7 +264,16 @@ export function evaluateTaskContract(
 
 function main() {
   const files = [...changedFiles()];
-  const violations = evaluateTaskContract(files);
+  const allTaskFiles = readdirSync("spec/tasks")
+    .filter((file) => file.endsWith(".md"))
+    .map((file) => `spec/tasks/${file}`);
+  const violations = evaluateTaskContract(
+    files,
+    readFileSync,
+    existsSync,
+    allTaskFiles,
+    readFileSync("BACKLOG.md", "utf8"),
+  );
 
   if (violations.length > 0) {
     console.error("Task contract gate failed:");

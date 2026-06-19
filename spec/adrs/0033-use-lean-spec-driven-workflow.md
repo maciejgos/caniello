@@ -10,7 +10,7 @@ Parallel feature briefs, plans, validation reports, handoffs, weekly reports, ar
 
 ## Decision
 
-Use five canonical root documents: `AGENTS.md`, `SPEC.md`, `DESIGN.md`, `ROADMAP.md`, and `BACKLOG.md`.
+Use six canonical root documents: `AGENTS.md`, `SPEC.md`, `ARCHITECTURE.md`, `DESIGN.md`, `ROADMAP.md`, and `BACKLOG.md`.
 
 Keep only:
 
@@ -30,5 +30,6 @@ Git history is the archive. Completed tasks and obsolete process artifacts leave
 
 - `spec/tasks/simplify-spec-workflow.md`
 - `SPEC.md`
+- `ARCHITECTURE.md`
 - `ROADMAP.md`
 - `AGENTS.md`

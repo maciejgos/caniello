@@ -6,9 +6,10 @@ Before product work, read:
 
 1. `SPEC.md` for product scope, privacy, and medical boundaries.
 2. `ROADMAP.md` to confirm the work belongs in `Now`.
-3. `DESIGN.md` for visible UI work.
-4. The relevant file in `spec/tasks/`.
-5. Relevant accepted decisions in `spec/adrs/`.
+3. `ARCHITECTURE.md` to locate behavior and understand dependency boundaries.
+4. `DESIGN.md` for visible UI work.
+5. The relevant file in `spec/tasks/`.
+6. Relevant accepted decisions in `spec/adrs/`.
 
 `BACKLOG.md` orders planned and active tasks. Work on one task at a time.
 
@@ -104,6 +105,10 @@ Never imply that skipped or unavailable checks passed. High-risk auth, RLS, stor
 - `pnpm lint`: run lint/type validation.
 - `pnpm validation:task-contract`: validate changed task contracts.
 - `pnpm validation:repo-hygiene`: check secrets, generated files, and sensitive boundaries.
+- `pnpm run doctor`: diagnose the local toolchain and services without changing them.
+- `pnpm verify:fast`: run the normal pre-implementation feedback loop.
+- `pnpm verify`: run the complete local CI-equivalent harness.
+- `pnpm smoke`: start or reuse the web app and check essential routes.
 - `./scripts/start.sh`: start local Supabase.
 - `./scripts/stop.sh`: stop local Supabase.
 
@@ -117,3 +122,10 @@ Never imply that skipped or unavailable checks passed. High-risk auth, RLS, stor
 - Stage and commit only intentional files.
 
 Nested `AGENTS.md` files may add subtree-specific guidance.
+
+Validation tiers:
+
+- Focused: affected tests or package checks while implementing.
+- Standard: `pnpm verify:fast` before review.
+- Full: `pnpm verify` for shared, risky, or release-adjacent changes.
+- Live: opt-in Supabase auth/RLS/Storage tests only when local services and disposable fixtures are available.

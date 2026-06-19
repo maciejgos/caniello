@@ -8,6 +8,7 @@ Caniello is an owner-controlled pet health and care organization utility for pro
 - [ROADMAP.md](ROADMAP.md): Now/Next/Later/Not Now priorities
 - [BACKLOG.md](BACKLOG.md): ordered planned and active tasks
 - [DESIGN.md](DESIGN.md): visual and interaction guidance
+- [ARCHITECTURE.md](ARCHITECTURE.md): system flow, code map, and invariants
 - [AGENTS.md](AGENTS.md): coding-agent workflow and repository rules
 
 ## Structure
@@ -40,6 +41,10 @@ pnpm test:e2e
 pnpm lint
 pnpm validation:task-contract
 pnpm validation:repo-hygiene
+pnpm run doctor
+pnpm verify:fast
+pnpm verify
+pnpm smoke
 ./scripts/start.sh
 ./scripts/stop.sh
 ```

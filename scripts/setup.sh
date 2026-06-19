@@ -11,8 +11,7 @@ main() {
 
   log "Checking host dependencies"
   brew_install_cask_if_missing docker docker
-  brew_install_formula node node
-  brew_install_formula pnpm pnpm
+  brew_install_formula node@24 node
   brew_install_formula supabase/tap/supabase supabase
 
   ensure_host_runtime
@@ -21,6 +20,9 @@ main() {
 
   log "Installing project dependencies"
   pnpm install
+
+  log "Installing Playwright Chromium"
+  pnpm exec playwright install chromium
 
   start_supabase
   sync_local_supabase_env

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   evaluateTaskContract,
+  validateBacklog,
   validateTaskContent,
 } from "./task-contract-gate.mjs";
 
@@ -28,7 +29,10 @@ As a maintainer, I want a small task contract.
 `;
 
 test("accepts the lean task contract", () => {
-  assert.deepEqual(validateTaskContent("spec/tasks/example.md", valid), []);
+  assert.deepEqual(
+    validateTaskContent("spec/tasks/example.md", valid, () => true),
+    [],
+  );
 });
 
 test("rejects a project change without a task", () => {
@@ -101,3 +105,48 @@ for (const [name, content, expected] of [
     );
   });
 }
+
+test("rejects pending verification at review", () => {
+  const content = valid
+    .replace("status: in-progress", "status: review")
+    .replace("Tests are recorded here.", "Pending tests.");
+  assert.ok(
+    validateTaskContent("spec/tasks/example.md", content, () => true).some(
+      (violation) => violation.includes("must not contain pending"),
+    ),
+  );
+});
+
+test("rejects a missing ADR reference", () => {
+  assert.ok(
+    validateTaskContent("spec/tasks/example.md", valid, () => false).some(
+      (violation) => violation.includes("ADR 0011 does not exist"),
+    ),
+  );
+});
+
+test("validates backlog status and risk synchronization", () => {
+  const backlog = `| 1 | [Example](spec/tasks/example.md) | In progress | Medium |`;
+  assert.deepEqual(
+    validateBacklog(backlog, [
+      {
+        file: "spec/tasks/example.md",
+        status: "in-progress",
+        risk: "medium",
+      },
+    ]),
+    [],
+  );
+});
+
+test("rejects backlog drift", () => {
+  const backlog = `| 1 | [Example](spec/tasks/example.md) | Planned | High |`;
+  const violations = validateBacklog(backlog, [
+    {
+      file: "spec/tasks/example.md",
+      status: "in-progress",
+      risk: "medium",
+    },
+  ]);
+  assert.equal(violations.length, 2);
+});
