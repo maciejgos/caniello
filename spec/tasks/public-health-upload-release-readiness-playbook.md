@@ -1,63 +1,28 @@
-# Task: Public health upload release-readiness playbook
+---
+status: planned
+roadmap: now
+risk: high
+adrs: [0019, 0024, 0025, 0026, 0029, 0031, 0032]
+---
 
-## Goal
+# Public health-upload release-readiness playbook
 
-Create the production release-readiness playbook required before Caniello collects public health-record uploads.
+## User story
 
-## Roadmap Alignment
+As a maintainer, I want one production checklist before public health-record uploads so that release approval is based on explicit operational evidence.
 
-Phase: Now
+## Acceptance criteria
 
-Why this belongs here:
+- The playbook covers environment, secrets, deployment, rollback, Storage, RLS, backups, sharing incidents, data rights, audit evidence, privacy copy, and support boundaries.
+- It includes pause-traffic and rollback steps.
+- Each check has an evidence expectation and owner.
+- It clearly separates task completion from explicit human release approval.
 
-Real document upload and trusted sharing need a release safety gate before public beta health-record collection.
+## Constraints
 
-Related roadmap item:
-
-`spec/roadmap.md` - Now / local development, CI, validation, and platform reliability needed to build and verify the MVP.
-
-## Scope
-
-- Document production environment inventory, secrets, deployment, rollback, Supabase project expectations, Storage bucket checks, RLS checks, backup expectations, share-link incident response, data-rights handling, audit evidence, support boundaries, and release approval checklist.
-- Reference accepted ADRs and current validation artifacts.
-- Clearly separate local task acceptance from public release approval.
-
-## Non-Goals
-
-- Deploying to production.
-- Creating a public beta release.
-- Implementing code, migrations, or monitoring integrations.
-- Approving public health-record upload.
-
-## Acceptance Criteria
-
-- The playbook is discoverable under `spec/validation/`, `spec/operations/`, or another clear spec path.
-- A fresh maintainer can use it as a release checklist before public uploads.
-- It includes rollback and pause-traffic steps.
-- It names what must be verified for document upload, sharing, data rights, audit, and privacy copy.
-- It states that human release approval is still required.
-
-## Implementation Notes
-
-- Follow ADR 0031.
-- Link ADRs 0024, 0025, 0026, 0029, and 0032.
-- This is documentation-only unless it identifies a blocker requiring a separate implementation task.
-
-## Architecture Decisions
-
-- Existing ADRs: `0019`, `0024`, `0025`, `0026`, `0029`, `0031`, `0032`.
-- New ADR needed: No.
-- ADR draft: None.
-- Approval state: ADRs accepted by human on 2026-06-14.
+- Documentation only: no deployment, public beta, migration, monitoring integration, or release approval.
+- Keep the playbook concise and place it at a stable root or operational path approved during implementation.
 
 ## Verification
 
-- [ ] Tests run or explicitly recorded as unavailable.
-- [ ] Manual validation completed when relevant.
-- [ ] UI validated with Playwright/browser checks when relevant.
-- [ ] No roadmap scope expansion.
-- [ ] Handoff updated.
-
-## Handoff Notes
-
-Update after implementation or evaluation.
+- Pending: tabletop review against document upload, sharing, data-rights, audit, and auth boundaries; link/reference check.

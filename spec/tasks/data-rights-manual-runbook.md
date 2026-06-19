@@ -1,65 +1,28 @@
-# Task: Data-rights manual runbook
+---
+status: planned
+roadmap: now
+risk: high
+adrs: [0015, 0024, 0025, 0026, 0031]
+---
 
-## Goal
+# Data-rights manual runbook
 
-Create the manual operations runbook for data export and account deletion requests before Caniello collects public health-record uploads.
+## User story
 
-## Roadmap Alignment
+As an operator, I want a concise manual export and deletion procedure so that owner requests can be handled safely before public health-record uploads.
 
-Phase: Now
+## Acceptance criteria
 
-Why this belongs here:
+- A fresh operator can verify the requester and process export or deletion without chat history.
+- The runbook names included owner data, Storage cleanup, Supabase Auth handling, retained audit evidence, and owner communication.
+- Existing queued export/deletion UI language remains truthful.
+- The procedure defines failure, escalation, and completion evidence.
 
-Owner privacy and data-rights foundations are required for MVP validation with sensitive pet-health data.
+## Constraints
 
-Related roadmap item:
-
-`spec/roadmap.md` - Now / owner-facing account, privacy, consent, and language behavior are reliable enough for MVP validation.
-
-## Scope
-
-- Document manual request intake, verification, export contents, deletion scope, retained audit evidence, Supabase Auth handling, Storage cleanup, and owner communication.
-- Align the runbook with existing `data_export_requests` and `account_deletion_requests`.
-- Include uploaded document files once ADR 0025 implementation exists.
-- Add validation notes for the current account deletion persistence check.
-- Keep UI copy honest that requests are queued, not automatically completed.
-
-## Non-Goals
-
-- Automating export generation.
-- Automatically deleting Supabase Auth users or cascading account data.
-- Building operator/admin UI.
-- Sending transactional email.
-
-## Acceptance Criteria
-
-- A fresh operator can follow the runbook without chat history.
-- Export and deletion scope is explicit and limited to owner-owned Caniello data.
-- Storage cleanup expectations are documented for uploaded files.
-- Audit evidence preservation is documented.
-- Existing account settings copy remains accurate.
-
-## Implementation Notes
-
-- Follow ADR 0026 and ADR 0031.
-- This is primarily documentation under `spec/` unless verification finds a persistence bug that needs a separate implementation task.
-- Likely files: `spec/validation/`, `spec/tasks/account-deletion-persistence-verification.md`, `spec/handoff.md`, and possibly a new `spec/operations/` note if the repo has or needs that folder.
-
-## Architecture Decisions
-
-- Existing ADRs: `0015`, `0024`, `0025`, `0026`, `0031`.
-- New ADR needed: No.
-- ADR draft: None.
-- Approval state: ADRs accepted by human on 2026-06-14.
+- Do not automate export generation, account deletion, background processing, admin UI, or transactional email.
+- Keep the runbook concise and place it at a stable root or operational path approved during implementation.
 
 ## Verification
 
-- [ ] Tests run or explicitly recorded as unavailable.
-- [ ] Manual validation completed when relevant.
-- [ ] UI validated with Playwright/browser checks when relevant.
-- [ ] No roadmap scope expansion.
-- [ ] Handoff updated.
-
-## Handoff Notes
-
-Update after implementation or evaluation.
+- Pending: manual dry run against local data, link/reference check, and review against accepted data-rights and upload ADRs.

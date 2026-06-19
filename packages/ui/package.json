@@ -13,7 +13,6 @@
     "typecheck": "tsc --noEmit --pretty false"
   },
   "peerDependencies": {
-    "react": "latest"
+    "react": "19.2.6"
   }
 }
-

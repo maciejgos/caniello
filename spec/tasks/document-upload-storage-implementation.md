@@ -1,70 +1,31 @@
-# Task: Document upload storage implementation
+---
+status: planned
+roadmap: now
+risk: high
+adrs: [0024, 0025, 0028, 0030, 0031]
+---
 
-## Goal
+# Document upload storage implementation
 
-Let a signed-in owner upload one real document file to Supabase Storage for the first pet while preserving private access, cost limits, and metadata consistency.
+## User story
 
-## Roadmap Alignment
+As a signed-in owner, I want to upload and privately access a document for my pet so that Caniello stores real medical records safely.
 
-Phase: Now
+## Acceptance criteria
 
-Why this belongs here:
+- Allowed PDF, JPEG, PNG, and WebP files up to 5 MB persist in private Supabase Storage.
+- Owner limits remain 20 files and 100 MB, with safe errors for invalid type, size, or quota.
+- Document metadata persists and reloads; viewing uses short-lived owner-authorized signed URLs.
+- Another owner cannot read or mutate the row or object.
+- Failed database writes do not leave unexplained orphaned objects.
+- Public share pages remain metadata-only.
 
-The roadmap allows a document vault for medical records and test results. Real upload is required for the next MVP validation pass after ADR 0025 was accepted.
+## Constraints
 
-Related roadmap item:
-
-`spec/roadmap.md` - Now / owner can upload or store important documents.
-
-## Scope
-
-- Create or configure private Supabase Storage bucket `pet-documents`.
-- Enforce accepted MVP limits: 5 MB max, PDF/JPEG/PNG/WebP only, one file per document, 20 files per owner, 100 MB per owner.
-- Implement server-mediated upload through the Next.js document boundary.
-- Store real `storage_bucket`, `storage_path`, `original_filename`, `mime_type`, and narrowly required file metadata in `public.documents`.
-- Return owner-only short-lived signed URLs for viewing or downloading uploaded files.
-- Align upload entry and document-library file states with `spec/design/visual-artifacts/mvp/document-upload-scan.png` and `spec/design/visual-artifacts/mvp/documents-library.png`.
-- Keep public share pages metadata-only for uploaded documents.
-- Add focused unit, route, storage, RLS, and browser validation.
-
-## Non-Goals
-
-- OCR, AI extraction, summaries, classification beyond owner-selected type, automatic reminders, or timeline automation.
-- Public file sharing, caregiver file access, multi-file attachments, version history, batch upload, mobile camera capture, or resumable upload.
-- Production release or public health-record upload approval.
-
-## Acceptance Criteria
-
-- A signed-in owner can upload an allowed file and see the document persist after reload.
-- Disallowed MIME types, oversize files, and quota violations are rejected with safe user-facing errors.
-- A different owner cannot read or mutate another owner's document row or file.
-- Uploaded files are private and only readable through server-created short-lived signed URLs.
-- Storage cleanup behavior is handled or documented for failed DB writes.
-- Public share views still expose metadata only.
-
-## Implementation Notes
-
-- Follow ADR 0025 exactly for bucket, object path, upload flow, signed URL lifetime, and limits.
-- Follow ADR 0028 for provider boundaries: UI must not call Supabase Storage directly.
-- Follow ADR 0024 for future audit/product event compatibility; add audit if the task includes it, or leave a clear follow-up.
-- `document-processing.png` and `document-review-confirm.png` are context-only for this task because OCR, extraction, confidence scoring, and review suggestions remain outside `Now`.
-- Likely files: `infra/supabase/migrations/`, `infra/supabase/seed.sql`, `apps/web/features/account/server/documents.ts`, `apps/web/app/api/documents/route.ts`, document UI components, contracts, and tests.
-
-## Architecture Decisions
-
-- Existing ADRs: `0024`, `0025`, `0028`, `0030`, `0031`.
-- New ADR needed: No.
-- ADR draft: None.
-- Approval state: ADRs accepted by human on 2026-06-14.
+- Server-mediated upload only; UI code must not call Storage directly.
+- No OCR, AI extraction, public file sharing, caregiver access, multi-file upload, or production release approval.
+- Any migration requires explicit human approval before implementation.
 
 ## Verification
 
-- [ ] Tests run or explicitly recorded as unavailable.
-- [ ] Manual validation completed when relevant.
-- [ ] UI validated with Playwright/browser checks when relevant.
-- [ ] No roadmap scope expansion.
-- [ ] Handoff updated.
-
-## Handoff Notes
-
-Update after implementation or evaluation.
+- Pending: focused unit/route tests, live Storage and RLS checks, browser upload flow, typecheck, and build.

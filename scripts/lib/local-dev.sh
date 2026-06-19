@@ -92,21 +92,48 @@ MSG
 }
 
 ensure_node_version() {
-  require_command node "Install Node.js 18+ with Homebrew: brew install node"
+  require_command node "Install Node.js 24 with Homebrew: brew install node@24"
 
   local major
   major="$(node -p "Number(process.versions.node.split('.')[0])")"
-  if [ "$major" -ge 18 ]; then
+  if [ "$major" -eq 24 ]; then
     printf 'Node.js version is supported: %s\n' "$(node --version)"
     return
   fi
 
   cat >&2 <<MSG
-Node.js 18+ is required. Current version: $(node --version)
-Update Node.js, then rerun the command.
+Node.js 24 is required to match CI. Current version: $(node --version)
+Install or activate Node.js 24, then rerun the command.
+Homebrew example:
+  brew install node@24
+  brew unlink node
+  brew link --overwrite node@24
 
 MSG
   exit 1
+}
+
+ensure_project_pnpm() {
+  require_command corepack "Install Node.js 24, which includes Corepack."
+
+  local pnpm_version
+  pnpm_version="$(node -p "require('$PROJECT_ROOT/package.json').packageManager.split('@')[1]")"
+
+  corepack enable
+  corepack prepare "pnpm@${pnpm_version}" --activate
+  require_command pnpm "Run corepack prepare pnpm@${pnpm_version} --activate"
+
+  if [ "$(pnpm --version)" != "$pnpm_version" ]; then
+    cat >&2 <<MSG
+pnpm ${pnpm_version} is required. Current version: $(pnpm --version)
+Run:
+  corepack prepare pnpm@${pnpm_version} --activate
+
+MSG
+    exit 1
+  fi
+
+  printf 'pnpm version is supported: %s\n' "$(pnpm --version)"
 }
 
 ensure_vercel_cli() {
@@ -129,7 +156,7 @@ ensure_vercel_cli() {
 
 ensure_host_runtime() {
   ensure_node_version
-  require_command pnpm "Install pnpm with Homebrew: brew install pnpm"
+  ensure_project_pnpm
   require_command supabase "Install Supabase CLI with Homebrew: brew install supabase/tap/supabase"
   ensure_docker_running
 }
