@@ -13,26 +13,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lifecycle-gate:
-    name: Lifecycle Gate
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
-
-      - name: Check PDLC lifecycle decisions
-        run: node scripts/pdlc-lifecycle-gate.mjs
-        env:
-          PDLC_GATE_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
-          PDLC_GATE_HEAD: ${{ github.sha }}
-
   repo-hygiene:
     name: Repository Hygiene
     runs-on: ubuntu-latest
@@ -140,11 +120,11 @@ jobs:
       - name: Run platform foundation validation gate
         run: pnpm validation:platform-foundation
 
-      - name: Run spec alignment validation gate
-        run: pnpm validation:spec-alignment
+      - name: Run task contract gate
+        run: pnpm validation:task-contract
         env:
-          SPEC_GATE_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
-          SPEC_GATE_HEAD: ${{ github.sha }}
+          TASK_GATE_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          TASK_GATE_HEAD: ${{ github.sha }}
 
   build:
     name: Build
@@ -205,5 +185,4 @@ jobs:
           path: |
             playwright-report/
             test-results/
-            spec/validation/screenshots/
           if-no-files-found: ignore

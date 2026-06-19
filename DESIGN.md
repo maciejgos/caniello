@@ -63,19 +63,18 @@ spacing:
 
 This file is the repo-native visual contract for Caniello. It is adapted from the Stitch-generated `DESIGN.md` direction, but it is made specific to the MVP mockups, product boundaries, and implementation style already present in this repository.
 
-Use this file for visual and interaction decisions. It does not replace `spec/product-context.md`, `spec/roadmap.md`, task files, ADRs, or the MVP screenshots under `spec/design/visual-artifacts/mvp/`.
+Use this file as the authoritative visual and interaction guide. It does not override `SPEC.md`, `ROADMAP.md`, active tasks, or accepted ADRs.
 
 ## Priority Order
 
 When design guidance conflicts, follow this order:
 
-1. Product, medical, privacy, and roadmap constraints in `spec/product-context.md` and `spec/roadmap.md`.
-2. Human-supplied screenshots and `spec/design/visual-artifacts/mvp/*.png`.
-3. This `DESIGN.md`.
-4. Local component and CSS patterns.
-5. General frontend taste or framework defaults.
+1. Product, medical, privacy, and roadmap constraints in `SPEC.md` and `ROADMAP.md`.
+2. This `DESIGN.md`.
+3. Local component and CSS patterns.
+4. General frontend taste or framework defaults.
 
-Intentional visual deviations from the MVP screenshots should be called out in the task or handoff notes.
+Meaningful visual decisions or deviations should be recorded in the active task.
 
 ## Brand Position
 
@@ -219,4 +218,4 @@ Visual design must reinforce these product boundaries:
 
 Use existing project patterns first. Prefer feature-local components and CSS modules for MVP surfaces unless a shared UI primitive already exists and clearly fits.
 
-When implementing from screenshots, run visual validation with Playwright or the in-app browser where possible and record any blocked checks in the task/handoff notes.
+Run visual validation with Playwright or the in-app browser where practical and record blocked checks in the active task.

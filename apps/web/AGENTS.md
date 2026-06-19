@@ -2,6 +2,8 @@
 
 This subtree contains the Caniello MVP web app. Use Next.js App Router conventions:
 
+- Read root `SPEC.md`, `ROADMAP.md`, and the active `spec/tasks/` contract before product changes.
+- Read root `DESIGN.md` before visible UI work.
 - Put route files under `app/`.
 - Keep coherent product areas under `features/`.
 - Keep server-only integration helpers out of client components.

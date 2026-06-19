@@ -1,39 +1,44 @@
-# Caniello Roadmap Index
+# Caniello Roadmap
 
-Root `ROADMAP.md` is the discoverable index for current Caniello direction. The active lightweight prioritization filter is:
+This is the authoritative priority filter. It does not approve releases, deployments, migrations, or product-scope expansion.
 
-- `spec/roadmap.md`
+## Now — MVP Foundation
 
-Use `spec/roadmap.md` to decide whether work belongs in `Now`, `Next`, `Later`, or `Not Now` before creating or implementing a task.
+Deliver a trustworthy owner-side pet health organizer:
 
-## Active Operating Artifacts
+- create and manage the first pet profile;
+- store key health information;
+- create care reminders;
+- upload and privately access important documents;
+- share bounded care information safely;
+- maintain reliable account, consent, privacy, data-rights, localization, and owner-isolation behavior;
+- keep development and release checks sufficient for sensitive pet-health data.
 
-- `spec/product-context.md` - durable Caniello product truth, audience, validation goals, non-goals, and boundaries.
-- `spec/roadmap.md` - active Now/Next/Later/Not Now roadmap filter.
-- `spec/features/` - optional lightweight feature briefs shaped from broad notes.
-- `spec/features/TEMPLATE.md` - feature brief template for shaping.
-- `spec/architecture/` - optional exploratory architecture notes before an ADR is warranted.
-- `spec/architecture-records/` - durable ADRs for architecture decisions.
-- `spec/tasks/` - executable Codex task files.
-- `spec/tasks/TEMPLATE.md` - task template for scoped work.
-- `spec/handoff.md` - current working state, validation status, gaps, and next action.
-- `spec/validation/` - durable validation evidence when task notes are not enough.
+Current executable work is ordered in `BACKLOG.md`.
 
-## Reference Artifact Set
+## Next — Retention and Sharing
 
-The historical PDLC artifact set is archived under `spec/archive/flow-forge-history/` and should be treated as reference evidence unless a human maintainer explicitly asks to use the heavier Flow Forge workflow.
+- caregiver access after scoped sharing is proven safe;
+- reminder delivery that creates repeat value;
+- approved care-card or PDF-style export;
+- multi-pet management after the first-pet experience is validated.
 
-Important reference areas:
+## Later — Assisted Context and Partner Learning
 
-- archived requirements, stories, detailed feature definitions, older ExecPlans, release records, and lifecycle records;
-- `spec/design/` for existing UX, technical design, flows, and visual artifacts;
-- `spec/notes/` for raw discovery notes and source material;
-- `spec/plans/PLANS.md` for the ExecPlan format;
-- `spec/plans/flatten-spec-workspace-cleanup.md` for the cleanup record that flattened the workspace.
+- document extraction and owner-confirmed intake;
+- summaries grounded in user-owned records;
+- reminder suggestions;
+- lightweight partner-interest learning.
 
-## Open Decision References
+AI remains organizational assistance, not veterinary judgment.
 
-- Local development standard update: `spec/architecture-records/0022-use-host-first-local-development-setup.md`
-- Local Supabase Auth provider configuration: `spec/architecture-records/0023-use-config-toml-for-local-supabase-auth-providers.md`
+## Not Now
 
-Do not mark decisions accepted, rejected, released, merged, or complete without explicit human approval.
+- marketplace, booking, and payments-first flows;
+- clinic SaaS, PIMS/EHR integration, or broad partner portals;
+- AI symptom checking, diagnosis, treatment recommendations, or emergency advice;
+- official pet-passport replacement claims;
+- advanced household roles and permissions;
+- advanced analytics, referrals, duplicate detection, calendar sync, or partner uploads.
+
+Moving work into `Now` requires explicit human approval.

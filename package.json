@@ -9,14 +9,13 @@
     "build": "turbo build",
     "format:check": "node scripts/format-check-changed.mjs",
     "lint": "turbo lint",
-    "pdlc:lifecycle-gate": "node scripts/pdlc-lifecycle-gate.mjs",
     "validation:mailerlite-integration": "node scripts/mailerlite-integration-gate.mjs",
     "validation:repo-hygiene": "node scripts/repo-hygiene-gate.mjs",
     "test": "turbo test",
     "test:e2e": "turbo test:e2e --filter=web",
     "typecheck": "turbo typecheck",
     "validation:platform-foundation": "node scripts/platform-foundation-gate.mjs",
-    "validation:spec-alignment": "node scripts/spec-alignment-gate.mjs"
+    "validation:task-contract": "node --test scripts/task-contract-gate.test.mjs && node scripts/task-contract-gate.mjs"
   },
   "devDependencies": {
     "@playwright/test": "latest",
