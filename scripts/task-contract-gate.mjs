@@ -223,6 +223,17 @@ export function validateBacklog(content, tasks) {
   return violations;
 }
 
+export function validateActiveTaskCount(tasks) {
+  const active = tasks.filter((task) => task.status === "in-progress");
+  return active.length > 1
+    ? [
+        `Only one task may be in progress: ${active
+          .map((task) => task.file)
+          .join(", ")}.`,
+      ]
+    : [];
+}
+
 export function evaluateTaskContract(
   files,
   read = readFileSync,
@@ -254,6 +265,8 @@ export function evaluateTaskContract(
     violations.push(...validateTaskContent(file, content, adrExists));
     records.push(taskRecord(file, content));
   }
+
+  violations.push(...validateActiveTaskCount(records));
 
   if (backlogContent) {
     violations.push(...validateBacklog(backlogContent, records));

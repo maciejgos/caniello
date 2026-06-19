@@ -13,6 +13,37 @@ Before product work, read:
 
 `BACKLOG.md` orders planned and active tasks. Work on one task at a time.
 
+## Codex Handoff
+
+The maintainer selects work by naming its task:
+
+```text
+Implement spec/tasks/<slug>.md and stop when ready for review.
+```
+
+To resume interrupted work:
+
+```text
+Continue spec/tasks/<slug>.md and stop when ready for review.
+```
+
+Codex must:
+
+1. Confirm the named task is in `BACKLOG.md`, has `roadmap: now`, and is `planned` or `in-progress`; accept `review` only when the maintainer explicitly requests review changes.
+2. Run `pnpm task:status -- <slug> in-progress` before implementation.
+3. Reconstruct interrupted work from the task, `git status`, and the current diff.
+4. Implement only that task and record checks, unavailable checks, residual risks, blockers, and the exact next action in `Verification`.
+5. When verification is review-ready, remove pending markers and run `pnpm task:status -- <slug> review`.
+6. Stop with a concise summary. Do not commit, push, merge, deploy, reorder the backlog, or change roadmap scope.
+
+Status ownership:
+
+- `planned`: maintainer-selected backlog work not started.
+- `in-progress`: work currently owned by the task implementer; only one is allowed.
+- `review`: implementation and concrete verification are ready for human review; multiple are allowed.
+
+If blocked, leave the task `in-progress`. Review feedback returns it to `in-progress`; successful re-verification returns it to `review`. After merge, the maintainer or a later documentation-only cleanup deletes the task and backlog row. Git history is the archive; do not create separate handoff or session-report artifacts.
+
 ## Product Boundaries
 
 Caniello is an owner-controlled pet health and care organization utility.
@@ -109,6 +140,7 @@ Never imply that skipped or unavailable checks passed. High-risk auth, RLS, stor
 - `pnpm verify:fast`: run the normal pre-implementation feedback loop.
 - `pnpm verify`: run the complete local CI-equivalent harness.
 - `pnpm smoke`: start or reuse the web app and check essential routes.
+- `pnpm task:status -- <slug> <status>`: synchronize task and backlog status.
 - `./scripts/start.sh`: start local Supabase.
 - `./scripts/stop.sh`: stop local Supabase.
 
@@ -129,3 +161,13 @@ Validation tiers:
 - Standard: `pnpm verify:fast` before review.
 - Full: `pnpm verify` for shared, risky, or release-adjacent changes.
 - Live: opt-in Supabase auth/RLS/Storage tests only when local services and disposable fixtures are available.
+
+## Agent Work Review
+
+When reviewing agent-generated PRs, verify:
+
+1. **Task alignment**: Implementation matches acceptance criteria from the linked task
+2. **Validation passed**: All gates passed (`verify:fast`, task-contract, repo-hygiene)
+3. **Boundary compliance**: No product/medical/auth/privacy violations (see SPEC.md, ROADMAP.md)
+4. **Repository hygiene**: No secrets, env files, generated artifacts, or cross-feature imports
+5. **Handoff complete**: Task status is `review`, BACKLOG.md synced, Verification section complete

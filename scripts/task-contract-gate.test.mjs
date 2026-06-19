@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   evaluateTaskContract,
+  validateActiveTaskCount,
   validateBacklog,
   validateTaskContent,
 } from "./task-contract-gate.mjs";
@@ -149,4 +150,36 @@ test("rejects backlog drift", () => {
     },
   ]);
   assert.equal(violations.length, 2);
+});
+
+test("rejects more than one in-progress task", () => {
+  assert.deepEqual(
+    validateActiveTaskCount([
+      {
+        file: "spec/tasks/one.md",
+        status: "in-progress",
+      },
+      {
+        file: "spec/tasks/two.md",
+        status: "in-progress",
+      },
+    ]),
+    ["Only one task may be in progress: spec/tasks/one.md, spec/tasks/two.md."],
+  );
+});
+
+test("allows multiple review tasks", () => {
+  assert.deepEqual(
+    validateActiveTaskCount([
+      {
+        file: "spec/tasks/one.md",
+        status: "review",
+      },
+      {
+        file: "spec/tasks/two.md",
+        status: "review",
+      },
+    ]),
+    [],
+  );
 });

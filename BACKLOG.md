@@ -14,5 +14,6 @@ Only planned and active work appears here. Order is priority order.
 | 8        | [Live RLS fixture isolation](spec/tasks/live-rls-fixture-isolation.md)                                           | Planned | High   |
 | 9        | [Public health-upload release-readiness playbook](spec/tasks/public-health-upload-release-readiness-playbook.md) | Planned | High   |
 | 10       | [Feature-boundary dependency guardrails](spec/tasks/feature-boundary-dependency-guardrails.md)                   | Planned | Medium |
+| 11       | [Task-based Codex handoff](spec/tasks/task-based-codex-handoff.md)                                               | Review  | Low    |
 
 Select one task at a time. Product priority changes belong in `ROADMAP.md`; implementation detail belongs in the linked task.

@@ -1,20 +1,25 @@
 ## Task
 
-- Active task:
-- Risk:
+- Active task: [link to spec/tasks/XXX.md]
+- Risk: [low | medium | high]
 
-## Outcome
+## Implementation
 
-- Acceptance criteria satisfied:
-- User-visible change:
+- Changes made:
+- Files modified:
 
-## Verification
+## Validation
 
-- Checks run:
-- Skipped or unavailable checks:
-- Screenshots/traces, when visible:
+- [ ] `pnpm verify:fast` passed
+- [ ] Task-contract gate passed
+- [ ] Repo-hygiene gate passed
 
 ## Boundaries
 
-- Migration, RLS, auth, privacy, security, storage, or sharing impact:
-- No release, deployment, or roadmap approval is implied by this PR.
+- [ ] No product/medical boundary violations (see SPEC.md, ROADMAP.md Not Now)
+- [ ] No auth/RLS/privacy changes without explicit review
+- [ ] No secrets, env files, or generated artifacts committed
+
+---
+
+_Agent work. Harness validated. Human approved._

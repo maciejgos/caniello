@@ -49,6 +49,10 @@ pnpm smoke
 ./scripts/stop.sh
 ```
 
+## Pull Requests
+
+All pull requests use the [PR template](.github/pull_request_template.md) with lightweight agent work review. The harness validates; humans verify.
+
 The web app runs at `http://localhost:3000`. Supabase local services are started through the repository scripts.
 
 Vercel uses `apps/web` as the project root. Production deployment and public health-record upload require explicit human approval.
