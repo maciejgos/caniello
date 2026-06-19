@@ -13,7 +13,7 @@ Evaluate `spec/tasks/first-run-onboarding-skeleton.md` against its acceptance cr
 - Task: `spec/tasks/first-run-onboarding-skeleton.md`
 - Product context: `spec/product-context.md`
 - Roadmap: `spec/roadmap.md`
-- Design reference: `spec/design/visual-artifacts/mvp/image 6.png`
+- Design reference: `spec/design/visual-artifacts/mvp/first-run-onboarding.png`
 - ADR: `spec/architecture-records/0011-use-pragmatic-engineering-practices-from-mvp-start.md`
 - Implementation: `apps/web/features/account/AccountApp.tsx`
 - Components: `apps/web/features/account/components/`

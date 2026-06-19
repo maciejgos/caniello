@@ -24,7 +24,7 @@ Related roadmap item:
 - Choose one path: metadata-only with clearer copy, or a scoped real upload/storage implementation task.
 - If metadata-only remains acceptable, update copy and validation scripts so upload is not promised.
 - If upload is required, produce the follow-up implementation task scope, required storage decisions, security checks, and approval needs.
-- Treat the relevant document-safe mockup in `spec/design/visual-artifacts/mvp/` as the 1:1 UI target for any later implementation; if metadata-only remains the scope, record exactly how the UI will avoid diverging from or overpromising the mockup.
+- Treat `spec/design/visual-artifacts/mvp/document-upload-scan.png` and `spec/design/visual-artifacts/mvp/documents-library.png` as the 1:1 UI targets for later upload implementation; if metadata-only remains the scope, record exactly how the UI will avoid diverging from or overpromising those references.
 - Drafted upload path: private `pet-documents` Supabase Storage bucket, 5 MB max file size, PDF/JPEG/PNG/WebP only, 20 files per owner, 100 MB stored bytes per owner, one file per document, server-mediated upload, and short-lived owner-only signed read URLs.
 
 ## Non-Goals

@@ -55,7 +55,7 @@ Related roadmap item:
 - Reuse `RemindersApiResponse`, `DocumentsApiResponse`, `TimelineEventsApiResponse`, and `ShareLinksApiResponse`.
 - Use parallel client requests after the active pet is known. Keep the implementation feature-local and direct.
 - Treat revoked or expired share links as inactive.
-- Follow `DESIGN.md` and preserve the region order of `spec/design/visual-artifacts/mvp/image 1.png`.
+- Follow `DESIGN.md` and preserve the region order of `spec/design/visual-artifacts/mvp/home-dashboard.png`.
 
 ## Architecture Decisions
 

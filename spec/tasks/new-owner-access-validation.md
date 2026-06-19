@@ -23,7 +23,7 @@ Related roadmap item:
 - Ensure login/signup copy does not advertise working OAuth if provider configuration is absent.
 - Document the local new-owner validation path, including where to confirm the signup email in the local Supabase Inbucket.
 - Add focused tests or browser checks for new-owner signup/login and unavailable OAuth affordances.
-- Match the relevant auth mockups in `spec/design/visual-artifacts/mvp/` 1:1 for visible layout, labels, controls, and unavailable states, unless a deviation is explicitly recorded and approved.
+- Match `spec/design/visual-artifacts/mvp/sign-up.png` and `spec/design/visual-artifacts/mvp/sign-in.png` 1:1 for visible layout, labels, controls, and unavailable states, unless a deviation is explicitly recorded and approved.
 
 ## Non-Goals
 

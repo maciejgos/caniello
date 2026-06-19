@@ -22,8 +22,8 @@ Related roadmap item:
 - Remove hardcoded Bruno dashboard and active-pet text where live pet data exists.
 - Derive first-launch versus returning-owner dashboard state from whether a saved first pet exists; remove the demo-only state switch.
 - Make the top-bar pet affordance a non-switching current-context indicator that does not imply multi-pet behavior.
-- Align the returning-owner dashboard structure with `spec/design/visual-artifacts/mvp/image 1.png`: greeting and pet summary, `What's next`, health, documents, timeline, Ask Caniello, sharing, and tip regions.
-- Preserve the onboarding structure from `spec/design/visual-artifacts/mvp/image 6.png` while using honest no-pet copy before a profile exists.
+- Align the returning-owner dashboard structure with `spec/design/visual-artifacts/mvp/home-dashboard.png`: greeting and pet summary, `What's next`, health, documents, timeline, Ask Caniello, sharing, and tip regions.
+- Preserve the onboarding structure from `spec/design/visual-artifacts/mvp/first-run-onboarding.png` while using honest no-pet copy before a profile exists.
 - Keep unavailable dashboard actions disabled or route only to already implemented app sections.
 - Record intentional mockup deviations with reasons.
 - Add focused UI tests and desktop/mobile browser smoke for saved-pet and no-pet states.
@@ -43,7 +43,7 @@ Related roadmap item:
 - The onboarding pet fields accept owner input and save the first pet through the existing profile API boundary.
 - Saving a pet profile updates the shell/dashboard pet context without requiring a full page reload.
 - The app shell active-pet affordance shows the saved pet name or an honest no-pet state and does not imply switching functionality.
-- The returning dashboard preserves the major region order and panel structure of `image 1.png`; the no-pet state preserves the onboarding structure of `image 6.png`.
+- The returning dashboard preserves the major region order and panel structure of `home-dashboard.png`; the no-pet state preserves the onboarding structure of `first-run-onboarding.png`.
 - Intentional deviations are limited to unavailable live data/actions, localization, and missing owner/pet photography, and are documented in verification evidence.
 - Desktop and mobile checks show no overlap, horizontal overflow, or obvious mockup-fidelity regression.
 - Focused tests cover saved-pet, no-pet, profile-save propagation, and pet-profile load failure behavior.
@@ -51,7 +51,7 @@ Related roadmap item:
 ## Implementation Notes
 
 - Likely files: `apps/web/features/account/content.ts`, authenticated shell/top-bar/dashboard components, a feature-local active-pet hook, pet-profile callback wiring, and `AccountApp.test.tsx`.
-- Use `spec/design/visual-artifacts/mvp/image 1.png` and `image 6.png` as the primary visual references.
+- Use `spec/design/visual-artifacts/mvp/home-dashboard.png` and `first-run-onboarding.png` as the primary visual references.
 - Keep the `/api/pets/profile` request feature-local and typed with the existing `PetProfileApiResponse` contract.
 - Do not introduce a global state library or speculative dashboard aggregation service.
 - Keep unavailable capabilities disabled or clearly preview-only.
@@ -71,7 +71,7 @@ Related roadmap item:
 - [x] Full web test suite, TypeScript validation, and production build.
 - [x] Browser checks at desktop and mobile widths with the seeded owner.
 - [x] Fresh-owner desktop/mobile browser check for entering, saving, and reloading a first pet.
-- [x] Manual mismatch ledger against `image 1.png` and `image 6.png`.
+- [x] Manual mismatch ledger against `home-dashboard.png` and `first-run-onboarding.png`.
 - [x] No roadmap scope expansion.
 - [x] Handoff updated.
 
@@ -91,11 +91,11 @@ Checks passed:
 
 Mismatch ledger:
 
-- The dashboard follows the `image 1.png` region order and panel structure, but uses Polish-first localized copy rather than the English reference.
+- The dashboard follows the `home-dashboard.png` region order and panel structure, but uses Polish-first localized copy rather than the English reference.
 - The saved first pet uses live profile identity and values. Pet photography falls back to the existing Bruno image only for Bruno in the top bar and a neutral paw avatar elsewhere because the current profile contract has no photo field.
 - `What's next`, recent documents, and timeline preview content remain clearly disclosed demonstration data because live cross-feature dashboard aggregation is outside this task.
 - Search, notifications, Ask Caniello answers, PDF export, and unavailable sharing behavior remain inert or explicitly limited; existing implemented section-navigation actions are enabled.
-- The no-pet state preserves the `image 6.png` structure while using editable generic profile fields and sample-document content rather than pretending a Bruno record exists.
+- The no-pet state preserves the `first-run-onboarding.png` structure while using editable generic profile fields and sample-document content rather than pretending a Bruno record exists.
 
 Evaluator verdict: Pass. No validation gaps remain for this task scope.
 

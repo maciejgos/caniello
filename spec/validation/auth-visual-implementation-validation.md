@@ -6,12 +6,12 @@ Draft
 
 ## Scope
 
-Validate the implemented `/login` and `/signup` account screens against the MVP visual artifacts supplied for the login mockup (`spec/design/visual-artifacts/mvp/image 11.png`) and create-account mockup (`spec/design/visual-artifacts/mvp/image 18.png`), while preserving the existing account API contract, Polish-first language behavior, and responsive browser coverage.
+Validate the implemented `/login` and `/signup` account screens against the MVP visual artifacts supplied for the login mockup (`spec/design/visual-artifacts/mvp/sign-in.png`) and create-account mockup (`spec/design/visual-artifacts/mvp/sign-up.png`), while preserving the existing account API contract, Polish-first language behavior, and responsive browser coverage.
 
 ## Source Artifacts
 
-- `spec/design/visual-artifacts/mvp/image 11.png`
-- `spec/design/visual-artifacts/mvp/image 18.png`
+- `spec/design/visual-artifacts/mvp/sign-in.png`
+- `spec/design/visual-artifacts/mvp/sign-up.png`
 - `spec/features/owner-account-privacy-foundation.md`
 - `spec/stories/account-signup-login-and-session.md`
 - `spec/stories/polish-first-language-switching.md`
@@ -113,7 +113,7 @@ Ready for human review
 
 ## Follow-Up
 
-- Human visual review should compare the implemented `/login` and `/signup` pages against `image 11.png` and `image 18.png`.
+- Human visual review should compare the implemented `/login` and `/signup` pages against `sign-in.png` and `sign-up.png`.
 - Decide whether the visible Google and Apple buttons should remain placeholders, be disabled/hidden until provider setup, or become real social login stories.
 - Add passing-state screenshot capture if the team wants durable visual evidence under `spec/validation/screenshots/`.
 

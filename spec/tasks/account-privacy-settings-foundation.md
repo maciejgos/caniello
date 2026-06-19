@@ -75,3 +75,5 @@ Validation passed: focused contract/server/route tests, `AccountApp.test.tsx`, f
 Sandbox notes: sandboxed `pnpm test`, `pnpm --filter web lint`, and `pnpm build` failed with `fetch failed`; approved outside-sandbox reruns passed. Sandboxed live RLS failed on localhost `EPERM`; approved outside-sandbox rerun passed.
 
 Out of scope remains: actual data export file generation, download links, email delivery, account deletion execution, cascade cleanup, background jobs, notification preferences, role/caregiver permission changes, clinic/provider workflows, marketplace, booking, payments, AI diagnosis, treatment advice, emergency advice, official EU pet passport replacement claims, release, deployment, merge, acceptance, or roadmap movement.
+
+Visual-parity and follow-up API/database verification are planned separately in `spec/tasks/settings-consent-and-account-deletion-alignment.md`; this completed foundation task remains the implementation baseline.

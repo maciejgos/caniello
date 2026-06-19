@@ -13,7 +13,7 @@ Evaluates `spec/tasks/timeline-upcoming-reminders-alignment.md`, which aligns th
 - Task: `spec/tasks/timeline-upcoming-reminders-alignment.md`
 - Product context: `spec/product-context.md`
 - Roadmap: `spec/roadmap.md`
-- Mockup: `spec/design/visual-artifacts/mvp/image 10.png`
+- Mockup: `spec/design/visual-artifacts/mvp/care-timeline.png`
 - Changed files:
   - `apps/web/features/account/components/CareTimelineSection.tsx`
   - `apps/web/features/account/components/AppTopBar.tsx`
@@ -50,7 +50,7 @@ Evaluates `spec/tasks/timeline-upcoming-reminders-alignment.md`, which aligns th
   Evidence status: Supported
   Evidence: `CareTimelineSection` now renders the mockup-style `Care Timeline` header, active-pet card, history filters, disabled export control, vertical timeline rows, compact timeline summary, `Next Upcoming` right-rail panel, and automation boundary copy.
 
-- Criterion: Implemented Timeline screen matches `image 10.png` where the mockup defines visible UI, or deviations are documented.
+- Criterion: Implemented Timeline screen matches `care-timeline.png` where the mockup defines visible UI, or deviations are documented.
   Evidence status: Supported
   Evidence: Browser metrics confirmed the mockup-derived title, active-pet card, filter/export toolbar, summary, `Next Upcoming`, row list, and no-overflow behavior at 1440x900 desktop and 390x900 mobile widths. The retained manual event form is documented as a current-MVP deviation below the primary timeline surface.
 

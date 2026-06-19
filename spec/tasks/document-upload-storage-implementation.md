@@ -23,6 +23,7 @@ Related roadmap item:
 - Implement server-mediated upload through the Next.js document boundary.
 - Store real `storage_bucket`, `storage_path`, `original_filename`, `mime_type`, and narrowly required file metadata in `public.documents`.
 - Return owner-only short-lived signed URLs for viewing or downloading uploaded files.
+- Align upload entry and document-library file states with `spec/design/visual-artifacts/mvp/document-upload-scan.png` and `spec/design/visual-artifacts/mvp/documents-library.png`.
 - Keep public share pages metadata-only for uploaded documents.
 - Add focused unit, route, storage, RLS, and browser validation.
 
@@ -46,6 +47,7 @@ Related roadmap item:
 - Follow ADR 0025 exactly for bucket, object path, upload flow, signed URL lifetime, and limits.
 - Follow ADR 0028 for provider boundaries: UI must not call Supabase Storage directly.
 - Follow ADR 0024 for future audit/product event compatibility; add audit if the task includes it, or leave a clear follow-up.
+- `document-processing.png` and `document-review-confirm.png` are context-only for this task because OCR, extraction, confidence scoring, and review suggestions remain outside `Now`.
 - Likely files: `infra/supabase/migrations/`, `infra/supabase/seed.sql`, `apps/web/features/account/server/documents.ts`, `apps/web/app/api/documents/route.ts`, document UI components, contracts, and tests.
 
 ## Architecture Decisions

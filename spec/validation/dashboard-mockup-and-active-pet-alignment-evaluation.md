@@ -14,8 +14,8 @@ Evaluate `spec/tasks/dashboard-mockup-and-active-pet-alignment.md` against the `
 - `spec/product-context.md`
 - `spec/roadmap.md`
 - `DESIGN.md`
-- `spec/design/visual-artifacts/mvp/image 1.png`
-- `spec/design/visual-artifacts/mvp/image 6.png`
+- `spec/design/visual-artifacts/mvp/home-dashboard.png`
+- `spec/design/visual-artifacts/mvp/first-run-onboarding.png`
 - ADRs 0011, 0012, 0027, and 0028
 - Changed authenticated shell, top-bar, dashboard, pet-profile callback, content, hook, and account test files
 
@@ -40,7 +40,7 @@ Evaluate `spec/tasks/dashboard-mockup-and-active-pet-alignment.md` against the `
 
 - Product constraints preserved: first-pet MVP only; no multi-pet selection or persisted active-pet state.
 - Architecture constraints preserved: contracts -> API/runtime -> feature-local UI dependency direction; no migration, contract, or provider change.
-- Design constraints preserved: major `image 1.png` and `image 6.png` regions, Polish-first localization, responsive single-column mobile behavior, and honest disabled/preview states.
+- Design constraints preserved: major `home-dashboard.png` and `first-run-onboarding.png` regions, Polish-first localization, responsive single-column mobile behavior, and honest disabled/preview states.
 - Privacy and medical constraints preserved: no new data exposure, diagnosis, treatment, emergency advice, upload, notification, or sharing-permission behavior.
 
 ## Acceptance Criteria Mapping
