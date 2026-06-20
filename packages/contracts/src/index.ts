@@ -377,6 +377,28 @@ export const reminderTypes = [
 export const reminderTypeSchema = z.enum(reminderTypes);
 export type ReminderType = z.infer<typeof reminderTypeSchema>;
 
+export const reminderRepeatFrequencies = [
+  "none",
+  "weekly",
+  "monthly",
+  "yearly",
+] as const;
+export const reminderRepeatFrequencySchema = z.enum(reminderRepeatFrequencies);
+export type ReminderRepeatFrequency = z.infer<
+  typeof reminderRepeatFrequencySchema
+>;
+
+export const reminderAdvanceNoticeDays = [0, 1, 2, 7] as const;
+export const reminderAdvanceNoticeDaysSchema = z.union([
+  z.literal(0),
+  z.literal(1),
+  z.literal(2),
+  z.literal(7),
+]);
+export type ReminderAdvanceNoticeDays = z.infer<
+  typeof reminderAdvanceNoticeDaysSchema
+>;
+
 export const reminderStatuses = [
   "suggested",
   "active",
@@ -404,11 +426,22 @@ const requiredCalendarDateSchema = z
   .regex(/^\d{4}-\d{2}-\d{2}$/)
   .refine(isRealCalendarDate);
 
+const optionalLocalTimeSchema = z
+  .string()
+  .trim()
+  .regex(/^(?:[01]\d|2[0-3]):[0-5]\d$/)
+  .optional()
+  .nullable()
+  .transform((value) => value || null);
+
 export const reminderPayloadSchema = z
   .object({
     title: z.string().trim().min(1).max(120),
     reminderType: reminderTypeSchema,
     dueDate: requiredCalendarDateSchema,
+    dueTime: optionalLocalTimeSchema,
+    repeatFrequency: reminderRepeatFrequencySchema.optional().default("none"),
+    advanceNoticeDays: reminderAdvanceNoticeDaysSchema.optional().default(0),
     notes: optionalReminderTextSchema(1000),
     status: reminderStatusSchema.optional(),
   })
@@ -423,6 +456,9 @@ export const reminderResponseSchema = z
     title: z.string(),
     reminderType: reminderTypeSchema,
     dueDate: z.string(),
+    dueTime: z.string().nullable(),
+    repeatFrequency: reminderRepeatFrequencySchema,
+    advanceNoticeDays: reminderAdvanceNoticeDaysSchema,
     notes: z.string().nullable(),
     status: reminderStatusSchema,
     createdAt: z.string().datetime(),

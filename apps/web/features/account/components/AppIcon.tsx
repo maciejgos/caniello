@@ -1,6 +1,7 @@
 export type AppIconName =
   | "bell"
   | "chat"
+  | "check"
   | "chevronDown"
   | "chevronRight"
   | "clock"
@@ -9,6 +10,7 @@ export type AppIconName =
   | "home"
   | "lock"
   | "paw"
+  | "plus"
   | "search"
   | "settings"
   | "shield"
@@ -28,6 +30,39 @@ export function AppIcon({ name }: { name: AppIconName }) {
         aria-hidden="true"
       >
         <path d="M4 10.4 12 4l8 6.4V20a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1v-9.6Z" />
+      </svg>
+    );
+  }
+
+  if (name === "check") {
+    return (
+      <svg
+        className={common}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <path d="m5 12 4 4L19 6" />
+      </svg>
+    );
+  }
+
+  if (name === "plus") {
+    return (
+      <svg
+        className={common}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        aria-hidden="true"
+      >
+        <path d="M12 5v14M5 12h14" />
       </svg>
     );
   }

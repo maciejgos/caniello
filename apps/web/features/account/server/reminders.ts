@@ -2,7 +2,7 @@ import {
   reminderPayloadSchema,
   type PetProfileResponse,
   type ReminderPayload,
-  type ReminderResponse
+  type ReminderResponse,
 } from "@caniello/contracts";
 import type { SupabaseClient, User } from "@supabase/supabase-js";
 import { mapPetProfileRow } from "./pet-profile";
@@ -34,6 +34,9 @@ type ReminderRow = {
   title: string;
   reminder_type: ReminderResponse["reminderType"];
   due_date: string;
+  due_time: string | null;
+  repeat_frequency: ReminderResponse["repeatFrequency"];
+  advance_notice_days: ReminderResponse["advanceNoticeDays"];
   notes: string | null;
   status: ReminderResponse["status"];
   created_at: string;
@@ -62,7 +65,7 @@ const PET_PROFILE_COLUMNS = [
   "medication",
   "important_notes",
   "created_at",
-  "updated_at"
+  "updated_at",
 ].join(", ");
 
 const REMINDER_COLUMNS = [
@@ -71,13 +74,18 @@ const REMINDER_COLUMNS = [
   "title",
   "reminder_type",
   "due_date",
+  "due_time",
+  "repeat_frequency",
+  "advance_notice_days",
   "notes",
   "status",
   "created_at",
-  "updated_at"
+  "updated_at",
 ].join(", ");
 
-export async function listOwnerReminders(supabase: SupabaseClient): Promise<ReminderListResult> {
+export async function listOwnerReminders(
+  supabase: SupabaseClient,
+): Promise<ReminderListResult> {
   const petResult = await findOwnerFirstPet(supabase);
   if (!petResult.ok) return petResult;
   if (!petResult.pet) return { ok: true, pet: null, reminders: [] };
@@ -96,31 +104,39 @@ export async function listOwnerReminders(supabase: SupabaseClient): Promise<Remi
   return {
     ok: true,
     pet: mapPetProfileRow(petResult.pet),
-    reminders: ((data ?? []) as unknown as ReminderRow[]).map(mapReminderRow)
+    reminders: ((data ?? []) as unknown as ReminderRow[]).map(mapReminderRow),
   };
 }
 
-export async function createOwnerReminder(input: unknown, supabase: SupabaseClient): Promise<ReminderMutationResult> {
+export async function createOwnerReminder(
+  input: unknown,
+  supabase: SupabaseClient,
+): Promise<ReminderMutationResult> {
   const payloadResult = reminderPayloadSchema.safeParse(input);
   if (!payloadResult.success) {
     return {
       ok: false,
       status: 400,
       message: "Invalid reminder payload.",
-      issues: payloadResult.error.flatten()
+      issues: payloadResult.error.flatten(),
     };
   }
 
   const petResult = await findOwnerFirstPet(supabase);
   if (!petResult.ok) return petResult;
-  if (!petResult.pet) return { ok: false, status: 409, message: "Create a pet profile before adding reminders." };
+  if (!petResult.pet)
+    return {
+      ok: false,
+      status: 409,
+      message: "Create a pet profile before adding reminders.",
+    };
 
   const { data, error } = await supabase
     .from("reminders")
     .insert({
       pet_id: petResult.pet.id,
       ...createReminderDatabasePayload(payloadResult.data),
-      status: payloadResult.data.status ?? "active"
+      status: payloadResult.data.status ?? "active",
     })
     .select(REMINDER_COLUMNS)
     .single();
@@ -129,13 +145,17 @@ export async function createOwnerReminder(input: unknown, supabase: SupabaseClie
     return { ok: false, status: 500, message: "Could not save the reminder." };
   }
 
-  return { ok: true, pet: mapPetProfileRow(petResult.pet), reminder: mapReminderRow(data as unknown as ReminderRow) };
+  return {
+    ok: true,
+    pet: mapPetProfileRow(petResult.pet),
+    reminder: mapReminderRow(data as unknown as ReminderRow),
+  };
 }
 
 export async function updateOwnerReminder(
   reminderId: string,
   input: unknown,
-  supabase: SupabaseClient
+  supabase: SupabaseClient,
 ): Promise<ReminderMutationResult> {
   const payloadResult = reminderPayloadSchema.safeParse(input);
   if (!payloadResult.success) {
@@ -143,15 +163,29 @@ export async function updateOwnerReminder(
       ok: false,
       status: 400,
       message: "Invalid reminder payload.",
-      issues: payloadResult.error.flatten()
+      issues: payloadResult.error.flatten(),
     };
   }
 
-  return saveReminderUpdate(reminderId, createReminderUpdatePayload(createReminderDatabasePayload(payloadResult.data), payloadResult.data.status), supabase);
+  return saveReminderUpdate(
+    reminderId,
+    createReminderUpdatePayload(
+      createReminderDatabasePayload(payloadResult.data),
+      payloadResult.data.status,
+    ),
+    supabase,
+  );
 }
 
-export async function completeOwnerReminder(reminderId: string, supabase: SupabaseClient): Promise<ReminderMutationResult> {
-  return saveReminderUpdate(reminderId, createReminderUpdatePayload({ status: "completed" }), supabase);
+export async function completeOwnerReminder(
+  reminderId: string,
+  supabase: SupabaseClient,
+): Promise<ReminderMutationResult> {
+  return saveReminderUpdate(
+    reminderId,
+    createReminderUpdatePayload({ status: "completed" }),
+    supabase,
+  );
 }
 
 export function mapReminderRow(row: ReminderRow): ReminderResponse {
@@ -161,10 +195,13 @@ export function mapReminderRow(row: ReminderRow): ReminderResponse {
     title: row.title,
     reminderType: row.reminder_type,
     dueDate: row.due_date,
+    dueTime: row.due_time ? row.due_time.slice(0, 5) : null,
+    repeatFrequency: row.repeat_frequency,
+    advanceNoticeDays: row.advance_notice_days,
     notes: row.notes,
     status: row.status,
     createdAt: row.created_at,
-    updatedAt: row.updated_at
+    updatedAt: row.updated_at,
   };
 }
 
@@ -173,34 +210,44 @@ export function createReminderDatabasePayload(payload: ReminderPayload) {
     title: payload.title,
     reminder_type: payload.reminderType,
     due_date: payload.dueDate,
-    notes: payload.notes
+    due_time: payload.dueTime,
+    repeat_frequency: payload.repeatFrequency,
+    advance_notice_days: payload.advanceNoticeDays,
+    notes: payload.notes,
   };
 }
 
-type ReminderDatabasePayload = Partial<ReturnType<typeof createReminderDatabasePayload>> & {
+type ReminderDatabasePayload = Partial<
+  ReturnType<typeof createReminderDatabasePayload>
+> & {
   status?: ReminderResponse["status"];
 };
 
 export function createReminderUpdatePayload(
   payload: ReminderDatabasePayload,
   status?: ReminderResponse["status"],
-  now: Date = new Date()
+  now: Date = new Date(),
 ) {
   return {
     ...payload,
     status: status ?? payload.status,
-    updated_at: now.toISOString()
+    updated_at: now.toISOString(),
   };
 }
 
 async function saveReminderUpdate(
   reminderId: string,
   payload: ReminderDatabasePayload & { updated_at: string },
-  supabase: SupabaseClient
+  supabase: SupabaseClient,
 ): Promise<ReminderMutationResult> {
   const petResult = await findOwnerFirstPet(supabase);
   if (!petResult.ok) return petResult;
-  if (!petResult.pet) return { ok: false, status: 409, message: "Create a pet profile before editing reminders." };
+  if (!petResult.pet)
+    return {
+      ok: false,
+      status: 409,
+      message: "Create a pet profile before editing reminders.",
+    };
 
   const { data, error } = await supabase
     .from("reminders")
@@ -218,16 +265,26 @@ async function saveReminderUpdate(
     return { ok: false, status: 404, message: "Reminder not found." };
   }
 
-  return { ok: true, pet: mapPetProfileRow(petResult.pet), reminder: mapReminderRow(data as unknown as ReminderRow) };
+  return {
+    ok: true,
+    pet: mapPetProfileRow(petResult.pet),
+    reminder: mapReminderRow(data as unknown as ReminderRow),
+  };
 }
 
 async function findOwnerFirstPet(
-  supabase: SupabaseClient
-): Promise<{ ok: true; pet: PetProfileRow | null } | { ok: false; status: number; message: string }> {
+  supabase: SupabaseClient,
+): Promise<
+  | { ok: true; pet: PetProfileRow | null }
+  | { ok: false; status: number; message: string }
+> {
   const authResult = await getAuthenticatedUser(supabase);
   if (!authResult.ok) return authResult;
 
-  const householdResult = await findOwnerHousehold(supabase, authResult.user.id);
+  const householdResult = await findOwnerHousehold(
+    supabase,
+    authResult.user.id,
+  );
   if (!householdResult.ok) return householdResult;
   if (!householdResult.household) return { ok: true, pet: null };
 
@@ -240,15 +297,21 @@ async function findOwnerFirstPet(
     .maybeSingle();
 
   if (error) {
-    return { ok: false, status: 500, message: "Could not read the pet profile." };
+    return {
+      ok: false,
+      status: 500,
+      message: "Could not read the pet profile.",
+    };
   }
 
   return { ok: true, pet: data as PetProfileRow | null };
 }
 
 async function getAuthenticatedUser(
-  supabase: SupabaseClient
-): Promise<{ ok: true; user: User } | { ok: false; status: number; message: string }> {
+  supabase: SupabaseClient,
+): Promise<
+  { ok: true; user: User } | { ok: false; status: number; message: string }
+> {
   const { data, error } = await supabase.auth.getUser();
   if (error || !data.user) {
     return { ok: false, status: 401, message: "Authentication is required." };
@@ -259,8 +322,11 @@ async function getAuthenticatedUser(
 
 async function findOwnerHousehold(
   supabase: SupabaseClient,
-  ownerUserId: string
-): Promise<{ ok: true; household: HouseholdRow | null } | { ok: false; status: number; message: string }> {
+  ownerUserId: string,
+): Promise<
+  | { ok: true; household: HouseholdRow | null }
+  | { ok: false; status: number; message: string }
+> {
   const { data, error } = await supabase
     .from("households")
     .select("id")
@@ -270,7 +336,11 @@ async function findOwnerHousehold(
     .maybeSingle();
 
   if (error) {
-    return { ok: false, status: 500, message: "Could not read the owner household." };
+    return {
+      ok: false,
+      status: 500,
+      message: "Could not read the owner household.",
+    };
   }
 
   return { ok: true, household: data as HouseholdRow | null };

@@ -979,14 +979,12 @@ describe("Caniello account experience", () => {
       screen.getByRole("heading", { name: /przypomnienia/i }),
     ).toBeInTheDocument();
     expect(
-      await screen.findByRole("heading", { name: /utwórz przypomnienie/i }),
+      await screen.findByRole("button", { name: /utwórz przypomnienie/i }),
     ).toBeInTheDocument();
     expect(
       screen.getByText(/brak przypomnień w tym widoku/i),
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /powiadomienia wkrótce/i }),
-    ).toBeDisabled();
+    expect(screen.getByText(/nie wysyła powiadomień/i)).toBeInTheDocument();
 
     await user.click(
       screen.getAllByRole("button", { name: accountCopy.pl.appNavAsk })[0],
@@ -1244,6 +1242,9 @@ describe("Caniello account experience", () => {
       title: "Szczepienie przeciw wściekliźnie",
       reminderType: "vaccination",
       dueDate: "2026-07-12",
+      dueTime: "09:00",
+      repeatFrequency: "yearly",
+      advanceNoticeDays: 1,
       notes: "Zabierz poprzedni dokument.",
       status: "active",
       createdAt: "2026-06-12T09:00:00.000Z",
@@ -1676,6 +1677,9 @@ describe("Caniello account experience", () => {
       title: "Szczepienie przeciw wściekliźnie",
       reminderType: "vaccination",
       dueDate: "2026-07-12",
+      dueTime: "09:00",
+      repeatFrequency: "yearly",
+      advanceNoticeDays: 1,
       notes: "Zabierz poprzedni dokument.",
       status: "active",
       createdAt: "2026-06-06T09:00:00.000Z",
@@ -1742,10 +1746,7 @@ describe("Caniello account experience", () => {
       })[0],
     );
     expect(
-      await screen.findByRole("heading", { name: /utwórz przypomnienie/i }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("heading", { name: /przypomnienia: luna/i }),
+      await screen.findByRole("heading", { name: /przypomnienia: luna/i }),
     ).toBeInTheDocument();
     expect(
       screen.getByText(
@@ -1754,12 +1755,25 @@ describe("Caniello account experience", () => {
     ).toBeInTheDocument();
     expect(screen.getByText(/najbliższe zadania Luna/i)).toBeInTheDocument();
 
+    await user.click(
+      screen.getByRole("button", { name: /utwórz przypomnienie/i }),
+    );
+    expect(
+      await screen.findByRole("heading", { name: /utwórz przypomnienie/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/kontekst opieki/i)).toBeInTheDocument();
+    expect(screen.getByText(/wpis ręczny/i)).toBeInTheDocument();
+    expect(screen.getByText(/nieaktywne/i)).toBeInTheDocument();
+
     await user.type(
       screen.getByLabelText(/^tytuł$/i),
       "Szczepienie przeciw wściekliźnie",
     );
     await user.selectOptions(screen.getByLabelText(/^typ$/i), "vaccination");
     await user.type(screen.getByLabelText(/termin/i), "2026-07-12");
+    await user.type(screen.getByLabelText(/godzina/i), "09:00");
+    await user.selectOptions(screen.getByLabelText(/powtarzanie/i), "yearly");
+    await user.selectOptions(screen.getByLabelText(/wyprzedzenie/i), "1");
     await user.type(
       screen.getByLabelText(/notatki/i),
       "Zabierz poprzedni dokument.",
@@ -1790,14 +1804,25 @@ describe("Caniello account experience", () => {
       title: "Szczepienie przeciw wściekliźnie",
       reminderType: "vaccination",
       dueDate: "2026-07-12",
+      dueTime: "09:00",
+      repeatFrequency: "yearly",
+      advanceNoticeDays: 1,
       notes: "Zabierz poprzedni dokument.",
     });
     expect(
       screen.getByText("Szczepienie przeciw wściekliźnie"),
     ).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: /^edytuj$/i }));
     expect(
-      screen.getByRole("button", { name: /powiadomienia wkrótce/i }),
-    ).toBeDisabled();
+      await screen.findByRole("heading", { name: /edytuj przypomnienie/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByLabelText(/godzina/i)).toHaveValue("09:00");
+    expect(screen.getByLabelText(/powtarzanie/i)).toHaveValue("yearly");
+    await user.click(screen.getByRole("button", { name: /^anuluj$/i }));
+    expect(
+      await screen.findByRole("heading", { name: /przypomnienia: luna/i }),
+    ).toBeInTheDocument();
 
     await user.click(
       screen.getByRole("button", { name: /oznacz jako wykonane/i }),

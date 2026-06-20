@@ -89,6 +89,7 @@ export function AuthenticatedAppShell({
           ) : activeSection === "reminders" ? (
             <CareRemindersSection
               copy={copy}
+              pet={activePet.pet}
               onPetsRequest={() => setActiveSection("pets")}
             />
           ) : activeSection === "sharing" ? (
