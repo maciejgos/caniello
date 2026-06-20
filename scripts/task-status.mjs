@@ -21,6 +21,10 @@ function parseStatus(content) {
   return content.match(/^---\n[\s\S]*?^status:\s*([^\n]+)$/m)?.[1]?.trim();
 }
 
+function parseRoadmap(content) {
+  return content.match(/^---\n[\s\S]*?^roadmap:\s*([^\n]+)$/m)?.[1]?.trim();
+}
+
 function replaceTaskStatus(content, status) {
   if (!/^---\n[\s\S]*?^status:\s*[^\n]+$/m.test(content)) {
     throw new Error("Task is missing a status field in YAML frontmatter.");
@@ -148,6 +152,12 @@ export async function updateTaskStatus({
   if (!allowedStatuses.has(currentStatus)) {
     throw new Error(
       `Task has invalid current status: ${currentStatus ?? "missing"}.`,
+    );
+  }
+  const roadmap = parseRoadmap(taskContent);
+  if (roadmap !== "now" && status !== "planned") {
+    throw new Error(
+      `Only roadmap now tasks may move to ${status}; ${slug} is ${roadmap ?? "missing"}.`,
     );
   }
 

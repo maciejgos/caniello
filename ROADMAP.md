@@ -16,6 +16,10 @@ Deliver a trustworthy owner-side pet health organizer:
 
 Current executable work is ordered in `BACKLOG.md`.
 
+`BACKLOG.md` also records approved planning contracts for future roadmap
+horizons. Only rows marked `Now` are executable; `Next`, `Later`, and `Not Now`
+rows remain planned until an explicit roadmap promotion.
+
 ## Next — Retention and Sharing
 
 - caregiver access after scoped sharing is proven safe;
