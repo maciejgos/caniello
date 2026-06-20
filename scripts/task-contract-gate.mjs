@@ -24,6 +24,7 @@ const ignoredProjectPatterns = [
 ];
 
 const allowedStatus = new Set(["planned", "in-progress", "review"]);
+const allowedRoadmap = new Set(["now", "next", "later", "not-now"]);
 const allowedRisk = new Set(["low", "medium", "high"]);
 const requiredSections = ["User story", "Acceptance criteria", "Verification"];
 
@@ -130,8 +131,13 @@ export function validateTaskContent(file, content, exists = existsSync) {
   if (!allowedStatus.has(frontmatter.status)) {
     violations.push(`${file}: status must be planned, in-progress, or review.`);
   }
-  if (frontmatter.roadmap !== "now") {
-    violations.push(`${file}: roadmap must be now.`);
+  if (!allowedRoadmap.has(frontmatter.roadmap)) {
+    violations.push(`${file}: roadmap must be now, next, later, or not-now.`);
+  }
+  if (frontmatter.roadmap !== "now" && frontmatter.status !== "planned") {
+    violations.push(
+      `${file}: only roadmap now tasks may be in-progress or review.`,
+    );
   }
   if (!allowedRisk.has(frontmatter.risk)) {
     violations.push(`${file}: risk must be low, medium, or high.`);
@@ -179,6 +185,7 @@ function taskRecord(file, content) {
   return {
     file,
     status: frontmatter?.status,
+    roadmap: frontmatter?.roadmap,
     risk: frontmatter?.risk,
   };
 }
@@ -187,12 +194,13 @@ export function validateBacklog(content, tasks) {
   const violations = [];
   const rows = [
     ...content.matchAll(
-      /^\|\s*\d+\s*\|\s*\[[^\]]+\]\((spec\/tasks\/[^)]+)\)\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|$/gm,
+      /^\|\s*\d+\s*\|\s*\[[^\]]+\]\((spec\/tasks\/[^)]+)\)\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|$/gm,
     ),
   ].map((match) => ({
     file: match[1],
     status: match[2].trim().toLowerCase().replaceAll(" ", "-"),
-    risk: match[3].trim().toLowerCase(),
+    roadmap: match[3].trim().toLowerCase().replaceAll(" ", "-"),
+    risk: match[4].trim().toLowerCase(),
   }));
   const rowsByFile = new Map(rows.map((row) => [row.file, row]));
 
@@ -205,6 +213,11 @@ export function validateBacklog(content, tasks) {
     if (row.status !== task.status) {
       violations.push(
         `BACKLOG.md: ${task.file} status "${row.status}" does not match "${task.status}".`,
+      );
+    }
+    if (row.roadmap !== task.roadmap) {
+      violations.push(
+        `BACKLOG.md: ${task.file} roadmap "${row.roadmap}" does not match "${task.roadmap}".`,
       );
     }
     if (row.risk !== task.risk) {

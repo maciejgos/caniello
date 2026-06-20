@@ -29,7 +29,7 @@ Continue spec/tasks/<slug>.md and stop when ready for review.
 
 Codex must:
 
-1. Confirm the named task is in `BACKLOG.md`, has `roadmap: now`, and is `planned` or `in-progress`; accept `review` only when the maintainer explicitly requests review changes.
+1. Confirm the named task is in `BACKLOG.md`, has `roadmap: now`, and is `planned` or `in-progress`; future-roadmap tasks are planning records and cannot be implemented until explicitly promoted to `Now`. Accept `review` only when the maintainer explicitly requests review changes.
 2. Run `pnpm task:status -- <slug> in-progress` before implementation.
 3. Reconstruct interrupted work from the task, `git status`, and the current diff.
 4. Implement only that task and record checks, unavailable checks, residual risks, blockers, and the exact next action in `Verification`.
@@ -88,8 +88,12 @@ adrs: [0014, 0015]
 Allowed values:
 
 - `status`: `planned`, `in-progress`, `review`
-- `roadmap`: `now`
+- `roadmap`: `now`, `next`, `later`, `not-now`
 - `risk`: `low`, `medium`, `high`
+
+Only `roadmap: now` tasks may move to `in-progress` or `review`. Tasks in
+`next`, `later`, or `not-now` remain `planned` until the maintainer explicitly
+updates `ROADMAP.md`, the task, and `BACKLOG.md`.
 
 Task body:
 

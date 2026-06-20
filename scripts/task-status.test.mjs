@@ -8,6 +8,7 @@ import { updateTaskStatus } from "./task-status.mjs";
 function fixture({
   taskStatus = "planned",
   backlogStatus = "Planned",
+  roadmap = "now",
   includeBacklog = true,
   secondTaskStatus,
 } = {}) {
@@ -18,7 +19,7 @@ function fixture({
     join(tasks, "example.md"),
     `---
 status: ${taskStatus}
-roadmap: now
+roadmap: ${roadmap}
 risk: low
 adrs: []
 ---
@@ -41,8 +42,8 @@ adrs: []
   writeFileSync(
     join(root, "BACKLOG.md"),
     includeBacklog
-      ? `| 1 | [Example](spec/tasks/example.md) | ${backlogStatus} | Low |\n`
-      : "| Priority | Task | Status | Risk |\n",
+      ? `| 1 | [Example](spec/tasks/example.md) | ${backlogStatus} | ${roadmap} | Low |\n`
+      : "| Priority | Task | Status | Roadmap | Risk |\n",
   );
   return root;
 }
@@ -61,6 +62,20 @@ test("updates task and backlog status together", async () => {
   assert.match(updated.task, /^status: in-progress$/m);
   assert.match(updated.backlog, /\| In progress \|/);
 });
+
+for (const roadmap of ["next", "later", "not-now"]) {
+  for (const status of ["in-progress", "review"]) {
+    test(`${roadmap} task cannot move to ${status}`, async () => {
+      const root = fixture({ roadmap });
+      const before = contents(root);
+      await assert.rejects(
+        () => updateTaskStatus({ root, slug: "example", status }),
+        /Only roadmap now tasks/,
+      );
+      assert.deepEqual(contents(root), before);
+    });
+  }
+}
 
 for (const [name, options, invocation] of [
   ["invalid slug", {}, { slug: "../example", status: "review" }],

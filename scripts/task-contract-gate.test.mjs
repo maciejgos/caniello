@@ -78,9 +78,9 @@ for (const [name, content, expected] of [
     "risk must be",
   ],
   [
-    "non-Now roadmap",
-    valid.replace("roadmap: now", "roadmap: next"),
-    "roadmap must be now",
+    "invalid roadmap",
+    valid.replace("roadmap: now", "roadmap: someday"),
+    "roadmap must be now, next, later, or not-now",
   ],
   [
     "empty user story",
@@ -107,6 +107,27 @@ for (const [name, content, expected] of [
   });
 }
 
+for (const roadmap of ["next", "later", "not-now"]) {
+  test(`accepts a planned ${roadmap} task`, () => {
+    const content = valid
+      .replace("status: in-progress", "status: planned")
+      .replace("roadmap: now", `roadmap: ${roadmap}`);
+    assert.deepEqual(
+      validateTaskContent("spec/tasks/example.md", content, () => true),
+      [],
+    );
+  });
+
+  test(`rejects an active ${roadmap} task`, () => {
+    const content = valid.replace("roadmap: now", `roadmap: ${roadmap}`);
+    assert.ok(
+      validateTaskContent("spec/tasks/example.md", content, () => true).some(
+        (violation) => violation.includes("only roadmap now tasks"),
+      ),
+    );
+  });
+}
+
 test("rejects pending verification at review", () => {
   const content = valid
     .replace("status: in-progress", "status: review")
@@ -126,13 +147,14 @@ test("rejects a missing ADR reference", () => {
   );
 });
 
-test("validates backlog status and risk synchronization", () => {
-  const backlog = `| 1 | [Example](spec/tasks/example.md) | In progress | Medium |`;
+test("validates backlog status, roadmap, and risk synchronization", () => {
+  const backlog = `| 1 | [Example](spec/tasks/example.md) | In progress | Now | Medium |`;
   assert.deepEqual(
     validateBacklog(backlog, [
       {
         file: "spec/tasks/example.md",
         status: "in-progress",
+        roadmap: "now",
         risk: "medium",
       },
     ]),
@@ -141,15 +163,16 @@ test("validates backlog status and risk synchronization", () => {
 });
 
 test("rejects backlog drift", () => {
-  const backlog = `| 1 | [Example](spec/tasks/example.md) | Planned | High |`;
+  const backlog = `| 1 | [Example](spec/tasks/example.md) | Planned | Later | High |`;
   const violations = validateBacklog(backlog, [
     {
       file: "spec/tasks/example.md",
       status: "in-progress",
+      roadmap: "now",
       risk: "medium",
     },
   ]);
-  assert.equal(violations.length, 2);
+  assert.equal(violations.length, 3);
 });
 
 test("rejects more than one in-progress task", () => {
