@@ -2,11 +2,7 @@ name: CI/CD and Harness Gates
 
 on:
   pull_request:
-  push:
-    branches:
-      - main
-      - "codex/**"
-      - "feature/**"
+    types: [opened, synchronize, reopened]
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
