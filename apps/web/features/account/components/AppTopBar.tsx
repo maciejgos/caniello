@@ -3,6 +3,7 @@ import { LanguageToggle } from "../../marketing/components/LanguageToggle";
 import type { PetProfileResponse } from "@caniello/contracts";
 import type { AccountCopy, AccountLanguage } from "../content";
 import { AppIcon } from "./AppIcon";
+import { PetAvatar } from "./PetAvatar";
 
 type AppTopBarProps = {
   copy: AccountCopy;
@@ -23,7 +24,7 @@ export function AppTopBar({
 }: AppTopBarProps) {
   return (
     <header className="border-b border-[#e1e6ee] bg-white px-4 py-3 sm:px-6 lg:min-h-[68px] lg:px-8">
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3">
         <a className="mr-auto block lg:hidden" href="/" aria-label="Caniello">
           <BrandWordmark small />
         </a>
@@ -74,17 +75,20 @@ function PetContext({
 
   return (
     <div
-      className="flex min-h-11 items-center gap-3 rounded-lg border border-[#dce2ec] bg-white px-3 text-sm font-black text-navy"
+      className="flex min-h-11 items-center gap-2 rounded-lg border border-[#dce2ec] bg-white px-2 text-sm font-black text-navy sm:gap-3 sm:px-3"
       aria-label={copy.appPetSelectorLabel}
       role="status"
     >
-      <span
-        className="flex h-8 w-8 items-center justify-center rounded-full bg-[#fff3e5] text-[#d97706]"
-        aria-hidden="true"
-      >
-        <AppIcon name="paw" />
+      <span className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-[#fff3e5] text-[#d97706]">
+        {pet ? (
+          <PetAvatar className="h-full w-full object-cover" pet={pet} />
+        ) : (
+          <span aria-hidden="true">
+            <AppIcon name="paw" />
+          </span>
+        )}
       </span>
-      <span className="max-w-32 truncate sm:max-w-44">{petName}</span>
+      <span className="hidden max-w-44 truncate sm:block">{petName}</span>
       {pet ? (
         <span className="hidden text-xs font-semibold text-navy/52 xl:inline">
           {copy.appPetContextSingle}
@@ -103,12 +107,12 @@ function AccountMenu({
 }) {
   return (
     <div
-      className="flex min-h-11 items-center gap-3 rounded-lg border border-[#dce2ec] bg-white px-3"
+      className="flex min-h-11 items-center gap-2 rounded-lg bg-white sm:gap-3 sm:border sm:border-[#dce2ec] sm:px-3"
       role="group"
       aria-label={copy.appAccountLabel}
     >
       <span
-        className="flex h-8 w-8 items-center justify-center rounded-full bg-[#f1ede6] text-sm font-black text-navy"
+        className="hidden h-8 w-8 items-center justify-center rounded-full bg-[#f1ede6] text-sm font-black text-navy sm:flex"
         aria-hidden="true"
       >
         {copy.appAccountName.slice(0, 1)}
@@ -117,7 +121,7 @@ function AccountMenu({
         {copy.appAccountName}
       </span>
       <button
-        className="rounded-md px-2 py-1 text-sm font-black text-[#7651e6] transition hover:bg-[#f6f2ff]"
+        className="rounded-md px-1 py-1 text-sm font-black text-[#7651e6] transition hover:bg-[#f6f2ff] sm:px-2"
         type="button"
         onClick={() => void onLogout()}
       >

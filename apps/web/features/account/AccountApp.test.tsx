@@ -376,8 +376,8 @@ describe("Caniello account experience", () => {
     ).toBeInTheDocument();
     expect(screen.getByText(/oto co czeka bruno/i)).toBeInTheDocument();
     expect(
-      screen.getByRole("status", { name: /aktywny pupil/i }),
-    ).toHaveTextContent(/bruno.*pierwszy profil/i);
+      screen.getByRole("status", { name: /zapisany pupil/i }),
+    ).toHaveTextContent(/bruno.*jeden pupil/i);
     expect(
       screen.queryByRole("button", { name: /pierwsze uruchomienie/i }),
     ).not.toBeInTheDocument();
@@ -467,9 +467,14 @@ describe("Caniello account experience", () => {
     expect(
       screen.getAllByRole("button", { name: accountCopy.pl.appNavSettings })[0],
     ).toBeInTheDocument();
-    const activePet = screen.getByRole("status", { name: /aktywny pupil/i });
-    expect(activePet).toBeInTheDocument();
-    expect(activePet.querySelector("img")).not.toBeInTheDocument();
+    const savedPet = screen.getByRole("status", { name: /zapisany pupil/i });
+    expect(savedPet).toHaveTextContent(/bruno.*jeden pupil/i);
+    expect(
+      savedPet.querySelector('[data-pet-avatar="dog"]'),
+    ).toBeInTheDocument();
+    expect(document.querySelectorAll('[data-pet-avatar="dog"]')).toHaveLength(
+      2,
+    );
     expect(
       screen.queryByRole("searchbox", { name: /szukaj w caniello/i }),
     ).not.toBeInTheDocument();
@@ -477,7 +482,7 @@ describe("Caniello account experience", () => {
       screen.getByRole("button", { name: /powiadomienia/i }),
     ).toBeDisabled();
     await user.click(
-      screen.getByRole("button", { name: /podsumowanie aktywnego pupila/i }),
+      screen.getByRole("button", { name: /podsumowanie zapisanego pupila/i }),
     );
     expect(
       await screen.findByRole("heading", {
@@ -555,7 +560,7 @@ describe("Caniello account experience", () => {
     ).toBeEnabled();
     expect(screen.getByText(/does not guess answers/i)).toBeInTheDocument();
     expect(
-      screen.getAllByRole("button", { name: /pets/i })[0],
+      screen.getAllByRole("button", { name: /^pet$/i })[0],
     ).toBeInTheDocument();
     expect(
       screen.getAllByRole("button", { name: /timeline/i })[0],
@@ -564,8 +569,8 @@ describe("Caniello account experience", () => {
       screen.queryByRole("searchbox", { name: /search caniello/i }),
     ).not.toBeInTheDocument();
     expect(
-      screen.getByRole("status", { name: /active pet/i }),
-    ).toHaveTextContent(/bruno.*first profile/i);
+      screen.getByRole("status", { name: /saved pet/i }),
+    ).toHaveTextContent(/bruno.*one pet/i);
     expect(
       screen.getByText(/shows only data saved in the profile/i),
     ).toBeInTheDocument();
@@ -667,17 +672,17 @@ describe("Caniello account experience", () => {
       screen.getByText(/zacznijmy od kilku prostych kroków/i),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("status", { name: /aktywny pupil/i }),
+      screen.getByRole("status", { name: /zapisany pupil/i }),
     ).toHaveTextContent(/brak zapisanego pupila/i);
     expect(
-      screen.getByRole("button", { name: /dodaj profil/i }),
+      screen.getByRole("button", { name: /dodaj pupila/i }),
     ).toBeDisabled();
     expect(screen.getByLabelText(/imię pupila/i)).toHaveValue("");
     expect(screen.getByLabelText(/^gatunek$/i)).toHaveValue("");
     expect(screen.queryByText(/bruno/i)).not.toBeInTheDocument();
     expect(
-      screen.getByRole("status", { name: /aktywny pupil/i }),
-    ).not.toHaveTextContent(/pierwszy profil/i);
+      screen.getByRole("status", { name: /zapisany pupil/i }),
+    ).not.toHaveTextContent(/jeden pupil/i);
     expect(
       screen.queryByRole("button", { name: /panel pupila/i }),
     ).not.toBeInTheDocument();
@@ -688,7 +693,7 @@ describe("Caniello account experience", () => {
     await user.type(screen.getByLabelText(/data urodzenia/i), "2023-04-12");
     await user.selectOptions(screen.getByLabelText(/^płeć$/i), "female");
     await user.type(screen.getByLabelText(/^waga$/i), "4.6");
-    await user.click(screen.getByRole("button", { name: /dodaj profil/i }));
+    await user.click(screen.getByRole("button", { name: /dodaj pupila/i }));
 
     await waitFor(() =>
       expect(fetch).toHaveBeenCalledWith(
@@ -701,8 +706,8 @@ describe("Caniello account experience", () => {
     ).toBeInTheDocument();
     expect(screen.getByText(/oto co czeka luna/i)).toBeInTheDocument();
     expect(
-      screen.getByRole("status", { name: /aktywny pupil/i }),
-    ).toHaveTextContent(/luna.*pierwszy profil/i);
+      screen.getByRole("status", { name: /zapisany pupil/i }),
+    ).toHaveTextContent(/luna.*jeden pupil/i);
   });
 
   it("shows a recoverable dashboard state when the active pet cannot load", async () => {
@@ -844,7 +849,7 @@ describe("Caniello account experience", () => {
       }),
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/nie zapisaliśmy jeszcze profilu pupila/i),
+      screen.getByText(/nie zapisaliśmy jeszcze pupila/i),
     ).toBeInTheDocument();
     expect(
       screen.getAllByRole("button", { name: accountCopy.pl.appNavPets })[0],
@@ -854,7 +859,7 @@ describe("Caniello account experience", () => {
     await user.selectOptions(screen.getByLabelText(/^gatunek$/i), "cat");
     await user.type(screen.getByLabelText(/^rasa$/i), "europejski");
     await user.type(screen.getByLabelText(/data urodzenia/i), "2022-02-14");
-    await user.type(screen.getByLabelText(/płeć lub opis/i), "samica");
+    await user.selectOptions(screen.getByLabelText(/^płeć$/i), "female");
     await user.type(screen.getByLabelText(/waga w kg/i), "4.8");
     await user.type(
       screen.getByLabelText(/numer mikrochipu/i),
@@ -866,7 +871,7 @@ describe("Caniello account experience", () => {
       screen.getByLabelText(/ważne notatki/i),
       "Nie lubi głośnych miejsc.",
     );
-    await user.click(screen.getByRole("button", { name: /zapisz profil/i }));
+    await user.click(screen.getByRole("button", { name: /zapisz pupila/i }));
 
     await waitFor(() =>
       expect(fetch).toHaveBeenCalledWith(
@@ -890,10 +895,11 @@ describe("Caniello account experience", () => {
     expect(JSON.parse(String(init.body))).toMatchObject({
       name: "Luna",
       species: "cat",
+      sexOrGender: "female",
       weightKg: 4.8,
       microchipNumber: "616093900000001",
     });
-    expect(screen.getByText(/zapisany profil/i)).toBeInTheDocument();
+    expect(screen.getByText(/zapisany pupil/i)).toBeInTheDocument();
     expect(screen.getAllByText("Luna")[0]).toBeInTheDocument();
 
     await user.click(
@@ -1040,8 +1046,8 @@ describe("Caniello account experience", () => {
     ).toBeInTheDocument();
     expect(screen.getByText(/oto co czeka luna/i)).toBeInTheDocument();
     expect(
-      screen.getByRole("status", { name: /aktywny pupil/i }),
-    ).toHaveTextContent(/luna.*pierwszy profil/i);
+      screen.getByRole("status", { name: /zapisany pupil/i }),
+    ).toHaveTextContent(/luna.*jeden pupil/i);
 
     await user.click(screen.getByRole("button", { name: "EN" }));
     await user.click(
@@ -1846,7 +1852,7 @@ describe("Caniello account experience", () => {
     expect(nameField).toBeDisabled();
     expect(speciesField).toBeDisabled();
     expect(
-      screen.getByRole("button", { name: /zapisz profil/i }),
+      screen.getByRole("button", { name: /zapisz pupila/i }),
     ).toBeDisabled();
 
     resolveProfileLoad?.(
@@ -1860,10 +1866,11 @@ describe("Caniello account experience", () => {
     expect(speciesField).not.toBeDisabled();
   });
 
-  it("preserves an existing non-standard species value when saving the profile", async () => {
+  it("preserves existing non-standard species and sex values when saving the pet", async () => {
     const petWithLegacySpecies = {
       ...brunoPet,
       species: "królik",
+      sexOrGender: "opis własny",
     };
     vi.stubGlobal(
       "fetch",
@@ -1903,8 +1910,13 @@ describe("Caniello account experience", () => {
     const speciesField = await screen.findByLabelText(/^gatunek$/i);
     await waitFor(() => expect(speciesField).toHaveValue("królik"));
     expect(screen.getByRole("option", { name: "królik" })).toBeInTheDocument();
+    const sexField = screen.getByLabelText(/^płeć$/i);
+    expect(sexField).toHaveValue("opis własny");
+    expect(
+      screen.getByRole("option", { name: "opis własny" }),
+    ).toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: /zapisz profil/i }));
+    await user.click(screen.getByRole("button", { name: /zapisz pupila/i }));
 
     await waitFor(() =>
       expect(fetch).toHaveBeenCalledWith(
@@ -1922,6 +1934,7 @@ describe("Caniello account experience", () => {
     );
     expect(JSON.parse(String(putCall?.[1]?.body))).toMatchObject({
       species: "królik",
+      sexOrGender: "opis własny",
     });
   });
 
