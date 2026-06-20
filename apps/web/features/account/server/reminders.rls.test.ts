@@ -23,8 +23,8 @@ describeRls("care reminder Supabase RLS integration", () => {
     const service = createClient(config.url, config.serviceRoleKey, {
       auth: {
         autoRefreshToken: false,
-        persistSession: false
-      }
+        persistSession: false,
+      },
     });
 
     await service
@@ -35,18 +35,22 @@ describeRls("care reminder Supabase RLS integration", () => {
         title: "Rabies vaccine",
         reminder_type: "vaccination",
         due_date: "2026-07-12",
+        due_time: "09:00",
+        repeat_frequency: "yearly",
+        advance_notice_days: 7,
         notes: "Owner A reminder used by RLS tests.",
-        status: "active"
+        status: "active",
       })
       .select("id")
       .single();
 
     const testEmail = `reminder-rls-owner-${Date.now()}@example.test`;
-    const { data: createdUser, error: createUserError } = await service.auth.admin.createUser({
-      email: testEmail,
-      password: testPassword,
-      email_confirm: true
-    });
+    const { data: createdUser, error: createUserError } =
+      await service.auth.admin.createUser({
+        email: testEmail,
+        password: testPassword,
+        email_confirm: true,
+      });
     expect(createUserError).toBeNull();
     expect(createdUser.user?.id).toBeTruthy();
 
@@ -59,19 +63,22 @@ describeRls("care reminder Supabase RLS integration", () => {
       const ownerB = createClient(config.url, config.anonKey, {
         auth: {
           autoRefreshToken: false,
-          persistSession: false
-        }
+          persistSession: false,
+        },
       });
 
       const { error: signInError } = await ownerB.auth.signInWithPassword({
         email: testEmail,
-        password: testPassword
+        password: testPassword,
       });
       expect(signInError).toBeNull();
 
       const { data: ownHousehold, error: ownHouseholdError } = await ownerB
         .from("households")
-        .insert({ owner_user_id: ownerBUserId, name: "Reminder RLS test household" })
+        .insert({
+          owner_user_id: ownerBUserId,
+          name: "Reminder RLS test household",
+        })
         .select("id")
         .single();
       expect(ownHouseholdError).toBeNull();
@@ -82,7 +89,10 @@ describeRls("care reminder Supabase RLS integration", () => {
 
       const { data: ownPet, error: ownPetError } = await ownerB
         .from("pets")
-        .insert({ household_id: ownHousehold.id, name: "Reminder RLS test pet" })
+        .insert({
+          household_id: ownHousehold.id,
+          name: "Reminder RLS test pet",
+        })
         .select("id,name")
         .single();
       expect(ownPetError).toBeNull();
@@ -98,19 +108,40 @@ describeRls("care reminder Supabase RLS integration", () => {
           title: "Owner B reminder",
           reminder_type: "visit",
           due_date: "2026-08-01",
+          due_time: "10:30",
+          repeat_frequency: "monthly",
+          advance_notice_days: 1,
           notes: "Owner B can manage their own reminder.",
-          status: "active"
+          status: "active",
         })
         .select("id,title")
         .single();
       expect(ownReminderError).toBeNull();
       expect(ownReminder).toMatchObject({ title: "Owner B reminder" });
 
-      const { data: ownerAReminderBefore, error: ownerAReminderBeforeError } = await service
-        .from("reminders")
-        .select("id,title,status")
-        .eq("id", ownerAReminderId)
+      const { data: ownAudit, error: ownAuditError } = await ownerB
+        .from("audit_logs")
+        .select("action,entity_type,entity_id,metadata")
+        .eq("entity_id", ownReminder?.id)
         .single();
+      expect(ownAuditError).toBeNull();
+      expect(ownAudit).toMatchObject({
+        action: "reminder.created",
+        entity_type: "reminder",
+        entity_id: ownReminder?.id,
+        metadata: { status: "active" },
+      });
+      expect(JSON.stringify(ownAudit)).not.toContain("Owner B reminder");
+      expect(JSON.stringify(ownAudit)).not.toContain(
+        "Owner B can manage their own reminder.",
+      );
+
+      const { data: ownerAReminderBefore, error: ownerAReminderBeforeError } =
+        await service
+          .from("reminders")
+          .select("id,title,status")
+          .eq("id", ownerAReminderId)
+          .single();
       expect(ownerAReminderBeforeError).toBeNull();
       expect(ownerAReminderBefore?.id).toBe(ownerAReminderId);
 
@@ -121,32 +152,37 @@ describeRls("care reminder Supabase RLS integration", () => {
       expect(forbiddenReadError).toBeNull();
       expect(forbiddenRead).toEqual([]);
 
-      const { data: forbiddenUpdate, error: forbiddenUpdateError } = await ownerB
-        .from("reminders")
-        .update({ title: forbiddenTitle })
-        .eq("id", ownerAReminderId)
-        .select("id,title");
+      const { data: forbiddenUpdate, error: forbiddenUpdateError } =
+        await ownerB
+          .from("reminders")
+          .update({ title: forbiddenTitle })
+          .eq("id", ownerAReminderId)
+          .select("id,title");
       expect(forbiddenUpdateError).toBeNull();
       expect(forbiddenUpdate).toEqual([]);
 
-      const { data: forbiddenInsert, error: forbiddenInsertError } = await ownerB
-        .from("reminders")
-        .insert({
-          pet_id: ownerAPetId,
-          title: "Owner B should not add Bruno reminder",
-          reminder_type: "visit",
-          due_date: "2026-09-01",
-          status: "active"
-        })
-        .select("id");
+      const { data: forbiddenInsert, error: forbiddenInsertError } =
+        await ownerB
+          .from("reminders")
+          .insert({
+            pet_id: ownerAPetId,
+            title: "Owner B should not add Bruno reminder",
+            reminder_type: "visit",
+            due_date: "2026-09-01",
+            repeat_frequency: "none",
+            advance_notice_days: 0,
+            status: "active",
+          })
+          .select("id");
       expect(forbiddenInsert).toBeNull();
       expect(forbiddenInsertError).not.toBeNull();
 
-      const { data: ownerAReminderAfter, error: ownerAReminderAfterError } = await service
-        .from("reminders")
-        .select("id,title,status")
-        .eq("id", ownerAReminderId)
-        .single();
+      const { data: ownerAReminderAfter, error: ownerAReminderAfterError } =
+        await service
+          .from("reminders")
+          .select("id,title,status")
+          .eq("id", ownerAReminderId)
+          .single();
       expect(ownerAReminderAfterError).toBeNull();
       expect(ownerAReminderAfter).toEqual(ownerAReminderBefore);
       expect(ownerAReminderAfter?.title).not.toBe(forbiddenTitle);
@@ -160,7 +196,7 @@ function readLocalSupabaseConfig(): LocalSupabaseConfig {
   const env = {
     ...readEnvFile(join(process.cwd(), "../../.env.local")),
     ...readEnvFile(join(process.cwd(), ".env.local")),
-    ...process.env
+    ...process.env,
   };
 
   const url = env.NEXT_PUBLIC_SUPABASE_URL?.trim();
@@ -169,7 +205,7 @@ function readLocalSupabaseConfig(): LocalSupabaseConfig {
 
   if (!url || !anonKey || !serviceRoleKey) {
     throw new Error(
-      "Missing local Supabase env for reminder RLS integration test. Run ./scripts/start.sh and set CANIELLO_RUN_SUPABASE_RLS_TESTS=1."
+      "Missing local Supabase env for reminder RLS integration test. Run ./scripts/start.sh and set CANIELLO_RUN_SUPABASE_RLS_TESTS=1.",
     );
   }
 
@@ -192,6 +228,6 @@ function readEnvFile(path: string) {
           .trim()
           .replace(/^['"]|['"]$/g, "");
         return [key, value];
-      })
+      }),
   );
 }

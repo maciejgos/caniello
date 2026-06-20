@@ -289,6 +289,9 @@ describe("Caniello API contracts", () => {
       title: "Rabies vaccine",
       reminderType: "vaccination",
       dueDate: "2026-07-12",
+      dueTime: null,
+      repeatFrequency: "none",
+      advanceNoticeDays: 0,
       notes: "Bring previous record.",
     });
 
@@ -332,9 +335,25 @@ describe("Caniello API contracts", () => {
         notifyByEmail: true,
       }),
     ).toThrow();
+    expect(() =>
+      reminderPayloadSchema.parse({
+        title: "Dose",
+        reminderType: "medication",
+        dueDate: "2026-08-01",
+        dueTime: "25:00",
+      }),
+    ).toThrow();
+    expect(() =>
+      reminderPayloadSchema.parse({
+        title: "Dose",
+        reminderType: "medication",
+        dueDate: "2026-08-01",
+        advanceNoticeDays: 3,
+      }),
+    ).toThrow();
   });
 
-  it("accepts reminder API responses without notification or AI fields", () => {
+  it("accepts reminder API responses with inert scheduling metadata", () => {
     expect(
       reminderResponseSchema.parse({
         id: "55555555-5555-4555-8555-555555555555",
@@ -342,6 +361,9 @@ describe("Caniello API contracts", () => {
         title: "Rabies vaccine",
         reminderType: "vaccination",
         dueDate: "2026-07-12",
+        dueTime: "09:00",
+        repeatFrequency: "yearly",
+        advanceNoticeDays: 7,
         notes: null,
         status: "active",
         createdAt: "2026-06-06T09:00:00.000Z",

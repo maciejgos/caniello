@@ -2,7 +2,7 @@ import type {
   DocumentResponse,
   PetProfileResponse,
   ReminderResponse,
-  ShareLinkResponse
+  ShareLinkResponse,
 } from "@caniello/contracts";
 import type { SupabaseClient, User } from "@supabase/supabase-js";
 import { createHash, randomBytes } from "crypto";
@@ -46,6 +46,9 @@ type ReminderRow = {
   title: string;
   reminder_type: ReminderResponse["reminderType"];
   due_date: string;
+  due_time: string | null;
+  repeat_frequency: ReminderResponse["repeatFrequency"];
+  advance_notice_days: ReminderResponse["advanceNoticeDays"];
   notes: string | null;
   status: ReminderResponse["status"];
   created_at: string;
@@ -68,7 +71,11 @@ type DocumentRow = {
 };
 
 type ShareLinkListResult =
-  | { ok: true; pet: PetProfileResponse | null; shareLinks: ShareLinkResponse[] }
+  | {
+      ok: true;
+      pet: PetProfileResponse | null;
+      shareLinks: ShareLinkResponse[];
+    }
   | { ok: false; status: number; message: string };
 
 type ShareLinkMutationResult =
@@ -99,10 +106,17 @@ const PET_PROFILE_COLUMNS = [
   "medication",
   "important_notes",
   "created_at",
-  "updated_at"
+  "updated_at",
 ].join(", ");
 
-const SHARE_LINK_COLUMNS = ["id", "pet_id", "token_hash", "revoked_at", "expires_at", "created_at"].join(", ");
+const SHARE_LINK_COLUMNS = [
+  "id",
+  "pet_id",
+  "token_hash",
+  "revoked_at",
+  "expires_at",
+  "created_at",
+].join(", ");
 
 const REMINDER_COLUMNS = [
   "id",
@@ -110,10 +124,13 @@ const REMINDER_COLUMNS = [
   "title",
   "reminder_type",
   "due_date",
+  "due_time",
+  "repeat_frequency",
+  "advance_notice_days",
   "notes",
   "status",
   "created_at",
-  "updated_at"
+  "updated_at",
 ].join(", ");
 
 const DOCUMENT_COLUMNS = [
@@ -128,13 +145,16 @@ const DOCUMENT_COLUMNS = [
   "mime_type",
   "status",
   "created_at",
-  "updated_at"
+  "updated_at",
 ].join(", ");
 
 const defaultShareLinkTtlDays = 14;
 const tokenByteLength = 32;
 
-export async function listOwnerShareLinks(supabase: SupabaseClient, origin: string): Promise<ShareLinkListResult> {
+export async function listOwnerShareLinks(
+  supabase: SupabaseClient,
+  origin: string,
+): Promise<ShareLinkListResult> {
   const petResult = await findOwnerFirstPet(supabase);
   if (!petResult.ok) return petResult;
   if (!petResult.pet) return { ok: true, pet: null, shareLinks: [] };
@@ -155,30 +175,46 @@ export async function listOwnerShareLinks(supabase: SupabaseClient, origin: stri
   return {
     ok: true,
     pet: mapPetProfileRow(petResult.pet),
-    shareLinks: ((data ?? []) as unknown as ShareLinkRow[]).map((row) => mapShareLinkRow(row, origin))
+    shareLinks: ((data ?? []) as unknown as ShareLinkRow[]).map((row) =>
+      mapShareLinkRow(row, origin),
+    ),
   };
 }
 
-export async function createOwnerShareLink(supabase: SupabaseClient, origin: string): Promise<ShareLinkMutationResult> {
+export async function createOwnerShareLink(
+  supabase: SupabaseClient,
+  origin: string,
+): Promise<ShareLinkMutationResult> {
   const petResult = await findOwnerFirstPet(supabase);
   if (!petResult.ok) return petResult;
-  if (!petResult.pet) return { ok: false, status: 409, message: "Create a pet profile before sharing a care card." };
+  if (!petResult.pet)
+    return {
+      ok: false,
+      status: 409,
+      message: "Create a pet profile before sharing a care card.",
+    };
 
   const token = createShareToken();
-  const expiresAt = new Date(Date.now() + defaultShareLinkTtlDays * 24 * 60 * 60 * 1000).toISOString();
+  const expiresAt = new Date(
+    Date.now() + defaultShareLinkTtlDays * 24 * 60 * 60 * 1000,
+  ).toISOString();
 
   const { data, error } = await supabase
     .from("share_links")
     .insert({
       pet_id: petResult.pet.id,
       token_hash: hashShareToken(token),
-      expires_at: expiresAt
+      expires_at: expiresAt,
     })
     .select(SHARE_LINK_COLUMNS)
     .single();
 
   if (error || !data) {
-    return { ok: false, status: 500, message: "Could not create the share link." };
+    return {
+      ok: false,
+      status: 500,
+      message: "Could not create the share link.",
+    };
   }
 
   return {
@@ -186,8 +222,8 @@ export async function createOwnerShareLink(supabase: SupabaseClient, origin: str
     pet: mapPetProfileRow(petResult.pet),
     shareLink: {
       ...mapShareLinkRow(data as unknown as ShareLinkRow, origin),
-      url: buildShareUrl(origin, token)
-    }
+      url: buildShareUrl(origin, token),
+    },
   };
 }
 
@@ -195,11 +231,16 @@ export async function revokeOwnerShareLink(
   shareLinkId: string,
   supabase: SupabaseClient,
   origin: string,
-  now: Date = new Date()
+  now: Date = new Date(),
 ): Promise<ShareLinkMutationResult> {
   const petResult = await findOwnerFirstPet(supabase);
   if (!petResult.ok) return petResult;
-  if (!petResult.pet) return { ok: false, status: 409, message: "Create a pet profile before editing share links." };
+  if (!petResult.pet)
+    return {
+      ok: false,
+      status: 409,
+      message: "Create a pet profile before editing share links.",
+    };
 
   const { data, error } = await supabase
     .from("share_links")
@@ -210,7 +251,11 @@ export async function revokeOwnerShareLink(
     .maybeSingle();
 
   if (error) {
-    return { ok: false, status: 500, message: "Could not revoke the share link." };
+    return {
+      ok: false,
+      status: 500,
+      message: "Could not revoke the share link.",
+    };
   }
 
   if (!data) {
@@ -220,11 +265,14 @@ export async function revokeOwnerShareLink(
   return {
     ok: true,
     pet: mapPetProfileRow(petResult.pet),
-    shareLink: mapShareLinkRow(data as unknown as ShareLinkRow, origin)
+    shareLink: mapShareLinkRow(data as unknown as ShareLinkRow, origin),
   };
 }
 
-export async function readSharedCareCard(token: string, supabase: SupabaseClient): Promise<SharedCareCardResult> {
+export async function readSharedCareCard(
+  token: string,
+  supabase: SupabaseClient,
+): Promise<SharedCareCardResult> {
   const tokenHash = hashShareToken(token);
   const now = new Date().toISOString();
 
@@ -237,11 +285,19 @@ export async function readSharedCareCard(token: string, supabase: SupabaseClient
     .maybeSingle();
 
   if (linkError) {
-    return { ok: false, status: 500, message: "Could not load the shared care card." };
+    return {
+      ok: false,
+      status: 500,
+      message: "Could not load the shared care card.",
+    };
   }
 
   if (!link) {
-    return { ok: false, status: 404, message: "This care card link is unavailable." };
+    return {
+      ok: false,
+      status: 404,
+      message: "This care card link is unavailable.",
+    };
   }
 
   const shareLink = link as unknown as ShareLinkRow;
@@ -252,11 +308,19 @@ export async function readSharedCareCard(token: string, supabase: SupabaseClient
     .maybeSingle();
 
   if (petError) {
-    return { ok: false, status: 500, message: "Could not load the shared care card." };
+    return {
+      ok: false,
+      status: 500,
+      message: "Could not load the shared care card.",
+    };
   }
 
   if (!pet) {
-    return { ok: false, status: 404, message: "This care card link is unavailable." };
+    return {
+      ok: false,
+      status: 404,
+      message: "This care card link is unavailable.",
+    };
   }
 
   const [remindersResult, documentsResult] = await Promise.all([
@@ -273,19 +337,27 @@ export async function readSharedCareCard(token: string, supabase: SupabaseClient
       .eq("pet_id", shareLink.pet_id)
       .order("document_date", { ascending: false })
       .order("created_at", { ascending: false })
-      .limit(3)
+      .limit(3),
   ]);
 
   if (remindersResult.error || documentsResult.error) {
-    return { ok: false, status: 500, message: "Could not load the shared care card." };
+    return {
+      ok: false,
+      status: 500,
+      message: "Could not load the shared care card.",
+    };
   }
 
   return {
     ok: true,
     pet: mapPetProfileRow(pet as unknown as PetProfileRow),
-    reminders: ((remindersResult.data ?? []) as unknown as ReminderRow[]).map(mapReminderRow),
-    documents: ((documentsResult.data ?? []) as unknown as DocumentRow[]).map(mapDocumentRow),
-    expiresAt: shareLink.expires_at
+    reminders: ((remindersResult.data ?? []) as unknown as ReminderRow[]).map(
+      mapReminderRow,
+    ),
+    documents: ((documentsResult.data ?? []) as unknown as DocumentRow[]).map(
+      mapDocumentRow,
+    ),
+    expiresAt: shareLink.expires_at,
   };
 }
 
@@ -305,7 +377,7 @@ function mapShareLinkRow(row: ShareLinkRow, origin: string): ShareLinkResponse {
     petId: row.pet_id,
     expiresAt: row.expires_at,
     revokedAt: row.revoked_at,
-    createdAt: row.created_at
+    createdAt: row.created_at,
   };
 }
 
@@ -314,12 +386,18 @@ function buildShareUrl(origin: string, token: string): string {
 }
 
 async function findOwnerFirstPet(
-  supabase: SupabaseClient
-): Promise<{ ok: true; pet: PetProfileRow | null } | { ok: false; status: number; message: string }> {
+  supabase: SupabaseClient,
+): Promise<
+  | { ok: true; pet: PetProfileRow | null }
+  | { ok: false; status: number; message: string }
+> {
   const authResult = await getAuthenticatedUser(supabase);
   if (!authResult.ok) return authResult;
 
-  const householdResult = await findOwnerHousehold(supabase, authResult.user.id);
+  const householdResult = await findOwnerHousehold(
+    supabase,
+    authResult.user.id,
+  );
   if (!householdResult.ok) return householdResult;
   if (!householdResult.household) return { ok: true, pet: null };
 
@@ -332,15 +410,21 @@ async function findOwnerFirstPet(
     .maybeSingle();
 
   if (error) {
-    return { ok: false, status: 500, message: "Could not read the pet profile." };
+    return {
+      ok: false,
+      status: 500,
+      message: "Could not read the pet profile.",
+    };
   }
 
   return { ok: true, pet: data as PetProfileRow | null };
 }
 
 async function getAuthenticatedUser(
-  supabase: SupabaseClient
-): Promise<{ ok: true; user: User } | { ok: false; status: number; message: string }> {
+  supabase: SupabaseClient,
+): Promise<
+  { ok: true; user: User } | { ok: false; status: number; message: string }
+> {
   const { data, error } = await supabase.auth.getUser();
   if (error || !data.user) {
     return { ok: false, status: 401, message: "Authentication is required." };
@@ -351,8 +435,11 @@ async function getAuthenticatedUser(
 
 async function findOwnerHousehold(
   supabase: SupabaseClient,
-  ownerUserId: string
-): Promise<{ ok: true; household: HouseholdRow | null } | { ok: false; status: number; message: string }> {
+  ownerUserId: string,
+): Promise<
+  | { ok: true; household: HouseholdRow | null }
+  | { ok: false; status: number; message: string }
+> {
   const { data, error } = await supabase
     .from("households")
     .select("id")
@@ -362,7 +449,11 @@ async function findOwnerHousehold(
     .maybeSingle();
 
   if (error) {
-    return { ok: false, status: 500, message: "Could not read the owner household." };
+    return {
+      ok: false,
+      status: 500,
+      message: "Could not read the owner household.",
+    };
   }
 
   return { ok: true, household: data as HouseholdRow | null };

@@ -5,7 +5,7 @@ import {
   createOwnerReminder,
   createReminderDatabasePayload,
   createReminderUpdatePayload,
-  mapReminderRow
+  mapReminderRow,
 } from "./reminders";
 
 const ownerUserId = "11111111-1111-4111-8111-111111111111";
@@ -27,7 +27,7 @@ const petRow = {
   medication: null,
   important_notes: null,
   created_at: "2026-06-04T09:00:00.000Z",
-  updated_at: "2026-06-04T09:30:00.000Z"
+  updated_at: "2026-06-04T09:30:00.000Z",
 };
 
 describe("reminder server helpers", () => {
@@ -37,13 +37,19 @@ describe("reminder server helpers", () => {
         title: "Rabies vaccine",
         reminderType: "vaccination",
         dueDate: "2026-07-12",
-        notes: "Bring previous record."
-      })
+        dueTime: "09:00",
+        repeatFrequency: "monthly",
+        advanceNoticeDays: 1,
+        notes: "Bring previous record.",
+      }),
     ).toEqual({
       title: "Rabies vaccine",
       reminder_type: "vaccination",
       due_date: "2026-07-12",
-      notes: "Bring previous record."
+      due_time: "09:00",
+      repeat_frequency: "monthly",
+      advance_notice_days: 1,
+      notes: "Bring previous record.",
     });
   });
 
@@ -54,18 +60,24 @@ describe("reminder server helpers", () => {
           title: "Annual visit",
           reminder_type: "visit",
           due_date: "2026-08-01",
-          notes: null
+          due_time: null,
+          repeat_frequency: "none",
+          advance_notice_days: 0,
+          notes: null,
         },
         "active",
-        new Date("2026-06-06T11:00:00.000Z")
-      )
+        new Date("2026-06-06T11:00:00.000Z"),
+      ),
     ).toEqual({
       title: "Annual visit",
       reminder_type: "visit",
       due_date: "2026-08-01",
+      due_time: null,
+      repeat_frequency: "none",
+      advance_notice_days: 0,
       notes: null,
       status: "active",
-      updated_at: "2026-06-06T11:00:00.000Z"
+      updated_at: "2026-06-06T11:00:00.000Z",
     });
   });
 
@@ -77,21 +89,27 @@ describe("reminder server helpers", () => {
         title: "Rabies vaccine",
         reminder_type: "vaccination",
         due_date: "2026-07-12",
+        due_time: "09:00:00",
+        repeat_frequency: "monthly",
+        advance_notice_days: 1,
         notes: null,
         status: "active",
         created_at: "2026-06-06T09:00:00.000Z",
-        updated_at: "2026-06-06T09:00:00.000Z"
-      })
+        updated_at: "2026-06-06T09:00:00.000Z",
+      }),
     ).toEqual({
       id: reminderId,
       petId,
       title: "Rabies vaccine",
       reminderType: "vaccination",
       dueDate: "2026-07-12",
+      dueTime: "09:00",
+      repeatFrequency: "monthly",
+      advanceNoticeDays: 1,
       notes: null,
       status: "active",
       createdAt: "2026-06-06T09:00:00.000Z",
-      updatedAt: "2026-06-06T09:00:00.000Z"
+      updatedAt: "2026-06-06T09:00:00.000Z",
     });
   });
 
@@ -103,13 +121,16 @@ describe("reminder server helpers", () => {
       title: "Rabies vaccine",
       reminder_type: "vaccination" as const,
       due_date: "2026-07-12",
+      due_time: null,
+      repeat_frequency: "none" as const,
+      advance_notice_days: 0 as const,
       notes: "Bring previous record.",
       status: "active" as const,
       created_at: "2026-06-06T09:00:00.000Z",
-      updated_at: "2026-06-06T09:00:00.000Z"
+      updated_at: "2026-06-06T09:00:00.000Z",
     };
     const supabase = createReminderSupabaseMock(operations, {
-      reminderInsert: { data: reminderRow, error: null }
+      reminderInsert: { data: reminderRow, error: null },
     });
 
     const result = await createOwnerReminder(
@@ -117,12 +138,18 @@ describe("reminder server helpers", () => {
         title: "Rabies vaccine",
         reminderType: "vaccination",
         dueDate: "2026-07-12",
-        notes: "Bring previous record."
+        dueTime: null,
+        repeatFrequency: "none",
+        advanceNoticeDays: 0,
+        notes: "Bring previous record.",
       },
-      supabase
+      supabase,
     );
 
-    expect(result).toMatchObject({ ok: true, reminder: { title: "Rabies vaccine", status: "active" } });
+    expect(result).toMatchObject({
+      ok: true,
+      reminder: { title: "Rabies vaccine", status: "active" },
+    });
     expect(operations).toEqual([
       "households.select",
       "pets.select",
@@ -131,9 +158,12 @@ describe("reminder server helpers", () => {
         title: "Rabies vaccine",
         reminder_type: "vaccination",
         due_date: "2026-07-12",
+        due_time: null,
+        repeat_frequency: "none",
+        advance_notice_days: 0,
         notes: "Bring previous record.",
-        status: "active"
-      })}`
+        status: "active",
+      })}`,
     ]);
   });
 
@@ -147,18 +177,24 @@ describe("reminder server helpers", () => {
           title: "Rabies vaccine",
           reminder_type: "vaccination",
           due_date: "2026-07-12",
+          due_time: null,
+          repeat_frequency: "none",
+          advance_notice_days: 0,
           notes: null,
           status: "completed",
           created_at: "2026-06-06T09:00:00.000Z",
-          updated_at: "2026-06-06T10:00:00.000Z"
+          updated_at: "2026-06-06T10:00:00.000Z",
         },
-        error: null
-      }
+        error: null,
+      },
     });
 
     const result = await completeOwnerReminder(reminderId, supabase);
 
-    expect(result).toMatchObject({ ok: true, reminder: { id: reminderId, status: "completed" } });
+    expect(result).toMatchObject({
+      ok: true,
+      reminder: { id: reminderId, status: "completed" },
+    });
     expect(operations).toContain("reminders.update");
     expect(operations.join(" ")).not.toContain("notification");
   });
@@ -171,28 +207,38 @@ function createReminderSupabaseMock(
     petRead?: { data: unknown; error: unknown };
     reminderInsert?: { data: unknown; error: unknown };
     reminderUpdate?: { data: unknown; error: unknown };
-  } = {}
+  } = {},
 ) {
   return {
     auth: {
-      getUser: async () => ({ data: { user: { id: ownerUserId } }, error: null })
+      getUser: async () => ({
+        data: { user: { id: ownerUserId } },
+        error: null,
+      }),
     },
     from: (table: string) => {
       if (table === "households") {
         return {
-          select: () => createMaybeSingleBuilder(() => {
-            operations.push("households.select");
-            return overrides.householdRead ?? { data: { id: householdId }, error: null };
-          })
+          select: () =>
+            createMaybeSingleBuilder(() => {
+              operations.push("households.select");
+              return (
+                overrides.householdRead ?? {
+                  data: { id: householdId },
+                  error: null,
+                }
+              );
+            }),
         };
       }
 
       if (table === "pets") {
         return {
-          select: () => createMaybeSingleBuilder(() => {
-            operations.push("pets.select");
-            return overrides.petRead ?? { data: petRow, error: null };
-          })
+          select: () =>
+            createMaybeSingleBuilder(() => {
+              operations.push("pets.select");
+              return overrides.petRead ?? { data: petRow, error: null };
+            }),
         };
       }
 
@@ -203,29 +249,35 @@ function createReminderSupabaseMock(
               single: async () => {
                 operations.push(`reminders.insert:${JSON.stringify(payload)}`);
                 return overrides.reminderInsert ?? { data: null, error: null };
-              }
-            })
+              },
+            }),
           }),
           update: (payload: unknown) => {
             operations.push("reminders.update");
-            operations.push(`reminders.updatePayload:${JSON.stringify(payload)}`);
-            return createMaybeSingleBuilder(() => overrides.reminderUpdate ?? { data: null, error: null });
-          }
+            operations.push(
+              `reminders.updatePayload:${JSON.stringify(payload)}`,
+            );
+            return createMaybeSingleBuilder(
+              () => overrides.reminderUpdate ?? { data: null, error: null },
+            );
+          },
         };
       }
 
       throw new Error(`Unexpected table: ${table}`);
-    }
+    },
   } as unknown as SupabaseClient;
 }
 
-function createMaybeSingleBuilder(read: () => { data: unknown; error: unknown }) {
+function createMaybeSingleBuilder(
+  read: () => { data: unknown; error: unknown },
+) {
   const builder = {
     eq: () => builder,
     limit: () => builder,
     maybeSingle: async () => read(),
     order: () => builder,
-    select: () => builder
+    select: () => builder,
   };
 
   return builder;
