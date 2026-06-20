@@ -6,7 +6,7 @@ Only planned and active work appears here. Order is priority order.
 | -------- | ---------------------------------------------------------------------------------------------------------------- | ------- | ------ |
 | 1        | [Codex harness readiness](spec/tasks/codex-harness-readiness.md)                                                 | Review  | Medium |
 | 2        | [Simplify spec workflow](spec/tasks/simplify-spec-workflow.md)                                                   | Review  | Medium |
-| 3        | [Pet profile IA and controls](spec/tasks/pet-profile-ia-and-controls.md)                                         | Planned | Medium |
+| 3        | [Pet profile IA and controls](spec/tasks/pet-profile-ia-and-controls.md)                                         | Review  | Medium |
 | 4        | [Document upload storage implementation](spec/tasks/document-upload-storage-implementation.md)                   | Planned | High   |
 | 5        | [Audit and product-event foundation](spec/tasks/audit-product-event-foundation.md)                               | Planned | High   |
 | 6        | [Data-rights manual runbook](spec/tasks/data-rights-manual-runbook.md)                                           | Planned | High   |

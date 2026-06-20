@@ -6,7 +6,7 @@ import type {
 } from "@caniello/contracts";
 import type { FormEvent } from "react";
 import { useMemo, useState } from "react";
-import petsImage from "../assets/auth-hero-pets.png";
+import otherAvatar from "../assets/pet-avatar-other.png";
 import type { AccountCopy } from "../content";
 import { OnboardingField, OnboardingSelectField } from "./OnboardingField";
 import { OnboardingIcon } from "./OnboardingIcon";
@@ -196,16 +196,10 @@ function PetPanelHeader({ copy }: { copy: AccountCopy }) {
     <div className="flex items-start gap-5">
       <span className="relative flex h-24 w-24 shrink-0 overflow-hidden rounded-full bg-[#fff3e5]">
         <img
-          className="h-full w-full object-cover object-[76%_46%]"
-          src={typeof petsImage === "string" ? petsImage : petsImage.src}
+          className="h-full w-full object-cover"
+          src={typeof otherAvatar === "string" ? otherAvatar : otherAvatar.src}
           alt=""
         />
-        <span
-          className="absolute bottom-1 right-1 flex h-7 w-7 items-center justify-center rounded-full border border-[#d8cfed] bg-white text-[#7651e6]"
-          aria-hidden="true"
-        >
-          <OnboardingIcon name="edit" small />
-        </span>
       </span>
       <div className="min-w-0 pt-1">
         <p className="text-sm font-black text-[#f59a23]">

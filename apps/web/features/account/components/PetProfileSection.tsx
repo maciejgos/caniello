@@ -208,12 +208,10 @@ export function PetProfileSection({
                 type="date"
                 value={form.birthDate}
               />
-              <PetTextField
+              <PetSexSelect
+                copy={copy}
                 disabled={isFormLocked}
-                label={copy.petProfileSexOrGender}
-                name="sexOrGender"
                 onChange={(value) => updateField("sexOrGender", value)}
-                placeholder={copy.petProfileSexOrGenderPlaceholder}
                 value={form.sexOrGender}
               />
               <PetTextField
@@ -425,6 +423,51 @@ function PetTextField({
         type={type}
         value={value}
       />
+    </label>
+  );
+}
+
+function PetSexSelect({
+  copy,
+  disabled,
+  onChange,
+  value,
+}: {
+  copy: AccountCopy;
+  disabled?: boolean;
+  onChange: (value: string) => void;
+  value: string;
+}) {
+  const options = [
+    { value: "female", label: copy.onboardingGenderFemale },
+    { value: "male", label: copy.onboardingGenderMale },
+    { value: "unknown", label: copy.onboardingGenderUnknown },
+  ];
+  const hasLegacyValue =
+    value !== "" && !options.some((option) => option.value === value);
+
+  return (
+    <label
+      className="block text-sm font-black text-navy"
+      htmlFor="pet-profile-sexOrGender"
+    >
+      {copy.petProfileSexOrGender}
+      <select
+        className="mt-2 min-h-11 w-full rounded-md border border-[#dce2ec] bg-white px-3 text-base font-semibold text-navy outline-none transition focus:border-[#0f766e] focus:ring-2 focus:ring-[#ccfbf1]"
+        disabled={disabled}
+        id="pet-profile-sexOrGender"
+        name="sexOrGender"
+        onChange={(event) => onChange(event.target.value)}
+        value={value}
+      >
+        <option value="">{copy.petProfileSexOrGenderPlaceholder}</option>
+        {hasLegacyValue ? <option value={value}>{value}</option> : null}
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
     </label>
   );
 }

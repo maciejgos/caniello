@@ -3,6 +3,7 @@ import type { AccountCopy } from "../content";
 import { AppIcon } from "./AppIcon";
 import type { AppSection } from "./AuthenticatedAppShell";
 import { FirstRunOnboarding } from "./FirstRunOnboarding";
+import { PetAvatar } from "./PetAvatar";
 import { ReturningOwnerDashboard } from "./ReturningOwnerDashboard";
 import { useDashboardData } from "./useDashboardData";
 
@@ -133,11 +134,8 @@ function PetIdentityCard({
       onClick={onPetRequest}
       type="button"
     >
-      <span
-        className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#fff3e5] text-[#d97706]"
-        aria-hidden="true"
-      >
-        <AppIcon name="paw" />
+      <span className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#fff3e5] text-[#d97706]">
+        <PetAvatar className="h-full w-full object-cover" pet={pet} />
       </span>
       <div className="min-w-0">
         <h2 className="truncate font-serif text-xl font-black text-navy">
