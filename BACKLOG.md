@@ -36,6 +36,7 @@ Only planned and active work appears here. Order is priority order.
 | 30       | [Email sharing scope decision](spec/tasks/email-sharing-scope-decision.md)                                       | Planned | Not Now | High   |
 | 31       | [Emergency card scope decision](spec/tasks/emergency-card-scope-decision.md)                                     | Planned | Next    | High   |
 | 32       | [Partner workflow scope decision](spec/tasks/partner-workflow-scope-decision.md)                                 | Planned | Later   | High   |
+| 33       | [Pet history timeline source events](spec/tasks/pet-history-timeline-source-events.md)                           | Planned | Now     | High   |
 
 Select one `Now` task at a time. Future-roadmap rows are planning contracts and
 cannot enter implementation until `ROADMAP.md`, the task, and this table are
